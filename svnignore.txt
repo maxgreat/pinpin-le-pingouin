@@ -1,0 +1,12 @@
+documents/*~
+documents/*.aux
+documents/*.log
+*~
+*.class
+Arbitre/*.class
+Arbirte/*~
+Interface/*.class
+Interface/*~
+Jeu/*.class
+Jeu/*~
+
