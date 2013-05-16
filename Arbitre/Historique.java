@@ -27,8 +27,8 @@ public class Historique
     public void ajout(Configuration config)
     {
         // Libère un espace si la pile d'avant est pleine
-        if (pileAvant.size() >= limiteHistorique)
-            libererPileEspace();
+        // if (pileAvant.size() >= limiteHistorique)
+        //     libererPileEspace();
 
         // Push sur la pile d'avant et vide la pile d'après
         pileAvant.push(config);
