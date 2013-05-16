@@ -37,7 +37,7 @@ public class Arbitre implements Runnable
     public int getPosition(Joueur joueur)
     {
         int i = 1;
-        while (joueurs[i] != joueur)
+        while (joueurs[i - 1 ] != joueur)
             i++;
 
         // Si on a pas trouvé
@@ -84,7 +84,7 @@ public class Arbitre implements Runnable
      **/
     public void run()
     {
-        int tourJoueur = 1;
+        int tourJoueur = getPosition(getJoueurCourant());
 
         while (!estFini && !forceStop)
         {

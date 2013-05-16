@@ -13,7 +13,7 @@ public class JoueurHumain extends Joueur
      **/
     public Coup coupSuivant()
     {
-        return (Coup)getSignalCoup().attendreSignal();        
+        return getSignalCoup().attendreSignal();        
     }
 
     public static String getType()
