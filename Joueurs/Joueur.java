@@ -3,7 +3,10 @@ import Arbitre.*;
 
 public abstract class Joueur
 {
-    Signal<Coup> signalCoup;
+    protected Signal<Coup> signalCoup;
+    protected int score = 0;
+    protected String nom;
+    
     
     public Joueur()
     {
@@ -22,19 +25,46 @@ public abstract class Joueur
     /**
      * Renvoit une instance pour un type de joueur donné
      **/
-    public static Joueur getJoueurByName(String nom)
+    public static Joueur getJoueurByType(String type)
     {
-        if (nom.compareTo("CPU_Minimax") == 0)
+        if (type.compareTo(JoueurCPUMinimax.getType()) == 0)
             return new JoueurCPUMinimax();
-        else if(nom.compareTo("CPU_Random") == 0)
+        else if(type.compareTo(JoueurCPURd.getType()) == 0)
             return new JoueurCPURd();
         else 
             return new JoueurHumain();
     }
-    
+
+    /**
+     * Gestion du score
+     **/
+    public int getScore()
+    {
+        return score;
+    }
+
+    public void setScore(int score)
+    {
+        this.score = score;
+    }
+
+    /**
+     * Gestion du nom du joueur
+     **/
+    public String getNom()
+    {
+        return nom;
+    }
+
+    public void setNom(String nom)
+    {
+        this.nom = nom;
+    }
+
     /**
      * Fonction à implanter dans les classes enfants
      **/
     public abstract Coup coupSuivant();
-    public abstract String getNom();
+    // Ne peut pas déclarer une méthode abstraite et static en Java, dommage
+    // public abstract static String getType();
 }

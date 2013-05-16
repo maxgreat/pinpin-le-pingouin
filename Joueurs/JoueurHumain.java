@@ -16,7 +16,7 @@ public class JoueurHumain extends Joueur
         return (Coup)getSignalCoup().attendreSignal();        
     }
 
-    public String getNom()
+    public static String getType()
     {
         return "Humain";
     }            

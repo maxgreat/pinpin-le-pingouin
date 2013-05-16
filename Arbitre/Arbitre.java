@@ -100,6 +100,11 @@ public class Arbitre implements Runnable
 
             // Lance le coup proposé
             int score = configurationSuivante.effectuerCoup(coup);
+
+            // Met à jour le score du joueur
+            getJoueurCourant().setScore(getJoueurCourant().getScore() + score);
+
+
             System.out.println("TODO : implanter fin jeu");
             if (score == 3)
             {

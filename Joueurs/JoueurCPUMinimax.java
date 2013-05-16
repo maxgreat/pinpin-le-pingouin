@@ -10,7 +10,7 @@ public class JoueurCPUMinimax extends Joueur
      **/
     static final long TEMPS_ATTENTE_MINIMAL = 2000; 
 
-    public String getNom()
+    public static String getType()
     {
         return "CPU_Minimax";
     }
