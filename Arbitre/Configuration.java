@@ -16,7 +16,7 @@ public class Configuration implements Cloneable
 	this.largeur = largeur;
 	this.hauteur = hauteur;
 	this.terrain = terrain;
-	this joueurSurConfiguration = joueurSurConfiguration;
+	this.joueurSurConfiguration = joueurSurConfiguration;
     }
 
     /**
@@ -70,11 +70,11 @@ public class Configuration implements Cloneable
 	    return false;
 
 	// Doit déplacer le pingouin de la config
-	if (depart.getJoueurSurCase() != getJoueurSurConfiguration())
+	if (terrain[yDepart][xDepart].getJoueurSurCase() != getJoueurSurConfiguration())
 	    return false;
 
 	// Sans obstacles avec déplacement possible
-	if (!estDeplacementPossible(Coup))
+	if (!estDeplacementPossible(coup))
 	    return false;
 
 	return true;
@@ -111,22 +111,22 @@ public class Configuration implements Cloneable
 
     protected boolean versBasDroite(Coup c)
     {
-	return memeDiagonale(c) && x.getXArrivee() >= x.getXDepart() && y.getXArrivee() > c.getYDepart();
+	return memeDiagonale(c) && c.getXArrivee() >= c.getXDepart() && c.getXArrivee() > c.getYDepart();
     }
 
     protected boolean versBasGauche(Coup c)
     {
-	return memeDiagonale(c) && x.getXArrivee() <  x.getXDepart() && y.getXArrivee() > c.getYDepart();
+	return memeDiagonale(c) && c.getXArrivee() <  c.getXDepart() && c.getXArrivee() > c.getYDepart();
     }
 
     protected boolean versHautDroite(Coup c)
     {
-	return memeDiagonale(c) && x.getXArrivee() >= x.getXDepart() && y.getXArrivee() < c.getYDepart();
+	return memeDiagonale(c) && c.getXArrivee() >= c.getXDepart() && c.getXArrivee() < c.getYDepart();
     }
 
     protected boolean versHautGauche(Coup c)
     {
-	return memeDiagonale(c) && x.getXArrivee() < x.getXDepart() && y.getXArrivee() < c.getYDepart();
+	return memeDiagonale(c) && c.getXArrivee() < c.getXDepart() && c.getXArrivee() < c.getYDepart();
     }
 
     /**
@@ -144,7 +144,7 @@ public class Configuration implements Cloneable
 	{
 	    int l = xDepart;
 
-	    while (l =< xArrivee)
+	    while (l <= xArrivee)
 	    {
 		if (terrain[yDepart][l].estObstacle())
 		    return false;
@@ -234,9 +234,112 @@ public class Configuration implements Cloneable
 	{
 	    for (int j = 0; j < largeur; j++)
 	    {
-		Coup c = new Coup(j, i);
-		if (estCoupPossible(c))
-		    liste.add(c);
+		// Sortie du terrain
+		if (i%2 == 0 && j == largeur - 1)
+		{
+		    j++;
+		    continue;
+		}
+
+		// Vers la droite
+		{
+		    int l = j - 1;
+		    if (i%2 == 0)
+		    {
+			while (l < largeur - 1 && !terrain[i][l].estObstacle())
+			{
+			    liste.add(new Coup(i, j, i, l));
+			    l++;
+			}
+		    }
+		    else
+		    {
+			while (l < largeur && terrain[i][l].estObstacle())
+			{
+			    liste.add(new Coup(i, j, i, l));
+			    l++;
+			}
+		    }
+		}
+
+		// Vers la gauche
+		{
+		    int l = j - 1;
+		    while (l >= 0 && !terrain[i][l].estObstacle())
+		    {
+			liste.add(new Coup(i, j, i, l));
+			l--;
+		    }
+		}
+
+		// Vers le haut droit
+		{
+		    int l = j;
+		    int k = i - 1;
+
+		    while(k >= 0)
+		    {
+			if (k%2 == 0)
+			    l++;
+
+			if (terrain[k][l].estObstacle())
+			    break;
+
+			liste.add(new Coup(i, j, k, l));
+		    }
+		}
+
+		// Vers le haut gauche
+		{
+
+		    int l = j;
+		    int k = i - 1;
+
+		    while(k >= 0)
+		    {
+			if (k%2 == 1)
+			    l--;
+
+			if (terrain[k][l].estObstacle())
+			    break;
+
+			liste.add(new Coup(i, j, k, l));
+		    }
+		}
+
+		// Vers le bas droit
+		{
+		    int l = j;
+		    int k = i + 1;
+
+		    while(k < hauteur)
+		    {
+			if (k%2 == 0)
+			    l++;
+
+			if (terrain[k][l].estObstacle())
+			    break;
+
+			liste.add(new Coup(i, j, k, l));
+		    }
+		}
+
+		// Vers le bas gauche
+		{
+		    int l = j;
+		    int k = i + 1;
+
+		    while(k < hauteur)
+		    {
+			if (k%2 == 1)
+			    l--;
+
+			if (terrain[k][l].estObstacle())
+			    break;
+
+			liste.add(new Coup(i, j, k, l));
+		    }
+		}
 	    }
 	}
 
@@ -246,25 +349,19 @@ public class Configuration implements Cloneable
     }    
 
     /** 
-     * Effectue un coup et renvoit si le jeu est fini
+     * Renvoit le score pour le joueur
      * Suppose que le coup est valide
      **/
-    public boolean effectuerCoup(Coup c)
+    public int effectuerCoup(Coup c)
     {
-	boolean estFini = true;
+	System.out.println("effectuerCoup : traiter score");
 
-	for (int i = 0; i < hauteur; i++)
-	{
-	    for (int j = 0; j < largeur; j++)
-	    {
-		if (i <= c.getY() && j >= c.getX())
-		    terrain[i][j] = new Case(Etat.LIBRE);
-		else 
-		    estFini = estFini && (terrain[i][j].estLibre() || terrain[i][j].estPoison());
-	    }
-	}
+	int score = terrain[c.getYDepart()][c.getXDepart()].scorePoisson();
 
-	return estFini;
+	terrain[c.getYDepart()][c.getXDepart()] = new Case(Etat.VIDE, null);
+	terrain[c.getYArrivee()][c.getXArrivee()].setJoueurSurCase(getJoueurSurConfiguration());
+
+	return score;
     }
 
     /**
@@ -293,12 +390,12 @@ public class Configuration implements Cloneable
 	{
 	    for (int j = 0; j < largeur; j++)
 	    {
-		Joueur j = terrain[i][j].getJoueurSurConfiguration();
+		Joueur joueur = terrain[i][j].getJoueurSurCase();
 
-		if (j == null)
+		if (joueur == null)
 		    result += "0";
 		else
-		    result += String.valueOf(j.getPosition());
+		    result += String.valueOf(joueur.getPosition());
 
 		result += String.valueOf(terrain[i][j].scorePoisson());
 	    }
@@ -323,23 +420,23 @@ public class Configuration implements Cloneable
 	{
 	    for (int j = 0; j < largeur; j++)
 	    {
-		Joueur j = null;
-		Etat e = VIDE;
+		Joueur joueur = null;
+		Etat e = Etat.VIDE;
 		if (result.charAt(compteur) != '0')
-		    j =ArbitreManager.instance.getJoueurParPosition(Integer.valueOf(result.charAt(compteur)));
+		    joueur = ArbitreManager.instance.getJoueurParPosition(Integer.valueOf(result.charAt(compteur)));
 
 		compteur++;
 
 		if (result.charAt(compteur) == '1')
-		    e = UN_POISSON;
+		    e = Etat.UN_POISSON;
 		else if (result.charAt(compteur) == '2')
-		    e = DEUX_POISSONS;
+		    e = Etat.DEUX_POISSONS;
 		else if (result.charAt(compteur) == '3')
-		    e = TROIS_POISSONS;
+		    e = Etat.TROIS_POISSONS;
 		else
-		    e = VIDE;
+		    e = Etat.VIDE;
 
-		terrain[i][j] = new Case(e, j);
+		terrain[i][j] = new Case(e, joueur);
 	    }
 	}
 
