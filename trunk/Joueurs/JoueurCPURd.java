@@ -14,7 +14,7 @@ public class JoueurCPURd extends Joueur
 		return coupPossible[r.nextInt(coupPossible.length)];
 	}
 
-    public String getNom()
+    public static String getType()
     {
         return "CPU_Random";
     }
