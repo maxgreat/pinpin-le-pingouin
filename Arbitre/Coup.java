@@ -2,32 +2,54 @@ package Arbitre;
 
 public class Coup
 {
-    protected int x;
-    protected int y;
-
-    public Coup(int x , int y)
+    protected int xDepart;
+    protected int yDepart;
+    protected int xArrivee;
+    protected int yArrivee;
+	
+    public Coup(int xDepart, int yDepart,int xArrivee, int yArrivee)
     {
-	this.x = x;
-	this.y = y;
+        this.xDepart = xDepart;
+	     this.yDepart = yDepart;
+ 	     this.xArrivee = xArrivee;
+	     this.yArrivee = yArrivee;
     }
 
-    public void setX(int x)
+    public void setXDepart(int x)
     {
-	this.x = x;
+	     this.xDepart = x;
     }
-
-    public void setY(int y)
+	 public void setYDepart(int y)
     {
-	this.y = y;
+	     this.yDepart = y;
+    }	
+
+
+    public void setXArrivee(int x)
+    {
+	     this.xArrivee = x;
+    }	
+
+    public void setYArrivee(int y)
+    {
+	     this.yArrivee = y;
     }
     
-    public int getX()
+    public int getXDepart()
     {
-	return x;
+	     return xDepart;
     }
-
-    public int getY()
+    public int getYDepart()
     {
-	return y;
+	     return yDepart;
+    }
+    
+    public int getXArrivee()
+    {
+	     return xArrivee;
+    }
+    public int getYArrivee()
+    {
+	     return yArrivee;
     }
 }
