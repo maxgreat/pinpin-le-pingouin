@@ -1,13 +1,13 @@
-package Interface;
+package Interface.Graphique;
 import java.awt.event.*;
 import Arbitre.*;
 import Joueurs.*;
 
 public class EcouteurDeBouton implements ActionListener{
 	String message;
-	Interface inter;
+	InterfaceGraphique inter;
 
-	public EcouteurDeBouton(String m, Interface inter){
+	public EcouteurDeBouton(String m, InterfaceGraphique inter){
 		message = m;
 		this.inter = inter;
 	}

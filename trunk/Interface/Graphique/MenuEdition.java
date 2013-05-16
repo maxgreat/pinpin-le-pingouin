@@ -1,4 +1,5 @@
-package Interface;
+package Interface.Graphique;
+
 import java.awt.event.*;
 import javax.swing.*;
 import Arbitre.*;

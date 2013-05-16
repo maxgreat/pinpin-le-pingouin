@@ -24,12 +24,12 @@ public abstract class Joueur
      **/
     public static Joueur getJoueurByName(String nom)
     {
-	if (nom.compareTo("CPU_Minimax") == 0)
-	    return new JoueurCPUMinimax();
-	else if(nom.compareTo("CPU_Random") == 0)
-	    return new JoueurCPURd();
-	else 
-	    return new JoueurHumain();
+        if (nom.compareTo("CPU_Minimax") == 0)
+            return new JoueurCPUMinimax();
+        else if(nom.compareTo("CPU_Random") == 0)
+            return new JoueurCPURd();
+        else 
+            return new JoueurHumain();
     }
     
     /**

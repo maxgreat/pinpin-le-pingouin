@@ -1,4 +1,5 @@
-package Interface;
+package Interface.Graphique;
+
 import javax.swing.event.*;
 import javax.swing.*;
 

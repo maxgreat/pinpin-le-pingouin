@@ -92,15 +92,13 @@ public class ArbitreManager
 
         for (int i = 0; i < hauteur; i++)
             for (int j = 0; j < largeur; j++)
-                terrain[i][j] = new Case(Etat.PLEINE);
-
-        terrain[hauteur - 1][0] = new Case(Etat.POISON);
+                terrain[i][j] = new Case(Etat.VIDE, null);
 
         // Lie l'interface
         instance.setInterface(inter);
 
         // Met en place ce terrain
-        instance.setConfiguration(new Configuration(largeur, hauteur, terrain));
+        instance.setConfiguration(new Configuration(largeur, hauteur, terrain, joueur1));
 
         // Renvoit notre arbitre en cours
         return instance;
