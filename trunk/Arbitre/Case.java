@@ -1,10 +1,10 @@
 package Arbitre;
 import Joueurs.*;
 
-public class Case
+public class Case implements Cloneable
 {
-    Etat e;
-    Joueur joueurSurCase;
+    protected Etat e;
+    protected Joueur joueurSurCase;
 
     /**
      * Une case est caractérisé par son état et
@@ -25,11 +25,11 @@ public class Case
     }
 
     /**
-     * Retourne si une case est occupée
+     * Retourne si une case est un obstacle
      **/
-    public boolean estOccupe()
+    public boolean estObstacle()
     {
-	return estVide() && joueurSurCase == null;
+	return estVide() || joueurSurCase != null;
     }
 
     /**
@@ -49,5 +49,10 @@ public class Case
             default:
 		return 0;
 	}
+    }
+
+    public Case clone()
+    {
+	return new Case(e, joueurSurCase);
     }
 }
