@@ -8,8 +8,7 @@ import java.util.*;
 public class Arbitre implements Runnable
 {
     protected Configuration configurationCourante;
-    protected Joueur joueur1;
-    protected Joueur joueur2;
+    protected Joueur [] joueurs;
     protected Joueur joueurCourant;
     protected int largeur;
     protected int hauteur;
@@ -22,35 +21,41 @@ public class Arbitre implements Runnable
 
     protected Signal<Object> signalStop;
 
-    public Arbitre(Joueur joueur1, Joueur joueur2, int largeur, int hauteur)
+    public Arbitre(Joueur [] joueurs, int largeur, int hauteur)
     {
-        this.joueur1 = joueur1;
-        this.joueurCourant = joueur1;
-        this.joueur2 = joueur2;
+        this.joueurs = joueurs;
+        this.joueurCourant = joueurs[0];
         this.largeur = largeur;
         this.hauteur = hauteur;
         this.signalStop = new Signal<Object>();
         this.historique = new Historique(ArbitreManager.LIMITE_HISTORIQUE);
     }
-
+    
+    /**
+     * Retourne la position d'un joueur dans la liste
+     **/
     public int getPosition(Joueur joueur)
     {
-        if (joueur == joueur1)
-            return 1;
-        else if (joueur == joueur2)
-            return 2;
-        else
+        int i = 1;
+        while (joueurs[i] != joueur)
+            i++;
+
+        // Si on a pas trouvé
+        if (i > joueurs.length)
             return 0;
+
+        return i;
     }
 
+    /**
+     * Retourne un joueur étant donnée sa position
+     **/
     public Joueur getJoueurParPosition(int position)
     {
-        if (position == 1)
-            return joueur1;
-        else if (position == 2)
-            return joueur2;
-        else
+        if (position < 1 || position > joueurs.length)
             return null;
+
+        return joueurs[position - 1];
     }
            
 
@@ -79,6 +84,8 @@ public class Arbitre implements Runnable
      **/
     public void run()
     {
+        int tourJoueur = 1;
+
         while (!estFini && !forceStop)
         {
             // Récupère le coup du joueur
@@ -93,7 +100,7 @@ public class Arbitre implements Runnable
 
             // Lance le coup proposé
             int score = configurationSuivante.effectuerCoup(coup);
-
+            System.out.println("TODO : implanter fin jeu");
             if (score == 3)
             {
                 // Fin du jeu
@@ -103,7 +110,9 @@ public class Arbitre implements Runnable
             else
             {
                 // Change de joueur
-                setJoueurCourant(getAutreJoueur());
+                tourJoueur = (tourJoueur % joueurs.length) + 1;
+                setJoueurCourant(getJoueurParPosition(tourJoueur));
+
                 // Met en place la configuration
                 setConfiguration(configurationSuivante);
             }
@@ -124,6 +133,7 @@ public class Arbitre implements Runnable
      **/
     public void sauvegarderPartie(String filename)
     {
+/*
         System.out.println("Sauvegarde de la partie dans "+filename);
         Sauvegarde save = new Sauvegarde();
         save.setLargeur(getLargeur());
@@ -152,6 +162,8 @@ public class Arbitre implements Runnable
         {
             System.err.println("Impossible de sauvegarder dans le fichier "+filename);
         }
+*/
+        System.out.println("TODO : implanter données à sauvegarde");
     }
 
     /**
@@ -159,6 +171,7 @@ public class Arbitre implements Runnable
      **/
     public void chargerPartie(Sauvegarde save)
     {
+        /**
         Configuration derniereConfiguration = null;
         ListIterator<Configuration> listConfig = save.getIterateur();
 
@@ -178,6 +191,8 @@ public class Arbitre implements Runnable
 
         if (derniereConfiguration != null)
             this.configurationCourante = derniereConfiguration;
+        **/
+        System.out.println("TODO : implanter données à charger");
     }
 
 
@@ -252,38 +267,11 @@ public class Arbitre implements Runnable
     }
 
     /**
-     * Retourne l'autre joueur
-     **/
-    public Joueur getAutreJoueur()
-    {
-        if (joueur1 == joueurCourant)
-            return joueur2;
-	
-        return joueur1;
-    }
-
-    /**
      * Change le joueur en cours
      **/
     public void setJoueurCourant(Joueur j)
     {
         joueurCourant = j;
-    }
-
-    /**
-     * Renvoit le joueur 1
-     **/
-    public Joueur getJoueur1()
-    {
-        return joueur1;
-    }
-
-    /**
-     * Renvoit le joueur 2
-     **/
-    public Joueur getJoueur2()
-    {
-        return joueur2;
     }
 
     /**

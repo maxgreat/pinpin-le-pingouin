@@ -82,10 +82,10 @@ public class ArbitreManager
     /**
      * Initialise une partie
      **/
-    public static Arbitre initialiserPartie(Joueur joueur1, Joueur joueur2, int largeur, int hauteur, Interface inter)
+    public static Arbitre initialiserPartie(Joueur [] joueurs, int largeur, int hauteur, Interface inter)
     {
         // Créé l'arbitre
-        instance = new Arbitre(joueur1, joueur2, largeur, hauteur);
+        instance = new Arbitre(joueurs, largeur, hauteur);
   
         // Créé le terrain de base
         Case [][] terrain = new Case[hauteur][largeur];
@@ -98,7 +98,7 @@ public class ArbitreManager
         instance.setInterface(inter);
 
         // Met en place ce terrain
-        instance.setConfiguration(new Configuration(largeur, hauteur, terrain, joueur1));
+        instance.setConfiguration(new Configuration(largeur, hauteur, terrain, joueurs[0]));
 
         // Renvoit notre arbitre en cours
         return instance;
@@ -150,6 +150,7 @@ public class ArbitreManager
             return;
         }
 
+/**
 	
 	Joueur joueur1 = null;
 	Joueur joueur2 = null;
@@ -176,6 +177,9 @@ public class ArbitreManager
         initialiserPartie(joueur1, joueur2, largeur, hauteur, inter);
         instance.chargerPartie(save);
         lancerPartie();
+    }
+**/
+        System.out.println("TODO: implanter chargement");
     }
             
 }
