@@ -33,24 +33,45 @@ public class Arbitre implements Runnable
         this.historique = new Historique(ArbitreManager.LIMITE_HISTORIQUE);
     }
 
+    public int getPosition(Joueur joueur)
+    {
+        if (joueur == joueur1)
+            return 1;
+        else if (joueur == joueur2)
+            return 2;
+        else
+            return 0;
+    }
+
+    public Joueur getJoueurParPosition(int position)
+    {
+        if (position == 1)
+            return joueur1;
+        else if (position == 2)
+            return joueur2;
+        else
+            return null;
+    }
+           
+
     public int getLargeur()
     {
-	return largeur;
+        return largeur;
     }
 
     public int getHauteur()
     {
-	return hauteur;
+        return hauteur;
     }
 
     public void setLargeur(int largeur)
     {
-	this.largeur = largeur;
+        this.largeur = largeur;
     }
 
     public void setHauteur(int hauteur)
     {
-	this.hauteur = hauteur;
+        this.hauteur = hauteur;
     }
 
     /**
@@ -71,7 +92,9 @@ public class Arbitre implements Runnable
                 break;
 
             // Lance le coup proposé
-            if (configurationSuivante.effectuerCoup(coup))
+            int score = configurationSuivante.effectuerCoup(coup);
+
+            if (score == 3)
             {
                 // Fin du jeu
                 estFini = true;
@@ -103,17 +126,17 @@ public class Arbitre implements Runnable
     {
         System.out.println("Sauvegarde de la partie dans "+filename);
         Sauvegarde save = new Sauvegarde();
-	save.setLargeur(getLargeur());
-	save.setHauteur(getHauteur());
-	save.setJoueur1(joueur1.getNom());
-	save.setJoueur2(joueur2.getNom());
+        save.setLargeur(getLargeur());
+        save.setHauteur(getHauteur());
+        save.setJoueur1(joueur1.getNom());
+        save.setJoueur2(joueur2.getNom());
 
-	if (joueur1 == joueurCourant)
-	    save.setJoueurEnCours(1);
-	else
-	    save.setJoueurEnCours(2);
+        if (joueur1 == joueurCourant)
+            save.setJoueurEnCours(1);
+        else
+            save.setJoueurEnCours(2);
 
-	save.setIterateur(historique.getIterateur());
+        save.setIterateur(historique.getIterateur());
 
         String content = save.getXml();
 
@@ -137,10 +160,10 @@ public class Arbitre implements Runnable
     public void chargerPartie(Sauvegarde save)
     {
         Configuration derniereConfiguration = null;
-	ListIterator<Configuration> listConfig = save.getIterateur();
+        ListIterator<Configuration> listConfig = save.getIterateur();
 
-	setLargeur(save.getLargeur());
-	setHauteur(save.getHauteur());
+        setLargeur(save.getLargeur());
+        setHauteur(save.getHauteur());
         
         // Remet à zéro l'historique
         historique = new Historique(ArbitreManager.LIMITE_HISTORIQUE);

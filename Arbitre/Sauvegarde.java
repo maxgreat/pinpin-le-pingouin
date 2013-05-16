@@ -132,7 +132,8 @@ public class Sauvegarde
             for (int temp = 0; temp < nList.getLength(); temp++) 
             {
                 Node nNode = nList.item(temp);
-                Configuration c = new Configuration(largeur, hauteur, null);
+                System.out.println("Gérer multi-joueurs avec récup sauvegarde");
+                Configuration c = new Configuration(largeur, hauteur, null, null);
                 c.setSerialized(nNode.getTextContent());
                 pile.push(c);
             }

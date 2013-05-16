@@ -1,7 +1,8 @@
-package Interface;
+package Interface.Graphique;
 
 import Arbitre.ArbitreManager;
 import java.awt.event.*;
+
 class QuitterApplication implements ActionListener {
     public void actionPerformed(ActionEvent e) {
 	// Stop la partie en cours proprement

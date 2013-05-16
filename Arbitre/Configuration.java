@@ -395,7 +395,7 @@ public class Configuration implements Cloneable
 		if (joueur == null)
 		    result += "0";
 		else
-		    result += String.valueOf(joueur.getPosition());
+		    result += String.valueOf(ArbitreManager.instance.getPosition(joueur));
 
 		result += String.valueOf(terrain[i][j].scorePoisson());
 	    }

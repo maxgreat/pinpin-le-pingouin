@@ -1,7 +1,7 @@
 CC=javac
 MAKE=make
 JFLAGS=-classpath . -implicit:none
-EXEC=Gaufre
+EXEC=Pingouin
 SUBDIRS=Interface Joueurs Arbitre
 CLEANDIRS = $(SUBDIRS:%=clean-%)
 
@@ -12,7 +12,7 @@ all: $(EXEC)
 	$(CC) $(JFLAGS) $<
 
 
-Gaufre: $(SUBDIRS) Gaufre.class Gaufre.java
+$(EXEC): $(SUBDIRS) $(EXEC).class $(EXEC).java
 
 
 .PHONY: subdirs $(SUBDIRS) clean

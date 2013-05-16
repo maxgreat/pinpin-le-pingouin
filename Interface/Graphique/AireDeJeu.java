@@ -1,4 +1,4 @@
-package Interface;
+package Interface.Graphique;
 import Arbitre.*;
 import javax.swing.*;
 import java.awt.*;
