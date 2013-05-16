@@ -241,6 +241,11 @@ public class Arbitre implements Runnable
         forceStop = status;
     }
 
+    public boolean getForceStop()
+    {
+        return forceStop;
+    }
+
     /**
      * Retourne la configuration en cours
      **/

@@ -19,6 +19,8 @@ public class ArbitreManager
     public static final int NOMBRE_TROIS_POISSONS = 10;
     public static final int NOMBRE_DEUX_POISSONS  = 20;
     public static final int NOMBRE_UN_POISSON     = 30;
+    public static final int HAUTEUR_GRILLE        = 8;
+    public static final int LARGEUR_GRILLE        = 8;
 
     /**
      * Stop une partie

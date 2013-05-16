@@ -121,7 +121,7 @@ public class InterfaceConsole implements Interface
         Thread t = new Thread(inputManager);
         t.start();
 
-        ArbitreManager.initialiserPartie(joueurs, 8, 8, this);
+        ArbitreManager.initialiserPartie(joueurs, ArbitreManager.LARGEUR_GRILLE, ArbitreManager.HAUTEUR_GRILLE, this);
 
         // Lance la partie
         ArbitreManager.lancerPartie();
@@ -133,6 +133,9 @@ public class InterfaceConsole implements Interface
      **/
     public void repaint()
     {
+        if (ArbitreManager.instance.getForceStop())
+            return;
+
         Configuration config = ArbitreManager.instance.getConfiguration();
         
         for (int i = 0; i < ArbitreManager.instance.getHauteur(); i++)
