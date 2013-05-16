@@ -1,31 +1,53 @@
 package Arbitre;
+import Joueurs.*;
 
 public class Case
 {
     Etat e;
+    Joueur joueurSurCase;
 
-    public Case(Etat e)
+    /**
+     * Une case est caractérisé par son état et
+     * Si un joueur l'occupe
+     **/
+    public Case(Etat e, Joueur joueurSurCase)
     {
 	this.e = e;
+	this.joueurSurCase = joueurSurCase;
     }
 
-    public boolean estLibre()
+    /**
+     * Retourne si une case est vide
+     **/
+    public boolean estVide()
     {
-	return e == Etat.LIBRE;
+	return e == Etat.VIDE;
     }
 
-    public boolean estPleine()
+    /**
+     * Retourne si une case est occupée
+     **/
+    public boolean estOccupe()
     {
-	return e == Etat.PLEINE;
+	return estVide() && joueurSurCase == null;
     }
 
-    public boolean estPoison()
+    /**
+     * Score d'une case suivant le nombre de poisson ou vide
+     **/
+    public int scorePoisson()
     {
-	return e == Etat.POISON;
-    }
-
-    public Etat etat()
-    {
-	return this.e;
+	switch(e)
+	{
+	    case UN_POISSON:
+		return 1;
+	    case DEUX_POISSONS:
+		return 2;
+	    case TROIS_POISSONS:
+		return 3;
+	    case VIDE:
+            default:
+		return 0;
+	}
     }
 }

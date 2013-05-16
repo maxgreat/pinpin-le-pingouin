@@ -2,5 +2,5 @@ package Arbitre;
 
 public enum Etat
 {
-    POISON, LIBRE, PLEINE;
+    VIDE, UN_POISSON, DEUX_POISSONS, TROIS_POISSONS
 }
