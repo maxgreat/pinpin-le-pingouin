@@ -16,6 +16,16 @@ public class Case implements Cloneable
 	this.joueurSurCase = joueurSurCase;
     }
 
+    public Joueur getJoueurSurCase()
+    {
+	return joueurSurCase;
+    }
+
+    public void setJoueurSurCase(Joueur joueurSurCase)
+    {
+	this.joueurSurCase = joueurSurCase;
+    }
+
     /**
      * Retourne si une case est vide
      **/
