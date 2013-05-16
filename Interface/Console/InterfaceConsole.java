@@ -142,10 +142,17 @@ public class InterfaceConsole implements Interface
         {
             for (int j = 0; j < ArbitreManager.instance.getLargeur(); j++)
             {
+                if (i%2 == 0 && j == ArbitreManager.instance.getLargeur() - 1)
+                    continue;
+                
+                String couleur = "";
+                if (config.getTerrain()[i][j].getJoueurSurCase() != null)
+                    couleur = couleurs[ArbitreManager.instance.getPosition(config.getTerrain()[i][j].getJoueurSurCase()) - 1];
+
                 if (i%2 == 1)
-                    System.out.print(String.valueOf(config.getTerrain()[i][j].scorePoisson())+" ");
-                else if (j < ArbitreManager.instance.getLargeur() - 1)
-                    System.out.print(" "+String.valueOf(config.getTerrain()[i][j].scorePoisson()));
+                    System.out.print(couleur+String.valueOf(config.getTerrain()[i][j].scorePoisson())+RESET+" ");
+                else
+                    System.out.print(" "+couleur+String.valueOf(config.getTerrain()[i][j].scorePoisson())+RESET);
             }
             System.out.println();
         }
