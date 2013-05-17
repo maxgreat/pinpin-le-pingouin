@@ -19,6 +19,8 @@ public class Arbitre implements Runnable
     protected boolean estFini   = false;
     protected boolean forceStop = false;
 
+    protected ModeDeJeu mode = ModeDeJeu.POSE_PINGOUIN;
+
     protected Signal<Object> signalStop;
 
     public Arbitre(Joueur [] joueurs, int largeur, int hauteur)
@@ -78,6 +80,17 @@ public class Arbitre implements Runnable
     {
         this.hauteur = hauteur;
     }
+
+    public ModeDeJeu getMode()
+    {
+        return mode;
+    }
+
+    public void setMode(ModeDeJeu mode)
+    {
+        this.mode = mode;
+    }
+
 
     /**
      * Lance et joue la partie

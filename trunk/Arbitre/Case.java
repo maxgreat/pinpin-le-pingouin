@@ -12,18 +12,23 @@ public class Case implements Cloneable
      **/
     public Case(Etat e, Joueur joueurSurCase)
     {
-	this.e = e;
-	this.joueurSurCase = joueurSurCase;
+        this.e = e;
+        this.joueurSurCase = joueurSurCase;
     }
 
     public Joueur getJoueurSurCase()
     {
-	return joueurSurCase;
+        return joueurSurCase;
     }
 
     public void setJoueurSurCase(Joueur joueurSurCase)
     {
-	this.joueurSurCase = joueurSurCase;
+        this.joueurSurCase = joueurSurCase;
+    }
+
+    public Etat getEtat()
+    {
+        return e;
     }
 
     /**
@@ -31,7 +36,7 @@ public class Case implements Cloneable
      **/
     public boolean estVide()
     {
-	return e == Etat.VIDE;
+        return e == Etat.VIDE;
     }
 
     /**
@@ -39,7 +44,7 @@ public class Case implements Cloneable
      **/
     public boolean estObstacle()
     {
-	return estVide() || joueurSurCase != null;
+        return estVide() || joueurSurCase != null;
     }
 
     /**
@@ -47,22 +52,22 @@ public class Case implements Cloneable
      **/
     public int scorePoisson()
     {
-	switch(e)
-	{
-	    case UN_POISSON:
-		return 1;
-	    case DEUX_POISSONS:
-		return 2;
-	    case TROIS_POISSONS:
-		return 3;
-	    case VIDE:
-            default:
-		return 0;
-	}
+        switch(e)
+        {
+        case UN_POISSON:
+            return 1;
+        case DEUX_POISSONS:
+            return 2;
+        case TROIS_POISSONS:
+            return 3;
+        case VIDE:
+        default:
+            return 0;
+        }
     }
 
     public Case clone()
     {
-	return new Case(e, joueurSurCase);
+        return new Case(e, joueurSurCase);
     }
 }

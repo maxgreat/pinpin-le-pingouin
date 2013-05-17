@@ -52,31 +52,51 @@ public class Configuration implements Cloneable
         int xArrivee = coup.getXArrivee();
         int yArrivee = coup.getYArrivee();
 
-        // Reste dans le terrain
-        if (xDepart < 0 || xDepart >= largeur || yDepart < 0 || yDepart >= hauteur)
-            return false;
+        // Mode pose de pingouin
+        if (xArrivee == -1 && yArrivee == -1)
+        {
+            // Reste dans le terrain
+            if (xDepart < 0 || xDepart >= largeur || yDepart < 0 || yDepart >= hauteur)
+                return false;
 
-        if (xArrivee < 0 || xArrivee >= largeur || yArrivee < 0 || yArrivee >= hauteur)
-            return false;
+            if (yDepart % 2 == 0 && xDepart >= largeur - 1)
+                return false;
 
-        if (xDepart == xArrivee && yDepart == yArrivee)
-            return false;
+            // Vérifie qu'il n'y a pas déjà un pion
+            if (terrain[yDepart][xDepart].getJoueurSurCase() != null)
+                return false;
 
-        // Ligne paire
-        if (yArrivee % 2 == 0 && xArrivee >= largeur - 1)
-            return false;
-
-        if (yDepart % 2 == 0 && xDepart >= largeur - 1)
-            return false;
-
-        // Doit déplacer le pingouin de la config
-        if (terrain[yDepart][xDepart].getJoueurSurCase() != getJoueurSurConfiguration())
-            return false;
-
-        // Sans obstacles avec déplacement possible
-        if (!estDeplacementPossible(coup))
-            return false;
-
+            // Vérifie qu'il n'y a qu'un poissons sur cette case
+            if (terrain[yDepart][xDepart].getEtat() != Etat.UN_POISSON)
+                return false;
+        }
+        else
+        {
+            // Reste dans le terrain
+            if (xDepart < 0 || xDepart >= largeur || yDepart < 0 || yDepart >= hauteur)
+                return false;
+            
+            if (xArrivee < 0 || xArrivee >= largeur || yArrivee < 0 || yArrivee >= hauteur)
+                return false;
+            
+            if (xDepart == xArrivee && yDepart == yArrivee)
+                return false;
+            
+            // Ligne paire
+            if (yArrivee % 2 == 0 && xArrivee >= largeur - 1)
+                return false;
+            
+            if (yDepart % 2 == 0 && xDepart >= largeur - 1)
+                return false;
+            
+            // Doit déplacer le pingouin de la config
+            if (terrain[yDepart][xDepart].getJoueurSurCase() != getJoueurSurConfiguration())
+                return false;
+            
+            // Sans obstacles avec déplacement possible
+            if (!estDeplacementPossible(coup))
+                return false;
+        }
         return true;
     }
 
@@ -355,11 +375,20 @@ public class Configuration implements Cloneable
     public int effectuerCoup(Coup c)
     {
         System.out.println("effectuerCoup : traiter score");
+        int score = 0;
 
-        int score = terrain[c.getYDepart()][c.getXDepart()].scorePoisson();
-
-        terrain[c.getYDepart()][c.getXDepart()] = new Case(Etat.VIDE, null);
-        terrain[c.getYArrivee()][c.getXArrivee()].setJoueurSurCase(getJoueurSurConfiguration());
+        // Mode pose de pingouin
+        if (c.getYArrivee() == -1 && c.getXArrivee() == -1)
+        {
+            terrain[c.getYDepart()][c.getXDepart()].setJoueurSurCase(getJoueurSurConfiguration());
+        }
+        else
+        {
+            score = terrain[c.getYDepart()][c.getXDepart()].scorePoisson();
+            
+            terrain[c.getYDepart()][c.getXDepart()] = new Case(Etat.VIDE, null);
+            terrain[c.getYArrivee()][c.getXArrivee()].setJoueurSurCase(getJoueurSurConfiguration());
+        }
 
         return score;
     }
