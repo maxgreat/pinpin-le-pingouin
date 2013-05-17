@@ -108,28 +108,49 @@ public class Configuration implements Cloneable
         {
             // Reste dans le terrain
             if (xDepart < 0 || xDepart >= largeur || yDepart < 0 || yDepart >= hauteur)
+	    {
+		System.out.println("Depart en dehors terrain");
                 return false;
+	    }
             
             if (xArrivee < 0 || xArrivee >= largeur || yArrivee < 0 || yArrivee >= hauteur)
+	    {
+		System.out.println("Arrive en dehors terrain");
                 return false;
-            
+	    }
+             
             if (xDepart == xArrivee && yDepart == yArrivee)
+	    {
+		System.out.println("Ne bouge pas");
                 return false;
-            
+	    }
+             
             // Ligne paire
             if (yArrivee % 2 == 0 && xArrivee >= largeur - 1)
+	    {
+		System.out.println("Ligne pair en dehors terrain arrivée");
                 return false;
-            
+	    }
+             
             if (yDepart % 2 == 0 && xDepart >= largeur - 1)
+	    {
+		System.out.println("Ligne pair en dehors terrain départ");
                 return false;
-            
+	    }
+             
             // Doit déplacer le pingouin de la config
             if (terrain[yDepart][xDepart].getJoueurSurCase() != getJoueurSurConfiguration())
+	    {
+		System.out.println("Ne déplace pas son pingouin");
                 return false;
-            
+	    }
+             
             // Sans obstacles avec déplacement possible
             if (!estDeplacementPossible(coup))
+	    {
+		System.out.println("Déplacement impossible");
                 return false;
+	    }
         }
         return true;
     }
@@ -145,12 +166,28 @@ public class Configuration implements Cloneable
             return x/y;
     }
 
-    protected boolean memeDiagonale(Coup c)
+    protected int arrondiInf(int x, int y)
     {
-        if (c.getYDepart() % 2 == 0)
-            return (c.getXArrivee() - c.getXDepart()) == ((c.getYArrivee() - c.getYDepart()) / 2);
+        if ((double)x/(double)y - x/y <= -0.5)
+            return x/y - 1;
+        else
+            return x/y;
+    }
+
+    protected boolean memeDiagonaleBasDroite(Coup c)
+    {
+        if (c.getYArrivee() % 2 == 0)
+            return (c.getXArrivee() - c.getXDepart()) == arrondiInf((c.getYArrivee() - c.getYDepart()), 2);
         else 
             return (c.getXArrivee() - c.getXDepart()) == arrondiSup(c.getYArrivee() - c.getYDepart(), 2);
+    }
+
+    protected boolean memeDiagonaleBasGauche(Coup c)
+    {
+        if (c.getYArrivee() % 2 == 0)
+            return (c.getXArrivee() - c.getXDepart()) == arrondiInf((c.getYArrivee() - c.getYDepart()), -2);
+        else 
+            return (c.getXArrivee() - c.getXDepart()) == arrondiSup(c.getYArrivee() - c.getYDepart(), -2);
     }
 
     protected boolean versDroite(Coup c)
@@ -165,22 +202,22 @@ public class Configuration implements Cloneable
 
     protected boolean versBasDroite(Coup c)
     {
-        return memeDiagonale(c) && c.getXArrivee() >= c.getXDepart() && c.getXArrivee() > c.getYDepart();
+        return memeDiagonaleBasDroite(c) && c.getXArrivee() >= c.getXDepart() && c.getYArrivee() > c.getYDepart();
     }
 
     protected boolean versBasGauche(Coup c)
     {
-        return memeDiagonale(c) && c.getXArrivee() <  c.getXDepart() && c.getXArrivee() > c.getYDepart();
+        return memeDiagonaleBasGauche(c) && c.getXArrivee() <  c.getXDepart() && c.getYArrivee() > c.getYDepart();
     }
 
     protected boolean versHautDroite(Coup c)
     {
-        return memeDiagonale(c) && c.getXArrivee() >= c.getXDepart() && c.getXArrivee() < c.getYDepart();
+        return memeDiagonaleBasGauche(c) && c.getXArrivee() >= c.getXDepart() && c.getYArrivee() < c.getYDepart();
     }
 
     protected boolean versHautGauche(Coup c)
     {
-        return memeDiagonale(c) && c.getXArrivee() < c.getXDepart() && c.getXArrivee() < c.getYDepart();
+        return memeDiagonaleBasDroite(c) && c.getXArrivee() < c.getXDepart() && c.getYArrivee() < c.getYDepart();
     }
 
     /**
@@ -196,7 +233,8 @@ public class Configuration implements Cloneable
         // Vers la droite
         if (versDroite(c))
         {
-            int l = xDepart;
+	    System.out.println("Vers la droite");
+            int l = xDepart + 1;
 
             while (l <= xArrivee)
             {
@@ -204,77 +242,93 @@ public class Configuration implements Cloneable
                     return false;
                 l++;
             }
+
+	    return true;
         }
         // Vers la gauche
         else if (versGauche(c))
         {
-            int l = xDepart;
+	    System.out.println("Vers la gauche");
+            int l = xDepart - 1;
             while (l >= xArrivee)
             {
                 if (terrain[yDepart][l].estObstacle())
                     return false;
                 l--;
             }
+
+	    return true;
         }
         // Vers le haut droit
         else if (versHautDroite(c))
         {
+	    System.out.println("Vers la haut droit");
             int l = c.getXDepart();
 	    
-            for (int k = c.getYDepart() - 1; k > c.getYArrivee(); k--)
+            for (int k = c.getYDepart() - 1; k >= c.getYArrivee(); k--)
             {
-                if (k%2 == 0)
+                if (k%2 == 1)
                     l++;
 		
                 if (terrain[k][l].estObstacle())
                     return false;
-            }		    
+            }		
+
+	    return true;
         }
         // Vers le haut gauche
         else if (versHautGauche(c))
         {
+	    System.out.println("Vers le haut gauche");
             int l = c.getXDepart();
 	    
-            for (int k = c.getYDepart() - 1; k > c.getYArrivee(); k--)
+            for (int k = c.getYDepart() - 1; k >= c.getYArrivee(); k--)
             {
-                if (k%2 == 1)
+                if (k%2 == 0)
                     l--;
 		
                 if (terrain[k][l].estObstacle())
                     return false;
             }
+
+	    return true;
         }
         // Vers le bas droit
         else if (versBasDroite(c))
         {
+	    System.out.println("Vers le bas droit");
             int l = c.getXDepart();
 	    
-            for (int k = c.getYDepart() + 1; k < c.getYArrivee(); k++)
+            for (int k = c.getYDepart() + 1; k <= c.getYArrivee(); k++)
             {
-                if (k%2 == 0)
+                if (k%2 == 1)
                     l++;
 		
                 if (terrain[k][l].estObstacle())
                     return false;
             }
+
+	    return true;
         }
         // Vers le bas gauche
         else if (versBasGauche(c))
         {
+	    System.out.println("Vers le bas gauche");
             int l = c.getXDepart();
 	    
-            for (int k = c.getYDepart() + 1; k < c.getYArrivee(); k++)
+            for (int k = c.getYDepart() + 1; k <= c.getYArrivee(); k++)
             {
-                if (k%2 == 1)
+                if (k%2 == 0)
                     l--;
 		
                 if (terrain[k][l].estObstacle())
                     return false;
             }
 
+	    return true;
         }
 
-        return true;
+        return false;
     }
 
     /**
