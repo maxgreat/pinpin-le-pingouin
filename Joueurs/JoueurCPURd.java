@@ -11,7 +11,7 @@ public class JoueurCPURd extends Joueur
 		Random r = new Random();
 		// Phase de placement
 		if (ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN) {
-			Coup [] placementPossible = ArbitreManager.instance.getConfiguration().toutPlacementPossible();
+			Coup [] placementPossible = ArbitreManager.instance.getConfiguration().toutPlacementsPossibles();
 			return placementPossible[r.nextInt(placementPossible.length)];
 		}
 		// Phase de jeu
