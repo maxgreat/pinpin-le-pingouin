@@ -14,8 +14,13 @@ public class EcouteurDeBouton implements ActionListener{
 
 	public void actionPerformed(ActionEvent e)
     {
-        Joueur joueur1 = null;
-        Joueur joueur2 = null;
+        Joueur [] joueurs = new Joueur[2];
+        joueurs[0] = new JoueurHumain();
+        joueurs[0].setNom("David");
+
+        joueurs[1] = new JoueurHumain();
+        joueurs[1].setNom("Goliath");
+       
 
         // Change l'interface
         inter.aire.enleverBoutons();
@@ -24,17 +29,17 @@ public class EcouteurDeBouton implements ActionListener{
         // Sélectionne les joueurs
 		if(message.compareTo("HvCPU") == 0)
         {
-			joueur1 = new JoueurHumain();
-			joueur2 = new JoueurCPUMinimax();
+			joueurs[1] = new JoueurHumain();
+			joueurs[2] = new JoueurCPUMinimax();
 		}
 		else{
-			joueur1 = new JoueurHumain();
-			joueur2 = new JoueurHumain();
+			joueurs[1] = new JoueurHumain();
+			joueurs[2] = new JoueurHumain();
 		}
 		
         // Lance la partie
         ArbitreManager.stopperPartie();
-        ArbitreManager.initialiserPartie(joueur1, joueur2, inter.getAire().getLargeur(), inter.getAire().getHauteur(), inter);
+        ArbitreManager.initialiserPartie(joueurs, ArbitreManager.LARGEUR_GRILLE, ArbitreManager.HAUTEUR_GRILLE, (Interface)inter);
         ArbitreManager.lancerPartie();
 	}
 }
