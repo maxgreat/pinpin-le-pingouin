@@ -96,60 +96,84 @@ public class AireDeJeu extends JComponent{
                 
                 try 
                 {
-		un_poisson = ImageIO.read(getImage("un_poisson.png"));
-		} 
+						un_poisson = ImageIO.read(getImage("un_poisson.png"));
+					 } 
                 catch (IOException e) 
                 {
                     System.err.println("erreur lecture images 1" +e);
                     System.exit(1);
                 }
-		try{	
-		deux_poissons = ImageIO.read(getImage("deux_poissons.png"));
-		}
-		catch (IOException e) 
+					 try{	
+						deux_poissons = ImageIO.read(getImage("deux_poissons.png"));
+					 }
+					 catch (IOException e) 
                 {
                     System.err.println("erreur lecture images 2" +e);
                     System.exit(1);
                 }
-		try{        
-		trois_poissons = ImageIO.read(getImage("trois_poissons.png"));
-		}
-		catch (IOException e) 
+					 try{        
+						trois_poissons = ImageIO.read(getImage("trois_poissons.png"));
+					 }
+					 catch (IOException e) 
                 {
                     System.err.println("erreur lecture images 3" +e);
                     System.exit(1);
                 }
 
 
-                for(int i = 0; i < largeur; i++){
+               /* for(int i = 0; i < largeur; i++){
                     for(int j = 0; j < hauteur; j++){
                         if(c[j][i] == null){}                  
                         else if(c[j][i].getEtat() == Etat.DEUX_POISSONS){
                             drawable.drawImage(deux_poissons,largeurCase*i,hauteurCase*j, largeurCase,hauteurCase,null);
                         }
-			else if(c[j][i].getEtat() == Etat.UN_POISSON){
+								else if(c[j][i].getEtat() == Etat.UN_POISSON){
                             drawable.drawImage(un_poisson,largeurCase*i,hauteurCase*j, largeurCase, hauteurCase,null);
-			}
-			else if(c[j][i].getEtat() == Etat.TROIS_POISSONS){
+								}
+								else if(c[j][i].getEtat() == Etat.TROIS_POISSONS){
                             drawable.drawImage(trois_poissons,largeurCase*i,hauteurCase*j, largeurCase, hauteurCase,null);
                         }
 			 
                     }
-                }
-            }
-/* for(int i=0;i<7;i++){
-	for(int j=0;j<4;j++){
-		l=1/8*largeur + 2/63*largeur + 4/63*i*largeur
-		h=1/8*hauteur + j*1/2*hauteur
-		Image = (l,h,l+4/63*largeur,h+1/8*hauteur
+                }*/
+					float l,h;
+					for(int i=0;i<7;i++){
+						for(int j=0;j<4;j++){
+							l=1/8*largeur + 2/63*largeur + 4/63*i*largeur;
+							h=1/8*hauteur + j*1/2*hauteur;
+							if(c[j][i] == null){}                  
+							else if(c[j][i].getEtat() == Etat.DEUX_POISSONS){
+								drawable.drawImage(deux_poissons,(int)l,(int)h,(int)(l+4/63*largeur),(int)(h+1/8*hauteur),null);
+							}
+							else if(c[j][i].getEtat() == Etat.UN_POISSON){
+								drawable.drawImage(un_poisson,(int)l,(int)h,(int)(l+4/63*largeur),(int)(h+1/8*hauteur),null);
+							}
+							else if(c[j][i].getEtat() == Etat.TROIS_POISSONS){
+								drawable.drawImage(trois_poissons,(int)l,(int)h,(int)(l+4/63*largeur),(int)(h+1/8*hauteur),null);
+							}
+						}
+					}
+					for(int i=0;i<8;i++){
+						for(int j=0;j<4;j++){
+							l=1/8*largeur + 4/63*i*largeur;
+							h=7/32*hauteur + j*3/16*hauteur;
+							if(c[j][i] == null){}                  
+							else if(c[j][i].getEtat() == Etat.DEUX_POISSONS){
+								drawable.drawImage(deux_poissons,(int)l,(int)h,(int)(l+4/63*largeur),(int)(h+1/8*hauteur),null);
+							}
+							else if(c[j][i].getEtat() == Etat.UN_POISSON){
+								drawable.drawImage(un_poisson,(int)l,(int)h,(int)(l+4/63*largeur),(int)(h+1/8*hauteur),null);
+							}
+							else if(c[j][i].getEtat() == Etat.TROIS_POISSONS){
+								drawable.drawImage(trois_poissons,(int)l,(int)h,(int)(l+4/63*largeur),(int)(h+1/8*hauteur),null);
+							}
+						}
+					}
 
- for(int i=0;i<8;i++){
-	for(int j=0;j<4;j++){
-		l=1/8*largeur + 4/63*i*largeur
-		h=7/32*hauteur + j*3/16*hauteur
-		Image = (l,h,l+4/63*largeur,h+1/8*hauteur
-*/
-   
+				}
+
+
+  /* 
             //Affichage de la grille
             drawable.setPaint(Color.black);
 
@@ -159,7 +183,7 @@ public class AireDeJeu extends JComponent{
             }
             for(int i = 1; i < largeur; i++){
                 drawable.drawLine(largeurCase*i, 0, largeurCase*i, getSize().height);
-            }
+            }*/
 
         }
     }
