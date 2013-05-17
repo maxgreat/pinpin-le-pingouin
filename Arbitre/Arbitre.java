@@ -117,9 +117,21 @@ public class Arbitre implements Runnable
             // Met à jour le score du joueur
             getJoueurCourant().setScore(getJoueurCourant().getScore() + score);
 
+	    // Nettoyer le terrain pour les pingouins isolés
+	    if (getMode() == ModeDeJeu.JEU_COMPLET)
+	    {
+		int [] scoresJoueurs = configurationSuivante.nettoyerConfiguration(joueurs);
+		
+		System.out.println("TODO : mettre à jour le score des joueurs lorsque nettoyage plateau");
+	    }
 
-            System.out.println("TODO : implanter fin jeu");
-            if (score == 3)
+	    int [] restePingouins = configurationSuivante.getNombrePingouinsParJoueur(joueurs);
+	    int totalPions = 0;
+
+	    for (int i = 0; i < restePingouins.length; i++)
+		totalPions += restePingouins[i];
+	    
+            if (totalPions == 0 && getMode() == ModeDeJeu.JEU_COMPLET)
             {
                 // Fin du jeu
                 estFini = true;
@@ -127,12 +139,26 @@ public class Arbitre implements Runnable
             }
             else
             {
+		// Change le mode de jeu si nécessaire
+		if (getMode() == ModeDeJeu.POSE_PINGOUIN)
+		{
+		    // 2 joueurs, 8 pions
+		    // 3 joueurs, 9 pions
+		    // 4 joueurs, 8 pions
+		    if ((joueurs.length == 2 && totalPions == 8) ||
+			(joueurs.length == 3 && totalPions == 9) ||
+			(joueurs.length == 4 && totalPions == 10))
+			setMode(ModeDeJeu.JEU_COMPLET);
+		}
+
                 // Change de joueur
                 tourJoueur = (tourJoueur % joueurs.length) + 1;
                 setJoueurCourant(getJoueurParPosition(tourJoueur));
+		configurationSuivante.setJoueurSurConfiguration(getJoueurParPosition(tourJoueur));
 
                 // Met en place la configuration
                 setConfiguration(configurationSuivante);
+
             }
         }
 

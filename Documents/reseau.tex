@@ -1,0 +1,179 @@
+\documentclass{article}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[frenchb]{babel}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{titling}
+\usepackage{MnSymbol}
+\usepackage{listingsutf8}
+
+
+\lstset{breaklines=true, breakatwhitespace=false}
+\lstset{frame=single}
+\lstset{postbreak=\raisebox{0ex}[0ex][0ex]{
+    \ensuremath{\rcurvearrowse\space}}}
+\lstset{language=C}
+
+\pagestyle{fancy}
+\fancyhead{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot{}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\fancyfoot[C]{\thepage/\pageref{LastPage}}
+\fancyfoot[L]{\textit{\theauthor}}
+\fancyfoot[R]{\textit{\today
+}}
+
+\let\maketitlebis\maketitle
+\renewcommand\maketitle{\maketitlebis \thispagestyle{fancy}}
+
+
+%% Informations
+\title{Projet PROG6 : Réseau}
+\author{Guiroux Hugo}
+\begin{document}
+\maketitle
+
+\section{Plan}
+\begin{itemize}
+\item Architecture de l'application répartie
+\item Protocole d'interaction
+\item Messages
+\item programmation avec sockets TCP/IP en Java
+\end{itemize}
+
+\section{Architecture de l'application répartie}
+Deux modèles : \textbf{liaison directe entre deux machines} et \textbf{serveur central + clients}.
+\section{Liaison directe}
+\textbf{Deux instances du jeu, un joueur par instance}\\
+Eventuellement adaptable à N joueurs par instances mais plus compliqué.\\
+\textbf{Dans ce schéma, chaque instance exécute à la fois l'interface et le moteur de jeu}\\
+L'état du jeu est dupliqué et doit rester cohérent\\
+\textbf{Problème à considérer}\\
+\subsection{Démarrage}
+Les deux instances jouent un rôle symétrique.\\
+Mais du point de vue de TCP, il faut nécessairement un client et un serveur\\
+Le rôle de client ou serveur au niveau TCP n'a pas nécessairement d'impact sur les caractéristiques applicatives (ordre de passage, rôle dans le jeu, ...)\\
+\subsection{Mélange des interactions GUI et réseau}
+La GUI peut être gelée en attente d'un message de l'autre joueur.\\
+Si le (seul) thread de la GUI effectue une lecteur bloquante sur la socket de dialogue.\\
+Pise de solution\\
+Découpage des activités en utilisant plusieurs flots d'éxécution (ici, des threads).\\
+\begin{itemize}
+\item 1 thread GUI
+\item 1 ou 2 thread réseau (émission/réception)
+\item 1 thread moteur
+\end{itemize}
+Schéma producteur-consommateur :
+\begin{itemize}
+\item Chaque thread dispose d'une file d'attente (boite aux lettres) dans laquelle on peut lui poster des messages.
+\item Chaque thread traite ses messages un par un ... et un traitement peut produire un ou plusieurs messages à destination des autres threads
+\item Pour le therad réception réseau, la file correspond à la socket de dialogue
+\item Pour le thread gui ...
+\end{itemize}
+
+\section{Serveur central}
+N instances (1 joueur par instance) + 1 serveur central\\
+Eventuelement adaptable à M joueurs par instance mais plus compliqué.\\
+Dans ce schéma\\
+Le serveur exécute le moteur de jeu et gère son état.\\
+Les clients exécutent uniquement l'interface du jeu.\\
+\\
+Problème sà considérer\\
+Mélange des interactions GUI et réseau
+\\ Propagation des mises à jour liées aux actions d'un client.\\
+Vers tous les autres clients.\\
+\\
+Pises de solutions :\\
+Client : cf piste proposée pour le premier modèle\\
+Mais pas de véritable thread moteur. Seulement une simple conversion (bidirectionnelle) entre événements réseau et événements GUI.\\\\
+Serveur centra l
+\begin{itemize}
+\item 1 thread pour le moteur
+\item 1 ou 2 thread de dialogue par client
+\item Schéma producteur-consommateur(s)
+\begin{itemize}
+\item 1 file dans le sens client <-> serveur
+\item N files (1 par client) dans un sens serveur clients
+\end{itemize}
+\end{itemize}
+
+\section{Serveur salon de jeu}
+Quelle que soit l'architecture retenue, on peut éventuellement utiliser un serveur faisant office de salon de jeu\\
+Intérêt: \\
+Point de rencontre / annuaire des utilisateurs (dont les machines ou adresse IP peuvent changer d'une fois sur l'autre)\\
+Authentification des utilisateurs.\\
+Mémorisation des scores, etc.
+\\
+\\
+Pour le 1er modèle : 
+Le serveur salon est seulement un point de rendez-vous. Il n'est pas impliqué au cours d'nue partie. \\
+Le serveur salon créé une instance de serveur central pour chaque partie en cours.
+
+\section{Protocol d'interaction}
+\subsection{L'application répartie est composée d'un ensemble d'instances qui interagissent}
+Il faut spécifier clairement les séquences d'interactions possibles.\\
+Sous la forme d'une ou plusieurs machines à états :
+En particulier, dans un état donné, quels sont les transitions possibles
+\begin{itemize}
+\item Réception d'un message ? Et le cas échant, quel message ?
+\item Action de l'utilisateur local ? Et le cas échant, quelles actions ?
+\item Les deux types d'événements
+\end{itemize}
+Bien vérifier que la spécification du protocole est correcte, en considérant les critères suivants :
+\begin{itemize}
+  \item \textbf{Sûreté : Est-ce que l'état global de l'application est toujours cohérent ?}
+    Exemple : Des instances peuvent elle avoir une vue divergente de la séquence de coups déjà joués ? Ou du nombre de pions/cartes/points dont dispose chaque joueur ?
+  \item Progrès : L'application peut-elle toujours avancer (en supposant que les joueurs répondent en temps borné) ?
+    \begin{itemize}
+      \item Peut-on tomber dans une situation où les différentes instances s'attendent mutuellement ?
+      \item Peut-on tomber dan sun dialogue sans fin entre plusieurs instances (non lié à l'attitude des joueurs) ?
+    \end{itemize}
+\end{itemize}
+
+Gestion des cas d'erreur et de terminaison.\\
+Parmi les cas d'erreurs possibles quels sont ceux :\\
+qui nécessitent seulement un traitement local ?\\
+Qui nécessite d'informer une ou plusieurs des autres instances ?
+\\
+\\
+A quelles phases de l'application un utilisateur peut-il demander sa terminaison ?\\
+\\
+Comment/où est gérée la déconnexion brutale d'un utilisateur ?\\
+Détection ?\\
+Réaction ?\\
+Il vaut mieux empécher le problème dans le protocol (évite annulation de coup => frustration).\\\\
+\section{Messages}
+Rappels:\\
+Un canal TCP est un flux d'octets \\
+En réception, l'application doit lire et découper ce flux en une séquence de messages.\\
+Le protocol doit définir:\\
+\begin{itemize}
+\item Les types de emssages utilisés
+\item Le format de chaque type de message
+\end{itemize}
+
+Selon les besoins on peut utiliser
+\begin{itemize}
+\item Des messages de taille fixe (peut êtr econtraignant)
+\item Des messages de taille variable
+\item Nécessitent un en-tête de taille fixe et/ou des marqueus
+\end{itemize}
+
+Transmission des arguments d'un message :\\
+Par valeur\\
+Pas de difficulté pour les types de base\\
+Nécessité de "sérialiser" les structures de données plus complexes. Deux aspects :
+Transformer une représentation spatiale (avec des liens d'indirection) en une séquence d'octets.\\
+Obtenir une représentation auto-contenue, c-a-d sans références (adresses mémoire) qui n'ont de sens que localement.\\\\
+Attention à bien découpler :\\
+La manipulation d'un message applicatif.\\
+Et l'interaction avec une socket (écrire un message dans une socket avec sérialisation préalable si nécessaire). Lire un message.
+
+\textbf{Les différentes étapes de lecture (ou d'écrire) d'un message dansune socket ne doivent pas être éparpillées à différents endroits du code}.
+\end{document}
