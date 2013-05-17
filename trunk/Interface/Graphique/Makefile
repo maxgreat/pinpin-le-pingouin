@@ -1,7 +1,7 @@
 CC=javac
 JAVAOBJ=$(wildcard *.java)
 OBJ=$(patsubst %.java, %.class, $(JAVAOBJ))
-JFLAGS=-classpath ../../
+JFLAGS=-classpath ../:../../
 
 all: $(OBJ) $(JAVAOBJ)
 

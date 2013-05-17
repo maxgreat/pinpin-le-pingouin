@@ -28,8 +28,8 @@ public class AireDeJeu extends JComponent{
 	public AireDeJeu(JFrame f, JPanel p){
 		frame = f;
 		pan = p;
-		largeur = 5;
-		hauteur = 5;
+		largeur = 8;
+		hauteur = 8;
 	}
 
     public int getHauteur()
@@ -45,15 +45,15 @@ public class AireDeJeu extends JComponent{
 
     private URL getImage(String nom) {
         ClassLoader cl = getClass().getClassLoader();
-        return cl.getResource("Interface/Img/" + nom);
+        return cl.getResource("Interface/Images/" + nom);
     }
 
 	public void paintComponent(Graphics g){
 		Graphics2D drawable = (Graphics2D) g;
-        BufferedImage gaufreSaine, gaufrePoison, gaufreMange;
-		gaufreSaine = null;
-		gaufrePoison = null;
-		gaufreMange = null;
+        BufferedImage un_poisson, deux_poisson, trois_poisson;
+		un_poisson = null;
+		deux_poisson = null;
+		trois_poisson = null;
 
         Arbitre arbitre = ArbitreManager.instance;
 
@@ -70,7 +70,7 @@ public class AireDeJeu extends JComponent{
             {
                 Joueur joueur = arbitre.getJoueurCourant();
                 
-                if(joueur == arbitre.getJoueur1())
+                if(joueur == arbitre.getJoueurCourant())
                     System.out.print("Victoire du joueur 1");
                 else
                     System.out.print("Victoire du joueur 2");
@@ -96,9 +96,10 @@ public class AireDeJeu extends JComponent{
                 
                 try 
                 {
-                    gaufreSaine = ImageIO.read(getImage("gaufre_saine.png"));
-                    gaufrePoison = ImageIO.read(getImage("gaufre_poison.png"));
-                    gaufreMange = ImageIO.read(getImage("gaufre_mange.png"));
+		    un_poisson = ImageIO.read(getImage("un_poisson.png"));
+		    deux_poisson = ImageIO.read(getImage("deux_poisson.png"));
+		    trois_poisson = ImageIO.read(getImage("trois_poisson.png"));
+          
                 } 
                 catch (IOException e) 
                 {
@@ -109,14 +110,15 @@ public class AireDeJeu extends JComponent{
 
                 for(int i = 0; i < largeur; i++){
                     for(int j = 0; j < hauteur; j++){
-                        if(c[j][i].estPleine()){
-                            drawable.drawImage(gaufreSaine,largeurCase*i,hauteurCase*j, largeurCase, hauteurCase,null);
+                                               
+                        if(c[j][i].getEtat() == Etat.DEUX_POISSONS){
+                            drawable.drawImage(deux_poisson,largeurCase*i,hauteurCase*j, largeurCase, hauteurCase,null);
                         }
-                        else if(c[j][i].estLibre()){
-                            drawable.drawImage(gaufreMange,largeurCase*i,hauteurCase*j, largeurCase, hauteurCase,null);
-                        }
-                        else{
-                            drawable.drawImage(gaufrePoison,largeurCase*i,hauteurCase*j, largeurCase, hauteurCase,null);
+			else if(c[j][i].getEtat() == Etat.UN_POISSON){
+                            drawable.drawImage(un_poisson,largeurCase*i,hauteurCase*j, largeurCase, hauteurCase,null);
+			}
+			else if(c[j][i].getEtat() == Etat.TROIS_POISSONS){
+                            drawable.drawImage(trois_poisson,largeurCase*i,hauteurCase*j, largeurCase, hauteurCase,null);
                         }
                     }
                 }
@@ -138,9 +140,6 @@ public class AireDeJeu extends JComponent{
 
     public void click(int x, int y)
     {
-
-        if (ArbitreManager.instance != null)
-            ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(new Coup(x, y));
     }
 	
     public void enleverBoutons()
