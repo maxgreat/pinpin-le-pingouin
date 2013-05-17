@@ -3,6 +3,8 @@ package Arbitre;
 import java.util.*;
 import Joueurs.*;
 
+import java.util.*;
+
 public class Configuration implements Cloneable
 {
     protected int largeur;
@@ -40,6 +42,38 @@ public class Configuration implements Cloneable
     public Joueur getJoueurSurConfiguration()
     {
         return joueurSurConfiguration;
+    }
+
+    public void setJoueurSurConfiguration(Joueur joueur)
+    {
+	this.joueurSurConfiguration = joueur;
+    }
+
+    public int [] getNombrePingouinsParJoueur(Joueur [] joueurs)
+    {
+	int [] pingouins = new int[joueurs.length];
+	ArrayList<Joueur> joueurList = new ArrayList<Joueur>(Arrays.asList(joueurs));
+	
+	for (int i = 0; i < joueurs.length; i++)
+	    pingouins[i] = 0;
+
+	for (int i = 0; i < hauteur; i++)
+	{
+	    for (int j = 0; j < largeur; j++)
+	    {
+		if (i%2 == 0 && j == largeur - 1)
+		    continue;
+
+		Joueur joueurSurCase = terrain[i][j].getJoueurSurCase();
+		
+		if (joueurSurCase != null)
+		{
+		    pingouins[joueurList.indexOf(joueurSurCase)]++;
+		}
+	    }
+	}
+
+	return pingouins;
     }
 
     /**
@@ -374,7 +408,6 @@ public class Configuration implements Cloneable
      **/
     public int effectuerCoup(Coup c)
     {
-        System.out.println("effectuerCoup : traiter score");
         int score = 0;
 
         // Mode pose de pingouin
@@ -391,6 +424,19 @@ public class Configuration implements Cloneable
         }
 
         return score;
+    }
+
+    /**
+     * Nettoie le terrain des pingouins qui sont isolés en renvoyant le score de
+     * Chaque joueur 
+     **/
+    public int [] nettoyerConfiguration(Joueur [] joueurs)
+    {
+	int [] scoresJoueurs = new int[joueurs.length];
+
+	System.out.println("TODO : Nettoyer le terrain");
+
+	return scoresJoueurs;
     }
 
     /**
