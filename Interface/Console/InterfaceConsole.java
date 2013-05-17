@@ -35,7 +35,7 @@ public class InterfaceConsole implements Interface
     /**
      * Couleur des joueurs selon leur rang
      **/
-    public static final String [] couleurs = { RED, GREEN, BLUE, PURPLE };
+    public static final String [] couleurs = { RED, CYAN, BLUE, PURPLE };
 
     /**
      * Bannière
@@ -149,10 +149,14 @@ public class InterfaceConsole implements Interface
                 if (config.getTerrain()[i][j].getJoueurSurCase() != null)
                     couleur = couleurs[ArbitreManager.instance.getPosition(config.getTerrain()[i][j].getJoueurSurCase()) - 1];
 
+		String affichage = ".";
+		if (config.getTerrain()[i][j].scorePoisson() > 0)
+		    affichage = String.valueOf(config.getTerrain()[i][j].scorePoisson());
+
                 if (i%2 == 1)
-                    System.out.print(couleur+String.valueOf(config.getTerrain()[i][j].scorePoisson())+RESET+" ");
+                    System.out.print(couleur+affichage+RESET+" ");
                 else
-                    System.out.print(" "+couleur+String.valueOf(config.getTerrain()[i][j].scorePoisson())+RESET);
+                    System.out.print(" "+couleur+affichage+RESET);
             }
             System.out.println();
         }
