@@ -3,8 +3,8 @@ package Interface;
 /**
  * Décommentez celle que vous voulez utiliser
  **/
-// import Interface.Graphique.InterfaceGraphique;
-import Interface.Console.InterfaceConsole;
+ import Interface.Graphique.InterfaceGraphique;
+//import Interface.Console.InterfaceConsole;
 
 public class InterfaceFabrique
 {
@@ -15,10 +15,10 @@ public class InterfaceFabrique
     public static Interface createInterface()
     {
         // Interface graphique
-        // return new Graphique.InterfaceGraphique();
+        return (Interface)(new InterfaceGraphique());
         
         // Interface console
-        return (Interface)(new InterfaceConsole());
+        //return (Interface)(new InterfaceConsole());
     }
 }
     
