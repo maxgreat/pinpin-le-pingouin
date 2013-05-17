@@ -332,6 +332,28 @@ public class Configuration implements Cloneable
     }
 
     /**
+     * Retourne l'ensemble des placements possibles
+     **/
+    public Coup [] toutPlacementsPossibles()
+    {
+	ArrayList<Coup> list = new ArrayList<Coup>();
+
+	for (int i = 0; i < hauteur; i++)
+	{
+	    for (int j = 0; j < largeur; j++)
+	    {
+		if (i%2 == 0 && j == largeur - 1)
+		    continue;
+
+		if (terrain[i][j].getJoueurSurCase() == null && terrain[i][j].getEtat() == Etat.UN_POISSON)
+		    list.add(new Coup(j, i, -1, -1));
+	    }
+	}
+
+	return (Coup[])(list.toArray());
+    }
+
+    /**
      * Retourne une liste de tous les coups possibles
      **/
     public Coup [] toutCoupsPossibles()
@@ -344,27 +366,28 @@ public class Configuration implements Cloneable
             {
                 // Sortie du terrain
                 if (i%2 == 0 && j == largeur - 1)
-                {
-                    j++;
                     continue;
-                }
+
+		// Regarde les cases du joueur en cours
+		if (terrain[i][j].getJoueurSurCase() != getJoueurSurConfiguration())
+		    continue;
 
                 // Vers la droite
                 {
-                    int l = j - 1;
+                    int l = j + 1;
                     if (i%2 == 0)
                     {
                         while (l < largeur - 1 && !terrain[i][l].estObstacle())
                         {
-                            liste.add(new Coup(i, j, i, l));
+                            liste.add(new Coup(j, i, l, i));
                             l++;
                         }
                     }
                     else
                     {
-                        while (l < largeur && terrain[i][l].estObstacle())
+                        while (l < largeur && !terrain[i][l].estObstacle())
                         {
-                            liste.add(new Coup(i, j, i, l));
+                            liste.add(new Coup(j, i, l, i));
                             l++;
                         }
                     }
@@ -375,7 +398,7 @@ public class Configuration implements Cloneable
                     int l = j - 1;
                     while (l >= 0 && !terrain[i][l].estObstacle())
                     {
-                        liste.add(new Coup(i, j, i, l));
+                        liste.add(new Coup(j, i, l, i));
                         l--;
                     }
                 }
@@ -387,13 +410,14 @@ public class Configuration implements Cloneable
 
                     while(k >= 0)
                     {
-                        if (k%2 == 0)
+                        if (k%2 == 1)
                             l++;
 
-                        if (terrain[k][l].estObstacle())
+                        if ((k%2 == 0 && l >= largeur - 1) || (k%2 == 1 && l >= largeur) || terrain[k][l].estObstacle())
                             break;
 
-                        liste.add(new Coup(i, j, k, l));
+                        liste.add(new Coup(j, i, l, k));
+			k--;
                     }
                 }
 
@@ -405,13 +429,15 @@ public class Configuration implements Cloneable
 
                     while(k >= 0)
                     {
-                        if (k%2 == 1)
+                        if (k%2 == 0)
                             l--;
 
-                        if (terrain[k][l].estObstacle())
+			System.out.println("Test ("+k+", "+l+") pour haut gauche");
+                        if (l < 0 || terrain[k][l].estObstacle())
                             break;
 
-                        liste.add(new Coup(i, j, k, l));
+                        liste.add(new Coup(j, i, l, k));
+			k--;
                     }
                 }
 
@@ -422,13 +448,14 @@ public class Configuration implements Cloneable
 
                     while(k < hauteur)
                     {
-                        if (k%2 == 0)
+                        if (k%2 == 1)
                             l++;
 
-                        if (terrain[k][l].estObstacle())
+                        if ((k%2 == 0 && l == largeur - 1) || (k%2 == 1 && l == largeur) || terrain[k][l].estObstacle())
                             break;
 
-                        liste.add(new Coup(i, j, k, l));
+                        liste.add(new Coup(j, i, l, k));
+			k++;
                     }
                 }
 
@@ -437,15 +464,16 @@ public class Configuration implements Cloneable
                     int l = j;
                     int k = i + 1;
 
-                    while(k < hauteur)
+                    while(l >= 0 && k < hauteur)
                     {
-                        if (k%2 == 1)
+                        if (k%2 == 0)
                             l--;
 
-                        if (terrain[k][l].estObstacle())
+                        if (l < 0 || terrain[k][l].estObstacle())
                             break;
 
-                        liste.add(new Coup(i, j, k, l));
+                        liste.add(new Coup(j, i, l, k));
+			k++;
                     }
                 }
             }
