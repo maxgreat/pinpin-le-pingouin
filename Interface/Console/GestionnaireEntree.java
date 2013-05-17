@@ -31,7 +31,11 @@ public class GestionnaireEntree implements Runnable
             String couleur = InterfaceConsole.couleurs[ArbitreManager.instance.getPosition(ArbitreManager.instance.getJoueurCourant()) - 1];
 
             System.out.print("["+couleur+ArbitreManager.instance.getJoueurCourant().getNom()+InterfaceConsole.RESET+"] ");
-            System.out.println("Veuillez entrer un coup (ou quit) sous la forme xDepart yDepart xArrivée yArrivée :");
+
+            if (ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN)
+                System.out.println("Veuillez entrer une position où poser votre pingouin sous la forme x y ou quit :");
+            else
+                System.out.println("Veuillez entrer un coup (ou quit) sous la forme xDepart yDepart xArrivée yArrivée :");
 
 
             String command = in.nextLine();
@@ -46,20 +50,38 @@ public class GestionnaireEntree implements Runnable
 
             // Sinon commande de coordonnées
             String [] intList = command.trim().split(" ");
+            Coup coup = null;
             
-            if (intList.length != 4)
+            if (ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN)
             {
-                System.out.println("Mauvaise commande !");
-                continue;
+                if (intList.length != 2)
+                {
+                    System.out.println("Mauvaise commande !");
+                    continue;
+                }
+                
+                // Récupère les coordonnées
+                int x = Integer.valueOf(intList[0]);
+                int y = Integer.valueOf(intList[1]);
+
+                coup = new Coup(x, y, -1, -1);
             }
-
-            // Récupère les coordonnées
-            int xDepart = Integer.valueOf(intList[0]);
-            int yDepart = Integer.valueOf(intList[1]);
-            int xArrivee = Integer.valueOf(intList[2]);
-            int yArrivee = Integer.valueOf(intList[3]);
-
-            Coup coup = new Coup(xDepart, yDepart, xArrivee, yArrivee);
+            else
+            {
+                if (intList.length != 4)
+                {
+                    System.out.println("Mauvaise commande !");
+                    continue;
+                }
+                
+                // Récupère les coordonnées
+                int xDepart = Integer.valueOf(intList[0]);
+                int yDepart = Integer.valueOf(intList[1]);
+                int xArrivee = Integer.valueOf(intList[2]);
+                int yArrivee = Integer.valueOf(intList[3]);
+                
+                coup = new Coup(xDepart, yDepart, xArrivee, yArrivee);
+            }
             
             // Vérifie la validitée du coup
             if (!ArbitreManager.instance.getConfiguration().estCoupPossible(coup))
@@ -68,7 +90,7 @@ public class GestionnaireEntree implements Runnable
                 continue;
             }
 
-            ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal();
+            ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(coup);
             needSignalSync = true;            
         }
     }
