@@ -1,11 +1,11 @@
+
 CC=javac
 MAKE=make
 JFLAGS=-classpath ../:. -implicit:none
 OBJ=Interface.class InterfaceFabrique.class
 
 # Décommentez l'interface que vous voulez utiliser
-SUBDIRS=Console
-# SUBDIRS=Graphique 
+SUBDIRS=Console Graphique
 
 CLEANDIRS = $(SUBDIRS:%=clean-%)
 

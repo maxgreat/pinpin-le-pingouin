@@ -1,4 +1,5 @@
 package Interface.Graphique;
+import Interface.*;
 import java.awt.event.*;
 import Arbitre.*;
 import Joueurs.*;
@@ -28,18 +29,19 @@ public class EcouteurDeBouton implements ActionListener{
 
         // Sélectionne les joueurs
 		if(message.compareTo("HvCPU") == 0)
-        {
-			joueurs[1] = new JoueurHumain();
-			joueurs[2] = new JoueurCPUMinimax();
+      		{
+			joueurs[0] = new JoueurHumain();
+			joueurs[1] = new JoueurCPUMinimax();
 		}
 		else{
+			joueurs[0] = new JoueurHumain();
 			joueurs[1] = new JoueurHumain();
-			joueurs[2] = new JoueurHumain();
 		}
 		
         // Lance la partie
         ArbitreManager.stopperPartie();
         ArbitreManager.initialiserPartie(joueurs, ArbitreManager.LARGEUR_GRILLE, ArbitreManager.HAUTEUR_GRILLE, (Interface)inter);
         ArbitreManager.lancerPartie();
+	inter.aire.repaint();
 	}
 }
