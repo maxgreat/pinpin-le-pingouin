@@ -92,7 +92,8 @@ public class AireDeJeu extends JComponent{
                 hauteurCase = hauteurCase/hauteur;
                 largeurCase = getSize().width;	
                 largeurCase = largeurCase/largeur;		
-
+				hauteur = this.getHeight();
+				largeur = this.getWidth();
                 
                 try 
                 {
@@ -136,36 +137,49 @@ public class AireDeJeu extends JComponent{
 			 
                     }
                 }*/
-					float l,h;
+					double l,h;
+					double rayonH;
+					double rayonL;
+					
+					rayonH = (3.0*(double)hauteur)/44.0;
+					rayonL = (3.0*(double)largeur)/63.0;
+					
+					double margeHaut = (double)hauteur/8.0;
+					double margeGauche = (double)largeur/8.0;
+					
+					//Tracage des lignes de 7 pavés
 					for(int i=0;i<7;i++){
 						for(int j=0;j<4;j++){
-							l=1/8*largeur + 2/63*largeur + 4/63*i*largeur;
-							h=1/8*hauteur + j*1/2*hauteur;
+							l= margeGauche + rayonL + 2.0*rayonL*(double)i;
+							h= margeHaut + (double)j*3.0*rayonH;
 							if(c[j][i] == null){}                  
 							else if(c[j][i].getEtat() == Etat.DEUX_POISSONS){
-								drawable.drawImage(deux_poissons,(int)l,(int)h,(int)(l+4/63*largeur),(int)(h+1/8*hauteur),null);
+								drawable.drawImage(deux_poissons,(int)l,(int)h,(int)(2.0*rayonL),(int)(2.0*rayonH),null);
 							}
 							else if(c[j][i].getEtat() == Etat.UN_POISSON){
-								drawable.drawImage(un_poisson,(int)l,(int)h,(int)(l+4/63*largeur),(int)(h+1/8*hauteur),null);
+								drawable.drawImage(un_poisson,(int)l,(int)h,(int)(2.0*rayonL),(int)(2.0*rayonH),null);
 							}
 							else if(c[j][i].getEtat() == Etat.TROIS_POISSONS){
-								drawable.drawImage(trois_poissons,(int)l,(int)h,(int)(l+4/63*largeur),(int)(h+1/8*hauteur),null);
+								drawable.drawImage(trois_poissons,(int)l,(int)h,(int)(2.0*rayonL),(int)(2.0*rayonH),null);
 							}
 						}
 					}
+					
+					System.out.println("Tracage des lignes de 8, largeur =" + largeur + " hauteur = " + hauteur);
 					for(int i=0;i<8;i++){
 						for(int j=0;j<4;j++){
-							l=1/8*largeur + 4/63*i*largeur;
-							h=7/32*hauteur + j*3/16*hauteur;
+							l= margeGauche + (double)i*2.0*rayonL;
+							h= margeHaut + (3.0*rayonH)/2.0 +(double)j*3.0*rayonH;
+							
 							if(c[j][i] == null){}                  
 							else if(c[j][i].getEtat() == Etat.DEUX_POISSONS){
-								drawable.drawImage(deux_poissons,(int)l,(int)h,(int)(l+4/63*largeur),(int)(h+1/8*hauteur),null);
+								drawable.drawImage(deux_poissons,(int)l,(int)h,(int)(2.0*rayonL),(int)(2.0*rayonH),null);
 							}
 							else if(c[j][i].getEtat() == Etat.UN_POISSON){
-								drawable.drawImage(un_poisson,(int)l,(int)h,(int)(l+4/63*largeur),(int)(h+1/8*hauteur),null);
+								drawable.drawImage(un_poisson,(int)l,(int)h,(int)(2.0*rayonL),(int)(2.0*rayonH),null);
 							}
 							else if(c[j][i].getEtat() == Etat.TROIS_POISSONS){
-								drawable.drawImage(trois_poissons,(int)l,(int)h,(int)(l+4/63*largeur),(int)(h+1/8*hauteur),null);
+								drawable.drawImage(trois_poissons,(int)l,(int)h,(int)(2.0*rayonL),(int)(2.0*rayonH),null);
 							}
 						}
 					}
