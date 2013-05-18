@@ -15,8 +15,8 @@ class Pingouin
                 }
             });
 
-        // Création de l'interface via la fabrique
-        Interface inter = InterfaceFabrique.createInterface();
+        // Création de l'interface via la fabrique (Si au moins un argument on lance la console)
+        Interface inter = InterfaceFabrique.createInterface(args.length > 0);
 
         // Lance l'interface
         inter.run(args);

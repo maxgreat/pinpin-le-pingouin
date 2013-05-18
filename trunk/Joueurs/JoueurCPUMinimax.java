@@ -29,7 +29,7 @@ public class JoueurCPUMinimax extends Joueur
         // Demande de stop forcé
         if (c == null)
         {
-            t.stop();
+            t.interrupt();
             return null;
         }
         long stopMilli = System.currentTimeMillis();
