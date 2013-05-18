@@ -29,7 +29,7 @@ public class Minimax implements Runnable
         int max=-10000,tmp,maxi=-1;
         Configuration cl;
 
-        for(int i = 0; i < coupPossible.length; i++){
+        for(int i = 0; i < coupPossible.length && !Thread.interrupted(); i++){
             cl = cc.clone();
             cl.effectuerCoup(coupPossible[i]);
             tmp = Min(cl, max, 4);
@@ -52,7 +52,7 @@ public class Minimax implements Runnable
         int tmp;
         Configuration cl;
 
-        for(int i = 0; i < coupPossible.length; i++){
+        for(int i = 0; i < coupPossible.length && !Thread.interrupted(); i++){
             cl = cc.clone();
             cl.effectuerCoup(coupPossible[i]);
             tmp = Min(cl, max, profondeur-1);
@@ -76,7 +76,7 @@ public class Minimax implements Runnable
         int tmp;
         Configuration cl;
 
-        for(int i = 0; i < coupPossible.length; i++){
+        for(int i = 0; i < coupPossible.length && !Thread.interrupted(); i++){
             cl = cc.clone();
             cl.effectuerCoup(coupPossible[i]);
             tmp = Max(cl, min, profondeur-1);
