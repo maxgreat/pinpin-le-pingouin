@@ -46,34 +46,34 @@ public class Configuration implements Cloneable
 
     public void setJoueurSurConfiguration(Joueur joueur)
     {
-	this.joueurSurConfiguration = joueur;
+        this.joueurSurConfiguration = joueur;
     }
 
     public int [] getNombrePingouinsParJoueur(Joueur [] joueurs)
     {
-	int [] pingouins = new int[joueurs.length];
-	ArrayList<Joueur> joueurList = new ArrayList<Joueur>(Arrays.asList(joueurs));
+        int [] pingouins = new int[joueurs.length];
+        ArrayList<Joueur> joueurList = new ArrayList<Joueur>(Arrays.asList(joueurs));
 	
-	for (int i = 0; i < joueurs.length; i++)
-	    pingouins[i] = 0;
+        for (int i = 0; i < joueurs.length; i++)
+            pingouins[i] = 0;
 
-	for (int i = 0; i < hauteur; i++)
-	{
-	    for (int j = 0; j < largeur; j++)
-	    {
-		if (i%2 == 0 && j == largeur - 1)
-		    continue;
+        for (int i = 0; i < hauteur; i++)
+        {
+            for (int j = 0; j < largeur; j++)
+            {
+                if (i%2 == 0 && j == largeur - 1)
+                    continue;
 
-		Joueur joueurSurCase = terrain[i][j].getJoueurSurCase();
+                Joueur joueurSurCase = terrain[i][j].getJoueurSurCase();
 		
-		if (joueurSurCase != null)
-		{
-		    pingouins[joueurList.indexOf(joueurSurCase)]++;
-		}
-	    }
-	}
+                if (joueurSurCase != null)
+                {
+                    pingouins[joueurList.indexOf(joueurSurCase)]++;
+                }
+            }
+        }
 
-	return pingouins;
+        return pingouins;
     }
 
     /**
@@ -108,49 +108,40 @@ public class Configuration implements Cloneable
         {
             // Reste dans le terrain
             if (xDepart < 0 || xDepart >= largeur || yDepart < 0 || yDepart >= hauteur)
-	    {
-		System.out.println("Depart en dehors terrain");
+            {
                 return false;
-	    }
+            }
             
             if (xArrivee < 0 || xArrivee >= largeur || yArrivee < 0 || yArrivee >= hauteur)
-	    {
-		System.out.println("Arrive en dehors terrain");
-                return false;
-	    }
+            {   return false;
+            }
              
             if (xDepart == xArrivee && yDepart == yArrivee)
-	    {
-		System.out.println("Ne bouge pas");
-                return false;
-	    }
+            {   return false;
+            }
              
             // Ligne paire
             if (yArrivee % 2 == 0 && xArrivee >= largeur - 1)
-	    {
-		System.out.println("Ligne pair en dehors terrain arrivée");
+            {
                 return false;
-	    }
+            }
              
             if (yDepart % 2 == 0 && xDepart >= largeur - 1)
-	    {
-		System.out.println("Ligne pair en dehors terrain départ");
+            {
                 return false;
-	    }
+            }
              
             // Doit déplacer le pingouin de la config
             if (terrain[yDepart][xDepart].getJoueurSurCase() != getJoueurSurConfiguration())
-	    {
-		System.out.println("Ne déplace pas son pingouin");
+            {
                 return false;
-	    }
+            }
              
             // Sans obstacles avec déplacement possible
             if (!estDeplacementPossible(coup))
-	    {
-		System.out.println("Déplacement impossible");
+            {
                 return false;
-	    }
+            }
         }
         return true;
     }
@@ -233,7 +224,6 @@ public class Configuration implements Cloneable
         // Vers la droite
         if (versDroite(c))
         {
-	    System.out.println("Vers la droite");
             int l = xDepart + 1;
 
             while (l <= xArrivee)
@@ -243,12 +233,11 @@ public class Configuration implements Cloneable
                 l++;
             }
 
-	    return true;
+            return true;
         }
         // Vers la gauche
         else if (versGauche(c))
         {
-	    System.out.println("Vers la gauche");
             int l = xDepart - 1;
             while (l >= xArrivee)
             {
@@ -257,12 +246,11 @@ public class Configuration implements Cloneable
                 l--;
             }
 
-	    return true;
+            return true;
         }
         // Vers le haut droit
         else if (versHautDroite(c))
         {
-	    System.out.println("Vers la haut droit");
             int l = c.getXDepart();
 	    
             for (int k = c.getYDepart() - 1; k >= c.getYArrivee(); k--)
@@ -274,12 +262,11 @@ public class Configuration implements Cloneable
                     return false;
             }		
 
-	    return true;
+            return true;
         }
         // Vers le haut gauche
         else if (versHautGauche(c))
         {
-	    System.out.println("Vers le haut gauche");
             int l = c.getXDepart();
 	    
             for (int k = c.getYDepart() - 1; k >= c.getYArrivee(); k--)
@@ -291,12 +278,11 @@ public class Configuration implements Cloneable
                     return false;
             }
 
-	    return true;
+            return true;
         }
         // Vers le bas droit
         else if (versBasDroite(c))
         {
-	    System.out.println("Vers le bas droit");
             int l = c.getXDepart();
 	    
             for (int k = c.getYDepart() + 1; k <= c.getYArrivee(); k++)
@@ -308,12 +294,11 @@ public class Configuration implements Cloneable
                     return false;
             }
 
-	    return true;
+            return true;
         }
         // Vers le bas gauche
         else if (versBasGauche(c))
         {
-	    System.out.println("Vers le bas gauche");
             int l = c.getXDepart();
 	    
             for (int k = c.getYDepart() + 1; k <= c.getYArrivee(); k++)
@@ -325,7 +310,7 @@ public class Configuration implements Cloneable
                     return false;
             }
 
-	    return true;
+            return true;
         }
 
         return false;
@@ -336,21 +321,23 @@ public class Configuration implements Cloneable
      **/
     public Coup [] toutPlacementsPossibles()
     {
-	ArrayList<Coup> list = new ArrayList<Coup>();
+        ArrayList<Coup> list = new ArrayList<Coup>();
 
-	for (int i = 0; i < hauteur; i++)
-	{
-	    for (int j = 0; j < largeur; j++)
-	    {
-		if (i%2 == 0 && j == largeur - 1)
-		    continue;
+        for (int i = 0; i < hauteur; i++)
+        {
+            for (int j = 0; j < largeur; j++)
+            {
+                if (i%2 == 0 && j == largeur - 1)
+                    continue;
 
-		if (terrain[i][j].getJoueurSurCase() == null && terrain[i][j].getEtat() == Etat.UN_POISSON)
-		    list.add(new Coup(j, i, -1, -1));
-	    }
-	}
+                if (terrain[i][j].getJoueurSurCase() == null && terrain[i][j].getEtat() == Etat.UN_POISSON)
+                    list.add(new Coup(j, i, -1, -1));
+            }
+        }
 
-	return (Coup[])(list.toArray());
+        Coup [] tab = new Coup[list.size()];
+        list.toArray(tab);
+        return tab;
     }
 
     /**
@@ -368,9 +355,9 @@ public class Configuration implements Cloneable
                 if (i%2 == 0 && j == largeur - 1)
                     continue;
 
-		// Regarde les cases du joueur en cours
-		if (terrain[i][j].getJoueurSurCase() != getJoueurSurConfiguration())
-		    continue;
+                // Regarde les cases du joueur en cours
+                if (terrain[i][j].getJoueurSurCase() != getJoueurSurConfiguration())
+                    continue;
 
                 // Vers la droite
                 {
@@ -417,7 +404,7 @@ public class Configuration implements Cloneable
                             break;
 
                         liste.add(new Coup(j, i, l, k));
-			k--;
+                        k--;
                     }
                 }
 
@@ -432,12 +419,11 @@ public class Configuration implements Cloneable
                         if (k%2 == 0)
                             l--;
 
-			System.out.println("Test ("+k+", "+l+") pour haut gauche");
                         if (l < 0 || terrain[k][l].estObstacle())
                             break;
 
                         liste.add(new Coup(j, i, l, k));
-			k--;
+                        k--;
                     }
                 }
 
@@ -455,7 +441,7 @@ public class Configuration implements Cloneable
                             break;
 
                         liste.add(new Coup(j, i, l, k));
-			k++;
+                        k++;
                     }
                 }
 
@@ -473,7 +459,7 @@ public class Configuration implements Cloneable
                             break;
 
                         liste.add(new Coup(j, i, l, k));
-			k++;
+                        k++;
                     }
                 }
             }
@@ -514,11 +500,11 @@ public class Configuration implements Cloneable
      **/
     public int [] nettoyerConfiguration(Joueur [] joueurs)
     {
-	int [] scoresJoueurs = new int[joueurs.length];
+        int [] scoresJoueurs = new int[joueurs.length];
 
-	System.out.println("TODO : Nettoyer le terrain");
+        System.out.println("TODO : Nettoyer le terrain");
 
-	return scoresJoueurs;
+        return scoresJoueurs;
     }
 
     /**

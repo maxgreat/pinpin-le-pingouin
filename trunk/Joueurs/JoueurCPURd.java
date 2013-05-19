@@ -16,6 +16,15 @@ public class JoueurCPURd extends Joueur
 		}
 		// Phase de jeu
 		Coup [] coupPossible = ArbitreManager.instance.getConfiguration().toutCoupsPossibles();
+        try
+        {
+            Thread.sleep(1000);
+        }
+        catch (InterruptedException e)
+        {
+            return null;
+        }
+
 		return coupPossible[r.nextInt(coupPossible.length)];
 	}
 	
