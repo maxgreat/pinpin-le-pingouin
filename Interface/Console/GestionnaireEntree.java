@@ -30,7 +30,7 @@ public class GestionnaireEntree implements Runnable
 
             String couleur = InterfaceConsole.couleurs[ArbitreManager.instance.getPosition(ArbitreManager.instance.getJoueurCourant()) - 1];
 
-            System.out.print("["+couleur+ArbitreManager.instance.getJoueurCourant().getNom()+InterfaceConsole.RESET+"] ");
+            System.out.print("["+couleur+ArbitreManager.instance.getJoueurCourant().getNom()+":"+ArbitreManager.instance.getJoueurCourant().getScore()+InterfaceConsole.RESET+"] ");
 
             if (ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN)
 	    {

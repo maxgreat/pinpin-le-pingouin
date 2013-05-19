@@ -104,10 +104,10 @@ public class InterfaceConsole implements Interface
 
         // Créé la partie avec les données de base
         Joueur [] joueurs = new Joueur[2];
-        joueurs[0] = new JoueurHumain();
+        joueurs[0] = new JoueurCPURd();
         joueurs[0].setNom("David");
 
-        joueurs[1] = new JoueurHumain();
+        joueurs[1] = new JoueurCPURd();
         joueurs[1].setNom("Goliath");
 
         
@@ -149,9 +149,9 @@ public class InterfaceConsole implements Interface
                 if (config.getTerrain()[i][j].getJoueurSurCase() != null)
                     couleur = couleurs[ArbitreManager.instance.getPosition(config.getTerrain()[i][j].getJoueurSurCase()) - 1];
 
-		String affichage = ".";
-		if (config.getTerrain()[i][j].scorePoisson() > 0)
-		    affichage = String.valueOf(config.getTerrain()[i][j].scorePoisson());
+                String affichage = ".";
+                if (config.getTerrain()[i][j].scorePoisson() > 0)
+                    affichage = String.valueOf(config.getTerrain()[i][j].scorePoisson());
 
                 if (i%2 == 1)
                     System.out.print(couleur+affichage+RESET+" ");
