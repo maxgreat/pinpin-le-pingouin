@@ -38,6 +38,11 @@ public class InterfaceConsole implements Interface
     public static final String [] couleurs = { RED, CYAN, BLUE, PURPLE };
 
     /**
+     * Le tableau des joueurs
+     **/
+    protected Joueur [] joueurs;
+
+    /**
      * Bannière
      **/
     public void printBanniere()
@@ -103,13 +108,22 @@ public class InterfaceConsole implements Interface
 
 
         // Créé la partie avec les données de base
-        Joueur [] joueurs = new Joueur[2];
+        this.joueurs = new Joueur[4];
         joueurs[0] = new JoueurCPURd();
+//        joueurs[0] = new JoueurHumain();
         joueurs[0].setNom("David");
 
         joueurs[1] = new JoueurCPURd();
+//        joueurs[1] = new JoueurHumain();
         joueurs[1].setNom("Goliath");
 
+        joueurs[2] = new JoueurCPURd();
+//        joueurs[1] = new JoueurHumain();
+        joueurs[2].setNom("CPU_1");
+
+        joueurs[3] = new JoueurCPURd();
+//        joueurs[1] = new JoueurHumain();
+        joueurs[3].setNom("CPU_2");
         
         System.out.print("Début du jeu en 8*8 avec deux joueurs humains : ");
         System.out.print(RED+joueurs[0].getNom()+RESET);
@@ -136,34 +150,81 @@ public class InterfaceConsole implements Interface
         if (ArbitreManager.instance.getForceStop())
             return;
 
-        Configuration config = ArbitreManager.instance.getConfiguration();
-        
-        for (int i = 0; i < ArbitreManager.instance.getHauteur(); i++)
+        // Fin de la partie :
+        if (ArbitreManager.instance.partieFinie())
         {
-            for (int j = 0; j < ArbitreManager.instance.getLargeur(); j++)
+            System.out.println("Fin de la partie ! Classement :");
+            ArrayList<Joueur> classement = new ArrayList<Joueur>(Arrays.asList(this.joueurs));
+
+            Collections.sort(classement, new Comparator<Joueur>() 
+                             {
+                                 public int compare(Joueur j1, Joueur j2) 
+                                 {
+                                     Integer a = new Integer(j1.getScore());
+                                     Integer b = new Integer(j2.getScore());
+                                     return b.compareTo(a);
+                                 }
+                             });
+
+            // Affichage des rangs cohérents
+            int lastScore = -1;
+            int rang = 1;
+            int decalage = 0;
+
+            for (ListIterator<Joueur> it = classement.listIterator(); it.hasNext();)
             {
-                if (i%2 == 0 && j == ArbitreManager.instance.getLargeur() - 1)
-                    continue;
-                
-                String couleur = "";
-                if (config.getTerrain()[i][j].getJoueurSurCase() != null)
-                    couleur = couleurs[ArbitreManager.instance.getPosition(config.getTerrain()[i][j].getJoueurSurCase()) - 1];
+                Joueur joueur = it.next();
 
-                String affichage = ".";
-                if (config.getTerrain()[i][j].scorePoisson() > 0)
-                    affichage = String.valueOf(config.getTerrain()[i][j].scorePoisson());
+                if (lastScore != -1)
+                {
+                    if (lastScore == joueur.getScore())
+                    {
+                        decalage++;
+                    }
+                    else
+                    {
+                        rang += decalage + 1;
+                        decalage = 0;
+                    }
+                }
 
-                if (i%2 == 1)
-                    System.out.print(couleur+affichage+RESET+" ");
-                else
-                    System.out.print(" "+couleur+affichage+RESET);
+                lastScore = joueur.getScore();
+                System.out.println(String.valueOf(rang)+" : "+joueur.getNom()+" - "+joueur.getScore());                    
+                    
             }
-            System.out.println();
+            
         }
-
-        System.out.println();
+        else
+        {
+            Configuration config = ArbitreManager.instance.getConfiguration();
         
-        // Synchronise la demande de commande
-        inputManager.getSignalSync().envoyerSignal();
+            for (int i = 0; i < ArbitreManager.instance.getHauteur(); i++)
+            {
+                for (int j = 0; j < ArbitreManager.instance.getLargeur(); j++)
+                {
+                    if (i%2 == 0 && j == ArbitreManager.instance.getLargeur() - 1)
+                        continue;
+                
+                    String couleur = "";
+                    if (config.getTerrain()[i][j].getJoueurSurCase() != null)
+                        couleur = couleurs[ArbitreManager.instance.getPosition(config.getTerrain()[i][j].getJoueurSurCase()) - 1];
+
+                    String affichage = ".";
+                    if (config.getTerrain()[i][j].scorePoisson() > 0)
+                        affichage = String.valueOf(config.getTerrain()[i][j].scorePoisson());
+
+                    if (i%2 == 1)
+                        System.out.print(couleur+affichage+RESET+" ");
+                    else
+                        System.out.print(" "+couleur+affichage+RESET);
+                }
+                System.out.println();
+            }
+
+            System.out.println();
+        
+            // Synchronise la demande de commande
+            inputManager.getSignalSync().envoyerSignal();
+        }
     }
 }

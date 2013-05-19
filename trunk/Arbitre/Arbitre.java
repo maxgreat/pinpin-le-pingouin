@@ -117,49 +117,56 @@ public class Arbitre implements Runnable
             // Met à jour le score du joueur
             getJoueurCourant().setScore(getJoueurCourant().getScore() + score);
 
-	    // Nettoyer le terrain pour les pingouins isolés
-	    if (getMode() == ModeDeJeu.JEU_COMPLET)
-	    {
-		int [] scoresJoueurs = configurationSuivante.nettoyerConfiguration(joueurs);
-		
-		System.out.println("TODO : mettre à jour le score des joueurs lorsque nettoyage plateau");
-	    }
-
-	    int [] restePingouins = configurationSuivante.getNombrePingouinsParJoueur(joueurs);
-	    int totalPions = 0;
-
-	    for (int i = 0; i < restePingouins.length; i++)
-		totalPions += restePingouins[i];
-	    
-            if (totalPions == 0 && getMode() == ModeDeJeu.JEU_COMPLET)
+            // Change le mode de jeu si nécessaire
+            if (getMode() == ModeDeJeu.POSE_PINGOUIN)
             {
-                // Fin du jeu
-                estFini = true;
-                break;
+                int [] restePingouins = configurationSuivante.getNombrePingouinsParJoueur(joueurs);
+                int totalPions = 0;
+
+                for (int i = 0; i < restePingouins.length; i++)
+                    totalPions += restePingouins[i];
+
+                // 2 joueurs, 8 pions
+                // 3 joueurs, 9 pions
+                // 4 joueurs, 8 pions
+                if ((joueurs.length == 2 && totalPions == 8) ||
+                    (joueurs.length == 3 && totalPions == 9) ||
+                    (joueurs.length == 4 && totalPions == 10))
+                    setMode(ModeDeJeu.JEU_COMPLET);
             }
-            else
-            {
-		// Change le mode de jeu si nécessaire
-		if (getMode() == ModeDeJeu.POSE_PINGOUIN)
-		{
-		    // 2 joueurs, 8 pions
-		    // 3 joueurs, 9 pions
-		    // 4 joueurs, 8 pions
-		    if ((joueurs.length == 2 && totalPions == 8) ||
-			(joueurs.length == 3 && totalPions == 9) ||
-			(joueurs.length == 4 && totalPions == 10))
-			setMode(ModeDeJeu.JEU_COMPLET);
-		}
 
-                // Change de joueur
+            // Change de joueur (en prenant en compte ceux qui peuvent jouer)
+            int totalPouvantJouer = joueurs.length;
+            do
+            {
                 tourJoueur = (tourJoueur % joueurs.length) + 1;
                 setJoueurCourant(getJoueurParPosition(tourJoueur));
-		configurationSuivante.setJoueurSurConfiguration(getJoueurParPosition(tourJoueur));
+                configurationSuivante.setJoueurSurConfiguration(getJoueurParPosition(tourJoueur));
+                
+                totalPouvantJouer--;
 
-                // Met en place la configuration
-                setConfiguration(configurationSuivante);
+            } while (totalPouvantJouer >= 0 && 
+                     (getMode() == ModeDeJeu.JEU_COMPLET &&
+                      !configurationSuivante.peutJouer(getJoueurCourant())
+                         ));
 
-            }
+            // Met en place la configuration
+            setConfiguration(configurationSuivante);
+
+            // Si plus personne ne peut jouer on arrête
+            if (totalPouvantJouer < 0)
+                estFini = true;
+        }
+
+        // Nettoie le terrain à la fin de la partie
+        if (!forceStop && estFini)
+        {
+            int [] scoresJoueurs = getConfiguration().nettoyerConfiguration(joueurs);
+            
+            // Met à jour le score de tous les joueurs
+            for (int i = 0; i < scoresJoueurs.length; i++)
+                joueurs[i].setScore(joueurs[i].getScore() + scoresJoueurs[i]);
+            
         }
 
         // Informe l'interface
@@ -178,34 +185,34 @@ public class Arbitre implements Runnable
     public void sauvegarderPartie(String filename)
     {
 /*
-        System.out.println("Sauvegarde de la partie dans "+filename);
-        Sauvegarde save = new Sauvegarde();
-        save.setLargeur(getLargeur());
-        save.setHauteur(getHauteur());
-        save.setJoueur1(joueur1.getNom());
-        save.setJoueur2(joueur2.getNom());
+  System.out.println("Sauvegarde de la partie dans "+filename);
+  Sauvegarde save = new Sauvegarde();
+  save.setLargeur(getLargeur());
+  save.setHauteur(getHauteur());
+  save.setJoueur1(joueur1.getNom());
+  save.setJoueur2(joueur2.getNom());
 
-        if (joueur1 == joueurCourant)
-            save.setJoueurEnCours(1);
-        else
-            save.setJoueurEnCours(2);
+  if (joueur1 == joueurCourant)
+  save.setJoueurEnCours(1);
+  else
+  save.setJoueurEnCours(2);
 
-        save.setIterateur(historique.getIterateur());
+  save.setIterateur(historique.getIterateur());
 
-        String content = save.getXml();
+  String content = save.getXml();
 
-        try 
-        {
-            FileWriter fstream = new FileWriter(filename);
-            BufferedWriter out = new BufferedWriter(fstream);
-            out.write(content);
+  try 
+  {
+  FileWriter fstream = new FileWriter(filename);
+  BufferedWriter out = new BufferedWriter(fstream);
+  out.write(content);
 
-            out.close();
-        }
-        catch (IOException e) 
-        {
-            System.err.println("Impossible de sauvegarder dans le fichier "+filename);
-        }
+  out.close();
+  }
+  catch (IOException e) 
+  {
+  System.err.println("Impossible de sauvegarder dans le fichier "+filename);
+  }
 */
         System.out.println("TODO : implanter données à sauvegarde");
     }
@@ -216,25 +223,25 @@ public class Arbitre implements Runnable
     public void chargerPartie(Sauvegarde save)
     {
         /**
-        Configuration derniereConfiguration = null;
-        ListIterator<Configuration> listConfig = save.getIterateur();
+           Configuration derniereConfiguration = null;
+           ListIterator<Configuration> listConfig = save.getIterateur();
 
-        setLargeur(save.getLargeur());
-        setHauteur(save.getHauteur());
+           setLargeur(save.getLargeur());
+           setHauteur(save.getHauteur());
         
-        // Remet à zéro l'historique
-        historique = new Historique(ArbitreManager.LIMITE_HISTORIQUE);
+           // Remet à zéro l'historique
+           historique = new Historique(ArbitreManager.LIMITE_HISTORIQUE);
 
-        while (listConfig.hasNext())
-        {
-            Configuration c = listConfig.next();
+           while (listConfig.hasNext())
+           {
+           Configuration c = listConfig.next();
 
-            historique.ajout(c);
-            derniereConfiguration = c;
-        }
+           historique.ajout(c);
+           derniereConfiguration = c;
+           }
 
-        if (derniereConfiguration != null)
-            this.configurationCourante = derniereConfiguration;
+           if (derniereConfiguration != null)
+           this.configurationCourante = derniereConfiguration;
         **/
         System.out.println("TODO : implanter données à charger");
     }

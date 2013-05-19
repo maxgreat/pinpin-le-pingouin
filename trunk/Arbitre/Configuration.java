@@ -49,6 +49,9 @@ public class Configuration implements Cloneable
         this.joueurSurConfiguration = joueur;
     }
 
+    /**
+     * Indique le nombre de pingouins sur le plateau de chaque joueurs
+     **/
     public int [] getNombrePingouinsParJoueur(Joueur [] joueurs)
     {
         int [] pingouins = new int[joueurs.length];
@@ -74,6 +77,86 @@ public class Configuration implements Cloneable
         }
 
         return pingouins;
+    }
+
+    /**
+     * Indique si un joueur peut encore bouger sur une configuration donnée
+     **/
+    public boolean peutJouer(Joueur joueur)
+    {
+
+        for (int i = 0; i < hauteur; i++)
+        {
+            for (int j = 0; j < largeur; j++)
+            {
+                if ((i%2 == 0 && j == largeur - 1) || joueur != terrain[i][j].getJoueurSurCase())
+                    continue;
+                
+                // Vers la droite
+                {
+                    if (i%2 == 0 && j + 1 < largeur - 1 && !terrain[i][j + 1].estObstacle())
+                        return true;
+                    else if (i%2 == 1 && j + 1 < largeur && !terrain[i][j + 1].estObstacle())
+                        return true;
+                }
+
+                // Vers la gauche
+                {
+                    if (j - 1 >= 0 && !terrain[i][j - 1].estObstacle())
+                        return true;
+                }
+
+                // Vers le haut droit
+                {
+                    // Ne sort pas du terrain
+                    if (i - 1 >= 0)
+                    {
+                        if (i%2 == 0 && j + 1 < largeur && !terrain[i-1][j + 1].estObstacle())
+                            return true;
+                        else if (i%2 == 1 && j < largeur - 1 && !terrain[i-1][j].estObstacle())
+                            return true;
+                    }
+                }
+
+                // Vers le haut gauche
+                {
+                    // Ne sort pas du terrain
+                    if (i - 1 >= 0)
+                    {
+                        if (i%2 == 0 && j < largeur - 1 && !terrain[i-1][j].estObstacle())
+                            return true;
+                        else if (i%2 == 1 && j - 1 >= 0 && !terrain[i-1][j - 1].estObstacle())
+                            return true;
+                    }
+                }
+
+                // Vers le bas droite
+                {
+                    // Ne sort pas du terrain
+                    if (i + 1 < hauteur)
+                    {
+                        if (i%2 == 0 && j + 1 < largeur && !terrain[i+1][j+1].estObstacle())
+                            return true;
+                        else if (i%2 == 1 && j < largeur - 1 && !terrain[i+1][j].estObstacle())
+                            return true;
+                    }
+                }
+
+                // Vers le bas gauche
+                {
+                    // Ne sort pas du terrain
+                    if (i + 1 < hauteur)
+                    {
+                        if (i%2 == 0 && !terrain[i+1][j].estObstacle())
+                            return true;
+                        else if (i%2 == 1 && j - 1 >= 0 && !terrain[i+1][j-1].estObstacle())
+                            return true;
+                    }
+                }
+            }
+        }
+
+        return false;
     }
 
     /**
@@ -501,8 +584,21 @@ public class Configuration implements Cloneable
     public int [] nettoyerConfiguration(Joueur [] joueurs)
     {
         int [] scoresJoueurs = new int[joueurs.length];
+        ArrayList<Joueur> indexJoueur = new ArrayList<Joueur>(Arrays.asList(joueurs));
 
-        System.out.println("TODO : Nettoyer le terrain");
+        for (int i = 0; i < joueurs.length; i++)
+            scoresJoueurs[i] = 0;
+
+        for (int i = 0; i < hauteur; i++)
+        {
+            for (int j = 0; j < largeur; j++)
+            {
+                if (i%2 == 0 && j == largeur - 1 || terrain[i][j].getJoueurSurCase() == null)
+                    continue;
+
+                scoresJoueurs[indexJoueur.indexOf(terrain[i][j].getJoueurSurCase())] += terrain[i][j].scorePoisson();
+            }
+        }
 
         return scoresJoueurs;
     }
