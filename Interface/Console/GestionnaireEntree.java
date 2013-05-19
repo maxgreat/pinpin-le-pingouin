@@ -33,17 +33,17 @@ public class GestionnaireEntree implements Runnable
             System.out.print("["+couleur+ArbitreManager.instance.getJoueurCourant().getNom()+":"+ArbitreManager.instance.getJoueurCourant().getScore()+InterfaceConsole.RESET+"] ");
 
             if (ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN)
-	    {
+            {
                 System.out.println("Veuillez entrer une position où poser votre pingouin sous la forme x y ou quit :");
-	    }
+            }
             else
-	    {
+            {
                 System.out.println("Veuillez entrer un coup (ou quit) sous la forme xDepart yDepart xArrivée yArrivée :");
-		Coup [] listeCoup = ArbitreManager.instance.getConfiguration().toutCoupsPossibles();
+                Coup [] listeCoup = ArbitreManager.instance.getConfiguration().toutCoupsPossibles();
 
-		for (int i = 0; i < listeCoup.length; i++)
-		    System.out.println("("+listeCoup[i].getXDepart()+", "+listeCoup[i].getYDepart()+") -> ("+listeCoup[i].getXArrivee()+", "+listeCoup[i].getYArrivee()+")");
-	    }
+                for (int i = 0; i < listeCoup.length; i++)
+                    System.out.println("("+listeCoup[i].getXDepart()+", "+listeCoup[i].getYDepart()+") -> ("+listeCoup[i].getXArrivee()+", "+listeCoup[i].getYArrivee()+")");
+            }
 
 
             String command = in.nextLine();
