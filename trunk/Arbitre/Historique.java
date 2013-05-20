@@ -1,7 +1,8 @@
 package Arbitre;
 import java.util.*;
+import java.io.*;
 
-public class Historique
+public class Historique implements Serializable
 {
     Pile<Configuration> pileAvant;
     Pile<Configuration> pileApres;
@@ -98,5 +99,33 @@ public class Historique
     public ListIterator<Configuration> getIterateur()
     {
         return pileAvant.iterator();
+    }
+
+    /**
+     * Serialize les données d'un l'historique
+     **/
+    private void writeObject(ObjectOutputStream out) throws IOException
+    {
+        out.writeObject(pileAvant);
+        out.writeObject(pileApres);
+        out.writeInt(limiteHistorique);
+    }
+
+    /**
+     * Charge les données à partir d'une chaine serialize
+     **/
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
+    { 
+        pileAvant = (Pile)in.readObject();
+        pileApres = (Pile)in.readObject();
+        limiteHistorique = in.readInt();
+    }
+
+    /**
+     * Essaye de parser un objet sans donnée
+     **/
+    private void readObjectNoData() throws ObjectStreamException
+    {
+        throw new NotSerializableException("La sérialization d'un historique doit se faire sur une chaine non vide");
     }
 }

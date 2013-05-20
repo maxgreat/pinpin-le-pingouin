@@ -283,7 +283,7 @@ public class ArbitreManager
             return;
         }
 
-
+/**
         Sauvegarde save = new Sauvegarde();
         ListIterator<Configuration> listConfig = save.readXml(data);
 	
@@ -293,7 +293,7 @@ public class ArbitreManager
             return;
         }
 
-/**
+
 	
 	Joueur joueur1 = null;
 	Joueur joueur2 = null;

@@ -5,7 +5,7 @@ import Interface.*;
 import java.io.*;
 import java.util.*;
 
-public class Arbitre implements Runnable
+public class Arbitre implements Runnable, Serializable
 {
     protected Configuration configurationCourante;
     protected Joueur [] joueurs;
@@ -189,37 +189,30 @@ public class Arbitre implements Runnable
      **/
     public void sauvegarderPartie(String filename)
     {
-/*
-  System.out.println("Sauvegarde de la partie dans "+filename);
-  Sauvegarde save = new Sauvegarde();
-  save.setLargeur(getLargeur());
-  save.setHauteur(getHauteur());
-  save.setJoueur1(joueur1.getNom());
-  save.setJoueur2(joueur2.getNom());
+        System.out.println("Sauvegarde de la partie dans "+filename);
+        Sauvegarde save = new Sauvegarde();
+        save.setArbitre(this);
+        String content = save.getXml();
 
-  if (joueur1 == joueurCourant)
-  save.setJoueurEnCours(1);
-  else
-  save.setJoueurEnCours(2);
+        if (content == null)
+        {
+            System.err.println("Impossible de sauvegarder dans le fichier "+filename);
+        }
 
-  save.setIterateur(historique.getIterateur());
+        try 
+        {
+            FileWriter fstream = new FileWriter(filename);
+            BufferedWriter out = new BufferedWriter(fstream);
+            
+            out.write(content);
 
-  String content = save.getXml();
-
-  try 
-  {
-  FileWriter fstream = new FileWriter(filename);
-  BufferedWriter out = new BufferedWriter(fstream);
-  out.write(content);
-
-  out.close();
-  }
-  catch (IOException e) 
-  {
-  System.err.println("Impossible de sauvegarder dans le fichier "+filename);
-  }
-*/
-        System.out.println("TODO : implanter données à sauvegarde");
+            out.flush();
+            out.close();
+        }
+        catch (IOException e) 
+        {
+            System.err.println("Impossible de sauvegarder dans le fichier "+filename);
+        }
     }
 
     /**
@@ -369,5 +362,73 @@ public class Arbitre implements Runnable
             setJoueurCourant(c.getJoueurSurConfiguration());
             inter.repaint();
         }
+    }
+
+    /**
+     * Serialize les données d'une partie
+     **/
+    private void writeObject(ObjectOutputStream out) throws IOException
+    {
+        // Largeur
+        out.writeInt(getLargeur());
+        // Hauteur
+        out.writeInt(getHauteur());
+        // Mode de jeu
+        out.writeObject(getMode());
+        
+        // Nombre de joueurs
+        out.writeInt(joueurs.length);
+
+        // Liste des joueurs
+        for (int i = 0; i < joueurs.length; i++)
+        {
+            // Ecris la classe à part pour recharger plus tard
+            out.writeObject((String)joueurs[i].getClass().getName());
+            out.writeObject((Joueur)joueurs[i]);
+        }
+        
+        // Tour du joueur en cours
+        out.writeInt(getPosition(getJoueurCourant()));
+
+        // Liste des configurations
+        out.writeObject((Historique)historique);
+    }
+
+    /**
+     * Charge les données à partir d'une chaine serialize
+     **/
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
+    { 
+        // Largeur
+        setLargeur(in.readInt());
+        // Hauteur
+        setHauteur(in.readInt());
+        // Mode de jeu
+        setMode((ModeDeJeu)in.readObject());
+
+        // Nombre de joueurs
+        joueurs = new Joueur[in.readInt()];
+        
+        // Liste des joueurs
+        for (int i = 0; i < joueurs.length; i++)
+        {
+            // Charge le joueur en dynamic cast
+            String type = (String)in.readObject();
+            joueurs[i] =(Joueur)( Class.forName(type).cast(in.readObject()));
+        }
+        
+        // Tour du joueur en cours
+        setJoueurCourant(getJoueurParPosition(in.readInt()));
+
+        // Liste des configurations
+        historique = (Historique)in.readObject();
+    }
+
+    /**
+     * Essaye de parser un objet sans donnée
+     **/
+    private void readObjectNoData() throws ObjectStreamException
+    {
+        throw new NotSerializableException("La sérialization d'un arbitre doit se faire sur une chaine non vide");
     }
 }

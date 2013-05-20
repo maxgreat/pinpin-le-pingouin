@@ -1,10 +1,11 @@
 package Arbitre;
 import java.util.*;
+import java.io.*;
 
 /**
  * Pile thread-safe basé sur un ArrayList
  **/
-public class Pile<T>
+public class Pile<T> implements Serializable
 {
     ArrayList<T> pile;
 
@@ -41,5 +42,29 @@ public class Pile<T>
     public synchronized ListIterator<T> iterator()
     {
         return pile.listIterator();
+    }
+
+    /**
+     * Serialize les données de la pile
+     **/
+    private void writeObject(ObjectOutputStream out) throws IOException
+    {
+        out.writeObject(pile);
+    }
+
+    /**
+     * Charge les données à partir d'une chaine serialize
+     **/
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
+    { 
+        pile = (ArrayList<T>)in.readObject();
+    }
+
+    /**
+     * Essaye de parser un objet sans donnée
+     **/
+    private void readObjectNoData() throws ObjectStreamException
+    {
+        throw new NotSerializableException("La sérialization d'une pile doit se faire sur une chaine non vide");
     }
 }
