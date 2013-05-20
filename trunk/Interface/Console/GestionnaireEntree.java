@@ -45,7 +45,6 @@ public class GestionnaireEntree implements Runnable
                     System.out.println("("+listeCoup[i].getXDepart()+", "+listeCoup[i].getYDepart()+") -> ("+listeCoup[i].getXArrivee()+", "+listeCoup[i].getYArrivee()+")");
             }
 
-
             String command = in.nextLine();
 
             // Demande de fermeture
@@ -54,6 +53,24 @@ public class GestionnaireEntree implements Runnable
                 // Stoppe la partie en cours
                 ArbitreManager.stopperPartie();
                 break;
+            }
+
+            // Annule le dernier coup
+            if ("annuler".equals(command.trim()))
+            {
+                // Annuler dernier coup
+                ArbitreManager.instance.reculerHistorique();
+                needSignalSync = false;
+                continue;
+            }
+
+            // Refait le dernier coup
+            if ("refaire".equals(command.trim()))
+            {
+                // Annuler dernier coup
+                ArbitreManager.instance.avancerHistorique();
+                needSignalSync = false;
+                continue;
             }
 
             // Sinon commande de coordonnées
