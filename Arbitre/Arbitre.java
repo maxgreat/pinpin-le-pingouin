@@ -97,12 +97,17 @@ public class Arbitre implements Runnable
      **/
     public void run()
     {
-        int tourJoueur = getPosition(getJoueurCourant());
 
         while (!estFini && !forceStop)
         {
+            int tourJoueur = getPosition(getJoueurCourant());
+
             // Récupère le coup du joueur
             Coup coup = getJoueurCourant().coupSuivant();
+
+            // Changement d'historique
+            if (coup == null && !forceStop)
+                continue; // Refait un tour, le joueur courant à changer
 	    
             // Effectue et vérifie la fin de partie
             Configuration configurationSuivante = configurationCourante.clone();
@@ -338,7 +343,12 @@ public class Arbitre implements Runnable
         Configuration c = historique.avance();
         if (c != null)
         {
+            // Stop le thread pour lui indique le changement de joueur
+            ArbitreManager.instanceThread.interrupt();
+
+            // Met à jour la configuration
             configurationCourante = c;
+            setJoueurCourant(c.getJoueurSurConfiguration());
             inter.repaint();
         }
     }
@@ -351,7 +361,12 @@ public class Arbitre implements Runnable
         Configuration c = historique.reculer();
         if (c != null)
         {
+            // Stop le thread pour lui indique le changement de joueur
+            ArbitreManager.instanceThread.interrupt();
+
+            // Met à jour la configuration
             configurationCourante = c;
+            setJoueurCourant(c.getJoueurSurConfiguration());
             inter.repaint();
         }
     }
