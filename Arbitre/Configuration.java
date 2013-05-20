@@ -2,15 +2,15 @@ package Arbitre;
 
 import java.util.*;
 import Joueurs.*;
+import java.io.*;
 
-import java.util.*;
-
-public class Configuration implements Cloneable
+public class Configuration implements Cloneable, Serializable
 {
     protected int largeur;
     protected int hauteur;
     protected Case [][] terrain;
     protected Joueur joueurSurConfiguration;
+    protected int scoreSurConfiguration;
 
 
     public Configuration(int largeur, int hauteur, Case [][] terrain, Joueur joueurSurConfiguration)
@@ -19,6 +19,7 @@ public class Configuration implements Cloneable
         this.hauteur = hauteur;
         this.terrain = terrain;
         this.joueurSurConfiguration = joueurSurConfiguration;
+        this.scoreSurConfiguration = joueurSurConfiguration.getScore();
     }
 
     /**
@@ -48,6 +49,17 @@ public class Configuration implements Cloneable
     {
         this.joueurSurConfiguration = joueur;
     }
+
+    public int getScoreSurConfiguration()
+    {
+        return scoreSurConfiguration;
+    }
+
+    public void setScoreSurConfiguration(int scoreSurConfiguration)
+    {
+        this.scoreSurConfiguration = scoreSurConfiguration;
+    }
+            
 
     /**
      * Indique le nombre de pingouins sur le plateau de chaque joueurs
@@ -623,14 +635,15 @@ public class Configuration implements Cloneable
 
         return new Configuration(largeur, hauteur, terrainCopie, joueurSurConfiguration);
     }
-    
 
     /**
      * Serialize les données du terrain
      **/
-    public String getSerialize()
+    private void writeObject(ObjectOutputStream out) throws IOException
     {
-        String result = "";
+        // Sauvegarde le joueur en cours et son score
+        out.writeInt(ArbitreManager.instance.getPosition(getJoueurSurConfiguration()));
+        out.writeInt(getScoreSurConfiguration());
 
         for (int i = 0; i < hauteur; i++)
         {
@@ -639,56 +652,36 @@ public class Configuration implements Cloneable
                 if (i%2 == 0 && j == largeur - 1)
                     continue;
 
-                Joueur joueur = terrain[i][j].getJoueurSurCase();
-
-                if (joueur == null)
-                    result += "0";
-                else
-                    result += String.valueOf(ArbitreManager.instance.getPosition(joueur));
-
-                result += String.valueOf(terrain[i][j].scorePoisson());
+                out.writeObject(terrain[i][j]);
             }
         }
-	
-        return result;
     }
 
     /**
      * Charge les données à partir d'une chaine serialize
-     * Renvoit vrai si la chaine est correcte
      **/
-    public boolean setSerialized(String result)
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
     {   
-        if (hauteur * largeur != result.length() * 2)
-            return false;
-
         terrain = new Case[hauteur][largeur];
-        int compteur = 0;
+
+        setJoueurSurConfiguration(ArbitreManager.instance.getJoueurParPosition(in.readInt()));
+        setScoreSurConfiguration(in.readInt());
 
         for (int i = 0; i < hauteur; i++)
         {
             for (int j = 0; j < largeur; j++)
             {
-                Joueur joueur = null;
-                Etat e = Etat.VIDE;
-                if (result.charAt(compteur) != '0')
-                    joueur = ArbitreManager.instance.getJoueurParPosition(Integer.valueOf(result.charAt(compteur)));
-
-                compteur++;
-
-                if (result.charAt(compteur) == '1')
-                    e = Etat.UN_POISSON;
-                else if (result.charAt(compteur) == '2')
-                    e = Etat.DEUX_POISSONS;
-                else if (result.charAt(compteur) == '3')
-                    e = Etat.TROIS_POISSONS;
-                else
-                    e = Etat.VIDE;
-
-                terrain[i][j] = new Case(e, joueur);
+                terrain[i][j] = (Case)in.readObject();
             }
         }
-
-        return true;
     }
+
+    /**
+     * Essaye de parser un objet sans donnée
+     **/
+    private void readObjectNoData() throws ObjectStreamException
+    {
+        throw new NotSerializableException("La sérialization d'une configuration doit se faire sur une chaine non vide");
+    }
+
 }
