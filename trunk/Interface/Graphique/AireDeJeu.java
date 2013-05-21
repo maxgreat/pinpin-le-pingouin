@@ -204,7 +204,7 @@ public class AireDeJeu extends JComponent{
     }
 
     public void click(int x, int y)
-    {
+    { 
     	Point p = tabCase.estDansHexagone(x,y);
     	System.out.println("Point p = " + p);
     }
