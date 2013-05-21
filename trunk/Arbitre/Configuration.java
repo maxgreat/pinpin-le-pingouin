@@ -9,7 +9,7 @@ public class Configuration implements Cloneable, Serializable
     protected int largeur;
     protected int hauteur;
     protected Case [][] terrain;
-    protected Joueur joueurSurConfiguration;
+    protected int joueurSurConfiguration;
     protected int scoreSurConfiguration;
 
 
@@ -18,7 +18,7 @@ public class Configuration implements Cloneable, Serializable
         this.largeur = largeur;
         this.hauteur = hauteur;
         this.terrain = terrain;
-        this.joueurSurConfiguration = joueurSurConfiguration;
+        this.joueurSurConfiguration = ArbitreManager.instance.getPosition(joueurSurConfiguration);
         this.scoreSurConfiguration = joueurSurConfiguration.getScore();
     }
 
@@ -42,12 +42,18 @@ public class Configuration implements Cloneable, Serializable
 
     public Joueur getJoueurSurConfiguration()
     {
-        return joueurSurConfiguration;
+	if (joueurSurConfiguration == 0)
+	    return null;
+
+        return ArbitreManager.instance.getJoueurParPosition(joueurSurConfiguration);
     }
 
     public void setJoueurSurConfiguration(Joueur joueur)
     {
-        this.joueurSurConfiguration = joueur;
+	if (joueur == null)
+	    joueurSurConfiguration = 0;
+
+        this.joueurSurConfiguration = ArbitreManager.instance.getPosition(joueur);
     }
 
     public int getScoreSurConfiguration()
@@ -633,7 +639,7 @@ public class Configuration implements Cloneable, Serializable
             }
         }
 
-        return new Configuration(largeur, hauteur, terrainCopie, joueurSurConfiguration);
+        return new Configuration(largeur, hauteur, terrainCopie, getJoueurSurConfiguration());
     }
 
     /**
@@ -662,6 +668,8 @@ public class Configuration implements Cloneable, Serializable
      **/
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
     {   
+	hauteur = ArbitreManager.instance.getHauteur();
+	largeur = ArbitreManager.instance.getLargeur();
         terrain = new Case[hauteur][largeur];
 
         setJoueurSurConfiguration(ArbitreManager.instance.getJoueurParPosition(in.readInt()));
@@ -671,6 +679,9 @@ public class Configuration implements Cloneable, Serializable
         {
             for (int j = 0; j < largeur; j++)
             {
+		if (i%2 == 0&& j == largeur - 1)
+		    continue;
+
                 terrain[i][j] = (Case)in.readObject();
             }
         }

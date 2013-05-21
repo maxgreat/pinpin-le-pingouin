@@ -23,6 +23,8 @@ public class Arbitre implements Runnable, Serializable
 
     protected Signal<Object> signalStop;
 
+    public static final long serialVersionUID = 2L;
+
     public Arbitre(Joueur [] joueurs, int largeur, int hauteur)
     {
         this.joueurs = joueurs;
@@ -39,7 +41,11 @@ public class Arbitre implements Runnable, Serializable
     public int getPosition(Joueur joueur)
     {
         int i = 1;
-        while (joueurs[i - 1 ] != joueur)
+
+	if (joueur == null)
+	    return 0;
+
+        while (i <= joueurs.length && joueurs[i - 1] != joueur)
             i++;
 
         // Si on a pas trouvé
@@ -54,7 +60,7 @@ public class Arbitre implements Runnable, Serializable
      **/
     public Joueur getJoueurParPosition(int position)
     {
-        if (position < 1 || position > joueurs.length)
+        if (position < 1 || joueurs == null || position > joueurs.length)
             return null;
 
         return joueurs[position - 1];
@@ -192,22 +198,11 @@ public class Arbitre implements Runnable, Serializable
         System.out.println("Sauvegarde de la partie dans "+filename);
         Sauvegarde save = new Sauvegarde();
         save.setArbitre(this);
-        String content = save.getXml();
-
-        if (content == null)
-        {
-            System.err.println("Impossible de sauvegarder dans le fichier "+filename);
-        }
 
         try 
         {
-            FileWriter fstream = new FileWriter(filename);
-            BufferedWriter out = new BufferedWriter(fstream);
-            
-            out.write(content);
-
-            out.flush();
-            out.close();
+            FileOutputStream fstream = new FileOutputStream(filename);
+            save.save(fstream);
         }
         catch (IOException e) 
         {
@@ -216,34 +211,14 @@ public class Arbitre implements Runnable, Serializable
     }
 
     /**
-     * Charge une partie depuis une liste de configuration
+     * Charge la sauvegarde
      **/
-    public void chargerPartie(Sauvegarde save)
+    public void chargerPartie(Interface inter)
     {
-        /**
-           Configuration derniereConfiguration = null;
-           ListIterator<Configuration> listConfig = save.getIterateur();
-
-           setLargeur(save.getLargeur());
-           setHauteur(save.getHauteur());
-        
-           // Remet à zéro l'historique
-           historique = new Historique(ArbitreManager.LIMITE_HISTORIQUE);
-
-           while (listConfig.hasNext())
-           {
-           Configuration c = listConfig.next();
-
-           historique.ajout(c);
-           derniereConfiguration = c;
-           }
-
-           if (derniereConfiguration != null)
-           this.configurationCourante = derniereConfiguration;
-        **/
-        System.out.println("TODO : implanter données à charger");
+	this.inter = inter;
+	this.inter.setJoueurs(joueurs);
+	this.inter.repaint();
     }
-
 
     /**
      * Retourne le signalStop
@@ -422,6 +397,9 @@ public class Arbitre implements Runnable, Serializable
 
         // Liste des configurations
         historique = (Historique)in.readObject();
+
+	configurationCourante = historique.courante();
+	signalStop = new Signal<Object>();
     }
 
     /**

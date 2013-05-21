@@ -1,7 +1,8 @@
 package Joueurs;
 import Arbitre.*;
+import java.io.*;
 
-public abstract class Joueur
+public abstract class Joueur implements Serializable
 {
     protected Signal<Coup> signalCoup;
     protected int score = 0;
@@ -60,6 +61,34 @@ public abstract class Joueur
     {
         this.nom = nom;
     }
+
+    /**
+     * Serialize les données d'une partie
+     **/
+    private void writeObject(ObjectOutputStream out) throws IOException
+    {
+	out.writeInt(getScore());
+	out.writeObject(getNom());
+    }
+
+    /**
+     * Charge les données à partir d'une chaine serialize
+     **/
+    private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
+    { 
+	setScore(in.readInt());
+	setNom((String)in.readObject());
+	signalCoup = new Signal<Coup>();
+    }
+
+    /**
+     * Essaye de parser un objet sans donnée
+     **/
+    private void readObjectNoData() throws ObjectStreamException
+    {
+        throw new NotSerializableException("La sérialization d'un joueur doit se faire sur une chaine non vide");
+    }
+
 
     /**
      * Fonction à implanter dans les classes enfants
