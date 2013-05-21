@@ -73,7 +73,7 @@ public class InterfaceGraphique extends Interface
     public void afficherPanel(String S)
 	{
 	LinkedList<String> Old_page = new LinkedList<String>();
-		Old_page.push("Menu Principal");
+		Old_page.addFirst("Menu Principal");
 		if (S.compareTo("Menu Principal") == 0)
 		{
 			frame.remove(panfinal);
@@ -108,7 +108,7 @@ public class InterfaceGraphique extends Interface
 		}
 		if(S.compareTo( "Options") == 0 )
 		{
-			Old_page.push("Options");
+			Old_page.addFirst("Options");
 			frame.remove(panfinal);
 			panfinal = new JPanel();
 			panfinal.setLayout(new BoxLayout(panfinal, BoxLayout.PAGE_AXIS));
@@ -127,7 +127,7 @@ public class InterfaceGraphique extends Interface
 		}
 		if(S.compareTo( "Partie Personalisé") == 0 )
 		{
-			Old_page.push("Options");
+			Old_page.addFirst("Options");
 			frame.remove(panfinal);
 			panfinal = new JPanel();
 			panfinal.setLayout(new GridLayout( 7 , 2) );
@@ -153,7 +153,33 @@ public class InterfaceGraphique extends Interface
 		if(S.compareTo("Revenir") == 0)
 		{
 			
-			afficherPanel(Old_page.pop());
+			afficherPanel(Old_page.poll());
+		}
+		if(S.compareTo("Gestion de profil") == 0)
+		{
+			
+			Old_page.addFirst("Gestion de profil");
+			frame.remove(panfinal);
+			panfinal = new JPanel();
+			panfinal.setLayout(new BoxLayout(panfinal, BoxLayout.PAGE_AXIS));
+			addBouton(panfinal,"Revenir");
+			frame.add(panfinal);
+			frame.pack();			
+			frame.repaint();
+
+		}
+		if(S.compareTo("Classements") == 0)
+		{
+			
+			Old_page.addFirst("Classement");
+			frame.remove(panfinal);
+			panfinal = new JPanel();
+			panfinal.setLayout(new BoxLayout(panfinal, BoxLayout.PAGE_AXIS));
+			addBouton(panfinal,"Revenir");
+			frame.add(panfinal);
+			frame.pack();			
+			frame.repaint();
+
 		}
 		
 	}
