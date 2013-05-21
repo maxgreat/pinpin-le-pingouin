@@ -1,7 +1,7 @@
 
 CC=javac
 MAKE=make
-JFLAGS=-classpath ../:. -implicit:none
+JFLAGS=-classpath ../:. -implicit:none -Xlint:-serial
 OBJ=Interface.class InterfaceFabrique.class
 
 # Décommentez l'interface que vous voulez utiliser

@@ -327,7 +327,7 @@ public class Configuration implements Cloneable, Serializable
 
     protected boolean versBasGauche(Coup c)
     {
-        return memeDiagonaleBasGauche(c) && c.getXArrivee() <  c.getXDepart() && c.getYArrivee() > c.getYDepart();
+        return memeDiagonaleBasGauche(c) && c.getXArrivee() <=  c.getXDepart() && c.getYArrivee() > c.getYDepart();
     }
 
     protected boolean versHautDroite(Coup c)
@@ -337,7 +337,7 @@ public class Configuration implements Cloneable, Serializable
 
     protected boolean versHautGauche(Coup c)
     {
-        return memeDiagonaleBasDroite(c) && c.getXArrivee() < c.getXDepart() && c.getYArrivee() < c.getYDepart();
+        return memeDiagonaleBasDroite(c) && c.getXArrivee() <= c.getXDepart() && c.getYArrivee() < c.getYDepart();
     }
 
     /**
@@ -349,6 +349,8 @@ public class Configuration implements Cloneable, Serializable
         int yDepart = c.getYDepart();
         int xArrivee = c.getXArrivee();
         int yArrivee = c.getYArrivee();
+
+	System.out.println(memeDiagonaleBasGauche(c));
 
         // Vers la droite
         if (versDroite(c))
@@ -428,6 +430,7 @@ public class Configuration implements Cloneable, Serializable
         // Vers le bas gauche
         else if (versBasGauche(c))
         {
+	    System.out.println("Vers bas gauche");
             int l = c.getXDepart();
 	    
             for (int k = c.getYDepart() + 1; k <= c.getYArrivee(); k++)
@@ -435,6 +438,7 @@ public class Configuration implements Cloneable, Serializable
                 if (k%2 == 0)
                     l--;
 		
+		System.out.println("Test "+k+", "+l);
                 if (terrain[k][l].estObstacle())
                     return false;
             }
