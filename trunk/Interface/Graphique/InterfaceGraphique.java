@@ -4,57 +4,30 @@ import Arbitre.*;
 import java.awt.*;
 import java.awt.event.*;
 import Interface.*;
+import Joueurs.*;
+
 
 public class InterfaceGraphique extends Interface
 {
-    public JPanel pan;
+    public JPanel pan , panfinal;
     protected AireDeJeu aire;
-
+    protected JFrame frame;
     public void run(String [] arguments)
     {		
 		//Fenetre principale
-		JFrame frame = new JFrame("pinpin le pingouin");
-		
+		frame = new JFrame("pinpin le pingouin");
+
 		//Aire de dessin
 		//Boutons
-		pan = new JPanel();
-		pan.setLayout(new BoxLayout(pan, BoxLayout.PAGE_AXIS));
-		aire = new AireDeJeu(frame, pan);
-		aire.setPreferredSize(new Dimension(300,300));
-		//Ecouteurs
-		aire.addMouseListener(new EcouteurDeSouris(aire));
-		
-		//Bouton nouvelle partie human vs humain
-		JButton b1 = new JButton("H vs H");
-		b1.addActionListener(new EcouteurDeBouton("HvH", this));
-		pan.add(b1,BorderLayout.CENTER);
-		//Bouton nouvelle partie human vs humain
-		b1 = new JButton("H vs CPU");
-		b1.addActionListener(new EcouteurDeBouton("HvCPU", this));
-		pan.add(b1,BorderLayout.CENTER);
-		//le premier bouton normal (partie rapide)
-		JButton b2  = new JButton("Partie Rapide");
-		b2.addActionListener(new EcouteurDeBouton("Partie Rapide", this));
-		pan.add(b2,BorderLayout.CENTER);
-		// le deuxieme bouton partie personnalisé
-		JButton b3 = new JButton("Partie Personalisé");
-		b3.addActionListener(new EcouteurDeBouton("Partie Personalisé", this));
-		pan.add(b3,BorderLayout.CENTER);
-		// le troisieme bouton partie reseaux
-		JButton b4 = new JButton("Partie reseaux");
-		b4.addActionListener(new EcouteurDeBouton("Partie reseaux", this));
-		pan.add(b4,BorderLayout.CENTER);
-		// le troisieme bouton partie Options
-		JButton b5 = new JButton("Options");
-		b5.addActionListener(new EcouteurDeBouton("Options", this));
-		pan.add(b5,BorderLayout.CENTER);
-		// le Quatrieme bouton partie classement
-		JButton b6 = new JButton("Classement");
-		b6.addActionListener(new EcouteurDeBouton("Classement", this));
-		pan.add(b6,BorderLayout.CENTER);
-		//ajout du panel à la fenetre
-		frame.add(pan);
-
+		panfinal = new JPanel();
+		addBouton(panfinal,"Partie Rapide");
+		addBouton(panfinal,"Partie Personalisé");
+		addBouton(panfinal,"Partie en Réseau");		
+		addBouton(panfinal,"Options");
+		addBouton(panfinal,"Classements");
+		addBouton(panfinal,"Quitter");
+		panfinal.setLayout(new BoxLayout(panfinal, BoxLayout.PAGE_AXIS));
+		frame.add(panfinal);
 		//intercepte la demande de fermeture the close button
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		//create custom close operation
@@ -77,14 +50,47 @@ public class InterfaceGraphique extends Interface
      **/
     public void repaint()
     {
-        aire.repaint();
-    }
+	if(aire != null)
+		{        
+		aire.repaint();
+    		}
+    }	
 
     public AireDeJeu getAire()
     {
         return aire;
     }
-            
+    public void addBouton(JPanel panfinal, String S)
+    {
+	JPanel pan  = new JPanel();
+	pan.setLayout(new BoxLayout(pan, BoxLayout.LINE_AXIS));
+	JButton b1 = new JButton(S);
+	b1.addActionListener(new EcouteurDeBouton(S, this));
+	pan.add(b1);
+	panfinal.add(pan);
+     }
+    public void afficherPanel(String S)
+	{
+		if (S.compareTo("Partie Rapide") == 0 )
+		{
+			frame.remove(panfinal);
+			//definition des joueurs
+			Joueur [] joueurs = new Joueur[2];
+			joueurs[0] = new JoueurHumain();
+			joueurs[1] = new JoueurHumain();
+			//lancement de la partie
+			ArbitreManager.initialiserPartie(joueurs ,ArbitreManager.LARGEUR_GRILLE , ArbitreManager.HAUTEUR_GRILLE, this); 
+			aire = new AireDeJeu(frame);
+			aire.setPreferredSize(new Dimension(500,500));
+			aire.addMouseListener(new EcouteurDeSouris(aire));
+			frame.add(aire);
+			aire.repaint();
+			aire.setVisible(true);
+			frame.repaint();
+			frame.pack();		
+		}
+		
+	}
 
 }
 
