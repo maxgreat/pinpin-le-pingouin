@@ -1,20 +1,25 @@
 package Interface;
 import Joueurs.*;
 
-public interface Interface
+public abstract class Interface
 {
     /**
      * repaint() doit afficher le jeu en cours à l'écran
      **/
-    public void repaint();
+    public abstract void repaint();
 
     /**
      * run() lance les différentes actions à effectuer
      **/
-    public void run(String [] args);
+    public abstract void run(String [] args);
 
     /**
      * Garde en mémoire les joueurs
      **/
-    public void setJoueurs(Joueur [] joueurs);
+    protected Joueur [] joueurs;
+
+    public void setJoueurs(Joueur [] joueurs)
+    {
+	this.joueurs = joueurs;
+    }
 }

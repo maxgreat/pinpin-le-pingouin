@@ -5,7 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import Interface.*;
 
-public class InterfaceGraphique implements Interface
+public class InterfaceGraphique extends Interface
 {
     public JPanel pan;
     protected AireDeJeu aire;
