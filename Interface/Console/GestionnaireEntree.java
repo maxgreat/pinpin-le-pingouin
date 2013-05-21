@@ -1,6 +1,7 @@
 package Interface.Console;
 
 import Arbitre.*;
+import Joueurs.*;
 import java.util.*;
 
 /**
@@ -29,9 +30,15 @@ public class GestionnaireEntree implements Runnable
 
             needSignalSync = false;
 
+	    /**
             String couleur = InterfaceConsole.couleurs[ArbitreManager.instance.getPosition(ArbitreManager.instance.getJoueurCourant()) - 1];
 
             System.out.print("["+couleur+ArbitreManager.instance.getJoueurCourant().getNom()+":"+ArbitreManager.instance.getJoueurCourant().getScore()+InterfaceConsole.RESET+"] ");
+
+	    **/
+	    Joueur j1 = ArbitreManager.instance.getJoueurParPosition(1);
+	    Joueur j2 = ArbitreManager.instance.getJoueurParPosition(2);
+	    System.out.print("["+j1.getNom()+":"+j1.getScore()+" - "+j2.getNom()+":"+j2.getScore()+"] ");
 
             if (ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN)
             {

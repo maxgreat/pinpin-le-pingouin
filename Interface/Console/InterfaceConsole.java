@@ -6,7 +6,7 @@ import Arbitre.*;
 
 import java.util.*;
 
-public class InterfaceConsole implements Interface
+public class InterfaceConsole extends Interface
 {
     /**
      * Scanner pour la récupération de commande
@@ -118,8 +118,8 @@ public class InterfaceConsole implements Interface
 	joueurs[0] = new JoueurHumain();
         joueurs[0].setNom("David");
 
-        joueurs[1] = new JoueurCPURd();
-	//        joueurs[1] = new JoueurHumain();
+	//        joueurs[1] = new JoueurCPURd();
+	        joueurs[1] = new JoueurHumain();
         joueurs[1].setNom("Goliath");
 	/*
         joueurs[2] = new JoueurCPURd();

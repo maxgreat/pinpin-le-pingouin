@@ -317,6 +317,9 @@ public class Arbitre implements Runnable, Serializable
             // Met à jour la configuration
             configurationCourante = c;
             setJoueurCourant(c.getJoueurSurConfiguration());
+
+	    // Restaure le score du joueur
+	    c.getJoueurSurConfiguration().setScore(c.getScoreSurConfiguration());
             inter.repaint();
         }
     }
@@ -335,6 +338,9 @@ public class Arbitre implements Runnable, Serializable
             // Met à jour la configuration
             configurationCourante = c;
             setJoueurCourant(c.getJoueurSurConfiguration());
+	    
+	    // Restaure le score du joueur
+	    c.getJoueurSurConfiguration().setScore(c.getScoreSurConfiguration());
             inter.repaint();
         }
     }
