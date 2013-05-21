@@ -172,7 +172,7 @@ public class InterfaceConsole extends Interface
 				     if (score1.compareTo(score2) != 0) 
 					 return score2.compareTo(score1);
 				     else
-					 return tuile2.compareTo(tuile2);
+					 return tuile2.compareTo(tuile1);
                                  }
                              });
 
