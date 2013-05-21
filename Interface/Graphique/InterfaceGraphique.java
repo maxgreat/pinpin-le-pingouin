@@ -5,6 +5,7 @@ import java.awt.*;
 import java.awt.event.*;
 import Interface.*;
 import Joueurs.*;
+import java.util.*;
 
 
 public class InterfaceGraphique extends Interface
@@ -23,10 +24,8 @@ public class InterfaceGraphique extends Interface
 		//Boutons
 		panfinal = new JPanel();
 		addBouton(panfinal,"Partie Rapide");
-		addBouton(panfinal,"Partie Personalisé");
-		addBouton(panfinal,"Partie en Réseau");		
+		addBouton(panfinal,"Partie Personalisé");	
 		addBouton(panfinal,"Options");
-		addBouton(panfinal,"Classements");
 		addBouton(panfinal,"Quitter");
 		panfinal.setLayout(new BoxLayout(panfinal, BoxLayout.PAGE_AXIS));
 		frame.add(panfinal);
@@ -73,9 +72,24 @@ public class InterfaceGraphique extends Interface
      }
     public void afficherPanel(String S)
 	{
-	String Old_page = new String("");
+	LinkedList<String> Old_page = new LinkedList<String>();
+		Old_page.push("Menu Principal");
+		if (S.compareTo("Menu Principal") == 0)
+		{
+			frame.remove(panfinal);
+			panfinal = new JPanel();
+			panfinal.setLayout(new BoxLayout(panfinal, BoxLayout.PAGE_AXIS));
+			addBouton(panfinal,"Partie Rapide");
+			addBouton(panfinal,"Partie Personalisé");	
+			addBouton(panfinal,"Options");
+			addBouton(panfinal,"Quitter");
+			frame.add(panfinal);
+			frame.pack();			
+			frame.repaint();
+		}
 		if (S.compareTo("Partie Rapide") == 0 )
 		{
+			
 			frame.remove(panfinal);
 			//definition des joueurs
 			Joueur [] joueurs = new Joueur[2];
@@ -94,20 +108,52 @@ public class InterfaceGraphique extends Interface
 		}
 		if(S.compareTo( "Options") == 0 )
 		{
+			Old_page.push("Options");
 			frame.remove(panfinal);
 			panfinal = new JPanel();
 			panfinal.setLayout(new BoxLayout(panfinal, BoxLayout.PAGE_AXIS));
-			addBouton(panfinal,"Son");
 			addBouton(panfinal,"Gestion de profil");
-				
+			addBouton(panfinal,"Classements");		
+			addBouton(panfinal,"Revenir");
 			frame.add(panfinal);
 			frame.pack();			
 			frame.repaint();
+					
 		}
 		if(S.compareTo( "Quitter") == 0 )
 		{
-		ArbitreManager.stopperPartie();
-		System.exit(0);
+			ArbitreManager.stopperPartie();
+			System.exit(0);
+		}
+		if(S.compareTo( "Partie Personalisé") == 0 )
+		{
+			Old_page.push("Options");
+			frame.remove(panfinal);
+			panfinal = new JPanel();
+			panfinal.setLayout(new GridLayout( 7 , 2) );
+			addBouton(panfinal,"nom du joueur1");
+			addBouton(panfinal,"nom du joueur2");		
+			addBouton(panfinal,"niveau du joueur1");
+			addBouton(panfinal,"niveau du joueur2");
+			addBouton(panfinal,"avatar joueur 1");		
+			addBouton(panfinal,"avatar joueur 2");
+			addBouton(panfinal,"nom du joueur3");
+			addBouton(panfinal,"nom du joueur4");		
+			addBouton(panfinal,"niveau du joueur3");
+			addBouton(panfinal,"niveau du joueur4");
+			addBouton(panfinal,"avatar joueur 3");		
+			addBouton(panfinal,"avatar joueur 4");
+			addBouton(panfinal,"Revenir");
+			frame.add(panfinal);
+			frame.pack();			
+			frame.repaint();
+
+			
+		}
+		if(S.compareTo("Revenir") == 0)
+		{
+			
+			afficherPanel(Old_page.pop());
 		}
 		
 	}
