@@ -9,8 +9,7 @@ import java.io.IOException;
 import java.net.URL;
 
 public class AireDeJeu extends JComponent{
-	
-
+	Hexagone tabCase;
 	JFrame frame;
 	JPanel pan;
 
@@ -30,6 +29,10 @@ public class AireDeJeu extends JComponent{
 		pan = p;
 		largeur = 8;
 		hauteur = 8;
+		
+		//création du tableau de case
+        tabCase = new Hexagone();
+        tabCase.initHexagone();
 	}
 
     public int getHauteur()
@@ -137,7 +140,6 @@ public class AireDeJeu extends JComponent{
 			 
                     }
                 }*/
-					double l,h;
 					double rayonH;
 					double rayonL;
 					
@@ -147,20 +149,22 @@ public class AireDeJeu extends JComponent{
 					double margeHaut = (double)hauteur/8.0;
 					double margeGauche = (double)largeur/8.0;
 					
+					//maj du tableau case
+					tabCase.setTab(rayonH, rayonL, margeHaut, margeGauche);
+					
+					
 					//Tracage des lignes de 7 pavés
 					for(int i=0;i<7;i++){
 						for(int j=0;j<4;j++){
-							l= margeGauche + rayonL + 2.0*rayonL*(double)i;
-							h= margeHaut + (double)j*3.0*rayonH;
 							if(c[j][i] == null){}                  
 							else if(c[j][i].getEtat() == Etat.DEUX_POISSONS){
-								drawable.drawImage(deux_poissons,(int)l,(int)h,(int)(2.0*rayonL),(int)(2.0*rayonH),null);
+								drawable.drawImage(deux_poissons,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
 							}
 							else if(c[j][i].getEtat() == Etat.UN_POISSON){
-								drawable.drawImage(un_poisson,(int)l,(int)h,(int)(2.0*rayonL),(int)(2.0*rayonH),null);
+								drawable.drawImage(un_poisson,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
 							}
 							else if(c[j][i].getEtat() == Etat.TROIS_POISSONS){
-								drawable.drawImage(trois_poissons,(int)l,(int)h,(int)(2.0*rayonL),(int)(2.0*rayonH),null);
+								drawable.drawImage(trois_poissons,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
 							}
 						}
 					}
@@ -168,18 +172,15 @@ public class AireDeJeu extends JComponent{
 					System.out.println("Tracage des lignes de 8, largeur =" + largeur + " hauteur = " + hauteur);
 					for(int i=0;i<8;i++){
 						for(int j=0;j<4;j++){
-							l= margeGauche + (double)i*2.0*rayonL;
-							h= margeHaut + (3.0*rayonH)/2.0 +(double)j*3.0*rayonH;
-							
 							if(c[j][i] == null){}                  
 							else if(c[j][i].getEtat() == Etat.DEUX_POISSONS){
-								drawable.drawImage(deux_poissons,(int)l,(int)h,(int)(2.0*rayonL),(int)(2.0*rayonH),null);
+								drawable.drawImage(deux_poissons,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
 							}
 							else if(c[j][i].getEtat() == Etat.UN_POISSON){
-								drawable.drawImage(un_poisson,(int)l,(int)h,(int)(2.0*rayonL),(int)(2.0*rayonH),null);
+								drawable.drawImage(un_poisson,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
 							}
 							else if(c[j][i].getEtat() == Etat.TROIS_POISSONS){
-								drawable.drawImage(trois_poissons,(int)l,(int)h,(int)(2.0*rayonL),(int)(2.0*rayonH),null);
+								drawable.drawImage(trois_poissons,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
 							}
 						}
 					}
@@ -204,6 +205,8 @@ public class AireDeJeu extends JComponent{
 
     public void click(int x, int y)
     {
+    	Point p = tabCase.estDansHexagone(x,y);
+    	System.out.println("Point p = " + p);
     }
 	
     public void enleverBoutons()
@@ -213,10 +216,14 @@ public class AireDeJeu extends JComponent{
         this.setSize(600,600);
         this.repaint();
         this.setVisible(true);
-	frame.setResizable(true);		
+		frame.setResizable(true);
         frame.add(this);
         frame.setVisible(true);
         frame.pack();
+        
+       
+        
+        
         frame.repaint();
     }
 
