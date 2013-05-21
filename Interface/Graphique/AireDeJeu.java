@@ -24,9 +24,9 @@ public class AireDeJeu extends JComponent{
 	protected int hauteurCase;
 	
 
-	public AireDeJeu(JFrame f, JPanel p){
+	public AireDeJeu(JFrame f ){
 		frame = f;
-		pan = p;
+	
 		largeur = 8;
 		hauteur = 8;
 		
@@ -51,15 +51,15 @@ public class AireDeJeu extends JComponent{
         return cl.getResource("Interface/Graphique/Img/" + nom);
     }
 
-	public void paintComponent(Graphics g){
-		Graphics2D drawable = (Graphics2D) g;
+    public void paintComponent(Graphics g){
+	Graphics2D drawable = (Graphics2D) g;
         BufferedImage un_poisson, deux_poissons, trois_poissons;
 		un_poisson = null;
 		deux_poissons = null;
 		trois_poissons = null;
 
         Arbitre arbitre = ArbitreManager.instance;
-
+	
         if (arbitre == null)
         { //menu demarrer*/
             drawable.setPaint(Color.WHITE);
@@ -211,19 +211,6 @@ public class AireDeJeu extends JComponent{
 	
     public void enleverBoutons()
     {
-        //pan.setVisible(false);
-        frame.remove(pan);
-        this.setSize(600,600);
-        this.repaint();
-        this.setVisible(true);
-		frame.setResizable(true);
-        frame.add(this);
-        frame.setVisible(true);
-        frame.pack();
-        
-       
-        
-        
         frame.repaint();
     }
 
