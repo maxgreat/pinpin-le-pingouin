@@ -10,13 +10,7 @@ public class EcouteurDeSouris implements MouseListener{
 	}
 
 	public void mousePressed(MouseEvent e){
-		int x, y;
-		
-		x = e.getX()/a.largeurCase;
-		y = e.getY()/a.hauteurCase;
-
-		a.click(x, y);
-		System.out.println("Click en " + x + " " + y);
+		a.click(e.getX(), e.getY());
 	}
 	
 	public void mouseEntered(MouseEvent e){}
