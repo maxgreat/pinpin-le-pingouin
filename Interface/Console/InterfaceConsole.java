@@ -113,7 +113,7 @@ public class InterfaceConsole extends Interface
 
 
         // Créé la partie avec les données de base
-        this.joueurs = new Joueur[2];
+        this.joueurs = new Joueur[3];
         //joueurs[0] = new JoueurCPURd();
 	joueurs[0] = new JoueurHumain();
         joueurs[0].setNom("David");
@@ -121,10 +121,10 @@ public class InterfaceConsole extends Interface
 	//        joueurs[1] = new JoueurCPURd();
 	        joueurs[1] = new JoueurHumain();
         joueurs[1].setNom("Goliath");
-	/*
-        joueurs[2] = new JoueurCPURd();
+	
+        joueurs[2] = new JoueurHumain();
         joueurs[2].setNom("CPU_1");
-
+	/*
         joueurs[3] = new JoueurCPURd();
         joueurs[3].setNom("CPU_2");
 	*/

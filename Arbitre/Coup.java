@@ -1,6 +1,8 @@
 package Arbitre;
 
-public class Coup
+import java.io.*;
+
+public class Coup implements Serializable
 {
     protected int xDepart;
     protected int yDepart;
@@ -10,46 +12,51 @@ public class Coup
     public Coup(int xDepart, int yDepart,int xArrivee, int yArrivee)
     {
         this.xDepart = xDepart;
-	     this.yDepart = yDepart;
- 	     this.xArrivee = xArrivee;
-	     this.yArrivee = yArrivee;
+	this.yDepart = yDepart;
+	this.xArrivee = xArrivee;
+	this.yArrivee = yArrivee;
     }
 
     public void setXDepart(int x)
     {
-	     this.xDepart = x;
+	this.xDepart = x;
     }
-	 public void setYDepart(int y)
+    public void setYDepart(int y)
     {
-	     this.yDepart = y;
+	this.yDepart = y;
     }	
 
 
     public void setXArrivee(int x)
     {
-	     this.xArrivee = x;
+	this.xArrivee = x;
     }	
 
     public void setYArrivee(int y)
     {
-	     this.yArrivee = y;
+	this.yArrivee = y;
     }
     
     public int getXDepart()
     {
-	     return xDepart;
+	return xDepart;
     }
     public int getYDepart()
     {
-	     return yDepart;
+	return yDepart;
     }
     
     public int getXArrivee()
     {
-	     return xArrivee;
+	return xArrivee;
     }
     public int getYArrivee()
     {
-	     return yArrivee;
+	return yArrivee;
+    }
+
+    public String toString()
+    {
+	return "("+getXDepart()+", "+getYDepart()+") -> ("+getXArrivee()+", "+getYArrivee()+")";
     }
 }

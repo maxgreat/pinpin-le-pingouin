@@ -11,6 +11,7 @@ public class Configuration implements Cloneable, Serializable
     protected Case [][] terrain;
     protected int joueurSurConfiguration;
     protected int scoreSurConfiguration;
+    protected Coup coupEffectue;
 
 
     public Configuration(int largeur, int hauteur, Case [][] terrain, Joueur joueurSurConfiguration)
@@ -20,6 +21,16 @@ public class Configuration implements Cloneable, Serializable
         this.terrain = terrain;
         this.joueurSurConfiguration = ArbitreManager.instance.getPosition(joueurSurConfiguration);
         this.scoreSurConfiguration = joueurSurConfiguration.getScore();
+    }
+
+    public Configuration(int largeur, int hauteur, Case [][] terrain, Joueur joueurSurConfiguration, Coup coupEffectue)
+    {
+        this.largeur = largeur;
+        this.hauteur = hauteur;
+        this.terrain = terrain;
+        this.joueurSurConfiguration = ArbitreManager.instance.getPosition(joueurSurConfiguration);
+        this.scoreSurConfiguration = joueurSurConfiguration.getScore();
+	this.coupEffectue = coupEffectue;
     }
 
     /**
@@ -66,6 +77,23 @@ public class Configuration implements Cloneable, Serializable
         this.scoreSurConfiguration = scoreSurConfiguration;
     }
             
+    public Coup getCoupEffectue()
+    {
+        return coupEffectue;
+    }
+
+    public void setCoupEffectue(Coup coup)
+    {
+        this.coupEffectue = coup;
+    }
+
+    public int scoreCoupEffectue()
+    {
+	if (coupEffectue.getXArrivee() == -1 && coupEffectue.getYArrivee() == -1)
+	    return 0;
+
+	return terrain[coupEffectue.getYDepart()][coupEffectue.getXDepart()].scorePoisson();
+    }
 
     /**
      * Indique le nombre de pingouins sur le plateau de chaque joueurs
@@ -639,7 +667,7 @@ public class Configuration implements Cloneable, Serializable
             }
         }
 
-        return new Configuration(largeur, hauteur, terrainCopie, getJoueurSurConfiguration());
+        return new Configuration(largeur, hauteur, terrainCopie, getJoueurSurConfiguration(), getCoupEffectue());
     }
 
     /**
@@ -650,6 +678,7 @@ public class Configuration implements Cloneable, Serializable
         // Sauvegarde le joueur en cours et son score
         out.writeInt(ArbitreManager.instance.getPosition(getJoueurSurConfiguration()));
         out.writeInt(getScoreSurConfiguration());
+	out.writeObject((Coup)getCoupEffectue());
 
         for (int i = 0; i < hauteur; i++)
         {
@@ -674,6 +703,7 @@ public class Configuration implements Cloneable, Serializable
 
         setJoueurSurConfiguration(ArbitreManager.instance.getJoueurParPosition(in.readInt()));
         setScoreSurConfiguration(in.readInt());
+	setCoupEffectue((Coup)in.readObject());
 
         for (int i = 0; i < hauteur; i++)
         {
