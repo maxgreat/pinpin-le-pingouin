@@ -30,17 +30,9 @@ public class GestionnaireEntree implements Runnable
 
             needSignalSync = false;
 
-	    /**
+	    
             String couleur = InterfaceConsole.couleurs[ArbitreManager.instance.getPosition(ArbitreManager.instance.getJoueurCourant()) - 1];
-
-            System.out.print("["+couleur+ArbitreManager.instance.getJoueurCourant().getNom()+":"+ArbitreManager.instance.getJoueurCourant().getScore()+InterfaceConsole.RESET+"] ");
-
-	    **/
-	    Joueur j1 = ArbitreManager.instance.getJoueurParPosition(1);
-	    Joueur j2 = ArbitreManager.instance.getJoueurParPosition(2);
-	    Joueur j3 = ArbitreManager.instance.getJoueurParPosition(3);
-
-	    System.out.print("["+j1.getNom()+":"+j1.getScore()+" - "+j2.getNom()+":"+j2.getScore()+" - "+j3.getNom()+":"+j3.getScore()+"] ");
+            System.out.print("["+couleur+ArbitreManager.instance.getJoueurCourant().getNom()+":"+ArbitreManager.instance.getJoueurCourant().getScore()+":"+ArbitreManager.instance.getJoueurCourant().getNombreTuile()+InterfaceConsole.RESET+"] ");
 
             if (ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN)
             {

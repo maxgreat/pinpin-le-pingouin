@@ -350,8 +350,6 @@ public class Configuration implements Cloneable, Serializable
         int xArrivee = c.getXArrivee();
         int yArrivee = c.getYArrivee();
 
-	System.out.println(memeDiagonaleBasGauche(c));
-
         // Vers la droite
         if (versDroite(c))
         {
@@ -430,7 +428,6 @@ public class Configuration implements Cloneable, Serializable
         // Vers le bas gauche
         else if (versBasGauche(c))
         {
-	    System.out.println("Vers bas gauche");
             int l = c.getXDepart();
 	    
             for (int k = c.getYDepart() + 1; k <= c.getYArrivee(); k++)
