@@ -8,8 +8,9 @@ import java.util.*;
  **/
 public class GestionnaireEntree implements Runnable
 {
-    Scanner in = new Scanner(System.in);
-    Signal<Object> signalSyncAffichage = new Signal<Object>();
+    protected Scanner in = new Scanner(System.in);
+    protected Signal<Object> signalSyncAffichage = new Signal<Object>();
+    public InterfaceConsole inter;
 
     public Signal<Object> getSignalSync()
     {
@@ -39,10 +40,6 @@ public class GestionnaireEntree implements Runnable
             else
             {
                 System.out.println("Veuillez entrer un coup (ou quit) sous la forme xDepart yDepart xArrivée yArrivée :");
-                Coup [] listeCoup = ArbitreManager.instance.getConfiguration().toutCoupsPossibles();
-
-                for (int i = 0; i < listeCoup.length; i++)
-                    System.out.println("("+listeCoup[i].getXDepart()+", "+listeCoup[i].getYDepart()+") -> ("+listeCoup[i].getXArrivee()+", "+listeCoup[i].getYArrivee()+")");
             }
 
             String command = in.nextLine();
@@ -69,6 +66,45 @@ public class GestionnaireEntree implements Runnable
             {
                 // Annuler dernier coup
                 ArbitreManager.instance.avancerHistorique();
+                needSignalSync = false;
+                continue;
+            }
+
+	    // Refresh l'interface
+            if ("refresh".equals(command.trim()))
+            {
+		inter.repaint();
+                needSignalSync = false;
+                continue;
+            }
+
+            // Refait le dernier coup
+            if ("liste".equals(command.trim()))
+            {
+		// Affiche l'ensemble des coups possibles
+		Coup [] listeCoup = ArbitreManager.instance.getConfiguration().toutCoupsPossibles();
+		
+                for (int i = 0; i < listeCoup.length; i++)
+                    System.out.println("("+listeCoup[i].getXDepart()+", "+listeCoup[i].getYDepart()+") -> ("+listeCoup[i].getXArrivee()+", "+listeCoup[i].getYArrivee()+")");
+		
+                needSignalSync = false;
+                continue;
+            }
+
+	    // Sauvegarde la configuration
+            if (command.trim().startsWith("save "))
+            {
+                String filename = command.trim().substring("save ".length());
+                ArbitreManager.sauvegarderPartie(filename);
+                needSignalSync = false;
+                continue;
+            }
+
+	    // Charge la configuration
+            if (command.trim().startsWith("load "))
+            {
+                String filename = command.trim().substring("load ".length());
+                ArbitreManager.chargerPartie(filename);
                 needSignalSync = false;
                 continue;
             }

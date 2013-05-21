@@ -266,63 +266,42 @@ public class ArbitreManager
 
         System.out.println("Chargement de la partie depuis "+filename);
 
-        File file = new File(filename);
-        String data = "";
-        try 
-        {
-            Scanner scanner = new Scanner(file);
-	    
-            while (scanner.hasNextLine()) 
-                data += scanner.nextLine();
+	Arbitre arbitre = null;
 
-            scanner.close();
+	try
+	{
+	    FileInputStream fstream = new FileInputStream(filename);
+	    ObjectInputStream in = new ObjectInputStream(fstream);
+            
+	    Sauvegarde save = new Sauvegarde();
+	    arbitre = save.load(in);
         } 
         catch (FileNotFoundException e) 
         {
             System.err.println("Impossible de charger le fichier "+filename);
             return;
         }
-
-/**
-        Sauvegarde save = new Sauvegarde();
-        ListIterator<Configuration> listConfig = save.readXml(data);
-	
-        if (listConfig == null || !listConfig.hasNext())
-        {
-            System.err.println("Impossible de parser la sauvegarde "+filename);
+	catch(IOException e)
+	{
+	    System.out.println(e);
+            System.err.println("Impossible de charger le fichier "+filename);
             return;
         }
 
 
 	
-	Joueur joueur1 = null;
-	Joueur joueur2 = null;
-
-	if (save.getJoueurEnCours() == 1)
-	{
-	    joueur1 = Joueur.getJoueurByName(save.getJoueur1());
-	    joueur2 = Joueur.getJoueurByName(save.getJoueur2());
-	}
-	else
-	{   
-	    joueur1 = Joueur.getJoueurByName(save.getJoueur2());
-	    joueur2 = Joueur.getJoueurByName(save.getJoueur1());
-	}
-
-	System.out.println(joueur1.getNom());
-	System.out.println(joueur2.getNom());
-
-        Interface inter = instance.getInterface();
-        int largeur = save.getLargeur();
-        int hauteur = save.getHauteur();
+        if (arbitre == null)
+        {
+            System.err.println("Impossible de parser la sauvegarde "+filename);
+            return;
+        }
+	
+	Interface inter = instance.getInterface();
 
         stopperPartie();
-        initialiserPartie(joueur1, joueur2, largeur, hauteur, inter);
-        instance.chargerPartie(save);
-        lancerPartie();
-    }
-**/
-        System.out.println("TODO: implanter chargement");
+	instance = arbitre;
+	arbitre.chargerPartie(inter);
+	lancerPartie();
     }
             
 }

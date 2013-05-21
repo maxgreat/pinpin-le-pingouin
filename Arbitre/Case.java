@@ -5,7 +5,7 @@ import java.io.*;
 public class Case implements Cloneable, Serializable
 {
     protected Etat e;
-    protected Joueur joueurSurCase;
+    protected int position;
 
     /**
      * Une case est caractérisé par son état et
@@ -14,17 +14,23 @@ public class Case implements Cloneable, Serializable
     public Case(Etat e, Joueur joueurSurCase)
     {
         this.e = e;
-        this.joueurSurCase = joueurSurCase;
+        this.position = ArbitreManager.instance.getPosition(joueurSurCase);
     }
 
     public Joueur getJoueurSurCase()
     {
-        return joueurSurCase;
+	if (this.position == 0)
+	    return null;
+
+        return ArbitreManager.instance.getJoueurParPosition(position);
     }
 
     public void setJoueurSurCase(Joueur joueurSurCase)
     {
-        this.joueurSurCase = joueurSurCase;
+	if (joueurSurCase == null)
+	    this.position = 0;
+	else
+	    this.position = ArbitreManager.instance.getPosition(joueurSurCase);
     }
 
     public Etat getEtat()
@@ -50,7 +56,7 @@ public class Case implements Cloneable, Serializable
      **/
     public boolean estObstacle()
     {
-        return estVide() || joueurSurCase != null;
+        return estVide() || getJoueurSurCase() != null;
     }
 
     /**
@@ -74,7 +80,7 @@ public class Case implements Cloneable, Serializable
 
     public Case clone()
     {
-        return new Case(e, joueurSurCase);
+        return new Case(e, getJoueurSurCase());
     }
 
     /**
@@ -97,15 +103,11 @@ public class Case implements Cloneable, Serializable
      **/
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
     { 
-        Joueur joueur = null;
         int position = in.readInt();
+	Etat e = (Etat)in.readObject();
 
-        if (position != 0)
-            joueur = ArbitreManager.instance.getJoueurParPosition(position);
-
-        setJoueurSurCase(joueur);
-
-        setEtat((Etat)in.readObject());
+        this.position = position;
+        setEtat(e);
     }
 
     /**

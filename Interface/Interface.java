@@ -1,4 +1,5 @@
 package Interface;
+import Joueurs.*;
 
 public interface Interface
 {
@@ -11,4 +12,9 @@ public interface Interface
      * run() lance les différentes actions à effectuer
      **/
     public void run(String [] args);
+
+    /**
+     * Garde en mémoire les joueurs
+     **/
+    public void setJoueurs(Joueur [] joueurs);
 }

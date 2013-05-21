@@ -11,27 +11,18 @@ public class Sauvegarde
     /**
      * Retour l'arbitre serializé contenant les données à écrire
      **/
-    public String getXml()
+    public void save(FileOutputStream fstream) throws IOException
     {
-        try
-        {
-            ByteArrayOutputStream outByte = new ByteArrayOutputStream();
-            ObjectOutputStream out = new ObjectOutputStream(outByte);
-            out.writeObject(this.arbitre);
-            
-            return outByte.toString();
-        }
-        catch (IOException e)
-        {
-            System.out.println(e);
-            return null;
-        }
+	ObjectOutputStream out = new ObjectOutputStream(fstream);
+	out.writeObject(this.arbitre);
+	out.flush();
+	out.close();
     }
     
     /**
      * Lis une chaine serialisée et retourne l'arbitre correspondant
      **/
-    public Arbitre readXml(ObjectInputStream in)
+    public Arbitre load(ObjectInputStream in)
     {
         try
         {

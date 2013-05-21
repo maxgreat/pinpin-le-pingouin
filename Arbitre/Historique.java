@@ -67,6 +67,14 @@ public class Historique implements Serializable
         return pileAvant.peek();
     }
 
+    /**
+     * Retourne la configuration en cours
+     **/
+    public Configuration courante()
+    {
+	return pileAvant.peek();
+    }
+
 
     /**
      * Prédicat pour savoir si on peut avancer
