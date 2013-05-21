@@ -38,7 +38,9 @@ public class GestionnaireEntree implements Runnable
 	    **/
 	    Joueur j1 = ArbitreManager.instance.getJoueurParPosition(1);
 	    Joueur j2 = ArbitreManager.instance.getJoueurParPosition(2);
-	    System.out.print("["+j1.getNom()+":"+j1.getScore()+" - "+j2.getNom()+":"+j2.getScore()+"] ");
+	    Joueur j3 = ArbitreManager.instance.getJoueurParPosition(3);
+
+	    System.out.print("["+j1.getNom()+":"+j1.getScore()+" - "+j2.getNom()+":"+j2.getScore()+" - "+j3.getNom()+":"+j3.getScore()+"] ");
 
             if (ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN)
             {

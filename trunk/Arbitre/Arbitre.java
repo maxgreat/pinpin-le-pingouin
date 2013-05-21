@@ -123,6 +123,7 @@ public class Arbitre implements Runnable, Serializable
                 break;
 
             // Lance le coup proposé
+	    getConfiguration().setCoupEffectue(coup);
             int score = configurationSuivante.effectuerCoup(coup);
 
             // Met à jour le score du joueur
@@ -142,7 +143,7 @@ public class Arbitre implements Runnable, Serializable
                 // 4 joueurs, 8 pions
                 if ((joueurs.length == 2 && totalPions == 8) ||
                     (joueurs.length == 3 && totalPions == 9) ||
-                    (joueurs.length == 4 && totalPions == 10))
+                    (joueurs.length == 4 && totalPions == 8))
                     setMode(ModeDeJeu.JEU_COMPLET);
             }
 
@@ -153,7 +154,7 @@ public class Arbitre implements Runnable, Serializable
                 tourJoueur = (tourJoueur % joueurs.length) + 1;
                 setJoueurCourant(getJoueurParPosition(tourJoueur));
                 configurationSuivante.setJoueurSurConfiguration(getJoueurParPosition(tourJoueur));
-                
+		configurationSuivante.setScoreSurConfiguration(configurationSuivante.getJoueurSurConfiguration().getScore());
                 totalPouvantJouer--;
 
             } while (totalPouvantJouer >= 0 && 
@@ -304,13 +305,20 @@ public class Arbitre implements Runnable, Serializable
     }
 
     /**
-     * Avance dans l'historique
+     * Avance dans l'historique (refaire)
      **/
     public void avancerHistorique()
     {
         Configuration c = historique.avance();
         if (c != null)
         {
+
+	    // Restaure le score du joueur
+	    System.out.println("Score de "+getConfiguration().getJoueurSurConfiguration().getNom());
+	    System.out.println(getConfiguration().scoreCoupEffectue());
+	    System.out.println(getConfiguration().getCoupEffectue());
+	    getConfiguration().getJoueurSurConfiguration().setScore(getConfiguration().getJoueurSurConfiguration().getScore() + getConfiguration().scoreCoupEffectue());
+
             // Stop le thread pour lui indique le changement de joueur
             ArbitreManager.instanceThread.interrupt();
 
@@ -318,14 +326,12 @@ public class Arbitre implements Runnable, Serializable
             configurationCourante = c;
             setJoueurCourant(c.getJoueurSurConfiguration());
 
-	    // Restaure le score du joueur
-	    c.getJoueurSurConfiguration().setScore(c.getScoreSurConfiguration());
             inter.repaint();
         }
     }
 
     /**
-     * Recule dans l'historique
+     * Recule dans l'historique (annuler)
      **/
     public void reculerHistorique()
     {
@@ -340,7 +346,7 @@ public class Arbitre implements Runnable, Serializable
             setJoueurCourant(c.getJoueurSurConfiguration());
 	    
 	    // Restaure le score du joueur
-	    c.getJoueurSurConfiguration().setScore(c.getScoreSurConfiguration());
+	    getJoueurCourant().setScore(c.getScoreSurConfiguration());
             inter.repaint();
         }
     }
