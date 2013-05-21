@@ -8,6 +8,8 @@ class Hexagone{
 	public double hauteur;
 	double rayonL;
 	double rayonH;
+	double margeHaut;
+	double margeGauche;
 	
 	public void initHexagone(){
 		centres = new Point[8][8];
@@ -24,7 +26,8 @@ class Hexagone{
 		hauteur = 2.0*rayonH;
 		this.rayonL = rayonL;
 		this.rayonH = rayonH;
-		
+		this.margeHaut = margeHaut;
+		this.margeGauche = margeGauche;
 		
 		for(int i=0;i<7;i++){
 	    	for(int j=0;j<4;j++){
@@ -63,20 +66,20 @@ class Hexagone{
 	
 	public Point estDansHexagone(int x, int y){
 		Point p = new Point(0,0);
+		int colonne = 0;
+		double min = largeur;
+		double distance;
+		Point v;
 		
-		for(int i = 0; i < 8; i++){
-			for(int j = 0; j < 8; j++){
-				if(centres[i][j] != null){
-					if(x != 7){
-						if(x < centres[i][j].x + (int)rayonL){
-							if(x > centres[i][j].x - (int)rayonL){ //ligne ok
-								p.x = i; 
-							}
-						}
-						if(y < centres[i][j].y + (int)rayonH){
-							if(y > centres[i][j].y - (int)rayonH){ //ligne ok
-								p.y = j; 
-							}
+		if(y > margeHaut && x > margeGauche){
+			for(int i = 0; i < 8; i++){
+				for(int j = 0; j < 8; j++){
+					if(centres[i][j] != null){
+						v = new Point(centres[i][j].x - x, centres[i][j].y - y);
+						distance = Math.sqrt(v.x*v.x + v.y*v.y);
+						if(distance < min){
+							min = distance;
+							p = new Point(i,j);
 						}
 					}
 				}

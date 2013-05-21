@@ -187,19 +187,6 @@ public class AireDeJeu extends JComponent{
 
 				}
 
-
-  /* 
-            //Affichage de la grille
-            drawable.setPaint(Color.black);
-
-							
-            for(int i = 1; i < hauteur; i++){
-                drawable.drawLine(0,hauteurCase*i,getSize().width, hauteurCase*i);
-            }
-            for(int i = 1; i < largeur; i++){
-                drawable.drawLine(largeurCase*i, 0, largeurCase*i, getSize().height);
-            }*/
-
         }
     }
 
@@ -207,11 +194,6 @@ public class AireDeJeu extends JComponent{
     { 
     	Point p = tabCase.estDansHexagone(x,y);
     	System.out.println("Point p = " + p);
-    }
-	
-    public void enleverBoutons()
-    {
-        frame.repaint();
     }
 
 }
