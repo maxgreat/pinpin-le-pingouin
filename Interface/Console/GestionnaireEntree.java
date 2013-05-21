@@ -1,8 +1,11 @@
 package Interface.Console;
 
 import Arbitre.*;
+import Arbitre.Regles.*;
 import Joueurs.*;
 import java.util.*;
+
+import Utilitaires.*;
 
 /**
  * Classe de gestion d'entrées-sortie

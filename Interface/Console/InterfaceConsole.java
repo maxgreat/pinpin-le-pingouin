@@ -3,6 +3,8 @@ package Interface.Console;
 import Interface.*;
 import Joueurs.*;
 import Arbitre.*;
+import Arbitre.Regles.*;
+import Utilitaires.*;
 
 import java.util.*;
 

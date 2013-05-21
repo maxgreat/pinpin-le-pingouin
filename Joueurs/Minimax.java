@@ -1,5 +1,7 @@
 package Joueurs;
 import Arbitre.*;
+import Arbitre.Regles.*;
+import Utilitaires.*;
 import java.util.Random;
 
 

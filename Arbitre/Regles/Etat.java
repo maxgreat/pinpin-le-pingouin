@@ -1,4 +1,4 @@
-package Arbitre;
+package Arbitre.Regles;
 
 public enum Etat
 {

@@ -1,5 +1,6 @@
 package Joueurs;
-import Arbitre.*;
+import Arbitre.Regles.*;
+import Utilitaires.*;
 import java.io.*;
 
 public abstract class Joueur implements Serializable

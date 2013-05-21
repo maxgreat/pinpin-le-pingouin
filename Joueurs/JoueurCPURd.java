@@ -1,5 +1,6 @@
 package Joueurs;
 import Arbitre.*;
+import Arbitre.Regles.*;
 import java.util.Random;
 
 public class JoueurCPURd extends Joueur

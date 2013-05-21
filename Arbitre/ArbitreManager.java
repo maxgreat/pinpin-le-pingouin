@@ -2,6 +2,7 @@ package Arbitre;
 
 import Joueurs.*;
 import Interface.*;
+import Arbitre.Regles.*;
 
 import java.io.*;
 import java.util.*;
@@ -266,24 +267,24 @@ public class ArbitreManager
 
         System.out.println("Chargement de la partie depuis "+filename);
 
-	Arbitre arbitre = null;
+        Arbitre arbitre = null;
 
-	try
-	{
-	    FileInputStream fstream = new FileInputStream(filename);
-	    ObjectInputStream in = new ObjectInputStream(fstream);
+        try
+        {
+            FileInputStream fstream = new FileInputStream(filename);
+            ObjectInputStream in = new ObjectInputStream(fstream);
             
-	    Sauvegarde save = new Sauvegarde();
-	    arbitre = save.load(in);
+            Sauvegarde save = new Sauvegarde();
+            arbitre = save.load(in);
         } 
         catch (FileNotFoundException e) 
         {
             System.err.println("Impossible de charger le fichier "+filename);
             return;
         }
-	catch(IOException e)
-	{
-	    System.out.println(e);
+        catch(IOException e)
+        {
+            System.out.println(e);
             System.err.println("Impossible de charger le fichier "+filename);
             return;
         }
@@ -296,12 +297,12 @@ public class ArbitreManager
             return;
         }
 	
-	Interface inter = instance.getInterface();
+        Interface inter = instance.getInterface();
 
         stopperPartie();
-	instance = arbitre;
-	arbitre.chargerPartie(inter);
-	lancerPartie();
+        instance = arbitre;
+        arbitre.chargerPartie(inter);
+        lancerPartie();
     }
             
 }

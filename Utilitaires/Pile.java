@@ -1,4 +1,4 @@
-package Arbitre;
+package Utilitaires;
 import java.util.*;
 import java.io.*;
 
@@ -55,6 +55,7 @@ public class Pile<T> implements Serializable
     /**
      * Charge les données à partir d'une chaine serialize
      **/
+    @SuppressWarnings("unchecked")
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
     { 
         pile = (ArrayList<T>)in.readObject();
