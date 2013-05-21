@@ -113,21 +113,20 @@ public class InterfaceConsole extends Interface
 
 
         // Créé la partie avec les données de base
-        this.joueurs = new Joueur[3];
+        this.joueurs = new Joueur[4];
         //joueurs[0] = new JoueurCPURd();
-	joueurs[0] = new JoueurHumain();
+	joueurs[0] = new JoueurCPURd();
         joueurs[0].setNom("David");
 
-	//        joueurs[1] = new JoueurCPURd();
-	        joueurs[1] = new JoueurHumain();
+	joueurs[1] = new JoueurCPURd();
         joueurs[1].setNom("Goliath");
 	
-        joueurs[2] = new JoueurHumain();
+        joueurs[2] = new JoueurCPURd();
         joueurs[2].setNom("CPU_1");
-	/*
+	
         joueurs[3] = new JoueurCPURd();
         joueurs[3].setNom("CPU_2");
-	*/
+	
         System.out.print("Début du jeu en 8*8 avec deux joueurs humains : ");
         System.out.print(RED+joueurs[0].getNom()+RESET);
         System.out.print(" et ");
@@ -165,14 +164,21 @@ public class InterfaceConsole extends Interface
                              {
                                  public int compare(Joueur j1, Joueur j2) 
                                  {
-                                     Integer a = new Integer(j1.getScore());
-                                     Integer b = new Integer(j2.getScore());
-                                     return b.compareTo(a);
+                                     Integer score1 = new Integer(j1.getScore());
+                                     Integer score2 = new Integer(j2.getScore());
+				     Integer tuile1 = new Integer(j1.getNombreTuile());
+				     Integer tuile2 = new Integer(j2.getNombreTuile());
+				     
+				     if (score1.compareTo(score2) != 0) 
+					 return score2.compareTo(score1);
+				     else
+					 return tuile2.compareTo(tuile2);
                                  }
                              });
 
             // Affichage des rangs cohérents
             int lastScore = -1;
+	    int lastTuile = -1;
             int rang = 1;
             int decalage = 0;
 
@@ -182,7 +188,7 @@ public class InterfaceConsole extends Interface
 
                 if (lastScore != -1)
                 {
-                    if (lastScore == joueur.getScore())
+                    if (lastScore == joueur.getScore() && lastTuile == joueur.getNombreTuile())
                     {
                         decalage++;
                     }
@@ -194,8 +200,9 @@ public class InterfaceConsole extends Interface
                 }
 
                 lastScore = joueur.getScore();
-                System.out.println(String.valueOf(rang)+" : "+joueur.getNom()+" - "+joueur.getScore());                    
-                    
+		lastTuile = joueur.getNombreTuile();
+
+                System.out.println(String.valueOf(rang)+" : "+joueur.getNom()+" - "+joueur.getScore()+" - "+joueur.getNombreTuile());                    
             }
             
         }

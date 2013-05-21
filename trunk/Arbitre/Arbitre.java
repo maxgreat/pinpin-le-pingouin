@@ -146,6 +146,11 @@ public class Arbitre implements Runnable, Serializable
                     (joueurs.length == 4 && totalPions == 8))
                     setMode(ModeDeJeu.JEU_COMPLET);
             }
+	    // Vient de gagner une tuile
+	    else if (getMode() == ModeDeJeu.JEU_COMPLET)
+	    {
+		getJoueurCourant().incrementNombreTuile();
+	    }
 
             // Change de joueur (en prenant en compte ceux qui peuvent jouer)
             int totalPouvantJouer = joueurs.length;
@@ -319,6 +324,8 @@ public class Arbitre implements Runnable, Serializable
 	    System.out.println(getConfiguration().getCoupEffectue());
 	    getConfiguration().getJoueurSurConfiguration().setScore(getConfiguration().getJoueurSurConfiguration().getScore() + getConfiguration().scoreCoupEffectue());
 
+	    getConfiguration().getJoueurSurConfiguration().incrementNombreTuile();
+
             // Stop le thread pour lui indique le changement de joueur
             ArbitreManager.instanceThread.interrupt();
 
@@ -347,6 +354,7 @@ public class Arbitre implements Runnable, Serializable
 	    
 	    // Restaure le score du joueur
 	    getJoueurCourant().setScore(c.getScoreSurConfiguration());
+	    getJoueurCourant().decrementNombreTuile();
             inter.repaint();
         }
     }

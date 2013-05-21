@@ -18,7 +18,7 @@ public class JoueurCPURd extends Joueur
 		Coup [] coupPossible = ArbitreManager.instance.getConfiguration().toutCoupsPossibles();
         try
         {
-            Thread.sleep(100);
+            Thread.sleep(0);
         }
         catch (InterruptedException e)
         {

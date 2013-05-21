@@ -6,6 +6,7 @@ public abstract class Joueur implements Serializable
 {
     protected Signal<Coup> signalCoup;
     protected int score = 0;
+    protected int nombreTuile = 0;
     protected String nom;
     
     
@@ -49,6 +50,26 @@ public abstract class Joueur implements Serializable
         this.score = score;
     }
 
+    public int getNombreTuile()
+    {
+        return nombreTuile;
+    }
+
+    public void setNombreTuile(int tuile)
+    {
+        this.nombreTuile = tuile;
+    }
+
+    public void incrementNombreTuile()
+    {
+	this.nombreTuile++;
+    }
+
+    public void decrementNombreTuile()
+    {
+	this.nombreTuile--;
+    }
+
     /**
      * Gestion du nom du joueur
      **/
@@ -68,6 +89,7 @@ public abstract class Joueur implements Serializable
     private void writeObject(ObjectOutputStream out) throws IOException
     {
 	out.writeInt(getScore());
+	out.writeInt(getNombreTuile());
 	out.writeObject(getNom());
     }
 
@@ -77,6 +99,7 @@ public abstract class Joueur implements Serializable
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
     { 
 	setScore(in.readInt());
+	setNombreTuile(in.readInt());
 	setNom((String)in.readObject());
 	signalCoup = new Signal<Coup>();
     }
