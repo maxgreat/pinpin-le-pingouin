@@ -1,15 +1,28 @@
+MAKE=make
 CC=javac
 JAVAOBJ=$(wildcard *.java)
 OBJ=$(patsubst %.java, %.class, $(JAVAOBJ))
-JFLAGS=-classpath ../
+JFLAGS=-classpath ../:.
+SUBDIRS=Regles
+CLEANDIRS=$(SUBDIRS:%=clean-%)
 
-all: $(OBJ) $(JAVAOBJ)
+all: $(OBJ) $(JAVAOBJ) $(SUBDIRS)
 
 %.class: %.java
 	$(CC) $(JFLAGS) $<
 
 
-.PHONY: clean
+.PHONY: subdirs $(SUBDIRS) clean
+.PHONY: subdirs $(CLEANDIRS)
 
-clean:
+
+subdirs: $(SUBDIRS)
+
+$(SUBDIRS):
+	$(MAKE) -C $@
+
+clean: $(CLEANDIRS)
 	rm -rf *.class *~
+
+$(CLEANDIRS):
+	$(MAKE) -C $(@:clean-%=%) clean

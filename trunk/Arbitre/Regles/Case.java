@@ -1,4 +1,6 @@
-package Arbitre;
+package Arbitre.Regles;
+
+import Arbitre.*;
 import Joueurs.*;
 import java.io.*;
 

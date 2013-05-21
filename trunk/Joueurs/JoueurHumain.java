@@ -1,5 +1,7 @@
 package Joueurs;
+
 import Arbitre.*;
+import Arbitre.Regles.*;
 
 public class JoueurHumain extends Joueur
 {

@@ -1,8 +1,9 @@
-package Arbitre;
+package Arbitre.Regles;
 
 import java.util.*;
 import Joueurs.*;
 import java.io.*;
+import Arbitre.*;
 
 public class Configuration implements Cloneable, Serializable
 {
@@ -30,7 +31,7 @@ public class Configuration implements Cloneable, Serializable
         this.terrain = terrain;
         this.joueurSurConfiguration = ArbitreManager.instance.getPosition(joueurSurConfiguration);
         this.scoreSurConfiguration = joueurSurConfiguration.getScore();
-	this.coupEffectue = coupEffectue;
+        this.coupEffectue = coupEffectue;
     }
 
     /**
@@ -53,16 +54,16 @@ public class Configuration implements Cloneable, Serializable
 
     public Joueur getJoueurSurConfiguration()
     {
-	if (joueurSurConfiguration == 0)
-	    return null;
+        if (joueurSurConfiguration == 0)
+            return null;
 
         return ArbitreManager.instance.getJoueurParPosition(joueurSurConfiguration);
     }
 
     public void setJoueurSurConfiguration(Joueur joueur)
     {
-	if (joueur == null)
-	    joueurSurConfiguration = 0;
+        if (joueur == null)
+            joueurSurConfiguration = 0;
 
         this.joueurSurConfiguration = ArbitreManager.instance.getPosition(joueur);
     }
@@ -89,10 +90,10 @@ public class Configuration implements Cloneable, Serializable
 
     public int scoreCoupEffectue()
     {
-	if (coupEffectue.getXArrivee() == -1 && coupEffectue.getYArrivee() == -1)
-	    return 0;
+        if (coupEffectue.getXArrivee() == -1 && coupEffectue.getYArrivee() == -1)
+            return 0;
 
-	return terrain[coupEffectue.getYDepart()][coupEffectue.getXDepart()].scorePoisson();
+        return terrain[coupEffectue.getYDepart()][coupEffectue.getXDepart()].scorePoisson();
     }
 
     /**
@@ -435,7 +436,7 @@ public class Configuration implements Cloneable, Serializable
                 if (k%2 == 0)
                     l--;
 		
-		System.out.println("Test "+k+", "+l);
+                System.out.println("Test "+k+", "+l);
                 if (terrain[k][l].estObstacle())
                     return false;
             }
@@ -679,7 +680,7 @@ public class Configuration implements Cloneable, Serializable
         // Sauvegarde le joueur en cours et son score
         out.writeInt(ArbitreManager.instance.getPosition(getJoueurSurConfiguration()));
         out.writeInt(getScoreSurConfiguration());
-	out.writeObject((Coup)getCoupEffectue());
+        out.writeObject((Coup)getCoupEffectue());
 
         for (int i = 0; i < hauteur; i++)
         {
@@ -698,20 +699,20 @@ public class Configuration implements Cloneable, Serializable
      **/
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
     {   
-	hauteur = ArbitreManager.instance.getHauteur();
-	largeur = ArbitreManager.instance.getLargeur();
+        hauteur = ArbitreManager.instance.getHauteur();
+        largeur = ArbitreManager.instance.getLargeur();
         terrain = new Case[hauteur][largeur];
 
         setJoueurSurConfiguration(ArbitreManager.instance.getJoueurParPosition(in.readInt()));
         setScoreSurConfiguration(in.readInt());
-	setCoupEffectue((Coup)in.readObject());
+        setCoupEffectue((Coup)in.readObject());
 
         for (int i = 0; i < hauteur; i++)
         {
             for (int j = 0; j < largeur; j++)
             {
-		if (i%2 == 0&& j == largeur - 1)
-		    continue;
+                if (i%2 == 0&& j == largeur - 1)
+                    continue;
 
                 terrain[i][j] = (Case)in.readObject();
             }

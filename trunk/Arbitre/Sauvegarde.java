@@ -13,10 +13,10 @@ public class Sauvegarde
      **/
     public void save(FileOutputStream fstream) throws IOException
     {
-	ObjectOutputStream out = new ObjectOutputStream(fstream);
-	out.writeObject(this.arbitre);
-	out.flush();
-	out.close();
+        ObjectOutputStream out = new ObjectOutputStream(fstream);
+        out.writeObject(this.arbitre);
+        out.flush();
+        out.close();
     }
     
     /**

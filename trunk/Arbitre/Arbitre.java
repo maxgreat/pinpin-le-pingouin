@@ -1,6 +1,9 @@
 package Arbitre;
+
 import Joueurs.*;
 import Interface.*;
+import Arbitre.Regles.*;
+import Utilitaires.*;
 
 import java.io.*;
 import java.util.*;

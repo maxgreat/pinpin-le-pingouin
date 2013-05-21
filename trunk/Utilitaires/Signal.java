@@ -1,4 +1,4 @@
-package Arbitre;
+package Utilitaires;
 
 /**
  * Classe permettant d'envoyer des signaux

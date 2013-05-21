@@ -8,6 +8,8 @@ import javax.imageio.*;
 import java.io.IOException;
 import java.net.URL;
 
+import Arbitre.Regles.*;
+
 public class AireDeJeu extends JComponent{
 	Hexagone tabCase;
 	JFrame frame;
