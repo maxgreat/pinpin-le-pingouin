@@ -16,7 +16,9 @@ public class InterfaceGraphique extends Interface
     {		
 		//Fenetre principale
 		frame = new JFrame("pinpin le pingouin");
-
+		frame.setResizable(true);
+		frame.setPreferredSize(new Dimension(300,300));
+		frame.pack();
 		//Aire de dessin
 		//Boutons
 		panfinal = new JPanel();
@@ -41,7 +43,7 @@ public class InterfaceGraphique extends Interface
 			}
 		    });
 
-		frame.setSize(300,300);
+		;
 		frame.setVisible(true);
     }
 
@@ -71,6 +73,7 @@ public class InterfaceGraphique extends Interface
      }
     public void afficherPanel(String S)
 	{
+	String Old_page = new String("");
 		if (S.compareTo("Partie Rapide") == 0 )
 		{
 			frame.remove(panfinal);
@@ -87,7 +90,24 @@ public class InterfaceGraphique extends Interface
 			aire.repaint();
 			aire.setVisible(true);
 			frame.repaint();
-			frame.pack();		
+			frame.pack();	
+		}
+		if(S.compareTo( "Options") == 0 )
+		{
+			frame.remove(panfinal);
+			panfinal = new JPanel();
+			panfinal.setLayout(new BoxLayout(panfinal, BoxLayout.PAGE_AXIS));
+			addBouton(panfinal,"Son");
+			addBouton(panfinal,"Gestion de profil");
+				
+			frame.add(panfinal);
+			frame.pack();			
+			frame.repaint();
+		}
+		if(S.compareTo( "Quitter") == 0 )
+		{
+		ArbitreManager.stopperPartie();
+		System.exit(0);
 		}
 		
 	}
