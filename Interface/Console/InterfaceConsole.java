@@ -115,19 +115,19 @@ public class InterfaceConsole extends Interface
 
 
         // Créé la partie avec les données de base
-        this.joueurs = new Joueur[4];
+        this.joueurs = new Joueur[2];
         //joueurs[0] = new JoueurCPURd();
-	joueurs[0] = new JoueurCPURd();
+	joueurs[0] = new JoueurCPUFacile();
         joueurs[0].setNom("David");
 
-	joueurs[1] = new JoueurCPURd();
+	joueurs[1] = new JoueurCPUMinimax();
         joueurs[1].setNom("Goliath");
 	
-        joueurs[2] = new JoueurCPURd();
+	/*   joueurs[2] = new JoueurCPURd();
         joueurs[2].setNom("CPU_1");
 	
         joueurs[3] = new JoueurCPURd();
-        joueurs[3].setNom("CPU_2");
+        joueurs[3].setNom("CPU_2");*/
 	
         System.out.print("Début du jeu en 8*8 avec deux joueurs humains : ");
         System.out.print(RED+joueurs[0].getNom()+RESET);

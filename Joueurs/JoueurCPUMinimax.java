@@ -7,9 +7,9 @@ public class JoueurCPUMinimax extends Joueur
 {
     /**
      * Temps d'attente minimal en seconde
-     * 2 secondes
+     * 5 secondes
      **/
-    static final long TEMPS_ATTENTE_MINIMAL = 2000; 
+    static final long TEMPS_ATTENTE_MINIMAL = 5000; 
 
     public static String getType()
     {
@@ -18,34 +18,40 @@ public class JoueurCPUMinimax extends Joueur
 
     public Coup coupSuivant()
     {
-        // Créé l'algo minimax
-        Minimax mini  = new Minimax(this);
-
-        Thread t = new Thread(mini);
-        long startMilli = System.currentTimeMillis();
-        t.start();
-
-        Coup c = mini.getSignalCoup().attendreSignal();
-
-        // Demande de stop forcé
-        if (c == null)
-        {
-            t.interrupt();
-            return null;
-        }
-        long stopMilli = System.currentTimeMillis();
+	    // Phase de placement
+	    if (ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN) {
+		    Random r = new Random();
+		    Coup [] placementPossible = ArbitreManager.instance.getConfiguration().toutPlacementsPossibles();
+		    return placementPossible[r.nextInt(placementPossible.length)];
+	    }
+	    // Créé l'algo minimax
+	    Minimax mini  = new Minimax(this, 2, ArbitreManager.instance);
 	    
-        try
-        {
-            if (stopMilli - startMilli < JoueurCPUMinimax.TEMPS_ATTENTE_MINIMAL)
-                Thread.sleep(JoueurCPUMinimax.TEMPS_ATTENTE_MINIMAL - (stopMilli - startMilli));
-        }
-        catch (InterruptedException e)
-        {
-            // Stop forcé, renvoie null
-            return null;
-        }
-
+	    Thread t = new Thread(mini);
+	    long startMilli = System.currentTimeMillis();
+	    t.start();
+	    
+	    Coup c = mini.getSignalCoup().attendreSignal();
+	    System.out.println(c);
+	    // Demande de stop forcé
+	    if (c == null)
+		    {
+			    t.interrupt();
+			    return null;
+		    }
+	    long stopMilli = System.currentTimeMillis();
+	    
+	    try
+		    {
+			    if (stopMilli - startMilli < JoueurCPUMinimax.TEMPS_ATTENTE_MINIMAL)
+				    Thread.sleep(JoueurCPUMinimax.TEMPS_ATTENTE_MINIMAL - (stopMilli - startMilli));
+		    }
+	    catch (InterruptedException e)
+		    {
+			    // Stop forcé, renvoie null
+			    return null;
+		    }
+	    
         return c;
     }
 }
