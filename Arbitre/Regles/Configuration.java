@@ -277,6 +277,27 @@ public class Configuration implements Cloneable, Serializable
     }
 
     /**
+     * Vérifie si un coup est possible selon le mode
+     **/
+    public boolean estCoupPossible(Coup coup, ModeDeJeu mode)
+    {
+        int xDepart = coup.getXDepart();
+        int yDepart = coup.getYDepart();
+        int xArrivee = coup.getXArrivee();
+        int yArrivee = coup.getYArrivee();
+
+        // Mode pose de pingouin
+        if (mode == ModeDeJeu.POSE_PINGOUIN && (xArrivee != -1 || yArrivee != -1))
+	    return false;
+	    
+	if (mode == ModeDeJeu.JEU_COMPLET && (xDepart == -1 || xArrivee == -1 || yDepart == -1 |- yArrivee == -1))
+	    return false;
+
+	return estCoupPossible(coup);
+    }
+
+
+    /**
      * Fonctions qui vérifient si deux points sont sur le même axe
      **/
     protected int arrondiSup(int x, int y)
