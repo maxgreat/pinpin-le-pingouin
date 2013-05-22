@@ -112,7 +112,7 @@ public class Arbitre implements Runnable, Serializable
 
             // Récupère le coup du joueur
 	    Coup coup = getJoueurCourant().coupSuivant();
-	    while (coup != null && !getConfiguration().estCoupPossible(coup))
+	    while (coup != null && !getConfiguration().estCoupPossible(coup, getMode()))
 	    {
 		// Envoyer signal joueur mauvais coup
 		coup = getJoueurCourant().coupSuivant();
