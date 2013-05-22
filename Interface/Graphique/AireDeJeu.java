@@ -14,6 +14,7 @@ public class AireDeJeu extends JComponent{
 	Hexagone tabCase;
 	JFrame frame;
 	JPanel pan;
+	InterfaceGraphique inter;
 
     // Nombre de cases sur la largeur	
 	public int largeur;
@@ -26,11 +27,13 @@ public class AireDeJeu extends JComponent{
 	protected int hauteurCase;
 	
 
-	public AireDeJeu(JFrame f ){
+	public AireDeJeu(JFrame f, InterfaceGraphique inter){
 		frame = f;
 	
 		largeur = 8;
 		hauteur = 8;
+		
+		this.inter = inter;
 		
 		//création du tableau de case
         tabCase = new Hexagone();
