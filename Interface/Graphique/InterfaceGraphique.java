@@ -29,7 +29,7 @@ public class InterfaceGraphique extends Interface
 		JPanel Fond = new JPanel();		
 		JLabel image = new JLabel( new ImageIcon( "Interface/Graphique/Img/Image_fon.png"));
 		Fond.add(image);
-		frame.add(Fond);
+		frame.add(Fond );
 
 		panfinal = new JPanel();
 		
