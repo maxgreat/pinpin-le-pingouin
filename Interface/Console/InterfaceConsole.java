@@ -37,7 +37,7 @@ public class InterfaceConsole extends Interface
     /**
      * Couleur des joueurs selon leur rang
      **/
-    public static final String [] couleurs = { RED, CYAN, BLUE, PURPLE };
+    public static final String [] couleurs = { RED, YELLOW, BLUE, PURPLE };
 
     /**
      * Le tableau des joueurs
@@ -120,7 +120,7 @@ public class InterfaceConsole extends Interface
 	joueurs[0] = new JoueurCPUFacile();
         joueurs[0].setNom("David");
 
-	joueurs[1] = new JoueurCPUMinimax();
+	joueurs[1] = new JoueurCPUMinimaxIncremental();
         joueurs[1].setNom("Goliath");
 	
 	/*   joueurs[2] = new JoueurCPURd();

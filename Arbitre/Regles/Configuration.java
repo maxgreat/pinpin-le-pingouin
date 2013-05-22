@@ -290,7 +290,7 @@ public class Configuration implements Cloneable, Serializable
         if (mode == ModeDeJeu.POSE_PINGOUIN && (xArrivee != -1 || yArrivee != -1))
 	    return false;
 	    
-	if (mode == ModeDeJeu.JEU_COMPLET && (xDepart == -1 || xArrivee == -1 || yDepart == -1 |- yArrivee == -1))
+	if (mode == ModeDeJeu.JEU_COMPLET && (xDepart == -1 || xArrivee == -1 || yDepart == -1 || yArrivee == -1))
 	    return false;
 
 	return estCoupPossible(coup);

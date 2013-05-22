@@ -26,19 +26,6 @@ public abstract class Joueur implements Serializable
     }
 
     /**
-     * Renvoit une instance pour un type de joueur donné
-     **/
-    public static Joueur getJoueurByType(String type)
-    {
-        if (type.compareTo(JoueurCPUMinimax.getType()) == 0)
-            return new JoueurCPUMinimax();
-        else if(type.compareTo(JoueurCPURd.getType()) == 0)
-            return new JoueurCPURd();
-        else 
-            return new JoueurHumain();
-    }
-
-    /**
      * Gestion du score
      **/
     public int getScore()
