@@ -26,25 +26,20 @@ public class InterfaceGraphique extends Interface
 		//Aire de dessin
 		//Boutons
 		panfinal = new JPanel();
-		panfinal.setOpaque(false);
-		JPanel Fond = new JPanel();
-		BufferedImage Image_fond;
-		Image_fond = null;
-		try
-		{	
-		    Image_fond = ImageIO.read(getImage("Image_fond.png"));
-		}
-		catch (IOException e) 
-                {
-                    System.err.println("erreur lecture images 2" +e);
-                    System.exit(1);
-                }
+		panfinal.setOpaque(true);
+		JPanel Fond = new JPanel();		
+		JLabel image = new JLabel( new ImageIcon( "Interface/Graphique/Img/Image_fond.png"));
+		Fond.add(image);
+		frame.add(Fond);
 		addBouton(panfinal,"Partie Rapide");
 		addBouton(panfinal,"Partie Personalisé");	
 		addBouton(panfinal,"Options");
 		addBouton(panfinal,"Quitter");
 		panfinal.setLayout(new BoxLayout(panfinal, BoxLayout.PAGE_AXIS));
+		frame.add(Fond);
 		frame.add(panfinal);
+
+
 		//intercepte la demande de fermeture the close button
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
 		//create custom close operation
@@ -99,6 +94,7 @@ public class InterfaceGraphique extends Interface
 			frame.remove(panfinal);
 			panfinal = new JPanel();
 			panfinal.setLayout(new BoxLayout(panfinal, BoxLayout.PAGE_AXIS));
+			panfinal.setOpaque(false);
 			addBouton(panfinal,"Partie Rapide");
 			addBouton(panfinal,"Partie Personalisé");	
 			addBouton(panfinal,"Options");
@@ -133,6 +129,7 @@ public class InterfaceGraphique extends Interface
 			frame.remove(panfinal);
 			panfinal = new JPanel();
 			panfinal.setLayout(new BoxLayout(panfinal, BoxLayout.PAGE_AXIS));
+			panfinal.setOpaque(false);
 			addBouton(panfinal,"Gestion de profil");
 			addBouton(panfinal,"Classements");		
 			addBouton(panfinal,"Revenir");
@@ -151,6 +148,7 @@ public class InterfaceGraphique extends Interface
 			Old_page.addFirst("Options");
 			frame.remove(panfinal);
 			panfinal = new JPanel();
+			panfinal.setOpaque(false);
 			panfinal.setLayout(new GridLayout( 7 , 2) );
 			addBouton(panfinal,"nom du joueur1");
 			addBouton(panfinal,"nom du joueur2");		
@@ -183,6 +181,7 @@ public class InterfaceGraphique extends Interface
 			frame.remove(panfinal);
 			panfinal = new JPanel();
 			panfinal.setLayout(new BoxLayout(panfinal, BoxLayout.PAGE_AXIS));
+			panfinal.setOpaque(false);
 			addBouton(panfinal,"Revenir");
 			frame.add(panfinal);
 			frame.pack();			
@@ -196,6 +195,7 @@ public class InterfaceGraphique extends Interface
 			frame.remove(panfinal);
 			panfinal = new JPanel();
 			panfinal.setLayout(new BoxLayout(panfinal, BoxLayout.PAGE_AXIS));
+			panfinal.setOpaque(false);
 			addBouton(panfinal,"Revenir");
 			frame.add(panfinal);
 			frame.pack();			
