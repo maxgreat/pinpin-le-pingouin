@@ -31,7 +31,6 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 	// coup = Lancement minimax profondeur 1 (thread)
 	Minimax mini  = new Minimax(this, 1, ArbitreManager.instance);
 	Thread t = new Thread(mini);
-	System.out.println("Lance un coup pour une profondeur de 1");
 	t.start();
 
 	Coup coup = mini.getSignalCoup().attendreSignal();
@@ -52,7 +51,6 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 		return null;
 	    }
 
-	    System.out.println("Lance un coup pour une profondeur de "+pas);
 	    MinimaxIncremental miniI = new MinimaxIncremental(this, pas, ArbitreManager.instance);
 	    t = new Thread(miniI);
 	    try
@@ -93,7 +91,6 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 		}
 
 		coup = miniI.getSignalCoup().attendreSignal();
-		System.out.println("Changement de coup "+coup);
 
 		try
 		{
@@ -118,16 +115,15 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 
 	try
 	{
-	    if (stopMilli - startMilli < JoueurCPUMinimax.TEMPS_ATTENTE_MINIMAL)
-		Thread.sleep(JoueurCPUMinimax.TEMPS_ATTENTE_MINIMAL - (stopMilli - startMilli));
+	    if (stopMilli - startMilli < TEMPS_ATTENTE_MINIMAL)
+		Thread.sleep(TEMPS_ATTENTE_MINIMAL - (stopMilli - startMilli));
 	}
 	catch (InterruptedException e)
 	{
 	    // Stop forcé, renvoie null
 	    return null;
 	}
-	    
-	System.out.println("Finalement joue le coup "+coup);
+
         return coup;
     }
 }
