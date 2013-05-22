@@ -53,6 +53,7 @@ public class Minimax implements Runnable
 	}
 
 	public int Min(Configuration cc, int max, int profondeur){
+
 		Configuration clcc = cc.clone();
 		clcc.setJoueurSurConfiguration(this.adversaire);
 		Coup [] coupPossible = clcc.toutCoupsPossibles();
