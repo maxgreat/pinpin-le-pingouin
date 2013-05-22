@@ -6,7 +6,8 @@ import javax.imageio.*;
 import java.io.IOException;
 import java.net.URL;
 public class Fond extends JPanel{
-
+String s;	
+public Fond(String s){this.s = s;}
 public void paintComponent(Graphics g)
     {
 	Graphics2D drawable = (Graphics2D) g;
@@ -14,7 +15,7 @@ public void paintComponent(Graphics g)
 	Fond = null;
 	try 
         {
-		Fond = ImageIO.read(getImage("Image_fon.jpg"));
+		Fond = ImageIO.read(getImage(s));
 	}
 	catch (IOException e)
 	{
