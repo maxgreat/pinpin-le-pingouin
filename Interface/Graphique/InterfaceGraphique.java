@@ -17,27 +17,25 @@ public class InterfaceGraphique extends Interface
     public Fond fond;
     protected AireDeJeu aire;
     protected JFrame frame;
-    protected GridBagConstraints contraintes;
     public void run(String [] arguments)
     {		
-		contraintes = new GridBagConstraints();
 
 		initialiserPanel();
 		//Fenetre principale
 		frame = new JFrame("pinpin le pingouin");
 		//gestion du panel des boutons	
-		fond = new Fond("Image_fon.jpg");
+	 	fond = new Fond("Image_fon.jpg");
+		// on met un layout de grid bag sur font
 		fond.setLayout(new GridBagLayout());
-		contraintes.gridy = 1;
+		GridBagConstraints c2 = new GridBagConstraints();
 		
-		fond.add(Panels[0] , contraintes);
-		Fond image = new Fond("banniere.png");
-		image.setSize(300,100);	
-	        
-		contraintes.gridy = 0;
+
 		
-         		
-		fond.add(image ,contraintes);
+		c2.gridwidth =  GridBagConstraints.REMAINDER;
+		c2.gridheight =  GridBagConstraints.REMAINDER;
+
+		fond.add(Panels[0],c2);
+
 		frame.add(fond);
 		frame.setResizable(true);
 		frame.setPreferredSize(new Dimension(300,300));
@@ -76,9 +74,9 @@ public class InterfaceGraphique extends Interface
 	JPanel pan  = new JPanel();
 	pan.setLayout(new BoxLayout(pan, BoxLayout.LINE_AXIS));
 	JButton b1 = new JButton(S);
-	b1.setSize(new Dimension(150,150));
 	b1.addActionListener(new EcouteurDeBouton(S, this));
 	pan.add(b1);
+
 	pan.setOpaque(false);	
 	panel.add(pan);
      }
@@ -136,14 +134,13 @@ public class InterfaceGraphique extends Interface
     }
     public void afficherPanel(String S)
 	{
-	contraintes.gridy = 1;	
 	JPanel Oldpan = Panels[0];
 	LinkedList<String> Old_page = new LinkedList<String>();
 		Old_page.addFirst("Menu Principal");
 		if (S.compareTo("Menu Principal") == 0)
 		{	
 			removeFrame(frame);
-			fond.add(Panels[0] , contraintes);
+			fond.add(Panels[0]);
 			
 			frame.add(fond);
 			frame.repaint();
@@ -156,9 +153,9 @@ public class InterfaceGraphique extends Interface
 			//definition des joueurs
 			Joueur [] joueurs = new Joueur[2];
 			joueurs[0] = new JoueurHumain();
-			joueurs[1] = new JoueurHumain();
+			joueurs[1] = new JoueurCPUFacile();
 			//lancement de la partie
-			ArbitreManager.initialiserPartie(joueurs ,ArbitreManager.LARGEUR_GRILLE , ArbitreManager.HAUTEUR_GRILLE, this); 
+			ArbitreManager.initialiserPartie(joueurs ,ArbitreManager.LARGEUR_GRILLE, ArbitreManager.HAUTEUR_GRILLE, this); 
 			ArbitreManager.lancerPartie();
 			this.setJoueurs(joueurs);
 			aire = new AireDeJeu(frame , this);
@@ -175,7 +172,7 @@ public class InterfaceGraphique extends Interface
 			removeFrame(frame);
 			Old_page.addFirst("Options");
 			fond.add(Panels[1]);
-			frame.add(fond , contraintes);
+			frame.add(fond);
 			frame.repaint();
 			frame.pack();			
 		}
@@ -190,7 +187,7 @@ public class InterfaceGraphique extends Interface
 			removeFrame(frame);
 			Old_page.addFirst("Options");
 			fond.add(Panels[2]);
-			frame.add(fond , contraintes);
+			frame.add(fond);
 			frame.repaint();
 			frame.pack();	
 		}
@@ -202,7 +199,7 @@ public class InterfaceGraphique extends Interface
 		{
 			removeFrame(frame);
 			Old_page.addFirst("Gestion de profil");
-			fond.add(Panels[3] , contraintes);
+			fond.add(Panels[3]);
 			frame.add(fond);
 			frame.repaint();
 			frame.pack();	
@@ -211,7 +208,7 @@ public class InterfaceGraphique extends Interface
 		{
 			removeFrame(frame);
 			Old_page.addFirst("Classement");
-			fond.add(Panels[4] , contraintes);
+			fond.add(Panels[4]);
 			frame.add(fond);
 			frame.repaint();
 			frame.pack();	
