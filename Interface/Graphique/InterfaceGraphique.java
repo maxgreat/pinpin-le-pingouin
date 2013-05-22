@@ -6,6 +6,7 @@ import java.awt.event.*;
 import Interface.*;
 import Joueurs.*;
 import java.util.*;
+import javax.imageio.*;
 import java.net.URL;
 import java.io.IOException;
 import java.awt.image.BufferedImage;
