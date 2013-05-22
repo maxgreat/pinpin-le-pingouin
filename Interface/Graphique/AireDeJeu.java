@@ -117,7 +117,7 @@ public class AireDeJeu extends JComponent{
 				
 				//maj du tableau case
 				tabCase.setTab(rayonH, rayonL, margeHaut, margeGauche);
-				Joueur j;
+				Joueur joueur;
 				
 				//Tracage des lignes de 7 pavés
 				for(int i=0;i<7;i++){
@@ -133,16 +133,26 @@ public class AireDeJeu extends JComponent{
 								drawable.drawImage(trois_poissons,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
 							}
 							
-							j = c[2*j][i].getJoueurSurCase();
-							
-							if(j != null){
-							   if(j == this.joueurs[0]){
-							       
-							   }
-							   else if(j == this.joueurs[1]){
-							   
-							   }
-							}
+							joueur = c[2*j][i].getJoueurSurCase();
+						/*	
+							if(joueur != null){
+							    BufferedImage imageJoueur;
+							    if(joueur == this.joueurs[0]){
+							        try{
+							   	        imageJoueur = ImageIO.read(getImage("pingNoir.jpg"));
+							        }catch(Exception e){
+							        	System.out.println("Erreur lecture image" + e);
+							        }
+							    }
+							    else if(joueur == this.joueurs[1]){
+							   	    try{
+							   	        imageJoueur = ImageIO.read(getImage("pingNoir.jpg"));
+							        }catch(Exception e){
+							        	System.out.println("Erreur lecture image" + e);
+							        }
+							    }
+							    drawable.drawImage(imageJoueur,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
+							}*/
 						}
 					}
 				}
@@ -176,6 +186,7 @@ public class AireDeJeu extends JComponent{
     { 
     	Point p = tabCase.estDansHexagone(x,y);
     	System.out.println("Point p = " + p);
+    	//ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(new Coup(p.x, p.y));
     }
 
 }
