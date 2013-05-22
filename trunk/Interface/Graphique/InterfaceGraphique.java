@@ -17,14 +17,27 @@ public class InterfaceGraphique extends Interface
     public Fond fond;
     protected AireDeJeu aire;
     protected JFrame frame;
+    protected GridBagConstraints contraintes;
     public void run(String [] arguments)
     {		
+		contraintes = new GridBagConstraints();
+
 		initialiserPanel();
 		//Fenetre principale
 		frame = new JFrame("pinpin le pingouin");
 		//gestion du panel des boutons	
-		fond = new Fond();
-		fond.add(Panels[0]);
+		fond = new Fond("Image_fon.jpg");
+		fond.setLayout(new GridBagLayout());
+		contraintes.gridy = 1;
+		
+		fond.add(Panels[0] , contraintes);
+		Fond image = new Fond("banniere.png");
+		image.setSize(300,100);
+	        
+		contraintes.gridy = 0;
+		
+         		
+		fond.add(image ,contraintes);
 		frame.add(fond);
 		frame.setResizable(true);
 		frame.setPreferredSize(new Dimension(300,300));
@@ -122,13 +135,15 @@ public class InterfaceGraphique extends Interface
     }
     public void afficherPanel(String S)
 	{
+	contraintes.gridy = 1;	
 	JPanel Oldpan = Panels[0];
 	LinkedList<String> Old_page = new LinkedList<String>();
 		Old_page.addFirst("Menu Principal");
 		if (S.compareTo("Menu Principal") == 0)
 		{	
 			removeFrame(frame);
-			fond.add(Panels[0]);
+			fond.add(Panels[0] , contraintes);
+			
 			frame.add(fond);
 			frame.repaint();
 			frame.pack();				
@@ -158,7 +173,7 @@ public class InterfaceGraphique extends Interface
 			removeFrame(frame);
 			Old_page.addFirst("Options");
 			fond.add(Panels[1]);
-			frame.add(fond);
+			frame.add(fond , contraintes);
 			frame.repaint();
 			frame.pack();			
 		}
@@ -173,7 +188,7 @@ public class InterfaceGraphique extends Interface
 			removeFrame(frame);
 			Old_page.addFirst("Options");
 			fond.add(Panels[2]);
-			frame.add(fond);
+			frame.add(fond , contraintes);
 			frame.repaint();
 			frame.pack();	
 		}
@@ -185,7 +200,7 @@ public class InterfaceGraphique extends Interface
 		{
 			removeFrame(frame);
 			Old_page.addFirst("Gestion de profil");
-			fond.add(Panels[3]);
+			fond.add(Panels[3] , contraintes);
 			frame.add(fond);
 			frame.repaint();
 			frame.pack();	
@@ -194,7 +209,7 @@ public class InterfaceGraphique extends Interface
 		{
 			removeFrame(frame);
 			Old_page.addFirst("Classement");
-			fond.add(Panels[4]);
+			fond.add(Panels[4] , contraintes);
 			frame.add(fond);
 			frame.repaint();
 			frame.pack();	
