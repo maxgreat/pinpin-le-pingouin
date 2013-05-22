@@ -226,22 +226,26 @@ public class AireDeJeu extends JComponent{
     			System.out.println("Coup illegal");
     		
     	}
-    	else{
+    	else{ //mode jeu
+    		System.out.println("Coup de jeu");
     		if(coupPrec.x == -1 || coupPrec.y == -1){
     			Case [][] t = ArbitreManager.instance.getConfiguration().getTerrain();
-    			if(t[p.y][p.x] != null){
-    				if(t[p.y][p.x].getJoueurSurCase() == null) {
+    			if(t[p.x][p.y] != null){
+    				if(t[p.x][p.y].getJoueurSurCase() == ArbitreManager.instance.getJoueurCourant()) {
     					coupPrec.x = p.x;
     					coupPrec.y = p.y;
+    					System.out.println("Case préc = " + coupPrec);
     				}
     			}
     		}
-    		else {
+    		else { //le coup precedent est sur un pingouin du joueur
+    			System.out.println("Coup pour deplacer");
     			Coup c = new Coup(coupPrec.y, coupPrec.x, p.y, p.x);
     			if(ArbitreManager.instance.getConfiguration().estCoupPossible(c)){
+    				System.out.println("Coup lancé");
 					ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(c);
-					coupPrec = new Point(-1,-1);
 				}
+				coupPrec = new Point(-1,-1);
     		}
     	}
     	
