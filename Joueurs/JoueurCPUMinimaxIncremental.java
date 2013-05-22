@@ -61,11 +61,12 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 		Thread.sleep(TEMPS_ATTENTE_MAXIMAL - (System.currentTimeMillis() - startMilli));
 		try
 		{
-		    t.stop();
+		    t.interrupt();
+		    t.join();
 		}
-		catch (ThreadDeath e)
+		catch (InterruptedException ep)
 		{
-		    System.out.println("ThreadDeath");
+		 
 		}
 
 		break;
@@ -74,7 +75,15 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 	    {	
 		if (ArbitreManager.instance.getForceStop())
 		{
-		    t.stop();
+		    t.interrupt();
+		    try
+		    {
+			t.join();
+		    }
+		    catch(InterruptedException ep)
+		    {
+		    }
+
 		    return null;
 		}	
 
@@ -84,6 +93,7 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 		}
 
 		coup = miniI.getSignalCoup().attendreSignal();
+		System.out.println("Changement de coup "+coup);
 
 		try
 		{
@@ -117,6 +127,7 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 	    return null;
 	}
 	    
+	System.out.println("Finalement joue le coup "+coup);
         return coup;
     }
 }

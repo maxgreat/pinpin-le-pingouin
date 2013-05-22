@@ -40,7 +40,7 @@ public class Minimax implements Runnable
 		int max= Integer.MIN_VALUE,tmp,maxi=-1;
 		Configuration cl;
 
-		for(int i = 0; i < coupPossible.length && !Thread.interrupted(); i++){
+		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){
 			cl = cc.clone();
 			cl.effectuerCoup(coupPossible[i]);
 			tmp = Min(cl, max, this.profondeur);
@@ -64,7 +64,7 @@ public class Minimax implements Runnable
 		int min = Integer.MAX_VALUE, tmp;
 		Configuration cl;
 
-		for(int i = 0; i < coupPossible.length && !Thread.interrupted(); i++){
+		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){
 			tmp = 0;
 			cl = clcc.clone();
 			tmp += cl.effectuerCoup(coupPossible[i]);
@@ -92,7 +92,7 @@ public class Minimax implements Runnable
 		int max = Integer.MIN_VALUE, tmp;
 		Configuration cl;
 
-		for(int i = 0; i < coupPossible.length && !Thread.interrupted(); i++){
+		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){
 			tmp = 0;
 			cl = clcc.clone();
 			tmp -= cl.effectuerCoup(coupPossible[i]);
