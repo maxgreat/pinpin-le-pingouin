@@ -18,6 +18,7 @@ public class JoueurCPUFacile extends Joueur {
 			Coup [] placementPossible = ArbitreManager.instance.getConfiguration().toutPlacementsPossibles();
 			int score = 0, ci, cj;
 			for (int i = 0; i < placementPossible.length; i++) {
+				score = 0;
 				ci = placementPossible[i].getXDepart();
 				cj = placementPossible[i].getYDepart();
 				if (cj%2 == 0) {
