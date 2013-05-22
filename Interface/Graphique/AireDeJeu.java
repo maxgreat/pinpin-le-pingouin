@@ -88,7 +88,27 @@ public class AireDeJeu extends JComponent{
     {
         return largeur;
     }
-            
+    
+    private void afficherCarres(Graphics2D drawable, int margeGauche, int margeHaut){
+    	
+    	//joueur1
+    	drawable.setPaint(Color.black);
+        drawable.fillRect(0,0,margeGauche,margeHaut);
+		if(ArbitreManager.instance.getJoueurCourant() == inter.joueurs[0])
+			drawable.setPaint(Color.yellow);
+		else
+			drawable.setPaint(Color.white);
+    	drawable.fillRect(5,5,margeGauche-10,margeHaut-10);
+		
+		//joueur 2
+		drawable.setPaint(Color.red);
+    	drawable.fillRect(largeur-margeGauche,0,margeGauche,margeHaut);
+		if(ArbitreManager.instance.getJoueurCourant() == inter.joueurs[1])
+			drawable.setPaint(Color.yellow);
+		else
+			drawable.setPaint(Color.white);
+    	drawable.fillRect(largeur-margeGauche+5,5,margeGauche-10,margeHaut-10);
+	}       
 
     private URL getImage(String nom) {
         ClassLoader cl = getClass().getClassLoader();
@@ -96,7 +116,7 @@ public class AireDeJeu extends JComponent{
     }
 
     public void paintComponent(Graphics g){
-	Graphics2D drawable = (Graphics2D) g;
+		Graphics2D drawable = (Graphics2D) g;
         
 
         Arbitre arbitre = ArbitreManager.instance;
@@ -145,6 +165,9 @@ public class AireDeJeu extends JComponent{
 				double rayonL = (3.0*(double)largeur)/63.0;
 				double margeHaut = (double)hauteur/8.0;
 				double margeGauche = (double)largeur/8.0;
+				
+				//dessin des carrés de joueur
+				afficherCarres(drawable, (int)margeGauche, (int)margeHaut);
 				
 				//maj du tableau case
 				tabCase.setTab(rayonH, rayonL, margeHaut, margeGauche);
@@ -219,11 +242,10 @@ public class AireDeJeu extends JComponent{
     	Point p = tabCase.estDansHexagone(x,y);
     	
     	if(ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN){
-    		System.out.println("Envoi du coup" + p);
     		if(ArbitreManager.instance.getConfiguration().estCoupPossible(new Coup(p.y, p.x, -1, -1)))
     			ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(new Coup(p.y, p.x, -1, -1));
     		else
-    			System.out.println("Coup illegal");
+    			System.out.println("Coup illegal, pas de positionnement ici !");
     		
     	}
     	else{ //mode jeu
@@ -234,16 +256,18 @@ public class AireDeJeu extends JComponent{
     				if(t[p.x][p.y].getJoueurSurCase() == ArbitreManager.instance.getJoueurCourant()) {
     					coupPrec.x = p.x;
     					coupPrec.y = p.y;
-    					System.out.println("Case préc = " + coupPrec);
+    					System.out.println("On va déplacer le pingouin qui est en = " + coupPrec);
     				}
     			}
     		}
     		else { //le coup precedent est sur un pingouin du joueur
-    			System.out.println("Coup pour deplacer");
     			Coup c = new Coup(coupPrec.y, coupPrec.x, p.y, p.x);
     			if(ArbitreManager.instance.getConfiguration().estCoupPossible(c)){
-    				System.out.println("Coup lancé");
+    				System.out.println("On envoie le déplacement " + c);
 					ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(c);
+				}
+				else{
+					System.out.println("Le coup " + c + " n'est pas pas autorisé"); 
 				}
 				coupPrec = new Point(-1,-1);
     		}
@@ -251,5 +275,12 @@ public class AireDeJeu extends JComponent{
     	
     	this.repaint();
     }
+    
+			
+    
+    
+    
+    
+    
 
 }
