@@ -6,8 +6,14 @@ import javax.imageio.*;
 import java.io.IOException;
 import java.net.URL;
 public class Fond extends JPanel{
-String s;	
-public Fond(String s){this.s = s;}
+String s;
+Dimension d;
+JFrame frame;
+public Fond(String s , JFrame frame)
+	{
+	this.frame = frame;
+	this.s = s;
+	}
 public void paintComponent(Graphics g)
     {
 	Graphics2D drawable = (Graphics2D) g;
@@ -23,7 +29,7 @@ public void paintComponent(Graphics g)
                     System.exit(1);
         }
 		
-	g.drawImage(Fond, 0, 0, null);
+	g.drawImage(Fond, 0, 0,frame.getWidth(),frame.getHeight(), null);
     }
 private URL getImage(String nom)
     {
