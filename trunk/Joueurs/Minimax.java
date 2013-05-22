@@ -64,9 +64,10 @@ public class Minimax implements Runnable
 		Configuration cl;
 
 		for(int i = 0; i < coupPossible.length && !Thread.interrupted(); i++){
+			tmp = 0;
 			cl = clcc.clone();
-			cl.effectuerCoup(coupPossible[i]);
-			tmp = Max(cl, min, profondeur-1);
+			tmp += cl.effectuerCoup(coupPossible[i]);
+			tmp += Max(cl, min, profondeur-1);
 			if(tmp < min){
 				min = tmp;
 			}
@@ -91,9 +92,10 @@ public class Minimax implements Runnable
 		Configuration cl;
 
 		for(int i = 0; i < coupPossible.length && !Thread.interrupted(); i++){
+			tmp = 0;
 			cl = clcc.clone();
-			cl.effectuerCoup(coupPossible[i]);
-			tmp = Min(cl, max, profondeur-1);
+			tmp -= cl.effectuerCoup(coupPossible[i]);
+			tmp -= Min(cl, max, profondeur-1);
 			if(tmp > max){
 				max = tmp;
 			}
