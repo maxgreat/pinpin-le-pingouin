@@ -106,14 +106,14 @@ public class Arbitre implements Runnable, Serializable
      **/
     public void run()
     {
-
+		System.out.println("Lancement partie");
         while (!estFini && !forceStop)
         {
             int tourJoueur = getPosition(getJoueurCourant());
 
             // Récupère le coup du joueur
             Coup coup = getJoueurCourant().coupSuivant();
-
+			System.out.println(coup);
             // Changement d'historique
             if (coup == null && !forceStop)
                 continue; // Refait un tour, le joueur courant à changer
@@ -140,7 +140,7 @@ public class Arbitre implements Runnable, Serializable
 
                 for (int i = 0; i < restePingouins.length; i++)
                     totalPions += restePingouins[i];
-
+				System.out.println(totalPions);
                 // 2 joueurs, 8 pions
                 // 3 joueurs, 9 pions
                 // 4 joueurs, 8 pions

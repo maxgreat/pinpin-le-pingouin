@@ -112,6 +112,7 @@ public class InterfaceGraphique extends Interface
 			joueurs[1] = new JoueurHumain();
 			//lancement de la partie
 			ArbitreManager.initialiserPartie(joueurs ,ArbitreManager.LARGEUR_GRILLE , ArbitreManager.HAUTEUR_GRILLE, this); 
+			ArbitreManager.lancerPartie();
 			this.setJoueurs(joueurs);
 			aire = new AireDeJeu(frame , this);
 			aire.setPreferredSize(new Dimension(500,500));
