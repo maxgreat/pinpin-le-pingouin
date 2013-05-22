@@ -67,7 +67,14 @@ public class Minimax implements Runnable
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){
 			tmp = 0;
 			cl = clcc.clone();
+			int [] ppj = cl.getNombrePingouinsParJoueur(arbitre.getJoueurs());
+			int nbPingouins = ppj[this.arbitre.getPosition(this.adversaire)-1];
 			tmp += cl.effectuerCoup(coupPossible[i]);
+			ppj = cl.getNombrePingouinsParJoueur(arbitre.getJoueurs());
+			if (ppj[this.arbitre.getPosition(this.adversaire)-1] < nbPingouins) {
+				tmp += 40;
+				System.out.println("Pingoin adverse coincé");
+			}
 			tmp += Max(cl, min, profondeur-1);
 			if(tmp < min){
 				min = tmp;
@@ -95,7 +102,14 @@ public class Minimax implements Runnable
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){
 			tmp = 0;
 			cl = clcc.clone();
+			int [] ppj = cl.getNombrePingouinsParJoueur(arbitre.getJoueurs());
+			int nbPingouins = ppj[this.arbitre.getPosition(this.joueur)-1];
 			tmp -= cl.effectuerCoup(coupPossible[i]);
+			ppj = cl.getNombrePingouinsParJoueur(arbitre.getJoueurs());
+			if (ppj[this.arbitre.getPosition(this.joueur)-1] < nbPingouins) {
+				tmp -= 40;
+				System.out.println("Pingoin allié coincé");
+			}
 			tmp -= Min(cl, max, profondeur-1);
 			if(tmp > max){
 				max = tmp;

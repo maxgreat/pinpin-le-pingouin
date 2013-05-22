@@ -68,6 +68,12 @@ public class Arbitre implements Runnable, Serializable
 
         return joueurs[position - 1];
     }
+	/**
+	 * Retourne l'ensemble des joueurs
+	 **/
+	public Joueur [] getJoueurs() {
+		return this.joueurs;
+	}
            
 
     public int getLargeur()
