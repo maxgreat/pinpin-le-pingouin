@@ -32,7 +32,7 @@ public class InterfaceGraphique extends Interface
 		
 		fond.add(Panels[0] , contraintes);
 		Fond image = new Fond("banniere.png");
-		image.setSize(300,100);
+		image.setSize(300,100);	
 	        
 		contraintes.gridy = 0;
 		
@@ -76,6 +76,7 @@ public class InterfaceGraphique extends Interface
 	JPanel pan  = new JPanel();
 	pan.setLayout(new BoxLayout(pan, BoxLayout.LINE_AXIS));
 	JButton b1 = new JButton(S);
+	b1.setSize(new Dimension(150,150));
 	b1.addActionListener(new EcouteurDeBouton(S, this));
 	pan.add(b1);
 	pan.setOpaque(false);	
@@ -151,6 +152,7 @@ public class InterfaceGraphique extends Interface
 		if (S.compareTo("Partie Rapide") == 0 )
 		{	
 			removeFrame(frame);
+			frame.remove(fond);
 			//definition des joueurs
 			Joueur [] joueurs = new Joueur[2];
 			joueurs[0] = new JoueurHumain();
