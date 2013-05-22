@@ -16,7 +16,7 @@ public abstract class Interface
     /**
      * Garde en mémoire les joueurs
      **/
-    protected Joueur [] joueurs;
+    public Joueur [] joueurs;
 
     public void setJoueurs(Joueur [] joueurs)
     {

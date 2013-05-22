@@ -15,6 +15,10 @@ public class AireDeJeu extends JComponent{
 	JFrame frame;
 	JPanel pan;
 	InterfaceGraphique inter;
+	Point clickPrec;
+	boolean placementFinit;
+	
+	
 
     // Nombre de cases sur la largeur	
 	public int largeur;
@@ -38,6 +42,8 @@ public class AireDeJeu extends JComponent{
 		//création du tableau de case
         tabCase = new Hexagone();
         tabCase.initHexagone();
+        clickPrec = new Point(-1,-1);
+        placementFinit = false;
 	}
 
     public int getHauteur()
@@ -137,25 +143,25 @@ public class AireDeJeu extends JComponent{
 							}
 							
 							joueur = c[2*j][i].getJoueurSurCase();
-						/*	
+							
 							if(joueur != null){
-							    BufferedImage imageJoueur;
-							    if(joueur == this.joueurs[0]){
+							    BufferedImage imageJoueur = null;
+							    if(joueur == inter.joueurs[0]){
 							        try{
 							   	        imageJoueur = ImageIO.read(getImage("pingNoir.jpg"));
 							        }catch(Exception e){
 							        	System.out.println("Erreur lecture image" + e);
 							        }
 							    }
-							    else if(joueur == this.joueurs[1]){
+							    else if(joueur == inter.joueurs[1]){
 							   	    try{
-							   	        imageJoueur = ImageIO.read(getImage("pingNoir.jpg"));
+							   	        imageJoueur = ImageIO.read(getImage("pingRouge.jpg"));
 							        }catch(Exception e){
 							        	System.out.println("Erreur lecture image" + e);
 							        }
 							    }
 							    drawable.drawImage(imageJoueur,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
-							}*/
+							}
 						}
 					}
 				}
@@ -163,15 +169,38 @@ public class AireDeJeu extends JComponent{
 				//tracage des lignes de 8
 				for(int i=0;i<8;i++){
 					for(int j=0;j<4;j++){
-						if(c[2*j+1][i] == null){}                  
-						else if(c[2*j+1][i].getEtat() == Etat.DEUX_POISSONS){
-							drawable.drawImage(deux_poissons,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
-						}
-						else if(c[2*j+1][i].getEtat() == Etat.UN_POISSON){
-							drawable.drawImage(un_poisson,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
-						}
-						else if(c[2*j+1][i].getEtat() == Etat.TROIS_POISSONS){
-							drawable.drawImage(trois_poissons,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
+						if(c[2*j+1][i] != null){                  
+							if(c[2*j+1][i].getEtat() == Etat.DEUX_POISSONS){
+								drawable.drawImage(deux_poissons,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
+							}
+							else if(c[2*j+1][i].getEtat() == Etat.UN_POISSON){
+								drawable.drawImage(un_poisson,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j
+								+1),tabCase.largeur(),tabCase.hauteur(),null);
+							}
+							else if(c[2*j+1][i].getEtat() == Etat.TROIS_POISSONS){
+								drawable.drawImage(trois_poissons,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
+							}
+						
+							joueur = c[2*j+1][i].getJoueurSurCase();
+						
+							if(joueur != null){
+							    BufferedImage imageJoueur = null;
+							    if(joueur == inter.joueurs[0]){
+							        try{
+							   	        imageJoueur = ImageIO.read(getImage("pingNoir.jpg"));
+							        }catch(Exception e){
+							        	System.out.println("Erreur lecture image" + e);
+							        }
+							    }
+							    else if(joueur == inter.joueurs[1]){
+							   	    try{
+							   	        imageJoueur = ImageIO.read(getImage("pingRouge.jpg"));
+							        }catch(Exception e){
+							        	System.out.println("Erreur lecture image" + e);
+							        }
+							    }
+							    drawable.drawImage(imageJoueur,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
+							}
 						}
 					}
 				}
@@ -188,8 +217,14 @@ public class AireDeJeu extends JComponent{
     public void click(int x, int y)
     { 
     	Point p = tabCase.estDansHexagone(x,y);
-    	System.out.println("Point p = " + p);
-    	//ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(new Coup(p.x, p.y));
+    	
+    	if(placementFinit){}
+    	else{
+    		System.out.println("Envoi du coup" + p);
+    		ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(new Coup(p.y, p.x, -1, -1));
+    		
+    	}
+    	this.repaint();
     }
 
 }
