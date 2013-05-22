@@ -100,6 +100,11 @@ public class AireDeJeu extends JComponent{
 			drawable.setPaint(Color.white);
     	drawable.fillRect(5,5,margeGauche-10,margeHaut-10);
 		
+		drawable.setPaint(Color.black);
+		drawable.drawString("Joueur 1", 20,20);	
+		drawable.drawString("Score " + inter.joueurs[0].getScore(), 20,40);
+		drawable.drawString("Tuiles " + inter.joueurs[0].getNombreTuile(), 20,60);
+		
 		//joueur 2
 		drawable.setPaint(Color.red);
     	drawable.fillRect(largeur-margeGauche,0,margeGauche,margeHaut);
@@ -108,6 +113,11 @@ public class AireDeJeu extends JComponent{
 		else
 			drawable.setPaint(Color.white);
     	drawable.fillRect(largeur-margeGauche+5,5,margeGauche-10,margeHaut-10);
+    	
+    	drawable.setPaint(Color.red);
+		drawable.drawString("Joueur 1",largeur-margeGauche+20,20);	
+		drawable.drawString("Score " + inter.joueurs[1].getScore(),largeur-margeGauche+20,40);
+		drawable.drawString("Tuiles " + inter.joueurs[1].getNombreTuile(),largeur-margeGauche+20,60);
 	}       
 
     private URL getImage(String nom) {
