@@ -17,28 +17,25 @@ public class InterfaceGraphique extends Interface
     public Fond fond;
     protected AireDeJeu aire;
     protected JFrame frame;
+    GridBagConstraints c1,c2,c3,c4; 
     public void run(String [] arguments)
     {		
-
+		Dimension Dim = new Dimension(700,700);
 		initialiserPanel();
 		//Fenetre principale
 		frame = new JFrame("pinpin le pingouin");
 		//gestion du panel des boutons	
-	 	fond = new Fond("Image_fon.jpg");
+	 	initialiserContraintes();
+		banniere ban = new banniere("banniere.png",frame);
+		
 		// on met un layout de grid bag sur font
 		fond.setLayout(new GridBagLayout());
-		GridBagConstraints c2 = new GridBagConstraints();
-		
-
-		
-		c2.gridwidth =  GridBagConstraints.REMAINDER;
-		c2.gridheight =  GridBagConstraints.REMAINDER;
-
+		fond.setSize(Dim);
 		fond.add(Panels[0],c2);
-
+		fond.add(ban,c1);
 		frame.add(fond);
 		frame.setResizable(true);
-		frame.setPreferredSize(new Dimension(300,300));
+		frame.setPreferredSize(Dim);
 		frame.pack();
 		//intercepte la demande de fermeture the close button
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -63,6 +60,7 @@ public class InterfaceGraphique extends Interface
 	if(aire != null)
 		{        
 		aire.repaint();
+		
     		}
     }	
     public AireDeJeu getAire()
@@ -70,13 +68,17 @@ public class InterfaceGraphique extends Interface
         return aire;
     }
     public void addBouton(JPanel panel, String S)
-    {
+    {	
+	initialiserContraintes();
 	JPanel pan  = new JPanel();
 	pan.setLayout(new BoxLayout(pan, BoxLayout.LINE_AXIS));
 	JButton b1 = new JButton(S);
 	b1.addActionListener(new EcouteurDeBouton(S, this));
 	pan.add(b1);
-
+		if(S.compareTo("Revenir")==0)
+		{
+			fond.add(pan,c4);
+		}
 	pan.setOpaque(false);	
 	panel.add(pan);
      }
@@ -132,6 +134,46 @@ public class InterfaceGraphique extends Interface
 	fond.remove(Panels[i]);
 	}
     }
+    public void initialiserContraintes()
+	{
+	fond = new Fond("Image_fon.jpg",frame);
+	c1 = new GridBagConstraints();
+	c2 = new GridBagConstraints();
+	c3 = new GridBagConstraints();
+	c4 = new GridBagConstraints();
+	c1.gridx = 1;
+	c1.gridy =0;
+	c1.gridwidth =3;
+	c1.gridheight =1;
+	c1.anchor =GridBagConstraints.FIRST_LINE_START;
+	c1.fill =GridBagConstraints.BOTH;
+	c1.weightx=1;
+	c1.weighty=1;	
+	c1.ipadx = 0;
+	c1.ipady = 0;
+	
+	c2.gridx =2;
+	c2.gridy =1;
+	c2.gridwidth =1;
+	c2.gridheight =1;
+	c2.weightx=1;
+	c2.weighty=1;
+	c2.anchor = GridBagConstraints.CENTER;
+	c2.fill =GridBagConstraints.BOTH;
+	c3.gridx =2;
+	c3.gridy =4;
+	c3.gridwidth =1;
+	c3.gridheight =1;
+	c3.anchor =GridBagConstraints.LAST_LINE_END;
+	c3.fill =GridBagConstraints.BOTH;
+	c4.gridx =0;
+	c4.gridy =4;
+	c4.gridwidth =1;
+	c4.gridheight =1;
+	c4.anchor = GridBagConstraints.LAST_LINE_START;
+	c4.fill =GridBagConstraints.BOTH;
+
+	}
     public void afficherPanel(String S)
 	{
 	JPanel Oldpan = Panels[0];
