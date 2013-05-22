@@ -18,6 +18,15 @@ public class AireDeJeu extends JComponent{
 	Point clickPrec;
 	boolean placementFinit;
 	
+	//images des joueurs
+	BufferedImage imageJoueur1 = null;
+	BufferedImage imageJoueur2 = null;
+	BufferedImage imageJoueur3 = null;
+	BufferedImage imageJoueur4 = null;
+	
+	
+	//images des poissons
+	private BufferedImage un_poisson, deux_poissons, trois_poissons;
 	
 
     // Nombre de cases sur la largeur	
@@ -44,6 +53,32 @@ public class AireDeJeu extends JComponent{
         tabCase.initHexagone();
         clickPrec = new Point(-1,-1);
         placementFinit = false;
+
+		un_poisson = null;
+		deux_poissons = null;
+		trois_poissons = null;
+        
+        try 
+        {
+				un_poisson = ImageIO.read(getImage("un_poisson.png"));
+				deux_poissons = ImageIO.read(getImage("deux_poissons.png"));
+				trois_poissons = ImageIO.read(getImage("trois_poissons.png"));
+		} catch (IOException e) {
+            System.err.println("erreur lecture images : " +e);
+            System.exit(1);
+        }
+        
+        try{
+	   	    imageJoueur1 = ImageIO.read(getImage("pingNoir.jpg"));
+        }catch(Exception e){
+        	System.out.println("Erreur lecture image" + e);
+        }
+        try{
+	   	    imageJoueur2 = ImageIO.read(getImage("pingRouge.jpg"));
+        }catch(Exception e){
+        	System.out.println("Erreur lecture image" + e);
+        }
+        
 	}
 
     public int getHauteur()
@@ -64,10 +99,7 @@ public class AireDeJeu extends JComponent{
 
     public void paintComponent(Graphics g){
 	Graphics2D drawable = (Graphics2D) g;
-        BufferedImage un_poisson, deux_poissons, trois_poissons;
-		un_poisson = null;
-		deux_poissons = null;
-		trois_poissons = null;
+        
 
         Arbitre arbitre = ArbitreManager.instance;
 	
@@ -109,15 +141,7 @@ public class AireDeJeu extends JComponent{
 				hauteur = this.getHeight();
 				largeur = this.getWidth();
                 
-                try 
-                {
-						un_poisson = ImageIO.read(getImage("un_poisson.png"));
-						deux_poissons = ImageIO.read(getImage("deux_poissons.png"));
-						trois_poissons = ImageIO.read(getImage("trois_poissons.png"));
-				} catch (IOException e) {
-                    System.err.println("erreur lecture images : " +e);
-                    System.exit(1);
-                }
+                
 			
 				double rayonH = (3.0*(double)hauteur)/44.0;
 				double rayonL = (3.0*(double)largeur)/63.0;
@@ -147,20 +171,11 @@ public class AireDeJeu extends JComponent{
 							if(joueur != null){
 							    BufferedImage imageJoueur = null;
 							    if(joueur == inter.joueurs[0]){
-							        try{
-							   	        imageJoueur = ImageIO.read(getImage("pingNoir.jpg"));
-							        }catch(Exception e){
-							        	System.out.println("Erreur lecture image" + e);
-							        }
+							        drawable.drawImage(imageJoueur1,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
 							    }
 							    else if(joueur == inter.joueurs[1]){
-							   	    try{
-							   	        imageJoueur = ImageIO.read(getImage("pingRouge.jpg"));
-							        }catch(Exception e){
-							        	System.out.println("Erreur lecture image" + e);
-							        }
+							   	    drawable.drawImage(imageJoueur2,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
 							    }
-							    drawable.drawImage(imageJoueur,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
 							}
 						}
 					}
@@ -186,28 +201,15 @@ public class AireDeJeu extends JComponent{
 							if(joueur != null){
 							    BufferedImage imageJoueur = null;
 							    if(joueur == inter.joueurs[0]){
-							        try{
-							   	        imageJoueur = ImageIO.read(getImage("pingNoir.jpg"));
-							        }catch(Exception e){
-							        	System.out.println("Erreur lecture image" + e);
-							        }
+							        drawable.drawImage(imageJoueur1,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
 							    }
 							    else if(joueur == inter.joueurs[1]){
-							   	    try{
-							   	        imageJoueur = ImageIO.read(getImage("pingRouge.jpg"));
-							        }catch(Exception e){
-							        	System.out.println("Erreur lecture image" + e);
-							        }
+							   	    drawable.drawImage(imageJoueur2,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
 							    }
-							    drawable.drawImage(imageJoueur,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
 							}
 						}
 					}
 				}
-				
-				//affichage des pingouins
-				
-				
 
 			} //fin affichage partie en cours
 
