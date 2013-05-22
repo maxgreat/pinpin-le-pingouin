@@ -6,7 +6,9 @@ import java.awt.event.*;
 import Interface.*;
 import Joueurs.*;
 import java.util.*;
-
+import java.net.URL;
+import java.io.IOException;
+import java.awt.image.BufferedImage;
 
 public class InterfaceGraphique extends Interface
 {
@@ -23,6 +25,19 @@ public class InterfaceGraphique extends Interface
 		//Aire de dessin
 		//Boutons
 		panfinal = new JPanel();
+		panfinal.setOpaque(false);
+		JPanel Fond = new JPanel();
+		BufferedImage Image_fond;
+		Image_fond = null;
+		try
+		{	
+		    Image_fond = ImageIO.read(getImage("Image_fond.png"));
+		}
+		catch (IOException e) 
+                {
+                    System.err.println("erreur lecture images 2" +e);
+                    System.exit(1);
+                }
 		addBouton(panfinal,"Partie Rapide");
 		addBouton(panfinal,"Partie Personalisé");	
 		addBouton(panfinal,"Options");
@@ -70,6 +85,10 @@ public class InterfaceGraphique extends Interface
 	pan.add(b1);
 	panfinal.add(pan);
      }
+    private URL getImage(String nom) {
+        ClassLoader cl = getClass().getClassLoader();
+        return cl.getResource("Interface/Graphique/Img/" + nom);
+    }
     public void afficherPanel(String S)
 	{
 	LinkedList<String> Old_page = new LinkedList<String>();
@@ -98,7 +117,7 @@ public class InterfaceGraphique extends Interface
 			//lancement de la partie
 			ArbitreManager.initialiserPartie(joueurs ,ArbitreManager.LARGEUR_GRILLE , ArbitreManager.HAUTEUR_GRILLE, this); 
 			this.setJoueurs(joueurs);
-			aire = new AireDeJeu(frame);
+			aire = new AireDeJeu(frame , this);
 			aire.setPreferredSize(new Dimension(500,500));
 			aire.addMouseListener(new EcouteurDeSouris(aire));
 			frame.add(aire);
