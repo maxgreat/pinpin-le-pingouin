@@ -20,27 +20,25 @@ public class InterfaceGraphique extends Interface
     {		
 		//Fenetre principale
 		frame = new JFrame("pinpin le pingouin");
-		frame.setResizable(true);
-		frame.setPreferredSize(new Dimension(300,300));
-		frame.pack();
-		//Aire de dessin
-		//Boutons
-		
+		// creation du fond de la fenetre
 		JPanel Fond = new JPanel();		
 		JLabel image = new JLabel( new ImageIcon( "Interface/Graphique/Img/Image_fon.png"));
 		Fond.add(image);
-		frame.add(Fond );
-
+		frame.add(Fond);
+		//gestion du panel des boutons	
 		panfinal = new JPanel();
-		
 		addBouton(panfinal,"Partie Rapide");
 		addBouton(panfinal,"Partie Personalisé");	
 		addBouton(panfinal,"Options");
 		addBouton(panfinal,"Quitter");
 		panfinal.setLayout(new BoxLayout(panfinal, BoxLayout.PAGE_AXIS));
 		panfinal.setOpaque(false);
-		frame.add(panfinal);
 		
+		frame.add(panfinal);
+		frame.setResizable(true);
+		frame.setPreferredSize(new Dimension(300,300));
+		frame.pack();
+		//Aire de dessin
 
 		//intercepte la demande de fermeture the close button
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -78,15 +76,14 @@ public class InterfaceGraphique extends Interface
     {
 	JPanel pan  = new JPanel();
 	pan.setLayout(new BoxLayout(pan, BoxLayout.LINE_AXIS));
+	
 	JButton b1 = new JButton(S);
 	b1.addActionListener(new EcouteurDeBouton(S, this));
 	pan.add(b1);
+	pan.setOpaque(false);	
 	panfinal.add(pan);
      }
-    private URL getImage(String nom) {
-        ClassLoader cl = getClass().getClassLoader();
-        return cl.getResource("Interface/Graphique/Img/" + nom);
-    }
+
     public void afficherPanel(String S)
 	{
 	LinkedList<String> Old_page = new LinkedList<String>();
