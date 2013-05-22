@@ -47,6 +47,11 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 	// tant que tempsCourant - tempsDepart < TEMPS_ATTENTE_MAXIMAL
 	while (pas < 100 && System.currentTimeMillis() - startMilli < TEMPS_ATTENTE_MAXIMAL)
 	{
+	    if (ArbitreManager.instance.getForceStop())
+	    {
+		return null;
+	    }
+
 	    System.out.println("Lance un coup pour une profondeur de "+pas);
 	    MinimaxIncremental miniI = new MinimaxIncremental(this, pas, ArbitreManager.instance);
 	    t = new Thread(miniI);
@@ -57,7 +62,6 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 		try
 		{
 		    t.stop();
-		    t.join();
 		}
 		catch (ThreadDeath e)
 		{
@@ -67,7 +71,13 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 		break;
 	    }
 	    catch (InterruptedException e)
-	    {		
+	    {	
+		if (ArbitreManager.instance.getForceStop())
+		{
+		    t.stop();
+		    return null;
+		}	
+
 		synchronized(miniI.getSignalSynchro())
 		{
 		    miniI.getSignalSynchro().envoyerSignal();
@@ -103,7 +113,6 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 	}
 	catch (InterruptedException e)
 	{
-	    System.out.println("toto");
 	    // Stop forcé, renvoie null
 	    return null;
 	}
