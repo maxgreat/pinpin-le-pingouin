@@ -63,13 +63,13 @@ public class AireDeJeu extends JComponent{
         Arbitre arbitre = ArbitreManager.instance;
 	
         if (arbitre == null)
-        { //menu demarrer*/
+        { //erreur
             drawable.setPaint(Color.WHITE);
             drawable.fillRect(0,0,300,300);
             drawable.setPaint(Color.black);
             drawable.drawRect(20,20,50,50);
         }
-        else
+        else	//l'arbitre n'est pas nul
         {
             if (arbitre.partieFinie())
             {
@@ -83,7 +83,7 @@ public class AireDeJeu extends JComponent{
                 System.out.println(" - "+joueur.getNom());
                 System.exit(0);
             }
-            else
+            else  //partie en cours
             {
                 //Recuperation de la configuration
                 Configuration config = arbitre.getConfiguration();
@@ -103,94 +103,74 @@ public class AireDeJeu extends JComponent{
                 try 
                 {
 						un_poisson = ImageIO.read(getImage("un_poisson.png"));
-					 } 
-                catch (IOException e) 
-                {
-                    System.err.println("erreur lecture images 1" +e);
-                    System.exit(1);
-                }
-					 try{	
 						deux_poissons = ImageIO.read(getImage("deux_poissons.png"));
-					 }
-					 catch (IOException e) 
-                {
-                    System.err.println("erreur lecture images 2" +e);
-                    System.exit(1);
-                }
-					 try{        
 						trois_poissons = ImageIO.read(getImage("trois_poissons.png"));
-					 }
-					 catch (IOException e) 
-                {
-                    System.err.println("erreur lecture images 3" +e);
+				} catch (IOException e) {
+                    System.err.println("erreur lecture images : " +e);
                     System.exit(1);
                 }
-
-
-               /* for(int i = 0; i < largeur; i++){
-                    for(int j = 0; j < hauteur; j++){
-                        if(c[j][i] == null){}                  
-                        else if(c[j][i].getEtat() == Etat.DEUX_POISSONS){
-                            drawable.drawImage(deux_poissons,largeurCase*i,hauteurCase*j, largeurCase,hauteurCase,null);
-                        }
-								else if(c[j][i].getEtat() == Etat.UN_POISSON){
-                            drawable.drawImage(un_poisson,largeurCase*i,hauteurCase*j, largeurCase, hauteurCase,null);
-								}
-								else if(c[j][i].getEtat() == Etat.TROIS_POISSONS){
-                            drawable.drawImage(trois_poissons,largeurCase*i,hauteurCase*j, largeurCase, hauteurCase,null);
-                        }
-			 
-                    }
-                }*/
-					double rayonH;
-					double rayonL;
-					
-					rayonH = (3.0*(double)hauteur)/44.0;
-					rayonL = (3.0*(double)largeur)/63.0;
-					
-					double margeHaut = (double)hauteur/8.0;
-					double margeGauche = (double)largeur/8.0;
-					
-					//maj du tableau case
-					tabCase.setTab(rayonH, rayonL, margeHaut, margeGauche);
-					
-					
-					//Tracage des lignes de 7 pavés
-					for(int i=0;i<7;i++){
-						for(int j=0;j<4;j++){
-							if(c[j][i] == null){}                  
-							else if(c[j][i].getEtat() == Etat.DEUX_POISSONS){
+			
+				double rayonH = (3.0*(double)hauteur)/44.0;
+				double rayonL = (3.0*(double)largeur)/63.0;
+				double margeHaut = (double)hauteur/8.0;
+				double margeGauche = (double)largeur/8.0;
+				
+				//maj du tableau case
+				tabCase.setTab(rayonH, rayonL, margeHaut, margeGauche);
+				Joueur j;
+				
+				//Tracage des lignes de 7 pavés
+				for(int i=0;i<7;i++){
+					for(int j=0;j<4;j++){
+						if(c[2*j][i] != null){               
+							if(c[2*j][i].getEtat() == Etat.DEUX_POISSONS){
 								drawable.drawImage(deux_poissons,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
 							}
-							else if(c[j][i].getEtat() == Etat.UN_POISSON){
+							else if(c[2*j][i].getEtat() == Etat.UN_POISSON){
 								drawable.drawImage(un_poisson,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
 							}
-							else if(c[j][i].getEtat() == Etat.TROIS_POISSONS){
+							else if(c[2*j][i].getEtat() == Etat.TROIS_POISSONS){
 								drawable.drawImage(trois_poissons,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
 							}
-						}
-					}
-					
-					System.out.println("Tracage des lignes de 8, largeur =" + largeur + " hauteur = " + hauteur);
-					for(int i=0;i<8;i++){
-						for(int j=0;j<4;j++){
-							if(c[j][i] == null){}                  
-							else if(c[j][i].getEtat() == Etat.DEUX_POISSONS){
-								drawable.drawImage(deux_poissons,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
-							}
-							else if(c[j][i].getEtat() == Etat.UN_POISSON){
-								drawable.drawImage(un_poisson,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
-							}
-							else if(c[j][i].getEtat() == Etat.TROIS_POISSONS){
-								drawable.drawImage(trois_poissons,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
+							
+							j = c[2*j][i].getJoueurSurCase();
+							
+							if(j != null){
+							   if(j == this.joueurs[0]){
+							       
+							   }
+							   else if(j == this.joueurs[1]){
+							   
+							   }
 							}
 						}
 					}
-
 				}
+				
+				//tracage des lignes de 8
+				for(int i=0;i<8;i++){
+					for(int j=0;j<4;j++){
+						if(c[2*j+1][i] == null){}                  
+						else if(c[2*j+1][i].getEtat() == Etat.DEUX_POISSONS){
+							drawable.drawImage(deux_poissons,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
+						}
+						else if(c[2*j+1][i].getEtat() == Etat.UN_POISSON){
+							drawable.drawImage(un_poisson,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
+						}
+						else if(c[2*j+1][i].getEtat() == Etat.TROIS_POISSONS){
+							drawable.drawImage(trois_poissons,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
+						}
+					}
+				}
+				
+				//affichage des pingouins
+				
+				
 
-        }
-    }
+			} //fin affichage partie en cours
+
+        }//fin gestion erreur arbitre
+    }//fin methode paint
 
     public void click(int x, int y)
     { 
