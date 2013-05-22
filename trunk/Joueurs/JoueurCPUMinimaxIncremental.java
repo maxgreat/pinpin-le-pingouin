@@ -54,8 +54,16 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 	    {
 		t.start();
 		Thread.sleep(TEMPS_ATTENTE_MAXIMAL - (System.currentTimeMillis() - startMilli));
-		t.stop();
-		t.join();
+		try
+		{
+		    t.stop();
+		    t.join();
+		}
+		catch (ThreadDeath e)
+		{
+		    System.out.println("ThreadDeath");
+		}
+
 		break;
 	    }
 	    catch (InterruptedException e)
