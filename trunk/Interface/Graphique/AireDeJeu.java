@@ -15,8 +15,7 @@ public class AireDeJeu extends JComponent{
 	JFrame frame;
 	JPanel pan;
 	InterfaceGraphique inter;
-	Point clickPrec;
-	boolean placementFinit;
+	Point coupPrec;
 	
 	//images des joueurs
 	BufferedImage imageJoueur1 = null;
@@ -51,8 +50,7 @@ public class AireDeJeu extends JComponent{
 		//création du tableau de case
         tabCase = new Hexagone();
         tabCase.initHexagone();
-        clickPrec = new Point(-1,-1);
-        placementFinit = false;
+        coupPrec = new Point(-1,-1);
 
 		un_poisson = null;
 		deux_poissons = null;
@@ -69,12 +67,12 @@ public class AireDeJeu extends JComponent{
         }
         
         try{
-	   	    imageJoueur1 = ImageIO.read(getImage("pingNoir.jpg"));
+	   	    imageJoueur1 = ImageIO.read(getImage("pingNoir.png"));
         }catch(Exception e){
         	System.out.println("Erreur lecture image" + e);
         }
         try{
-	   	    imageJoueur2 = ImageIO.read(getImage("pingRouge.jpg"));
+	   	    imageJoueur2 = ImageIO.read(getImage("pingRouge.png"));
         }catch(Exception e){
         	System.out.println("Erreur lecture image" + e);
         }
@@ -220,12 +218,33 @@ public class AireDeJeu extends JComponent{
     { 
     	Point p = tabCase.estDansHexagone(x,y);
     	
-    	if(placementFinit){}
-    	else{
+    	if(ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN){
     		System.out.println("Envoi du coup" + p);
-    		ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(new Coup(p.y, p.x, -1, -1));
+    		if(ArbitreManager.instance.getConfiguration().estCoupPossible(new Coup(p.y, p.x, -1, -1)))
+    			ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(new Coup(p.y, p.x, -1, -1));
+    		else
+    			System.out.println("Coup illegal");
     		
     	}
+    	else{
+    		if(coupPrec.x == -1 || coupPrec.y == -1){
+    			Case [][] t = ArbitreManager.instance.getConfiguration().getTerrain();
+    			if(t[p.y][p.x] != null){
+    				if(t[p.y][p.x].getJoueurSurCase() == null) {
+    					coupPrec.x = p.x;
+    					coupPrec.y = p.y;
+    				}
+    			}
+    		}
+    		else {
+    			Coup c = new Coup(coupPrec.y, coupPrec.x, p.y, p.x);
+    			if(ArbitreManager.instance.getConfiguration().estCoupPossible(c)){
+					ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(c);
+					coupPrec = new Point(-1,-1);
+				}
+    		}
+    	}
+    	
     	this.repaint();
     }
 
