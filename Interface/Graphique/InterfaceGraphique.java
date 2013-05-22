@@ -25,20 +25,22 @@ public class InterfaceGraphique extends Interface
 		frame.pack();
 		//Aire de dessin
 		//Boutons
-		panfinal = new JPanel();
-		panfinal.setOpaque(true);
+		
 		JPanel Fond = new JPanel();		
-		JLabel image = new JLabel( new ImageIcon( "Interface/Graphique/Img/Image_fond.png"));
+		JLabel image = new JLabel( new ImageIcon( "Interface/Graphique/Img/Image_fon.png"));
 		Fond.add(image);
 		frame.add(Fond);
+
+		panfinal = new JPanel();
+		
 		addBouton(panfinal,"Partie Rapide");
 		addBouton(panfinal,"Partie Personalisé");	
 		addBouton(panfinal,"Options");
 		addBouton(panfinal,"Quitter");
 		panfinal.setLayout(new BoxLayout(panfinal, BoxLayout.PAGE_AXIS));
-		frame.add(Fond);
+		panfinal.setOpaque(false);
 		frame.add(panfinal);
-
+		
 
 		//intercepte la demande de fermeture the close button
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
