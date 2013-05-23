@@ -32,7 +32,7 @@ public class InterfaceGraphique extends Interface
 		fond.setLayout(new GridBagLayout());
 
 		fond.add(Panels[0],menu);
-		fond.add(Panels[5],quitter);
+		fond.add(Panels[2],quitter);
 		fond.add(ban,banniere);
 		frame.add(fond);
 		frame.setResizable(true);
@@ -108,7 +108,11 @@ public class InterfaceGraphique extends Interface
 	addBouton(Panels[6],"niveau du joueur1");
 	addBouton(Panels[6],"avatar joueur 1");
 
-	Panels[7].setOpaque(false);
+	Panels[2].setOpaque(false);
+	Panels[2].setLayout(new GridLayout( 3 , 1) );
+	addBouton(Panels[2],"Quitter");
+	Panels[2].setOpaque(false);
+
 	Panels[7].setLayout(new GridLayout( 3 , 1) );
 	addBouton(Panels[7],"nom du joueur2");
 	addBouton(Panels[7],"niveau du joueur2");
@@ -245,7 +249,7 @@ public class InterfaceGraphique extends Interface
 		{	
 			removeFrame(frame);
 			fond.add(Panels[0],menu);
-			fond.add(Panels[5],quitter);
+			fond.add(Panels[2],quitter);
 			frame.add(fond);
 			frame.repaint();
 			frame.pack();				
