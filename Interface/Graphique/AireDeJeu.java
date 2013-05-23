@@ -79,7 +79,7 @@ public class AireDeJeu extends JComponent{
         	System.out.println("Erreur lecture image" + e);
         }
         try{
-	   	    boutonMenu = ImageIO.read(getImage("pingRouge.png"));
+	   	    boutonMenu = ImageIO.read(getImage("boutonMenu.jpg"));
 	   	    boutonAnnuler = ImageIO.read(getImage("boutonAnnuler.jpg"));
 	   	    boutonRefaire = ImageIO.read(getImage("boutonRefaire.jpg"));
         }catch(Exception e){
@@ -201,7 +201,7 @@ public class AireDeJeu extends JComponent{
 				
 				//Dessin des boutons
 				//bouton menu
-				drawable.drawImage(boutonMenu, largeur/2, 0, 30,30,null);
+				drawable.drawImage(boutonMenu, largeur/2-35, 0, 70,50,null);
 				//bouton annuler
 				drawable.drawImage(boutonAnnuler, largeur/4, hauteur-(int)rayonH, (int)rayonL*2, (int)rayonH, null);
 				//bouton refaire
@@ -271,8 +271,6 @@ public class AireDeJeu extends JComponent{
 						}
 					}
 				}
-				
-
 			} //fin affichage partie en cours
 
         }//fin gestion erreur arbitre
@@ -304,7 +302,8 @@ public class AireDeJeu extends JComponent{
 					Coup c = new Coup(coupPrec.y, coupPrec.x, p.y, p.x);
 					if(ArbitreManager.instance.getConfiguration().estCoupPossible(c)){
 						ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(c);
-						coupPrec = new Point(-1,-1);
+						coupPrec.x = p.x;
+						coupPrec.y = p.y;
 					}
 					else{
 						System.out.println("Le coup " + c + " n'est pas pas autorisé"); 
@@ -323,8 +322,18 @@ public class AireDeJeu extends JComponent{
     	}
     	else{ //on regarde si on a cliquer sur un bouton	
 			System.out.println("On regarde si on est sur un bouton");
-			if(x > (largeur/2) && x < (largeur/2 + 30) && y < 30){
+			if(x > (largeur/2 - 35) && x < (largeur/2 + 35) && y < 50){
 				System.out.println("Clic sur le bouton menu");
+				
+				POPMenu popup = new POPMenu();
+				popup.setVisible(true);
+				this.add(popup);
+				popup.toFront();
+				try {
+        			popup.setSelected(true);
+    			} catch (java.beans.PropertyVetoException e) {}
+				
+				
 			}
 			else if(y > hauteur - (int)rayonH){
 				if(x > largeur/4 && x < (largeur/4 + (int)rayonL*2)){
