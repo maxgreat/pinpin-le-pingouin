@@ -20,7 +20,7 @@ public class InterfaceGraphique extends Interface
     GridBagConstraints c1,c2,c3,c4; 
     public void run(String [] arguments)
     {		
-		Dimension Dim = new Dimension(700,700);
+		Dimension Dim = new Dimension(700,500);
 		initialiserPanel();
 		//Fenetre principale
 		frame = new JFrame("pinpin le pingouin");
@@ -28,14 +28,14 @@ public class InterfaceGraphique extends Interface
 	 	initialiserContraintes();
 		Banniere ban = new Banniere("banniere.png",frame);
 		
-		// on met un layout de grid bag sur font
+		// on met un layout de grid bag sur fond
 		fond.setLayout(new GridBagLayout());
-		fond.setSize(Dim);
+
 		fond.add(Panels[0],c2);
 		fond.add(ban,c1);
 		frame.add(fond);
 		frame.setResizable(true);
-		frame.setPreferredSize(Dim);
+		frame.setMinimumSize(Dim);
 		frame.pack();
 		//intercepte la demande de fermeture the close button
 		frame.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
@@ -99,8 +99,7 @@ public class InterfaceGraphique extends Interface
 	Panels[1].setLayout(new BoxLayout(Panels[1], BoxLayout.PAGE_AXIS));
 	Panels[1].setOpaque(false);
 	addBouton(Panels[1],"Gestion de profil");
-	addBouton(Panels[1],"Classements");		
-	addBouton(Panels[1],"Revenir");	
+	addBouton(Panels[1],"Classements");			
 	// le panel 2 est le panel correspondant a la partie personalisé
 	Panels[2].setOpaque(false);
 	Panels[2].setLayout(new GridLayout( 7 , 2) );
@@ -116,15 +115,16 @@ public class InterfaceGraphique extends Interface
 	addBouton(Panels[2],"niveau du joueur4");
 	addBouton(Panels[2],"avatar joueur 3");		
 	addBouton(Panels[2],"avatar joueur 4");
-	addBouton(Panels[2],"Revenir");
 	// le panel 3 est le panel correspondant au gestion de profil
 	Panels[3].setLayout(new BoxLayout(Panels[3], BoxLayout.PAGE_AXIS));
 	Panels[3].setOpaque(false);
-	addBouton(Panels[3],"Revenir");
 	// le panel 4 est le panel correspondant au classement
 	Panels[4].setLayout(new BoxLayout(Panels[4], BoxLayout.PAGE_AXIS));
 	Panels[4].setOpaque(false);
-	addBouton(Panels[4],"Revenir");
+	Panels[5].setLayout(new BoxLayout(Panels[5], BoxLayout.PAGE_AXIS));
+	Panels[5].setOpaque(false);
+	addBouton(Panels[5],"Revenir");
+	addBouton(Panels[5],"Quitter");
 	}
     public void removeFrame(JFrame frame){
     
@@ -141,7 +141,7 @@ public class InterfaceGraphique extends Interface
 	c2 = new GridBagConstraints();
 	c3 = new GridBagConstraints();
 	c4 = new GridBagConstraints();
-	c1.gridx = 1;
+	c1.gridx = 0;
 	c1.gridy =0;
 	c1.gridwidth =3;
 	c1.gridheight =1;
@@ -160,13 +160,15 @@ public class InterfaceGraphique extends Interface
 	c2.weighty=1;
 	c2.anchor = GridBagConstraints.CENTER;
 	c2.fill =GridBagConstraints.BOTH;
+
 	c3.gridx =2;
 	c3.gridy =4;
 	c3.gridwidth =1;
 	c3.gridheight =1;
 	c3.anchor =GridBagConstraints.LAST_LINE_END;
 	c3.fill =GridBagConstraints.BOTH;
-	c4.gridx =0;
+
+	c4.gridx =2;
 	c4.gridy =4;
 	c4.gridwidth =1;
 	c4.gridheight =1;
@@ -182,7 +184,7 @@ public class InterfaceGraphique extends Interface
 		if (S.compareTo("Menu Principal") == 0)
 		{	
 			removeFrame(frame);
-			fond.add(Panels[0]);
+			fond.add(Panels[0],c2);
 			
 			frame.add(fond);
 			frame.repaint();
@@ -213,7 +215,8 @@ public class InterfaceGraphique extends Interface
 		{
 			removeFrame(frame);
 			Old_page.addFirst("Options");
-			fond.add(Panels[1]);
+			fond.add(Panels[1],c2);
+			fond.add(Panels[5],c4);
 			frame.add(fond);
 			frame.repaint();
 			frame.pack();			
@@ -228,7 +231,8 @@ public class InterfaceGraphique extends Interface
 		{
 			removeFrame(frame);
 			Old_page.addFirst("Options");
-			fond.add(Panels[2]);
+			fond.add(Panels[2],c2);
+			fond.add(Panels[5],c4);
 			frame.add(fond);
 			frame.repaint();
 			frame.pack();	
@@ -241,7 +245,8 @@ public class InterfaceGraphique extends Interface
 		{
 			removeFrame(frame);
 			Old_page.addFirst("Gestion de profil");
-			fond.add(Panels[3]);
+			fond.add(Panels[3],c2);
+			fond.add(Panels[5],c4);
 			frame.add(fond);
 			frame.repaint();
 			frame.pack();	
@@ -250,7 +255,8 @@ public class InterfaceGraphique extends Interface
 		{
 			removeFrame(frame);
 			Old_page.addFirst("Classement");
-			fond.add(Panels[4]);
+			fond.add(Panels[4],c2);
+			fond.add(Panels[5],c4);
 			frame.add(fond);
 			frame.repaint();
 			frame.pack();	
