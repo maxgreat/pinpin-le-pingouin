@@ -115,7 +115,7 @@ public class AireDeJeu extends JComponent{
     	drawable.fillRect(largeur-margeGauche+5,5,margeGauche-10,margeHaut-10);
     	
     	drawable.setPaint(Color.red);
-		drawable.drawString("Joueur 1",largeur-margeGauche+20,20);	
+		drawable.drawString("Joueur 2",largeur-margeGauche+20,20);	
 		drawable.drawString("Score " + inter.joueurs[1].getScore(),largeur-margeGauche+20,40);
 		drawable.drawString("Tuiles " + inter.joueurs[1].getNombreTuile(),largeur-margeGauche+20,60);
 	}       
@@ -133,23 +133,29 @@ public class AireDeJeu extends JComponent{
 	
         if (arbitre == null)
         { //erreur
-            drawable.setPaint(Color.WHITE);
-            drawable.fillRect(0,0,300,300);
-            drawable.setPaint(Color.black);
-            drawable.drawRect(20,20,50,50);
+            System.out.println("Erreur dans le moteur du jeu.");
+            System.exit(0);
         }
         else	//l'arbitre n'est pas nul
         {
             if (arbitre.partieFinie())
             {
-                Joueur joueur = arbitre.getJoueurCourant();
+                if(inter.joueurs[0].getScore() > inter.joueurs[1].getScore())
+                    System.out.println("Victoire du joueur 1 - Poissons : " + inter.joueurs[0].getNombreTuile());
+                else if(inter.joueurs[0].getScore() < inter.joueurs[1].getScore())
+                    System.out.println("Victoire du joueur 2");
+                else{ //scores égaux
+                	if(inter.joueurs[0].getNombreTuile() > inter.joueurs[1].getNombreTuile())
+                    	System.out.println("Victoire du joueur 1 - Tuiles : " + inter.joueurs[0].getNombreTuile());
+                	else if(inter.joueurs[0].getScore() < inter.joueurs[1].getScore())
+                    	System.out.println("Victoire du joueur 2");
+                    else
+                    	System.out.println("Egalité");
+                }
                 
-                if(joueur == arbitre.getJoueurCourant())
-                    System.out.print("Victoire du joueur 1");
-                else
-                    System.out.print("Victoire du joueur 2");
-
-                System.out.println(" - "+joueur.getNom());
+                System.out.println("Joueur1 : " + inter.joueurs[0].getNom() +" : "+inter.joueurs[0].getScore() +" : "+inter.joueurs[0].getNombreTuile());
+                System.out.println("Joueur2 : " + inter.joueurs[1].getNom() +" : "+inter.joueurs[1].getScore() +" : "+inter.joueurs[1].getNombreTuile());
+                
                 System.exit(0);
             }
             else  //partie en cours
@@ -200,6 +206,8 @@ public class AireDeJeu extends JComponent{
 							joueur = c[2*j][i].getJoueurSurCase();
 							
 							if(joueur != null){
+								if(coupPrec.x == 2*j && coupPrec.y == i)
+									drawable.drawOval(tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur());
 							    BufferedImage imageJoueur = null;
 							    if(joueur == inter.joueurs[0]){
 							        drawable.drawImage(imageJoueur1,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
@@ -230,6 +238,8 @@ public class AireDeJeu extends JComponent{
 							joueur = c[2*j+1][i].getJoueurSurCase();
 						
 							if(joueur != null){
+								if(coupPrec.x == 2*j+1 && coupPrec.y == i)
+									drawable.drawOval(tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur());
 							    BufferedImage imageJoueur = null;
 							    if(joueur == inter.joueurs[0]){
 							        drawable.drawImage(imageJoueur1,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
@@ -241,6 +251,7 @@ public class AireDeJeu extends JComponent{
 						}
 					}
 				}
+				
 
 			} //fin affichage partie en cours
 
@@ -259,21 +270,18 @@ public class AireDeJeu extends JComponent{
     		
     	}
     	else{ //mode jeu
-    		System.out.println("Coup de jeu");
     		if(coupPrec.x == -1 || coupPrec.y == -1){
     			Case [][] t = ArbitreManager.instance.getConfiguration().getTerrain();
     			if(t[p.x][p.y] != null){
     				if(t[p.x][p.y].getJoueurSurCase() == ArbitreManager.instance.getJoueurCourant()) {
     					coupPrec.x = p.x;
     					coupPrec.y = p.y;
-    					System.out.println("On va déplacer le pingouin qui est en = " + coupPrec);
     				}
     			}
     		}
     		else { //le coup precedent est sur un pingouin du joueur
     			Coup c = new Coup(coupPrec.y, coupPrec.x, p.y, p.x);
     			if(ArbitreManager.instance.getConfiguration().estCoupPossible(c)){
-    				System.out.println("On envoie le déplacement " + c);
 					ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(c);
 				}
 				else{
