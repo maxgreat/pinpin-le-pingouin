@@ -1,6 +1,7 @@
 package Arbitre.Regles;
 
 import java.util.*;
+import java.awt.Point;
 import Joueurs.*;
 import java.io.*;
 import Arbitre.*;
@@ -125,6 +126,109 @@ public class Configuration implements Cloneable, Serializable
 
         return pingouins;
     }
+
+    /**
+     * Indique le nombre de pingouins pouvant etre jouer sur le plateau de chaque joueurs
+     **/
+    public int [] getNombrePingouinsDispoParJoueur(Joueur [] joueurs)
+    {
+        int [] pingouins = new int[joueurs.length];
+        ArrayList<Joueur> joueurList = new ArrayList<Joueur>(Arrays.asList(joueurs));
+	
+        for (int i = 0; i < joueurs.length; i++)
+            pingouins[i] = 0;
+
+        for (int i = 0; i < hauteur; i++)
+        {
+            for (int j = 0; j < largeur; j++)
+            {
+                if (i%2 == 0 && j == largeur - 1)
+                    continue;
+
+                Joueur joueurSurCase = terrain[i][j].getJoueurSurCase();
+		
+                if (joueurSurCase != null)
+                {
+						  if(!getVoisins(i,j).isEmpty())
+                    		pingouins[joueurList.indexOf(joueurSurCase)]++;
+                }
+            }
+        }
+
+        return pingouins;
+    }
+
+    /**
+     * Récupère les cases voisines non vides et non occupées d'une case i,j du terrain
+     **/
+	public ArrayList<Point> getVoisins(int i, int j){
+		ArrayList<Point> liste = new ArrayList<Point>();
+		 {
+		     if (i%2 == 0 && j + 1 < largeur - 1 && !terrain[i][j + 1].estObstacle())
+					liste.add(new Point(i,j+1));
+		     else if (i%2 == 1 && j + 1 < largeur && !terrain[i][j + 1].estObstacle())
+					liste.add(new Point(i,j+1));
+		 }
+		 {
+		     if (j - 1 >= 0 && !terrain[i][j - 1].estObstacle())
+					liste.add(new Point(i,j-1));
+		 }
+		 {
+		     if (i - 1 >= 0)
+		     {
+		         if (i%2 == 0 && j + 1 < largeur && !terrain[i-1][j + 1].estObstacle())
+						liste.add(new Point(i-1,j+1));
+		         else if (i%2 == 1 && j < largeur - 1 && !terrain[i-1][j].estObstacle())
+						liste.add(new Point(i-1,j));
+		     }
+		 }
+		 {
+		     if (i - 1 >= 0)
+		     {
+		         if (i%2 == 0 && j < largeur - 1 && !terrain[i-1][j].estObstacle())
+						liste.add(new Point(i-1,j));
+		         else if (i%2 == 1 && j - 1 >= 0 && !terrain[i-1][j - 1].estObstacle())
+						liste.add(new Point(i-1,j-1));
+		     }
+		 }
+		 {
+		     if (i + 1 < hauteur)
+		     {
+		         if (i%2 == 0 && j + 1 < largeur && !terrain[i+1][j+1].estObstacle())
+						liste.add(new Point(i+1,j+1));
+		         else if (i%2 == 1 && j < largeur - 1 && !terrain[i+1][j].estObstacle())
+						liste.add(new Point(i+1,j));
+		     }
+		 }
+		 {
+		     if (i + 1 < hauteur)
+		     {
+		         if (i%2 == 0 && !terrain[i+1][j].estObstacle())
+						liste.add(new Point(i+1,j));
+		         else if (i%2 == 1 && j - 1 >= 0 && !terrain[i+1][j-1].estObstacle())
+						liste.add(new Point(i+1,j-1));
+		     }
+		 }
+		return liste;
+	}
+
+    /**
+     * Indique si un joueur peut encore bouger sur une configuration donnée
+     **/
+	public int nombrePoissonsRestant(){
+	  int nb = 0;
+	  for (int i = 0; i < hauteur; i++)
+	  {
+		   for (int j = 0; j < largeur; j++)
+		   {
+				if ((i%2 == 0 && j == largeur - 1) || (terrain[i][j].estObstacle()))
+					continue;
+
+				nb+=terrain[i][j].scorePoisson();
+			}
+		}
+		return nb;
+	}
 
     /**
      * Indique si un joueur peut encore bouger sur une configuration donnée

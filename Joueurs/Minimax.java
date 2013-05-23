@@ -39,11 +39,21 @@ public class Minimax implements Runnable
 		Coup [] coupPossible = cc.toutCoupsPossibles();
 		int max= Integer.MIN_VALUE,tmp,maxi=-1;
 		Configuration cl;
+		int [] nbPingouinsRestants ;
+
+		boolean [] peutJouer = new boolean[4];
+
+/*		int [] ppj = cl.getNombrePingouinsDispoParJoueur(arbitre.getJoueurs());
+			int nbPingouins = ppj[this.arbitre.getPosition(this.adversaire)-1];*/
+		
 
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){
 			cl = cc.clone();
+
+			nbPingouinsRestants = cl.getNombrePingouinsDispoParJoueur(arbitre.getJoueurs());
+
 			cl.effectuerCoup(coupPossible[i]);
-			tmp = Min(cl, max, this.profondeur);
+			tmp = Min(cl, max, this.profondeur,nbPingouinsRestants);
 			if(tmp > max){
 				max = tmp;
 				maxi = i;
@@ -52,30 +62,25 @@ public class Minimax implements Runnable
 		return coupPossible[maxi];
 	}
 
-	public int Min(Configuration cc, int max, int profondeur){
+	public int Min(Configuration cc, int max, int profondeur, int [] nbPingouinsRestants){
 
 		Configuration clcc = cc.clone();
 		clcc.setJoueurSurConfiguration(this.adversaire);
 		Coup [] coupPossible = clcc.toutCoupsPossibles();
-		if(coupPossible.length == 0)
-			return 20;
-		if (profondeur < 1)
-			return 20 - coupPossible.length;
+
+		if(coupPossible.length == 0 || profondeur < -1)
+			return eval(clcc,nbPingouinsRestants);
+
 		int min = Integer.MAX_VALUE, tmp;
 		Configuration cl;
 
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){
 			tmp = 0;
 			cl = clcc.clone();
-			int [] ppj = cl.getNombrePingouinsParJoueur(arbitre.getJoueurs());
-			int nbPingouins = ppj[this.arbitre.getPosition(this.adversaire)-1];
+
 			tmp += cl.effectuerCoup(coupPossible[i]);
-			ppj = cl.getNombrePingouinsParJoueur(arbitre.getJoueurs());
-			if (ppj[this.arbitre.getPosition(this.adversaire)-1] < nbPingouins) {
-				tmp += 40;
-				System.out.println("Pingoin adverse coincé");
-			}
-			tmp += Max(cl, min, profondeur-1);
+
+			tmp += Max(cl, min, profondeur-1,nbPingouinsRestants);
 			if(tmp < min){
 				min = tmp;
 			}
@@ -87,30 +92,24 @@ public class Minimax implements Runnable
 	}
 
 
-	public int Max(Configuration cc, int min, int profondeur)
+	public int Max(Configuration cc, int min, int profondeur, int [] nbPingouinsRestants)
 	{
 		Configuration clcc = cc.clone();
 		clcc.setJoueurSurConfiguration(joueur);
 		Coup [] coupPossible = clcc.toutCoupsPossibles();
-		if(coupPossible.length == 0)
-			return -20;
-		if (profondeur < 1)
-			return -(20 - coupPossible.length);
+		if(coupPossible.length == 0 || profondeur < -1)
+			return eval(clcc,nbPingouinsRestants);
+
 		int max = Integer.MIN_VALUE, tmp;
 		Configuration cl;
 
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){
 			tmp = 0;
 			cl = clcc.clone();
-			int [] ppj = cl.getNombrePingouinsParJoueur(arbitre.getJoueurs());
-			int nbPingouins = ppj[this.arbitre.getPosition(this.joueur)-1];
+
 			tmp -= cl.effectuerCoup(coupPossible[i]);
-			ppj = cl.getNombrePingouinsParJoueur(arbitre.getJoueurs());
-			if (ppj[this.arbitre.getPosition(this.joueur)-1] < nbPingouins) {
-				tmp -= 40;
-				System.out.println("Pingoin allié coincé");
-			}
-			tmp -= Min(cl, max, profondeur-1);
+
+			tmp -= Min(cl, max, profondeur-1,nbPingouinsRestants);
 			if(tmp > max){
 				max = tmp;
 			}
@@ -118,5 +117,23 @@ public class Minimax implements Runnable
 				break;
 		}
 		return max;		
+	}
+
+	public int eval(Configuration c, int [] nbPingouinsRestants){
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		return -1;
 	}
 }
