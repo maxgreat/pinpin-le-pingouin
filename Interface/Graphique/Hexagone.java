@@ -4,6 +4,8 @@ import java.awt.Point;
 class Hexagone{
 	public Point [][] centres;
 	public Point [][] sommetsG;
+	public int largeurFenetre;
+	public int hauteurFenetre;
 	public double largeur;
 	public double hauteur;
 	double rayonL;
@@ -18,12 +20,14 @@ class Hexagone{
 		hauteur = 0;
 	}
 
-	public void setTab(double rayonH, double rayonL, double margeHaut, double margeGauche){
+	public void setTab(double rayonH, double rayonL, double margeHaut, double margeGauche, int largeur, int hauteur){
 		double l;
 		double h;
 		
-		largeur = 2.0*rayonL;
-		hauteur = 2.0*rayonH;
+		largeurFenetre = largeur;
+		hauteurFenetre = hauteur;
+		this.largeur = 2.0*rayonL;
+		this.hauteur = 2.0*rayonH;
 		this.rayonL = rayonL;
 		this.rayonH = rayonH;
 		this.margeHaut = margeHaut;
@@ -71,7 +75,7 @@ class Hexagone{
 		double distance;
 		Point v;
 		
-		if(y > margeHaut && x > margeGauche){
+		if(y > margeHaut && x > margeGauche && x < (this.largeurFenetre - margeGauche) && y < (this.hauteurFenetre - margeHaut)){
 			for(int i = 0; i < 8; i++){
 				for(int j = 0; j < 8; j++){
 					if(centres[i][j] != null){
@@ -84,6 +88,9 @@ class Hexagone{
 					}
 				}
 			}
+		}
+		else{
+		   return new Point(-1,-1);
 		}
 		return p;
 	}
