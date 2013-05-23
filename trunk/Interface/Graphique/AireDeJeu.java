@@ -22,7 +22,9 @@ public class AireDeJeu extends JComponent{
 	BufferedImage imageJoueur2 = null;
 	BufferedImage imageJoueur3 = null;
 	BufferedImage imageJoueur4 = null;
-	
+	BufferedImage boutonMenu = null;
+	BufferedImage boutonAnnuler = null;
+	BufferedImage boutonRefaire = null;
 	
 	//images des poissons
 	private BufferedImage un_poisson, deux_poissons, trois_poissons;
@@ -33,17 +35,17 @@ public class AireDeJeu extends JComponent{
 	// Nombre de cases sur la longueur
 	public int hauteur;
 	
-	// Largeur d'une case
-	protected int largeurCase;
-	// Hauteur d'une case
-	protected int hauteurCase;
 	
+	protected double margeHaut, margeGauche, margeDroite, margeBas;
+	protected double rayonH, rayonL;
 
 	public AireDeJeu(JFrame f, InterfaceGraphique inter){
 		frame = f;
 	
 		largeur = 8;
 		hauteur = 8;
+		
+		
 		
 		this.inter = inter;
 		
@@ -76,6 +78,14 @@ public class AireDeJeu extends JComponent{
         }catch(Exception e){
         	System.out.println("Erreur lecture image" + e);
         }
+        try{
+	   	    boutonMenu = ImageIO.read(getImage("pingRouge.png"));
+	   	    boutonAnnuler = ImageIO.read(getImage("boutonAnnuler.jpg"));
+	   	    boutonRefaire = ImageIO.read(getImage("boutonRefaire.jpg"));
+        }catch(Exception e){
+        	System.out.println("Erreur lecture image" + e);
+        }
+        
         
 	}
 
@@ -165,29 +175,39 @@ public class AireDeJeu extends JComponent{
                 //Recuperation du Terrain
                 Case [][] c = config.getTerrain();
                 
-                //Recuperation de la hauteur et de la largeur
-                hauteur = config.getHauteur();
-                largeur = config.getLargeur();
-                hauteurCase = getSize().height;
-                hauteurCase = hauteurCase/hauteur;
-                largeurCase = getSize().width;	
-                largeurCase = largeurCase/largeur;		
+                //Recuperation de la hauteur et de la largeur	
 				hauteur = this.getHeight();
 				largeur = this.getWidth();
                 
                 
-			
-				double rayonH = (3.0*(double)hauteur)/44.0;
-				double rayonL = (3.0*(double)largeur)/63.0;
-				double margeHaut = (double)hauteur/8.0;
-				double margeGauche = (double)largeur/8.0;
+				//redefinition des marges
+				margeHaut = (double)hauteur/8.0;
+				margeGauche = (double)largeur/8.0;
+				margeDroite = margeGauche;
+				margeBas = margeHaut;
+				
+				//calcul des rayons
+				rayonH = ((double)hauteur - margeHaut - margeBas) / 12.5;
+				rayonL = ((double)largeur - margeGauche - margeBas) / 16.0;
+				
 				
 				//dessin des carrés de joueur
 				afficherCarres(drawable, (int)margeGauche, (int)margeHaut);
 				
 				//maj du tableau case
-				tabCase.setTab(rayonH, rayonL, margeHaut, margeGauche);
+				tabCase.setTab(rayonH, rayonL, margeHaut, margeGauche, largeur, hauteur);
 				Joueur joueur;
+				
+				
+				//Dessin des boutons
+				//bouton menu
+				drawable.drawImage(boutonMenu, largeur/2, 0, 30,30,null);
+				//bouton annuler
+				drawable.drawImage(boutonAnnuler, largeur/4, hauteur-(int)rayonH, (int)rayonL*2, (int)rayonH, null);
+				//bouton refaire
+				drawable.drawImage(boutonRefaire, 3*largeur/4, hauteur-(int)rayonH, (int)rayonL*2, (int)rayonH, null);
+				
+				
 				
 				//Tracage des lignes de 7 pavés
 				for(int i=0;i<7;i++){
@@ -262,43 +282,62 @@ public class AireDeJeu extends JComponent{
     { 
     	Point p = tabCase.estDansHexagone(x,y);
     	
-    	if(ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN){
-    		if(ArbitreManager.instance.getConfiguration().estCoupPossible(new Coup(p.y, p.x, -1, -1)))
-    			ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(new Coup(p.y, p.x, -1, -1));
-    		else
-    			System.out.println("Coup illegal, pas de positionnement ici !");
+    	if(p.x != -1 && p.y != -1){
+			if(ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN){
+				if(ArbitreManager.instance.getConfiguration().estCoupPossible(new Coup(p.y, p.x, -1, -1)))
+					ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(new Coup(p.y, p.x, -1, -1));
+				else
+					System.out.println("Coup illegal, pas de positionnement ici !");
+				
+			}
+			else{ //mode jeu
+				if(coupPrec.x == -1 || coupPrec.y == -1){
+					Case [][] t = ArbitreManager.instance.getConfiguration().getTerrain();
+					if(t[p.x][p.y] != null){
+						if(t[p.x][p.y].getJoueurSurCase() == ArbitreManager.instance.getJoueurCourant()) {
+							coupPrec.x = p.x;
+							coupPrec.y = p.y;
+						}
+					}
+				}
+				else { //le coup precedent est sur un pingouin du joueur
+					Coup c = new Coup(coupPrec.y, coupPrec.x, p.y, p.x);
+					if(ArbitreManager.instance.getConfiguration().estCoupPossible(c)){
+						ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(c);
+						coupPrec = new Point(-1,-1);
+					}
+					else{
+						System.out.println("Le coup " + c + " n'est pas pas autorisé"); 
+						Case [][] t = ArbitreManager.instance.getConfiguration().getTerrain();
+						if(t[p.x][p.y].getJoueurSurCase() == ArbitreManager.instance.getJoueurCourant()) {
+							coupPrec.x = p.x;
+							coupPrec.y = p.y;
+						}
+						else{
+							coupPrec = new Point(-1, -1);
+						}
+					}
+
+				}
+			}
+    	}
+    	else{ //on regarde si on a cliquer sur un bouton	
+			System.out.println("On regarde si on est sur un bouton");
+			if(x > (largeur/2) && x < (largeur/2 + 30) && y < 30){
+				System.out.println("Clic sur le bouton menu");
+			}
+			else if(y > hauteur - (int)rayonH){
+				if(x > largeur/4 && x < (largeur/4 + (int)rayonL*2)){
+					System.out.println("Retour");
+					ArbitreManager.instance.reculerHistorique();
+				}
+				else if(x > (3*largeur/4) && x < (3*largeur/4 + (int)rayonL*2)){
+					System.out.println("Refaire");
+					ArbitreManager.instance.avancerHistorique();
+				}
+			}
     		
     	}
-    	else{ //mode jeu
-    		if(coupPrec.x == -1 || coupPrec.y == -1){
-    			Case [][] t = ArbitreManager.instance.getConfiguration().getTerrain();
-    			if(t[p.x][p.y] != null){
-    				if(t[p.x][p.y].getJoueurSurCase() == ArbitreManager.instance.getJoueurCourant()) {
-    					coupPrec.x = p.x;
-    					coupPrec.y = p.y;
-    				}
-    			}
-    		}
-    		else { //le coup precedent est sur un pingouin du joueur
-    			Coup c = new Coup(coupPrec.y, coupPrec.x, p.y, p.x);
-    			if(ArbitreManager.instance.getConfiguration().estCoupPossible(c)){
-					ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(c);
-				}
-				else{
-					System.out.println("Le coup " + c + " n'est pas pas autorisé"); 
-				}
-				coupPrec = new Point(-1,-1);
-    		}
-    	}
-    	
     	this.repaint();
     }
-    
-			
-    
-    
-    
-    
-    
-
 }
