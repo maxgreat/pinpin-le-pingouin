@@ -26,7 +26,7 @@ public class InterfaceGraphique extends Interface
 		frame = new JFrame("pinpin le pingouin");
 		//gestion du panel des boutons	
 	 	initialiserContraintes();
-		banniere ban = new banniere("banniere.png",frame);
+		Banniere ban = new Banniere("banniere.png",frame);
 		
 		// on met un layout de grid bag sur font
 		fond.setLayout(new GridBagLayout());
