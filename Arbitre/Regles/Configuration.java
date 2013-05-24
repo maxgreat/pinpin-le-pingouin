@@ -183,9 +183,10 @@ public class Configuration implements Cloneable, Serializable
 			ArrayList<Point> voisins = getVoisins(terrainCopie,(int)p.getX(),(int)p.getY(),false);
 			for(int taille=0;taille<voisins.size();taille++){
 				p = voisins.remove(0);
-				if(terrainCopie[(int)p.getX()][(int)p.getY()].getJoueurSurCase()!=getJoueurSurConfiguration())
+				if(terrainCopie[(int)p.getX()][(int)p.getY()].getJoueurSurCase()==null)
+					pile.push(new Point((int)p.getX(),(int)p.getY()));
+				else if(terrainCopie[(int)p.getX()][(int)p.getY()].getJoueurSurCase()!=getJoueurSurConfiguration())
 					return false;
-				pile.push(new Point((int)p.getX(),(int)p.getY()));
 			}
 		}
 		return true;

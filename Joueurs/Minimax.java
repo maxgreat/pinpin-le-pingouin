@@ -51,10 +51,10 @@ public class Minimax implements Runnable {
 			}
 		}
 
-		boolean recommencer = false;
+
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){	
 
-			if(!poissonIlot.contains(new Point(coupPossible[i].getYDepart(),coupPossible[i].getXDepart())) || recommencer){
+			if(!poissonIlot.contains(new Point(coupPossible[i].getYDepart(),coupPossible[i].getXDepart()))){
 				cl = cc.clone();
 
 				score += cl.effectuerCoup(coupPossible[i]);
@@ -138,6 +138,10 @@ public class Minimax implements Runnable {
 			score -= 200;
 
 		
+
+/*	idem pour le nombre de pingouin restant, regarder le nombre de pingouin isolé au début avec le nombre de poisson quil peuvent avoir
+	et comparer avec la meme chose mais a la fin*/
+
 		return score;
 	}
 }
