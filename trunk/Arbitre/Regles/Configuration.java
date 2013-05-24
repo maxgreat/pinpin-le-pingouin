@@ -561,7 +561,6 @@ public class Configuration implements Cloneable, Serializable
                 if (k%2 == 0)
                     l--;
 		
-                System.out.println("Test "+k+", "+l);
                 if (terrain[k][l].estObstacle())
                     return false;
             }
