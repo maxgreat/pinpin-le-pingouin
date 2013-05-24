@@ -5,16 +5,14 @@ import Utilitaires.*;
 import java.util.Random;
 
 
-public class Minimax implements Runnable
-{
+public class Minimax implements Runnable {
 	Joueur joueur;
 	Joueur adversaire;
 	int profondeur;
 	Arbitre arbitre;
 	Signal<Coup> signalCoup;
 
-	public Minimax(Joueur joueur, int profondeur, Arbitre arbitre)
-	{
+	public Minimax(Joueur joueur, int profondeur, Arbitre arbitre) {
 		this.joueur = joueur;
 		if (arbitre.getPosition(this.joueur) == 1) 
 			this.adversaire = arbitre.getJoueurParPosition(2);
@@ -25,35 +23,28 @@ public class Minimax implements Runnable
 		this.signalCoup = new Signal<Coup>();
 	}
 
-	public Signal<Coup> getSignalCoup()
-	{
+	public Signal<Coup> getSignalCoup() {
 		return signalCoup;
 	}
-
-	public void run()
-	{
+	
+	public void run() {
 		getSignalCoup().envoyerSignal(minimax(ArbitreManager.instance.getConfiguration().clone()));
 	}
-
-	public Coup minimax(Configuration cc){
+	
+	public Coup minimax(Configuration cc) {
 		Coup [] coupPossible = cc.toutCoupsPossibles();
-		int max= Integer.MIN_VALUE,tmp,maxi=-1;
+		int max= Integer.MIN_VALUE,tmp,maxi=-1, score = 0;
 		Configuration cl;
-		int [] nbPingouinsRestants ;
-
+		int [] nbPingouinsRestants = cc.getNombrePingouinsDispoParJoueur(arbitre.getJoueurs());
 		boolean [] peutJouer = new boolean[4];
 
-/*		int [] ppj = cl.getNombrePingouinsDispoParJoueur(arbitre.getJoueurs());
-			int nbPingouins = ppj[this.arbitre.getPosition(this.adversaire)-1];*/
+		/*		int [] ppj = cl.getNombrePingouinsDispoParJoueur(arbitre.getJoueurs());
+				int nbPingouins = ppj[this.arbitre.getPosition(this.adversaire)-1];*/
 		
-
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){
 			cl = cc.clone();
-
-			nbPingouinsRestants = cl.getNombrePingouinsDispoParJoueur(arbitre.getJoueurs());
-
-			cl.effectuerCoup(coupPossible[i]);
-			tmp = Min(cl, max, this.profondeur,nbPingouinsRestants);
+			score += cl.effectuerCoup(coupPossible[i]);
+			tmp = Min(cl, max, this.profondeur, nbPingouinsRestants, score);
 			if(tmp > max){
 				max = tmp;
 				maxi = i;
@@ -62,25 +53,22 @@ public class Minimax implements Runnable
 		return coupPossible[maxi];
 	}
 
-	public int Min(Configuration cc, int max, int profondeur, int [] nbPingouinsRestants){
-
+	public int Min(Configuration cc, int max, int profondeur, int [] nbPingouinsRestants, int s) {
 		Configuration clcc = cc.clone();
 		clcc.setJoueurSurConfiguration(this.adversaire);
 		Coup [] coupPossible = clcc.toutCoupsPossibles();
-
-		if(coupPossible.length == 0 || profondeur < -1)
-			return eval(clcc,nbPingouinsRestants);
-
-		int min = Integer.MAX_VALUE, tmp;
+		int min = Integer.MAX_VALUE, tmp, score;
 		Configuration cl;
-
+		
+		if(coupPossible.length == 0 ) 
+			return eval(clcc, nbPingouinsRestants, s);
+		else if (profondeur < 1)
+			return eval(clcc, nbPingouinsRestants, s+coupPossible.length);
+				
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){
-			tmp = 0;
 			cl = clcc.clone();
-
-			tmp += cl.effectuerCoup(coupPossible[i]);
-
-			tmp += Max(cl, min, profondeur-1,nbPingouinsRestants);
+			score = cl.effectuerCoup(coupPossible[i]);
+			tmp = Max(cl, min, profondeur - 1, nbPingouinsRestants, score + s);
 			if(tmp < min){
 				min = tmp;
 			}
@@ -92,24 +80,22 @@ public class Minimax implements Runnable
 	}
 
 
-	public int Max(Configuration cc, int min, int profondeur, int [] nbPingouinsRestants)
+	public int Max(Configuration cc, int min, int profondeur, int [] nbPingouinsRestants, int s)
 	{
 		Configuration clcc = cc.clone();
 		clcc.setJoueurSurConfiguration(joueur);
 		Coup [] coupPossible = clcc.toutCoupsPossibles();
-		if(coupPossible.length == 0 || profondeur < -1)
-			return eval(clcc,nbPingouinsRestants);
-
-		int max = Integer.MIN_VALUE, tmp;
+		int max = Integer.MIN_VALUE, tmp, score;
 		Configuration cl;
 
+		if(coupPossible.length == 0 ) 
+			return eval(clcc, nbPingouinsRestants, s);
+		else if (profondeur < 1)
+			return eval(clcc, nbPingouinsRestants, s+coupPossible.length);
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){
-			tmp = 0;
 			cl = clcc.clone();
-
-			tmp -= cl.effectuerCoup(coupPossible[i]);
-
-			tmp -= Min(cl, max, profondeur-1,nbPingouinsRestants);
+			score = cl.effectuerCoup(coupPossible[i]);
+			tmp = Min(cl, max, profondeur-1,nbPingouinsRestants, score + s);
 			if(tmp > max){
 				max = tmp;
 			}
@@ -119,21 +105,20 @@ public class Minimax implements Runnable
 		return max;		
 	}
 
-	public int eval(Configuration c, int [] nbPingouinsRestants){
+	public int eval(Configuration c, int [] nbPingouinsRestants, int s){
+		// Nombre de poissons
+		int score = s;
+		
+		// Pingouins bloqués
+		int [] newNbPingouinsRestants = c.getNombrePingouinsDispoParJoueur(arbitre.getJoueurs());
+		int numJ = arbitre.getPosition(this.joueur) - 1;
+		int numA = arbitre.getPosition(this.adversaire) - 1;
+		if (newNbPingouinsRestants[numA] < nbPingouinsRestants[numA])
+			score += 20;
+		if (newNbPingouinsRestants[numJ] < nbPingouinsRestants[numJ])
+			score -= 20;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-		return -1;
+		
+		return score;
 	}
 }
