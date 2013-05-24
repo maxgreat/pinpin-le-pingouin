@@ -149,7 +149,7 @@ public class Configuration implements Cloneable, Serializable
 		
                 if (joueurSurCase != null)
                 {
-						  if(!getVoisins(i,j).isEmpty())
+						  if(!getVoisins(this.terrain,i,j,true).isEmpty())
                     		pingouins[joueurList.indexOf(joueurSurCase)]++;
                 }
             }
@@ -159,53 +159,86 @@ public class Configuration implements Cloneable, Serializable
     }
 
     /**
-     * Récupère les cases voisines non vides et non occupées d'une case i,j du terrain
+     * Permet de savoir si un pingouin en i,j est isolé sur un ilot
      **/
-	public ArrayList<Point> getVoisins(int i, int j){
+	public boolean estIlot(int ii, int jj){
+		Case [][] terrainCopie = new Case[hauteur][largeur];
+
+		Stack<Point> pile = new Stack();
+
+		for (int i = 0; i < hauteur; i++){
+			for (int j = 0; j < largeur; j++){
+				if (i%2 == 0 && j == largeur - 1)
+				  continue;
+				terrainCopie[i][j] = terrain[i][j].clone();
+				if (i==ii && j==jj){
+					pile.push(new Point(i,j));
+					terrainCopie[i][j].setEtat(Etat.VIDE);
+				}
+			}
+		}
+		Point p;
+		while(!pile.empty()){
+			p = pile.pop();
+			ArrayList<Point> voisins = getVoisins(terrainCopie,(int)p.getX(),(int)p.getY(),false);
+			for(int taille=0;taille<voisins.size();taille++){
+				p = voisins.remove(0);
+				if(terrainCopie[(int)p.getX()][(int)p.getY()].getJoueurSurCase()!=getJoueurSurConfiguration())
+					return false;
+				pile.push(new Point((int)p.getX(),(int)p.getY()));
+			}
+		}
+		return true;
+	}
+
+    /**
+     * Récupère les cases voisines non vides et {non occupées(obstacle=true) ou occupées(obstacle=false)} d'une case i,j du terrain
+     **/
+	public ArrayList<Point> getVoisins(Case [][] t,int i, int j,boolean obstacle){
 		ArrayList<Point> liste = new ArrayList<Point>();
 		 {
-		     if (i%2 == 0 && j + 1 < largeur - 1 && !terrain[i][j + 1].estObstacle())
+		     if (i%2 == 0 && j + 1 < largeur - 1 && ((obstacle && !t[i][j + 1].estObstacle()) || (!obstacle && !t[i][j + 1].estVide())))
 					liste.add(new Point(i,j+1));
-		     else if (i%2 == 1 && j + 1 < largeur && !terrain[i][j + 1].estObstacle())
+		     else if (i%2 == 1 && j + 1 < largeur && ((obstacle && !t[i][j + 1].estObstacle()) || (!obstacle && !t[i][j + 1].estVide())))
 					liste.add(new Point(i,j+1));
 		 }
 		 {
-		     if (j - 1 >= 0 && !terrain[i][j - 1].estObstacle())
+		     if (j - 1 >= 0 && ((obstacle && !t[i][j - 1].estObstacle()) || (!obstacle && !t[i][j - 1].estVide())))
 					liste.add(new Point(i,j-1));
 		 }
 		 {
 		     if (i - 1 >= 0)
 		     {
-		         if (i%2 == 0 && j + 1 < largeur && !terrain[i-1][j + 1].estObstacle())
+		         if (i%2 == 0 && j + 1 < largeur && ((obstacle && !t[i-1][j + 1].estObstacle()) || (!obstacle && !t[i-1][j + 1].estVide())))
 						liste.add(new Point(i-1,j+1));
-		         else if (i%2 == 1 && j < largeur - 1 && !terrain[i-1][j].estObstacle())
+		         else if (i%2 == 1 && j < largeur - 1 && ((obstacle && !t[i-1][j].estObstacle()) || (!obstacle && !t[i-1][j].estVide())))
 						liste.add(new Point(i-1,j));
 		     }
 		 }
 		 {
 		     if (i - 1 >= 0)
 		     {
-		         if (i%2 == 0 && j < largeur - 1 && !terrain[i-1][j].estObstacle())
+		         if (i%2 == 0 && j < largeur - 1 && ((obstacle && !t[i-1][j].estObstacle()) || (!obstacle && !t[i-1][j].estVide())))
 						liste.add(new Point(i-1,j));
-		         else if (i%2 == 1 && j - 1 >= 0 && !terrain[i-1][j - 1].estObstacle())
+		         else if (i%2 == 1 && j - 1 >= 0 && ((obstacle && !t[i-1][j-1].estObstacle()) || (!obstacle && !t[i-1][j-1].estVide())))
 						liste.add(new Point(i-1,j-1));
 		     }
 		 }
 		 {
 		     if (i + 1 < hauteur)
 		     {
-		         if (i%2 == 0 && j + 1 < largeur && !terrain[i+1][j+1].estObstacle())
+		         if (i%2 == 0 && j + 1 < largeur && ((obstacle && !t[i+1][j+1].estObstacle()) || (!obstacle && !t[i+1][j+1].estVide())))
 						liste.add(new Point(i+1,j+1));
-		         else if (i%2 == 1 && j < largeur - 1 && !terrain[i+1][j].estObstacle())
+		         else if (i%2 == 1 && j < largeur - 1 && ((obstacle && !t[i+1][j].estObstacle()) || (!obstacle && !t[i+1][j].estVide())))
 						liste.add(new Point(i+1,j));
 		     }
 		 }
 		 {
 		     if (i + 1 < hauteur)
 		     {
-		         if (i%2 == 0 && !terrain[i+1][j].estObstacle())
+		         if (i%2 == 0 && ((obstacle && !t[i+1][j].estObstacle()) || (!obstacle && !t[i+1][j].estVide())))
 						liste.add(new Point(i+1,j));
-		         else if (i%2 == 1 && j - 1 >= 0 && !terrain[i+1][j-1].estObstacle())
+		         else if (i%2 == 1 && j - 1 >= 0 && ((obstacle && !t[i+1][j-1].estObstacle()) || (!obstacle && !t[i+1][j-1].estVide())))
 						liste.add(new Point(i+1,j-1));
 		     }
 		 }
