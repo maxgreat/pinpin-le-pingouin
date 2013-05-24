@@ -1,0 +1,225 @@
+\documentclass{article}
+\usepackage[utf8x]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage[frenchb]{babel}
+\usepackage{lmodern}
+\usepackage{graphicx}
+\usepackage[margin=1in]{geometry}
+\usepackage{fancyhdr}
+\usepackage{lastpage}
+\usepackage{titling}
+\usepackage{MnSymbol}
+\usepackage{listingsutf8}
+
+
+\lstset{breaklines=true, breakatwhitespace=false}
+\lstset{frame=single}
+\lstset{postbreak=\raisebox{0ex}[0ex][0ex]{
+    \ensuremath{\rcurvearrowse\space}}}
+\lstset{language=C}
+
+\pagestyle{fancy}
+\fancyhead{}
+\renewcommand{\headrulewidth}{0pt}
+\fancyfoot{}
+\renewcommand{\footrulewidth}{0.4pt}
+
+\fancyfoot[C]{\thepage/\pageref{LastPage}}
+\fancyfoot[L]{\textit{\theauthor}}
+\fancyfoot[R]{\textit{\today
+}}
+
+\let\maketitlebis\maketitle
+\renewcommand\maketitle{\maketitlebis \thispagestyle{fancy}}
+
+
+%% Informations
+\title{Présentation PROG6}
+\author{Guiroux Hugo}
+
+\begin{document}
+
+\maketitle
+
+\section{Objectif :}
+Réaliser un logiciel de taille moyenne en groupe de 6.
+\textbf{Nouveautés : } 
+
+\begin{itemize}
+\item taille du logiciel
+\item gestion de l'équipe
+\end{itemize}
+
+Le logiciel sera : \textbf{jeu de type réflexion à deux joueurs avec jeu de l'ordinateur et IHM.} (choix mercredi)
+\\
+\section{Evaluation :}
+Soutenance + démo à la fin du projet
+\\
+\textbf{Critères} :
+\begin{itemize}
+\item Jeu de l'ordinateur :
+  \begin{itemize}
+  \item pertinence de l'algorithme
+  \item tests de validation
+  \item présentation
+  \end{itemize}
+\item IHM :
+  \begin{itemize}
+  \item qualité générale du résultat
+  \item progrès au fil du projet
+  \end{itemize}
+\item Qualité technique générale
+\end{itemize}
+
+\newpage
+\section{Planning}
+\begin{itemize}
+\item Semaine 1 :
+  \begin{itemize}
+  \item Pré-projet => mercredi (10h) : mini-démo
+  \item Mercredi aprem : 
+    \begin{itemize}
+    \item amphi d'IHM
+    \item amphi jeu \textbf{ => tuteur assigné}
+    \end{itemize}
+  \item vendredi 9h45 : \textbf{amphi réseau}
+  \end{itemize}
+\item Semaine 2 :
+  \begin{itemize}
+  \item Mardi 10h - ... : audit IHM \textbf{ : préparer une maquette papier}
+  \item Vendredi 8h... : audit I.A \textbf{ : préparer un algorithme pour le jeu de l'ordi}
+  \end{itemize}
+\item Semaine 3 :
+  \begin{itemize}
+  \item Jeudi 8h... : audit IHM \textbf{ : logiciel}
+  \end{itemize}
+\item Semaine 4 :
+  \begin{itemize}
+  \item Lundi 9h45 : amphi soutenances 
+  \item et ensuite (deux vidéo projecteurs disponibles : (présentation + démo)
+    \begin{itemize}
+    \item préparer la démo
+    \item répeter la soutenance
+    \end{itemize}
+  \end{itemize}
+\item Semaine 5 : 
+  \begin{itemize}
+  \item Lundi-Mardi : 10-11
+    \begin{itemize}
+    \item Soutenances : 1h par groupe
+    \item 30 min de présentation + 30 min de questions
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+\newpage
+\section{Rendu}
+\textbf{Documents + logiciels à fournir : envoyer une archive à guillaume.huard@imag.fr}
+\begin{itemize}
+\item pré-projet mercredi (logiciel) => \textbf{envoyer une fois terminé}
+\item maquette papier I.H.M. (ne pas envoyer)
+\item lors de la soutenance :
+  \begin{itemize}
+  \item manuel utilisateur
+  \item dossier de validation du joueur ordi :
+    \begin{itemize}
+    \item explication de l'algorithme
+    \item résultats de la ou des campagne(s) d'évaluation  (multiples version de l'algo)
+      \begin{itemize}
+      \item validation des niveaux 
+      \item non régression des différentes versions
+      \item validation contre I.A d'autres groupes
+      \end{itemize}
+    \end{itemize}
+  \item logiciel final
+  \end{itemize}
+\end{itemize}
+\newpage
+\section{Pré-Projet : la gaufre empoisonnée}
+Gaufre modélisée par une grille de n x m.\\
+Coin inférieur gauche contient du poison.\\
+Chacun leur tour les deux joueurs doivent manger un bout de gauffre en sélectionnant une des cases de la gauffre (en mangeant le quart de plan supérieur droit via à la case sélectionnée).\\
+Le joueur qui doit manger le poison a perdu.\\\\
+Ce qui est demandé : \\
+\begin{itemize}
+\item une interface utilisateur bien pensée
+  \begin{itemize}
+  \item interaction pratique (clic à la souris)
+  \item lisibilité de l'interface
+  \item toute l'information utile doit être présentée :
+    \begin{itemize}
+    \item A quel joueur ?
+    \item Nombre de coup jouer ?
+    \item Historique ?
+    \item Position du poinson
+    \item Quel joueur gagne
+    \end{itemize}
+  \item Eviter à l'utilisateur de cliquer sans arrêt ou de bouger la souris si ce n'est pas nécessaire
+  \end{itemize}
+\item Jeu à deux joueurs (sans I.A)
+\item jeu à l'ordinateur 
+  \begin{itemize}
+  \item jeu aléatoire
+  \item joue les coups gagnants
+  \item minmax complet
+  \item minmax seuil
+  \end{itemize}
+\item Fonctionnalités :
+  \begin{itemize}
+  \item nouvelle partie
+  \item sauvegarder (avec historique)
+  \item charger
+  \item annuler/refaire sur un nombre de coup arbitraire
+  \item abandonner
+  \end{itemize}
+\item Extensions : (optionnel) : 
+  \begin{itemize}
+  \item mode match (enchainer les parties)
+  \item coup conseillé par l'ordinateur
+  \item tutoriel
+  \item jeu en réseau
+  \item animation
+  \item scoreboard
+  \end{itemize}  
+\end{itemize}
+\newpage
+\section{Organisation du code :}
+Découper en parties distinctes :\\ 
+Exemples :\\
+\begin{itemize}
+\item Interface : textuelle ou graphique, isolée de l'applicatif
+\item Moteur de jeu (arbitre) : vérifie la validité des coups, implémente la sauvegarde restauration
+\item Joueur : demande coup possibles à l'arbitre et applique le minmax pour choisir le coup (implémentation de l'IA)
+\end{itemize}
+
+\section{Organisation du travail, rôles :}
+\begin{itemize}
+\item rapporteur : tenue d'un journal détaillant l'évollution du projet.
+  \begin{itemize}
+  \item aide à construire la présentation
+  \item aide à ne pas reproduire plusieurs fios les mêmes erreurs
+  \item permet d'interréagir avec le tuteur
+  \end{itemize}
+\item testeur : teste les différentes versions du projet
+  \begin{itemize}
+  \item non-regression
+  \item identification de versions stables
+  \end{itemize}
+\end{itemize}
+\item intégrateur : met ensemble les différentes parties du code
+  \begin{itemize}
+  \item cohérence globale
+  \item identification de problèmes d'architecture
+  \end{itemize}
+\item encadrement / suivi :
+  \begin{itemize}
+  \item durant la gaufre : passage sporadique d'enseignants dans les salles.
+  \item ensuite : 
+    \begin{itemize}
+    \item contacter son tuteur
+    \item lui fournir les infos de suivi (journal)
+    \item prendre des rdv avec lui
+    \end{itemize}
+  \end{itemize}
+\item hotline : \textbf{concombre.masque@imag.fr}
+\end{itemize}
+\end{document}
