@@ -65,8 +65,7 @@ public class Minimax implements Runnable {
 				}
 			}
 			if(maxi==-1 && i==coupPossible.length-1){
-				i=-1;
-				recommencer = true;
+				maxi=0;
 			}
 		}	
 
@@ -109,7 +108,7 @@ public class Minimax implements Runnable {
 		Configuration cl;
 
 		if(coupPossible.length == 0 ) 
-			return eval(clcc, nbPingouinsRestants, s);
+			return -eval(clcc, nbPingouinsRestants, s);
 		else if (profondeur < 1)
 			return eval(clcc, nbPingouinsRestants, s+coupPossible.length);
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){
@@ -134,9 +133,9 @@ public class Minimax implements Runnable {
 		int numJ = arbitre.getPosition(this.joueur) - 1;
 		int numA = arbitre.getPosition(this.adversaire) - 1;
 		if (newNbPingouinsRestants[numA] < nbPingouinsRestants[numA])
-			score += 20;
+			score += 200;
 		if (newNbPingouinsRestants[numJ] < nbPingouinsRestants[numJ])
-			score -= 20;
+			score -= 200;
 
 		
 		return score;
