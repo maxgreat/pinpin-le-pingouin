@@ -25,6 +25,7 @@ public class AireDeJeu extends JComponent{
 	BufferedImage boutonMenu = null;
 	BufferedImage boutonAnnuler = null;
 	BufferedImage boutonRefaire = null;
+	BufferedImage fondEau = null;
 	
 	//images des poissons
 	private BufferedImage un_poisson, deux_poissons, trois_poissons;
@@ -60,9 +61,9 @@ public class AireDeJeu extends JComponent{
         
         try 
         {
-				un_poisson = ImageIO.read(getImage("un_poisson.png"));
-				deux_poissons = ImageIO.read(getImage("deux_poissons.png"));
-				trois_poissons = ImageIO.read(getImage("trois_poissons.png"));
+				un_poisson = ImageIO.read(getImage("caseGlace1.png"));
+				deux_poissons = ImageIO.read(getImage("caseGlace2.png"));
+				trois_poissons = ImageIO.read(getImage("caseGlace3.png"));
 		} catch (IOException e) {
             System.err.println("erreur lecture images : " +e);
             System.exit(1);
@@ -82,6 +83,7 @@ public class AireDeJeu extends JComponent{
 	   	    boutonMenu = ImageIO.read(getImage("boutonMenu.jpg"));
 	   	    boutonAnnuler = ImageIO.read(getImage("boutonAnnuler.jpg"));
 	   	    boutonRefaire = ImageIO.read(getImage("boutonRefaire.jpg"));
+	   	    fondEau = ImageIO.read(getImage("backgroundWater.jpg"));
         }catch(Exception e){
         	System.out.println("Erreur lecture image" + e);
         }
@@ -188,7 +190,9 @@ public class AireDeJeu extends JComponent{
 				
 				//calcul des rayons
 				rayonH = ((double)hauteur - margeHaut - margeBas) / 12.5;
-				rayonL = ((double)largeur - margeGauche - margeBas) / 16.0;
+				rayonL = ((double)largeur - margeGauche - margeDroite) / 16.0;
+				
+				drawable.drawImage(fondEau, 0,0, largeur, hauteur, null);
 				
 				
 				//dessin des carrés de joueur
@@ -344,8 +348,7 @@ public class AireDeJeu extends JComponent{
 					System.out.println("Refaire");
 					ArbitreManager.instance.avancerHistorique();
 				}
-			}
-    		
+			}	
     	}
     	this.repaint();
     }
