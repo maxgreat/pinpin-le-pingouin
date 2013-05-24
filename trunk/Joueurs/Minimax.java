@@ -2,7 +2,8 @@ package Joueurs;
 import Arbitre.*;
 import Arbitre.Regles.*;
 import Utilitaires.*;
-import java.util.Random;
+import java.util.*;
+import java.awt.*;
 
 
 public class Minimax implements Runnable {
@@ -36,20 +37,39 @@ public class Minimax implements Runnable {
 		int max= Integer.MIN_VALUE,tmp,maxi=-1, score = 0;
 		Configuration cl;
 		int [] nbPingouinsRestants = cc.getNombrePingouinsDispoParJoueur(arbitre.getJoueurs());
-		boolean [] peutJouer = new boolean[4];
 
 		/*		int [] ppj = cl.getNombrePingouinsDispoParJoueur(arbitre.getJoueurs());
 				int nbPingouins = ppj[this.arbitre.getPosition(this.adversaire)-1];*/
-		
+		ArrayList<Point> poissonIlot = new ArrayList<Point>();
+		int h=-1,l=-1;
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){
-			cl = cc.clone();
-			score += cl.effectuerCoup(coupPossible[i]);
-			tmp = Min(cl, max, this.profondeur, nbPingouinsRestants, score);
-			if(tmp > max){
-				max = tmp;
-				maxi = i;
+			if(h!=coupPossible[i].getYDepart() || l!=coupPossible[i].getXDepart()){
+				h=coupPossible[i].getYDepart();
+				l=coupPossible[i].getXDepart();
+				if(cc.estIlot(h,l))
+					poissonIlot.add(new Point(h,l));
 			}
-		}				
+		}
+
+		boolean recommencer = false;
+		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){	
+
+			if(!poissonIlot.contains(new Point(coupPossible[i].getYDepart(),coupPossible[i].getXDepart())) || recommencer){
+				cl = cc.clone();
+
+				score += cl.effectuerCoup(coupPossible[i]);
+				tmp = Min(cl, max, this.profondeur,nbPingouinsRestants,score);
+				if(tmp > max){
+					max = tmp;
+					maxi = i;
+				}
+			}
+			if(maxi==-1 && i==coupPossible.length-1){
+				i=-1;
+				recommencer = true;
+			}
+		}	
+
 		return coupPossible[maxi];
 	}
 
