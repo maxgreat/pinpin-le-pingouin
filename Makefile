@@ -2,7 +2,7 @@ CC=javac
 MAKE=make
 JFLAGS=-classpath . -implicit:none
 EXEC=Pingouin
-SUBDIRS=Interface Joueurs Arbitre Utilitaires
+SUBDIRS=Interface Joueurs Arbitre Utilitaires Network
 CLEANDIRS = $(SUBDIRS:%=clean-%)
 
 all: $(EXEC)
