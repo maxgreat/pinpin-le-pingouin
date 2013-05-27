@@ -67,7 +67,8 @@ public class Minimax implements Runnable {
 			}
 		}	
 		if(maxi==-1){
-			return cc.meilleurChemin((int)poissonIlot.get(0).getX(),(int)poissonIlot.get(0).getX(),cc,6).getCoup();
+			System.out.println("QUE DES PINGOUINS SUR ILOT");
+			return cc.meilleurChemin((int)poissonIlot.get(0).getX(),(int)poissonIlot.get(0).getY(),cc,6).getCoup();
 		}
 		return coupPossible[maxi];
 	}
@@ -138,27 +139,23 @@ public class Minimax implements Runnable {
 
 		// Pingouins bloqués
 		int [] newNbPingouinsRestants = c.getNombrePingouinsDispoParJoueur(arbitre.getJoueurs());
-		score += (nbPingouinsRestants[numA] - newNbPingouinsRestants[numA]) * 200;
-		score -= (nbPingouinsRestants[numJ] - newNbPingouinsRestants[numJ]) * 200;
+		score += (nbPingouinsRestants[numA] - newNbPingouinsRestants[numA]) * 250;
+		score -= (nbPingouinsRestants[numJ] - newNbPingouinsRestants[numJ]) * 250;
 		
 		// nouveau Ilot
 		int [] newsipj = c.scoreIlotParJoueur(arbitre.getJoueurs());
-		if (newsipj[numA]-sipj[numA] >= c.nombrePoissonsRestant()/4 || newsipj[numJ]-sipj[numJ] < c.nombrePoissonsRestant()/4)
-			score -= 200;
-		if (newsipj[numJ]-sipj[numJ] >= c.nombrePoissonsRestant()/4 || newsipj[numA]-sipj[numA] < c.nombrePoissonsRestant()/4)
-			score += 200;
+		if (newsipj[numA]-sipj[numA] >= c.nombrePoissonsRestant()/4)
+			score = score - 200 - (newsipj[numA]-sipj[numA]);
+		if (newsipj[numJ]-sipj[numJ] < c.nombrePoissonsRestant()/4)
+			score = score - 200 - (newsipj[numJ]-sipj[numJ]);
+		if (newsipj[numJ]-sipj[numJ] >= c.nombrePoissonsRestant()/4)
+			score = score + 200 + (newsipj[numJ]-sipj[numJ]);
+		if (newsipj[numA]-sipj[numA] < c.nombrePoissonsRestant()/4)
+			score = score + 200 + (newsipj[numA]-sipj[numA]);
 
 		// pingouin presque bloqué
-		Case [][] terrainCopieJ = new Case[c.getHauteur()][c.getLargeur()];
-		Case [][] terrainCopieA = new Case[c.getHauteur()][c.getLargeur()];
-		for (int i = 0; i < c.getHauteur(); i++){
-			for (int j = 0; j < c.getLargeur(); j++){
-				if (i%2 == 0 && j == c.getLargeur() - 1)
-				  continue;
-				terrainCopieJ[i][j] = c.getTerrain()[i][j].clone();
-				terrainCopieA[i][j] = c.getTerrain()[i][j].clone();
-			}
-		}
+		Case [][] terrainCopieJ = c.cloneTerrain();
+		Case [][] terrainCopieA = c.cloneTerrain();
 
 		Point [] p =  c.coordPingouins(this.joueur);
 		for(int i=0;i<p.length;i++){
