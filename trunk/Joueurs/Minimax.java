@@ -154,7 +154,7 @@ public class Minimax implements Runnable {
 			score = score + 200 + (newsipj[numA]-sipj[numA]);
 
 		// pingouin presque bloqué
-		Case [][] terrainCopieJ = c.cloneTerrain();
+		/*Case [][] terrainCopieJ = c.cloneTerrain();
 		Case [][] terrainCopieA = c.cloneTerrain();
 
 		Point [] p =  c.coordPingouins(this.joueur);
@@ -166,7 +166,7 @@ public class Minimax implements Runnable {
 		for(int i=0;i<p.length;i++){
 			if(c.getVoisins(terrainCopieJ,(int)p[i].getX(),(int)p[i].getY(),true).size()==1)
 				score += 200;
-		}
+				}*/
 
 /*	idem pour le nombre de pingouin restant, regarder le nombre de pingouin isolé au début avec le nombre de poisson quil peuvent avoir
 	et comparer avec la meme chose mais a la fin*/
