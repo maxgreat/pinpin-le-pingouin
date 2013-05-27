@@ -87,9 +87,9 @@ public class Minimax implements Runnable {
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){
 			score = 0;
 			cl = clcc.clone();
-			score -= cl.getTerrain()[coupPossible[i].getYArrivee()][coupPossible[i].getXArrivee()].scorePoisson();
+			score = cl.getTerrain()[coupPossible[i].getYArrivee()][coupPossible[i].getXArrivee()].scorePoisson();
 			cl.effectuerCoup(coupPossible[i]);
-			tmp = Max(cl, min, profondeur - 1, nbPingouinsRestants, sipj, score + s);
+			tmp = Max(cl, min, profondeur - 1, nbPingouinsRestants, sipj, s);
 			if(tmp < min){
 				min = tmp;
 			}
@@ -117,7 +117,7 @@ public class Minimax implements Runnable {
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){
 			score = 0;
 			cl = clcc.clone();
-			score += cl.getTerrain()[coupPossible[i].getYArrivee()][coupPossible[i].getXArrivee()].scorePoisson();
+			score = cl.getTerrain()[coupPossible[i].getYArrivee()][coupPossible[i].getXArrivee()].scorePoisson();
 			cl.effectuerCoup(coupPossible[i]);
 			tmp = Min(cl, max, profondeur-1,nbPingouinsRestants, sipj, score + s);
 			if(tmp > max){
