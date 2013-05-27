@@ -1,7 +1,7 @@
 CC=javac
 MAKE=make
 JFLAGS=-classpath . -implicit:none
-EXEC=Pingouin
+EXEC=Pingouin Serveur
 SUBDIRS=Interface Joueurs Arbitre Utilitaires Network
 CLEANDIRS = $(SUBDIRS:%=clean-%)
 
@@ -11,9 +11,7 @@ all: $(EXEC)
 %.class: %.java
 	$(CC) $(JFLAGS) $<
 
-
 $(EXEC): $(SUBDIRS) $(EXEC).class $(EXEC).java
-
 
 .PHONY: subdirs $(SUBDIRS) clean
 .PHONY: subdirs $(CLEANDIRS)

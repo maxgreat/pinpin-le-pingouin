@@ -11,6 +11,7 @@ public class Message implements Serializable
     ArrayList<Object> data = new ArrayList<Object>();
     NetworkCmd cmd;
 
+    public static final long serialVersionUID = 42L;
     
     public Message(NetworkCmd cmd)
     {
@@ -52,8 +53,8 @@ public class Message implements Serializable
      **/
     private void writeObject(ObjectOutputStream out) throws IOException
     {
-	out.writeObject((NetworkCmd)this.cmd);
-	out.writeObject((ArrayList<Object>)this.data);
+	out.writeObject(this.cmd);
+	out.writeObject(this.data);
     }
 
     /**
@@ -62,7 +63,12 @@ public class Message implements Serializable
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
     {   
 	setCmd((NetworkCmd)in.readObject());
-	data = (ArrayList<Object>)in.readObject();
+	Object tmp = in.readObject();
+	
+	if (tmp instanceof ArrayList<?>)
+	    data = (ArrayList<Object>)tmp;
+	else
+	    throw new IOException("Problème manque liste objet");
     }
 
     /**

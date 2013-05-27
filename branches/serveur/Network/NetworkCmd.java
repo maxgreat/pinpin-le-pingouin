@@ -21,6 +21,7 @@ public enum NetworkCmd
     QUITTER_PARTIE,
     LISTER_PARTIE,
     DEMANDER_CONFIGURATION,
+    PONG,
 
     /**
      * Serveur -> Client
@@ -52,6 +53,7 @@ public enum NetworkCmd
     FIN_PARTIE,
     TOUR_JOUEUR,
     COUP_JOUEUR,
+    PING,
 
     /**
      * Communication Inter-Thread serveur
