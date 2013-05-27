@@ -835,36 +835,33 @@ public class Configuration implements Cloneable, Serializable
         return score;
     }
 
-   public ScoreCoup meilleurChemin(int i, int j, Configuration configuration, int occurence){
+   public Point meilleurChemin(int i, int j, Configuration configuration, int score){
       Coup [] lesCoups = configuration.coupsPossiblesCase(i,j);
       Case [][] terrain =  configuration.getTerrain();
 
-      ScoreCoup coupJoue = null;
-      int nombreCoups = configuration.nombreCoupsPossiblesCase(j, i);
-
-      if(occurence == 0)
-         return new ScoreCoup(0, null);
-      if(nombreCoups == 0)
-         return new ScoreCoup(0, new Coup(0, 0,0,0));
+      if(lesCoups == null)
+         return new Point(0,terrain[i][j].scorePoisson());
       else{
-         int maxScore = 0;
-         int pointDuCoup = 0;
-         int indice=0;
+         int maxScore = 0, indice = 0, tmp;
          for(int k=0; k<lesCoups.length;k++){
+				 tmp = 0;
              Configuration configurationBis = configuration.clone();
-             pointDuCoup = terrain[lesCoups[k].getYArrivee()][lesCoups[k].getXArrivee()].scorePoisson();
-             int occ = occurence-1;
-             configurationBis.effectuerCoup(lesCoups[k]);
-             coupJoue = meilleurChemin(lesCoups[k].getXArrivee(),lesCoups[k].getYArrivee(),configurationBis,occ );
+             tmp = configurationBis.effectuerCoup(lesCoups[k]);
+             tmp += (int)meilleurChemin(lesCoups[k].getXArrivee(),lesCoups[k].getYArrivee(),configurationBis,score).getY();
 
-             if(maxScore < pointDuCoup+coupJoue.getScore()){
-                 maxScore = pointDuCoup+coupJoue.getScore()	;
+				 if(tmp==score){
+					maxScore = tmp;
+					indice = k;
+					k = lesCoups.length;
+					continue;
+				 }
+
+             if(maxScore < tmp){
+                 maxScore = tmp	;
                  indice = k; 
              }
         }
-        coupJoue.setScore(maxScore);
-        coupJoue.setCoup(lesCoups[indice]);
-        return coupJoue;
+        return new Point(indice,maxScore);
       }
 
    }
@@ -914,6 +911,27 @@ public class Configuration implements Cloneable, Serializable
         }
 
         return new Configuration(largeur, hauteur, terrainCopie, getJoueurSurConfiguration(), getCoupEffectue());
+    }
+
+    /**
+     * Clone un terrain
+     **/
+    public Case [][] cloneTerrain()
+    {
+        Case [][] terrainCopie = new Case[hauteur][largeur];
+        
+        for (int i = 0; i < hauteur; i++)
+        {
+            for (int j = 0; j < largeur; j++)
+            {
+                if (i%2 == 0 && j == largeur - 1)
+                    continue;
+
+                terrainCopie[i][j] = terrain[i][j].clone();
+            }
+        }
+
+        return terrainCopie;
     }
 
     /**
