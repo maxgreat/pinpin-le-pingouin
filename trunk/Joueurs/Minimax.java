@@ -52,7 +52,6 @@ public class Minimax implements Runnable {
 					poissonIlot.add(new Point(l,h));
 			}
 		}
-		System.out.println("NB POISSON ILOT : "+poissonIlot.size());
 
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){	
 			score = 0;
@@ -139,15 +138,9 @@ public class Minimax implements Runnable {
 
 		// Pingouins bloqués
 		int [] newNbPingouinsRestants = c.getNombrePingouinsDispoParJoueur(arbitre.getJoueurs());
-		if (newNbPingouinsRestants[numA] < nbPingouinsRestants[numA])
-			score += 200;
-		if (newNbPingouinsRestants[numJ] < nbPingouinsRestants[numJ])
-			score -= 200;
-		if(nbPingouinsRestants[numJ]-newNbPingouinsRestants[numJ] < nbPingouinsRestants[numA]-newNbPingouinsRestants[numA])
-			score += 200;
-		if(nbPingouinsRestants[numJ]-newNbPingouinsRestants[numJ] > nbPingouinsRestants[numA]-newNbPingouinsRestants[numA])
-			score -= 200;
-
+		score += (nbPingouinsRestants[numA] - newNbPingouinsRestants[numA]) * 200;
+		score -= (nbPingouinsRestants[numJ] - newNbPingouinsRestants[numJ]) * 200;
+		
 		// nouveau Ilot
 		int [] newsipj = c.scoreIlotParJoueur(arbitre.getJoueurs());
 		if (newsipj[numA]-sipj[numA] >= c.nombrePoissonsRestant()/4 || newsipj[numJ]-sipj[numJ] < c.nombrePoissonsRestant()/4)
