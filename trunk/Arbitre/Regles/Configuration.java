@@ -843,7 +843,7 @@ public class Configuration implements Cloneable, Serializable
          return new Point(0,terrain[i][j].scorePoisson());
       else{
          int maxScore = 0, indice = 0, tmp;
-         for(int k=0; k<lesCoups.length;k++){
+         for(int k=0; k<lesCoups.length && !Thread.currentThread().isInterrupted();k++){
 				 tmp = 0;
              Configuration configurationBis = configuration.clone();
              tmp = configurationBis.effectuerCoup(lesCoups[k]);
