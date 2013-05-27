@@ -132,8 +132,8 @@ public class InterfaceGraphique extends Interface
 			frame.remove(fond);
 			//definition des joueurs
 			Joueur [] joueurs = new Joueur[2];
-			joueurs[0] = new JoueurHumain();
-			joueurs[1] = new JoueurCPUFacile();
+			joueurs[0] = new JoueurCPUCouly();
+			joueurs[1] = new JoueurCPUMinimaxIncremental();
 			//lancement de la partie
 			ArbitreManager.initialiserPartie(joueurs ,ArbitreManager.LARGEUR_GRILLE, ArbitreManager.HAUTEUR_GRILLE, this); 
 			ArbitreManager.lancerPartie();
