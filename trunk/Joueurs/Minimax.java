@@ -48,8 +48,8 @@ public class Minimax implements Runnable {
 			if(h!=coupPossible[i].getYDepart() || l!=coupPossible[i].getXDepart()){
 				h=coupPossible[i].getYDepart();
 				l=coupPossible[i].getXDepart();
-				if(cc.estIlot(l,h)!=-1)
-					poissonIlot.add(new Point(l,h));
+				if(cc.estIlot(h,l)!=-1)
+					poissonIlot.add(new Point(h,l));
 			}
 		}
 
