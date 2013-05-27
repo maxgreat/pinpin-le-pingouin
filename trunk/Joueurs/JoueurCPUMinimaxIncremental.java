@@ -10,8 +10,20 @@ public class JoueurCPUMinimaxIncremental extends Joueur
      **/
     static final long TEMPS_ATTENTE_MINIMAL = 1000; 
     static final long TEMPS_ATTENTE_MAXIMAL = 5000;
+	
+	Joueur j;
 
-    public static String getType()
+	public JoueurCPUMinimaxIncremental() {
+		super();
+		this.j = this;
+	}
+	
+	public JoueurCPUMinimaxIncremental(Joueur j) {
+		super();
+		this.j = j;
+	}
+	
+	public static String getType()
     {
         return "CPU_MinimaxIncremental";
     }
@@ -29,7 +41,7 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 	// Récupérer temps départ
 	long startMilli = System.currentTimeMillis();
 	// coup = Lancement minimax profondeur 1 (thread)
-	Minimax mini  = new Minimax(this, 1, ArbitreManager.instance);
+	Minimax mini  = new Minimax(j, 1, ArbitreManager.instance);
 	Thread t = new Thread(mini);
 	t.start();
 
@@ -51,7 +63,7 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 		return null;
 	    }
 
-	    MinimaxIncremental miniI = new MinimaxIncremental(this, pas, ArbitreManager.instance);
+	    MinimaxIncremental miniI = new MinimaxIncremental(j, pas, ArbitreManager.instance);
 	    t = new Thread(miniI);
 	    try
 	    {
