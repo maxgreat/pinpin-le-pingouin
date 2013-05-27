@@ -159,11 +159,59 @@ public class Configuration implements Cloneable, Serializable
     }
 
     /**
-     * Permet de savoir si un pingouin en i,j est isolé sur un ilot
+     * Récupère les coordonnées des pîngouins d'un joueur j
      **/
-	public boolean estIlot(int ii, int jj){
-		Case [][] terrainCopie = new Case[hauteur][largeur];
+	public Point [] coordPingouins(Joueur joueur){
+        ArrayList<Point> coord = new ArrayList<Point>();
+        for (int i = 0; i < hauteur; i++)
+        {
+            for (int j = 0; j < largeur; j++)
+            {
+                if (i%2 == 0 && j == largeur - 1)
+                    continue;
 
+                Joueur joueurSurCase = terrain[i][j].getJoueurSurCase();
+		
+                if (joueurSurCase == joueur)
+                {
+						  coord.add(new Point(i,j));
+                }
+            }
+        }
+
+        return (Point[])coord.toArray(new Point[coord.size()]);
+	}
+
+    /**
+     * Retourne le score que rapporte tout les pingouins isolé par joueurs
+     **/
+	public int [] scoreIlotParJoueur(Joueur [] joueurs){
+        int [] score = new int[joueurs.length];
+        ArrayList<Joueur> joueurList = new ArrayList<Joueur>(Arrays.asList(joueurs));
+	
+        for (int i = 0; i < joueurs.length; i++)
+            score[i] = 0;
+
+        for (int i = 0; i < joueurs.length; i++)
+        {
+			 Point [] cP = coordPingouins(joueurs[i]);
+			 for (int j = 0; j < cP.length; j++)
+			 {
+				score[i] += estIlot((int)cP[j].getX(),(int)cP[j].getY());
+			 }            
+        }
+
+        return score;
+	}
+
+    /**
+     * Permet de savoir si un pingouin en i,j est isolé sur un ilot
+	  * -1 si non
+	  * nombre de poisson sur l'ilot si oui
+     **/
+	public int estIlot(int ii, int jj){
+		Case [][] terrainCopie = new Case[hauteur][largeur];
+		int nb = 0;
 		Stack<Point> pile = new Stack();
 
 		for (int i = 0; i < hauteur; i++){
@@ -183,14 +231,16 @@ public class Configuration implements Cloneable, Serializable
 			ArrayList<Point> voisins = getVoisins(terrainCopie,(int)p.getX(),(int)p.getY(),false);
 			for(int taille=0;taille<voisins.size();taille++){
 				p = voisins.remove(0);
-
+				nb += terrainCopie[(int)p.getX()][(int)p.getY()].scorePoisson();
 				if(terrainCopie[(int)p.getX()][(int)p.getY()].getJoueurSurCase()!=getJoueurSurConfiguration())
-					return false;
-				if(terrainCopie[(int)p.getX()][(int)p.getY()].getJoueurSurCase()==null)
+					return -1;
+				if(terrainCopie[(int)p.getX()][(int)p.getY()].getJoueurSurCase()==null){
 					pile.push(new Point((int)p.getX(),(int)p.getY()));
+					terrainCopie[(int)p.getX()][(int)p.getY()].setEtat(Etat.VIDE);
+				}
 			}
 		}
-		return true;
+		return nb;
 	}
 
     /**
@@ -783,6 +833,40 @@ public class Configuration implements Cloneable, Serializable
 
         return score;
     }
+
+   public ScoreCoup meilleurChemin(int i, int j, Configuration configuration, int occurence){
+      Coup [] lesCoups = configuration.coupsPossiblesCase(i,j);
+      Case [][] terrain =  configuration.getTerrain();
+
+      ScoreCoup coupJoue = null;
+      int nombreCoups = configuration.nombreCoupsPossiblesCase(j, i);
+
+      if(occurence == 0)
+         return new ScoreCoup(0, null);
+      if(nombreCoups == 0)
+         return new ScoreCoup(0, new Coup(0, 0,0,0));
+      else{
+         int maxScore = 0;
+         int pointDuCoup = 0;
+         int indice=0;
+         for(int k=0; k<lesCoups.length;k++){
+             Configuration configurationBis = configuration.clone();
+             pointDuCoup = terrain[lesCoups[k].getYArrivee()][lesCoups[k].getXArrivee()].scorePoisson();
+             int occ = occurence-1;
+             configurationBis.effectuerCoup(lesCoups[k]);
+             coupJoue = meilleurChemin(lesCoups[k].getXArrivee(),lesCoups[k].getYArrivee(),configurationBis,occ );
+
+             if(maxScore < pointDuCoup+coupJoue.getScore()){
+                 maxScore = pointDuCoup+coupJoue.getScore()	;
+                 indice = k; 
+             }
+        }
+        coupJoue.setScore(maxScore);
+        coupJoue.setCoup(lesCoups[indice]);
+        return coupJoue;
+      }
+
+   }
 
     /**
      * Nettoie le terrain des pingouins qui sont isolés en renvoyant le score de
