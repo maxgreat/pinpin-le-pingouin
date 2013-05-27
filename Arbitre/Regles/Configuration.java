@@ -232,11 +232,12 @@ public class Configuration implements Cloneable, Serializable
 			for(int taille=0;taille<voisins.size();taille++){
 				p = voisins.remove(0);
 				nb += terrainCopie[(int)p.getX()][(int)p.getY()].scorePoisson();
-				if(terrainCopie[(int)p.getX()][(int)p.getY()].getJoueurSurCase()!=getJoueurSurConfiguration())
-					return -1;
 				if(terrainCopie[(int)p.getX()][(int)p.getY()].getJoueurSurCase()==null){
 					pile.push(new Point((int)p.getX(),(int)p.getY()));
 					terrainCopie[(int)p.getX()][(int)p.getY()].setEtat(Etat.VIDE);
+				}
+				else if(terrainCopie[(int)p.getX()][(int)p.getY()].getJoueurSurCase()!=getJoueurSurConfiguration()){
+					return -1;
 				}
 			}
 		}
