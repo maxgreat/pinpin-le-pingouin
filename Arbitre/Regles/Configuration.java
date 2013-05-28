@@ -210,7 +210,7 @@ public class Configuration implements Cloneable, Serializable
 			 Point [] cP = coordPingouins(joueurs[i]);
 			 for (int j = 0; j < cP.length; j++)
 			 {
-				score[i] += estIlot((int)cP[j].getX(),(int)cP[j].getY(),false);
+				score[i] += estIlot((int)cP[j].getX(),(int)cP[j].getY());
 			 }            
         }
 
@@ -222,7 +222,7 @@ public class Configuration implements Cloneable, Serializable
 	  * -1 si non
 	  * nombre de poisson sur l'ilot si oui
      **/
-	public int estIlot(int ii, int jj, boolean affiche){
+	public int estIlot(int ii, int jj){
 		Case [][] terrainCopie = cloneTerrain();
 		int nb = 0;
 		Stack<Point> pile = new Stack();
@@ -231,13 +231,9 @@ public class Configuration implements Cloneable, Serializable
 		nb += terrainCopie[ii][jj].scorePoisson();
 		terrainCopie[ii][jj].setEtat(Etat.VIDE);
 
-			if(affiche)
-				System.out.println("DEBUT");
 		Point p;
 		while(!pile.empty()){
 			p = pile.pop();
-			if(affiche)
-				System.out.println(p.getX()+","+p.getY());
 			ArrayList<Point> voisins = getVoisins(terrainCopie,(int)p.getX(),(int)p.getY(),false);
 			for(int taille=0;taille<voisins.size();taille++){
 				p = voisins.get(taille);
@@ -251,8 +247,6 @@ public class Configuration implements Cloneable, Serializable
 				}
 			}
 		}
-			if(affiche)
-				System.out.println("FIN");
 		return nb;
 	}
 
@@ -847,35 +841,6 @@ public class Configuration implements Cloneable, Serializable
         return score;
     }
 
-   public Point meilleurChemin(int i, int j, Configuration configuration, int score){
-      Coup [] lesCoups = configuration.coupsPossiblesCase(i,j);
-      Case [][] terrain =  configuration.getTerrain();
-
-      if(lesCoups == null)
-         return new Point(0,terrain[i][j].scorePoisson());
-      else{
-			int maxScore = 0, indice = 0, tmp;
-			for(int k=0; k<lesCoups.length && !Thread.currentThread().isInterrupted();k++){
-				 tmp = 0;
-				 Configuration configurationBis = configuration.clone();
-				 tmp = configurationBis.effectuerCoup(lesCoups[k]);
-				 tmp += (int)meilleurChemin(lesCoups[k].getXArrivee(),lesCoups[k].getYArrivee(),configurationBis,score).getY();
-
-				 if(tmp==score){
-					maxScore = tmp;
-					indice = k;
-					k = lesCoups.length;
-					continue;
-				 }
-
-				 if(maxScore < tmp){
-					  maxScore = tmp	;
-					  indice = k; 
-				 }
-			}
-			return new Point(indice,maxScore);
-      }
-   }
 
     /**
      * Nettoie le terrain des pingouins qui sont isolés en renvoyant le score de
