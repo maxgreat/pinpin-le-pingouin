@@ -120,18 +120,20 @@ public class MenuPrincipal{
 	{
 		JPanel pan = new JPanel();
 
-		pan.setLayout(new BoxLayout(pan, BoxLayout.PAGE_AXIS));
+		
 		JButton b1 = new JButton(S);
+		
 		b1.addActionListener(new EcouteurDeBouton(S, inter));
-		pan.add(b1);
+		pan.add(b1,BorderLayout.CENTER);
 		pan.setOpaque(false);	
-		panel.add(pan);
+		panel.add(pan,BorderLayout.CENTER);
 	}
 	public void setBoutons(String s)
 	{
 		if(s.compareTo("demarrage") == 0){
 			ban = new Banniere("pinpin.png",frame);
 			ban.setPreferredSize(new Dimension(700, (500)/4));
+			Menu.setLayout(new GridLayout( 4, 1));
 			addBouton(Menu, "Partie Rapide");
 			addBouton(Menu, "Partie Personalisée");
 			addBouton(Menu, "Options");
@@ -140,6 +142,7 @@ public class MenuPrincipal{
 		else if(s.compareTo("Options") == 0){
 			ban = new Banniere("options.png",frame);
 			ban.setPreferredSize(new Dimension(700, (500)/4));
+			Menu.setLayout(new GridLayout( 3 , 1));
 			addBouton(Menu, "Son");
 			addBouton(Menu, "Gestion de profil");
 			addBouton(Menu, "Quitter");
