@@ -48,15 +48,11 @@ public class Minimax implements Runnable {
 			if(h!=coupPossible[i].getYDepart() || l!=coupPossible[i].getXDepart()){
 				h=coupPossible[i].getYDepart();
 				l=coupPossible[i].getXDepart();
-				int nbb;
-				if((nbb=cc.estIlot(h,l,false))!=-1){
+				if(cc.estIlot(h,l)!=-1){
 					poissonIlot.add(new Point(h,l));
-//					cc.estIlot(h,l,false);
-					System.out.println("PINGOU : "+h+","+l);
 				}
 			}
 		}
-System.out.println("NB ILOT : "+poissonIlot.size());
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){	
 			score = 0;
 			if(!poissonIlot.contains(new Point(coupPossible[i].getYDepart(),coupPossible[i].getXDepart()))){
@@ -71,10 +67,11 @@ System.out.println("NB ILOT : "+poissonIlot.size());
 			}
 		}	
 		if(maxi==-1){
-			int suiv = (int)cc.meilleurChemin((int)poissonIlot.get(0).getX(),(int)poissonIlot.get(0).getY(),cc,cc.estIlot((int)poissonIlot.get(0).getX(),(int)poissonIlot.get(0).getY(),false)).getX();
-			System.out.println("Coup suivant = "+coupPossible[suiv].getXArrivee()+","+coupPossible[suiv].getYArrivee());
-			return coupPossible[suiv];
-		}
+			Point suiv = meilleurChemin((int)poissonIlot.get(0).getX(),(int)poissonIlot.get(0).getY(),cc,cc.estIlot((int)poissonIlot.get(0).getX(),(int)poissonIlot.get(0).getY()));
+		//	System.out.println(profondeur+" : Coup suivant = "+coupPossible[(int)suiv.getX()].getXArrivee()+","+coupPossible[(int)suiv.getX()].getYArrivee()+" NB = "+(int)suiv.getY());
+			return coupPossible[0];
+		} 
+
 		return coupPossible[maxi];
 	}
 
@@ -178,4 +175,30 @@ System.out.println("NB ILOT : "+poissonIlot.size());
 
 		return score;
 	}
+
+   public Point meilleurChemin(int i, int j, Configuration configuration, int score){
+      Coup [] lesCoups = configuration.coupsPossiblesCase(i,j);
+      Case [][] terrain =  configuration.getTerrain();
+		System.out.println(score);
+      if(lesCoups == null)
+         return new Point(0,terrain[i][j].scorePoisson());
+      else{
+			int maxScore = 0, indice = 0, tmp;
+			for(int k=0; k<lesCoups.length && !Thread.currentThread().isInterrupted();k++){
+				 tmp = 0;
+				 Configuration configurationBis = configuration.clone();
+				 tmp = configurationBis.effectuerCoup(lesCoups[k]);
+				 tmp += (int)meilleurChemin(lesCoups[k].getXArrivee(),lesCoups[k].getYArrivee(),configurationBis,score).getY();
+
+				 if(maxScore < tmp){
+					  maxScore = tmp	;
+					  indice = k; 
+				 }
+				 if(maxScore == score)
+					  k = lesCoups.length;
+			}
+			return new Point(indice,maxScore);
+      }
+   }
+
 }
