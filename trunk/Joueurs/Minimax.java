@@ -48,11 +48,15 @@ public class Minimax implements Runnable {
 			if(h!=coupPossible[i].getYDepart() || l!=coupPossible[i].getXDepart()){
 				h=coupPossible[i].getYDepart();
 				l=coupPossible[i].getXDepart();
-				if(cc.estIlot(h,l)!=-1)
+				int nbb;
+				if((nbb=cc.estIlot(h,l,false))!=-1){
 					poissonIlot.add(new Point(h,l));
+//					cc.estIlot(h,l,false);
+					System.out.println("PINGOU : "+h+","+l);
+				}
 			}
 		}
-
+System.out.println("NB ILOT : "+poissonIlot.size());
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){	
 			score = 0;
 			if(!poissonIlot.contains(new Point(coupPossible[i].getYDepart(),coupPossible[i].getXDepart()))){
@@ -67,7 +71,9 @@ public class Minimax implements Runnable {
 			}
 		}	
 		if(maxi==-1){
-			return coupPossible[(int)cc.meilleurChemin((int)poissonIlot.get(0).getX(),(int)poissonIlot.get(0).getY(),cc,cc.estIlot((int)poissonIlot.get(0).getX(),(int)poissonIlot.get(0).getY())).getX()];
+			int suiv = (int)cc.meilleurChemin((int)poissonIlot.get(0).getX(),(int)poissonIlot.get(0).getY(),cc,cc.estIlot((int)poissonIlot.get(0).getX(),(int)poissonIlot.get(0).getY(),false)).getX();
+			System.out.println("Coup suivant = "+coupPossible[suiv].getXArrivee()+","+coupPossible[suiv].getYArrivee());
+			return coupPossible[suiv];
 		}
 		return coupPossible[maxi];
 	}

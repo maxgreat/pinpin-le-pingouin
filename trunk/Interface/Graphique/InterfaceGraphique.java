@@ -109,7 +109,7 @@ public class InterfaceGraphique extends Interface
 			//definition des joueurs
 			Joueur [] joueurs = new Joueur[2];
 			joueurs[0] = new JoueurHumain();
-			joueurs[1] = new JoueurCPUFacile();
+			joueurs[1] = new JoueurCPUMinimaxIncremental();
 			this.setJoueurs(joueurs);
 			initialiserPartie(joueurs);
 		}
