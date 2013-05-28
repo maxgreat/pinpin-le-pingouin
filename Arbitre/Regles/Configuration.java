@@ -210,7 +210,7 @@ public class Configuration implements Cloneable, Serializable
 			 Point [] cP = coordPingouins(joueurs[i]);
 			 for (int j = 0; j < cP.length; j++)
 			 {
-				score[i] += estIlot((int)cP[j].getX(),(int)cP[j].getY());
+				score[i] += estIlot((int)cP[j].getX(),(int)cP[j].getY(),false);
 			 }            
         }
 
@@ -222,30 +222,27 @@ public class Configuration implements Cloneable, Serializable
 	  * -1 si non
 	  * nombre de poisson sur l'ilot si oui
      **/
-	public int estIlot(int ii, int jj){
-		Case [][] terrainCopie = new Case[hauteur][largeur];
+	public int estIlot(int ii, int jj, boolean affiche){
+		Case [][] terrainCopie = cloneTerrain();
 		int nb = 0;
 		Stack<Point> pile = new Stack();
 
-		for (int i = 0; i < hauteur; i++){
-			for (int j = 0; j < largeur; j++){
-				if (i%2 == 0 && j == largeur - 1)
-				  continue;
-				terrainCopie[i][j] = terrain[i][j].clone();
-				if (i==ii && j==jj){
-					pile.push(new Point(i,j));
-					terrainCopie[i][j].setEtat(Etat.VIDE);
-				}
-			}
-		}
+		pile.push(new Point(ii,jj));
+		nb += terrainCopie[ii][jj].scorePoisson();
+		terrainCopie[ii][jj].setEtat(Etat.VIDE);
+
+			if(affiche)
+				System.out.println("DEBUT");
 		Point p;
 		while(!pile.empty()){
 			p = pile.pop();
+			if(affiche)
+				System.out.println(p.getX()+","+p.getY());
 			ArrayList<Point> voisins = getVoisins(terrainCopie,(int)p.getX(),(int)p.getY(),false);
 			for(int taille=0;taille<voisins.size();taille++){
-				p = voisins.remove(0);
-				nb += terrainCopie[(int)p.getX()][(int)p.getY()].scorePoisson();
+				p = voisins.get(taille);
 				if(terrainCopie[(int)p.getX()][(int)p.getY()].getJoueurSurCase()==null){
+					nb += terrainCopie[(int)p.getX()][(int)p.getY()].scorePoisson();
 					pile.push(new Point((int)p.getX(),(int)p.getY()));
 					terrainCopie[(int)p.getX()][(int)p.getY()].setEtat(Etat.VIDE);
 				}
@@ -254,6 +251,8 @@ public class Configuration implements Cloneable, Serializable
 				}
 			}
 		}
+			if(affiche)
+				System.out.println("FIN");
 		return nb;
 	}
 
@@ -855,12 +854,12 @@ public class Configuration implements Cloneable, Serializable
       if(lesCoups == null)
          return new Point(0,terrain[i][j].scorePoisson());
       else{
-         int maxScore = 0, indice = 0, tmp;
-         for(int k=0; k<lesCoups.length && !Thread.currentThread().isInterrupted();k++){
+			int maxScore = 0, indice = 0, tmp;
+			for(int k=0; k<lesCoups.length && !Thread.currentThread().isInterrupted();k++){
 				 tmp = 0;
-             Configuration configurationBis = configuration.clone();
-             tmp = configurationBis.effectuerCoup(lesCoups[k]);
-             tmp += (int)meilleurChemin(lesCoups[k].getXArrivee(),lesCoups[k].getYArrivee(),configurationBis,score).getY();
+				 Configuration configurationBis = configuration.clone();
+				 tmp = configurationBis.effectuerCoup(lesCoups[k]);
+				 tmp += (int)meilleurChemin(lesCoups[k].getXArrivee(),lesCoups[k].getYArrivee(),configurationBis,score).getY();
 
 				 if(tmp==score){
 					maxScore = tmp;
@@ -869,14 +868,13 @@ public class Configuration implements Cloneable, Serializable
 					continue;
 				 }
 
-             if(maxScore < tmp){
-                 maxScore = tmp	;
-                 indice = k; 
-             }
-        }
-        return new Point(indice,maxScore);
+				 if(maxScore < tmp){
+					  maxScore = tmp	;
+					  indice = k; 
+				 }
+			}
+			return new Point(indice,maxScore);
       }
-
    }
 
     /**
