@@ -57,6 +57,8 @@ public class Configuration implements Cloneable, Serializable
 		int res = 0;
 		for (int i = 0; i < this.getHauteur(); i++) {
 			for (int j = 0; j < this.getLargeur(); j++) {
+				if (i%2 == 0 && j == largeur - 1)
+					continue;
 				if (this.getTerrain()[i][j].getEtat() != Etat.VIDE)
 					res++;
 			}
