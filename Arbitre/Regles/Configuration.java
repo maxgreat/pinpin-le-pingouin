@@ -53,6 +53,17 @@ public class Configuration implements Cloneable, Serializable
         return terrain;
     }
 
+	public int getNbCasesRestantes() {
+		int res = 0;
+		for (int i = 0; i < this.getHauteur(); i++) {
+			for (int j = 0; j < this.getLargeur(); j++) {
+				if (this.getTerrain()[i][j].getEtat() != Etat.VIDE)
+					res++;
+			}
+		}
+		return res;
+	}
+
     public Joueur getJoueurSurConfiguration()
     {
         if (joueurSurConfiguration == 0)
