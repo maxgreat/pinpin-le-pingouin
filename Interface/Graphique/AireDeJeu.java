@@ -33,7 +33,7 @@ public class AireDeJeu extends JComponent
     BufferedImage bougePoisson = null;
 	
     //images des poissons
-    private BufferedImage un_poisson, deux_poissons, trois_poissons;
+    private BufferedImage un_poisson, deux_poissons, trois_poissons , poissonRouge;
 	
 
     // Nombre de cases sur la largeur	
@@ -63,12 +63,13 @@ public class AireDeJeu extends JComponent
 	un_poisson = null;
 	deux_poissons = null;
 	trois_poissons = null;
-        
+    poissonRouge = null;
         try 
         {
 	    un_poisson = ImageIO.read(getImage("caseGlaceTest.png"));
 	    deux_poissons = ImageIO.read(getImage("caseGlaceTest2.png"));
 	    trois_poissons = ImageIO.read(getImage("caseGlaceTest3.png"));
+	    poissonRouge = ImageIO.read(getImage("caseGlaceTestPose.png"));
 	} catch (IOException e) {
             System.err.println("erreur lecture images : " +e);
             System.exit(1);
@@ -273,9 +274,18 @@ public class AireDeJeu extends JComponent
 			    if(c[2*j][i].getEtat() == Etat.DEUX_POISSONS){
 				drawable.drawImage(deux_poissons,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
 			    }
-			    else if(c[2*j][i].getEtat() == Etat.UN_POISSON){
-				drawable.drawImage(un_poisson,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
-			    }
+			    else if(c[2*j][i].getEtat() == Etat.UN_POISSON)
+			    {
+			   		if (arbitre.getMode() == ModeDeJeu.POSE_PINGOUIN)
+			   		{
+			   		drawable.drawImage(poissonRouge,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);			   		
+			   		}
+			   		else
+			   		{
+			   		drawable.drawImage(un_poisson,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
+			   		} 
+				
+			   	}
 			    else if(c[2*j][i].getEtat() == Etat.TROIS_POISSONS){
 				drawable.drawImage(trois_poissons,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
 			    }
@@ -304,9 +314,16 @@ public class AireDeJeu extends JComponent
 			    if(c[2*j+1][i].getEtat() == Etat.DEUX_POISSONS){
 				drawable.drawImage(deux_poissons,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
 			    }
-			    else if(c[2*j+1][i].getEtat() == Etat.UN_POISSON){
-				drawable.drawImage(un_poisson,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j
-													   +1),tabCase.largeur(),tabCase.hauteur(),null);
+			    else if(c[2*j+1][i].getEtat() == Etat.UN_POISSON)
+			    {
+					if (arbitre.getMode() == ModeDeJeu.POSE_PINGOUIN)
+					{
+					drawable.drawImage(poissonRouge,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
+					}
+					else
+					{
+					drawable.drawImage(un_poisson,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
+					}
 			    }
 			    else if(c[2*j+1][i].getEtat() == Etat.TROIS_POISSONS){
 				drawable.drawImage(trois_poissons,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);

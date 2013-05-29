@@ -242,7 +242,7 @@ public class MenuPerso{
 	}
 	public void setBoutonsJoueur(JPanel panel,int i)
 	{
-			String [] diff = {"Facile","Intermediaire","Difficile"};
+			String [] diff = {"Facile","Intermediaire","Difficile","Aucune"};
 			String [] noms = {"Atos","Portos","Aramis","Dartagnan","Ordinateur","Aucun"};
 			
 			JComboBox names = new JComboBox(noms);
