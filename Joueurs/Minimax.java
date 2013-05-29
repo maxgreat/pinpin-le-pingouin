@@ -11,9 +11,10 @@ public class Minimax implements Runnable {
 	Joueur adversaire;
 	int profondeur;
 	Arbitre arbitre;
+	Boolean finish;
 	Signal<Coup> signalCoup;
 
-	public Minimax(Joueur joueur, int profondeur, Arbitre arbitre) {
+	public Minimax(Joueur joueur, int profondeur, Arbitre arbitre, Boolean finish) {
 		this.joueur = joueur;
 		if (arbitre.getPosition(this.joueur) == 1) 
 			this.adversaire = arbitre.getJoueurParPosition(2);
@@ -21,6 +22,7 @@ public class Minimax implements Runnable {
 			this.adversaire = arbitre.getJoueurParPosition(1);
 		this.arbitre = arbitre;
 		this.profondeur = 2 * profondeur;
+		this.finish = finish;
 		this.signalCoup = new Signal<Coup>();
 	}
 
@@ -37,65 +39,61 @@ public class Minimax implements Runnable {
 		int max= Integer.MIN_VALUE,tmp,maxi=-1, score;
 		Configuration cl;
 		int [] nbPingouinsRestants = cc.getNombrePingouinsDispoParJoueur(arbitre.getJoueurs());
-		int [] sipj = cc.scoreIlotParJoueur(arbitre.getJoueurs());
+		//int [] sipj = cc.scoreIlotParJoueur(arbitre.getJoueurs());
 
 		/*		int [] ppj = cl.getNombrePingouinsDispoParJoueur(arbitre.getJoueurs());
 				int nbPingouins = ppj[this.arbitre.getPosition(this.adversaire)-1];*/
 
-		ArrayList<Point> poissonIlot = new ArrayList<Point>();
+		/*ArrayList<Point> poissonIlot = new ArrayList<Point>();
 		int h=-1,l=-1;
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){
 			if(h!=coupPossible[i].getYDepart() || l!=coupPossible[i].getXDepart()){
-				h=coupPossible[i].getYDepart();
-				l=coupPossible[i].getXDepart();
-				if(cc.estIlot(h,l)!=-1){
+			h=coupPossible[i].getYDepart();
+			l=coupPossible[i].getXDepart();
+			if(cc.estIlot(h,l)!=-1){
 					poissonIlot.add(new Point(h,l));
 				}
 			}
-		}
-		boolean recommencer = false;
-		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){	
+			}*/
+		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){		       	
 			score = 0;
-			if(!poissonIlot.contains(new Point(coupPossible[i].getYDepart(),coupPossible[i].getXDepart())) || recommencer){
-				cl = cc.clone();
-				score += cl.getTerrain()[coupPossible[i].getYArrivee()][coupPossible[i].getXArrivee()].scorePoisson();
-				cl.effectuerCoup(coupPossible[i]);
-				if(!recommencer)
-					tmp = Min(cl, max, this.profondeur,nbPingouinsRestants,sipj,score);
-				else
-					tmp = Max(cl, max, this.profondeur,nbPingouinsRestants,sipj,score,recommencer);
-				if(tmp > max){
-					max = tmp;
-					maxi = i;
-				}
+			//if(!poissonIlot.contains(new Point(coupPossible[i].getYDepart(),coupPossible[i].getXDepart()))){
+			cl = cc.clone();
+			score += cl.getTerrain()[coupPossible[i].getYArrivee()][coupPossible[i].getXArrivee()].scorePoisson();
+			cl.effectuerCoup(coupPossible[i]);
+			tmp = Min(cl, max, this.profondeur,nbPingouinsRestants,score);
+			if(tmp > max){
+				max = tmp;
+				maxi = i;
 			}
-			if(maxi==-1 && i==coupPossible.length-1){
-				recommencer = true;
-				i = -1;
-			} 
 		}	
-
+		if(maxi==-1){
+			//Point suiv = meilleurChemin((int)poissonIlot.get(0).getX(),(int)poissonIlot.get(0).getY(),cc,cc.estIlot((int)poissonIlot.get(0).getX(),(int)poissonIlot.get(0).getY()));
+			//	System.out.println(profondeur+" : Coup suivant = "+coupPossible[(int)suiv.getX()].getXArrivee()+","+coupPossible[(int)suiv.getX()].getYArrivee()+" NB = "+(int)suiv.getY());
+			return coupPossible[0];
+		} 
+		
 		return coupPossible[maxi];
 	}
 
-	public int Min(Configuration cc, int max, int profondeur, int [] nbPingouinsRestants, int [] sipj, int s) {
+	public int Min(Configuration cc, int max, int profondeur, int [] nbPingouinsRestants, int s) {
 		Configuration clcc = cc.clone();
 		clcc.setJoueurSurConfiguration(this.adversaire);
 		Coup [] coupPossible = clcc.toutCoupsPossibles();
 		int min = Integer.MAX_VALUE, tmp, score;
 		Configuration cl;
 		
-		if(coupPossible.length == 0 ) 
-			return eval(clcc, nbPingouinsRestants, sipj, s);
-		else if (profondeur < 1)
-			return eval(clcc, nbPingouinsRestants, sipj, s+coupPossible.length);
+		if(coupPossible.length == 0 || profondeur < 1) 
+			return eval(clcc, nbPingouinsRestants, s);
+		//else if (profondeur < 1)
+		//return eval(clcc, nbPingouinsRestants, s+coupPossible.length);
 				
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){
 			score = 0;
 			cl = clcc.clone();
 			score = cl.getTerrain()[coupPossible[i].getYArrivee()][coupPossible[i].getXArrivee()].scorePoisson();
 			cl.effectuerCoup(coupPossible[i]);
-			tmp = Max(cl, min, profondeur - 1, nbPingouinsRestants, sipj, s,false);
+			tmp = Max(cl, min, profondeur - 1, nbPingouinsRestants, s);
 			if(tmp < min){
 				min = tmp;
 			}
@@ -107,47 +105,41 @@ public class Minimax implements Runnable {
 	}
 
 
-	public int Max(Configuration cc, int min, int profondeur, int [] nbPingouinsRestants, int [] sipj, int s, boolean recommencer)
+	public int Max(Configuration cc, int min, int profondeur, int [] nbPingouinsRestants, int s)
 	{
 		Configuration clcc = cc.clone();
-		if(!recommencer)
-			clcc.setJoueurSurConfiguration(joueur);
+		clcc.setJoueurSurConfiguration(joueur);
 		Coup [] coupPossible = clcc.toutCoupsPossibles();
 		int max = Integer.MIN_VALUE, tmp, score;
 		Configuration cl;
 
-		if(coupPossible.length == 0 ){
-			if (recommencer)
-				System.out.println("trouver");
-			return eval(clcc, nbPingouinsRestants, sipj, s);
-		}
-		else if (profondeur < 1)
-			return eval(clcc, nbPingouinsRestants, sipj, s+coupPossible.length);
-		
+		//if(coupPossible.length == 0 ) 
+		if(coupPossible.length == 0 || profondeur < 1) 
+			return eval(clcc, nbPingouinsRestants, s);
+		//else if (profondeur < 1)
+		//return eval(clcc, nbPingouinsRestants, sipj, s+coupPossible.length);
+
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){
 			score = 0;
 			cl = clcc.clone();
 			score = cl.getTerrain()[coupPossible[i].getYArrivee()][coupPossible[i].getXArrivee()].scorePoisson();
 			cl.effectuerCoup(coupPossible[i]);
-			if(!recommencer)
-				tmp = Min(cl, max, profondeur-1,nbPingouinsRestants, sipj, score + s);
-			else
-				tmp = Max(cl, max, profondeur-1,nbPingouinsRestants, sipj, score + s,true);
-
+			tmp = Min(cl, max, profondeur-1,nbPingouinsRestants, score + s);
 			if(tmp > max){
 				max = tmp;
 			}
-			if(!recommencer)
-				if (min < max)
-					break;
+			if (min < max)
+				break;
 		}
 		return max;		
 	}
 
-	public int eval(Configuration c, int [] nbPingouinsRestants, int [] sipj, int s){
+	public int eval(Configuration c, int [] nbPingouinsRestants, int s){
 		// Nombre de poissons
 		int score = s;
-		
+		if (this.finish) {
+			return score;
+		}
 		int numJ = arbitre.getPosition(this.joueur) - 1;
 		int numA = arbitre.getPosition(this.adversaire) - 1;
 
@@ -157,7 +149,7 @@ public class Minimax implements Runnable {
 		score -= (nbPingouinsRestants[numJ] - newNbPingouinsRestants[numJ]) * 250;
 		
 		// nouveau Ilot
-		int [] newsipj = c.scoreIlotParJoueur(arbitre.getJoueurs());
+		/*int [] newsipj = c.scoreIlotParJoueur(arbitre.getJoueurs());
 		if (newsipj[numA]-sipj[numA] >= c.nombrePoissonsRestant()/4)
 			score = score - 200 - (newsipj[numA]-sipj[numA]);
 		if (newsipj[numJ]-sipj[numJ] < c.nombrePoissonsRestant()/4)
@@ -166,7 +158,7 @@ public class Minimax implements Runnable {
 			score = score + 200 + (newsipj[numJ]-sipj[numJ]);
 		if (newsipj[numA]-sipj[numA] < c.nombrePoissonsRestant()/4)
 			score = score + 200 + (newsipj[numA]-sipj[numA]);
-
+		*/
 		// pingouin presque bloqué
 		Case [][] terrainCopieJ = c.cloneTerrain();
 		Case [][] terrainCopieA = c.cloneTerrain();
@@ -186,5 +178,30 @@ public class Minimax implements Runnable {
 	et comparer avec la meme chose mais a la fin*/
 
 		return score;
+	}
+
+	public Point meilleurChemin(int i, int j, Configuration configuration, int score){
+		Coup [] lesCoups = configuration.coupsPossiblesCase(i,j);
+		Case [][] terrain =  configuration.getTerrain();
+		System.out.println(score);
+		if(lesCoups == null)
+			return new Point(0,terrain[i][j].scorePoisson());
+		else{
+			int maxScore = 0, indice = 0, tmp;
+			for(int k=0; k<lesCoups.length && !Thread.currentThread().isInterrupted();k++){
+				tmp = 0;
+				Configuration configurationBis = configuration.clone();
+				tmp = configurationBis.effectuerCoup(lesCoups[k]);
+				tmp += (int)meilleurChemin(lesCoups[k].getXArrivee(),lesCoups[k].getYArrivee(),configurationBis,score).getY();
+
+				if(maxScore < tmp){
+					maxScore = tmp	;
+					indice = k; 
+				}
+				if(maxScore == score)
+					k = lesCoups.length;
+			}
+			return new Point(indice,maxScore);
+		}
 	}
 }
