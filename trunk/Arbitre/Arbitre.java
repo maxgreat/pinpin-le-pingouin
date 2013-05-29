@@ -340,8 +340,29 @@ public class Arbitre implements Runnable, Serializable
 		
 		// Restaure le score du joueur
 		getConfiguration().getJoueurSurConfiguration().setScore(getConfiguration().getJoueurSurConfiguration().getScore() + getConfiguration().scoreCoupEffectue());
+
+
 		
-		getConfiguration().getJoueurSurConfiguration().incrementNombreTuile();
+		int [] restePingouins = c.getNombrePingouinsParJoueur(joueurs);
+                int totalPions = 0;
+		
+                for (int i = 0; i < restePingouins.length; i++)
+                    totalPions += restePingouins[i];
+
+                // 2 joueurs, 8 pions
+                // 3 joueurs, 9 pions
+                // 4 joueurs, 8 pions
+                if (getMode() == ModeDeJeu.POSE_PINGOUIN && 
+		    ((joueurs.length == 2 && totalPions == 8) ||
+                    (joueurs.length == 3 && totalPions == 9) ||
+		     (joueurs.length == 4 && totalPions == 8)))
+		    {
+			setMode(ModeDeJeu.JEU_COMPLET);
+		    }
+		else if (getMode() == ModeDeJeu.JEU_COMPLET)
+		    getConfiguration().getJoueurSurConfiguration().incrementNombreTuile();
+
+		
 		
 		// Met à jour la configuration
 		configurationCourante = c;
@@ -374,7 +395,23 @@ public class Arbitre implements Runnable, Serializable
 		
 		// Restaure le score du joueur
 		getJoueurCourant().setScore(c.getScoreSurConfiguration());
-		getJoueurCourant().decrementNombreTuile();
+
+		int [] restePingouins = c.getNombrePingouinsParJoueur(joueurs);
+                int totalPions = 0;
+		
+                for (int i = 0; i < restePingouins.length; i++)
+                    totalPions += restePingouins[i];
+
+                // 2 joueurs, 8 pions
+                // 3 joueurs, 9 pions
+                // 4 joueurs, 8 pions
+                if ((joueurs.length == 2 && totalPions < 8) ||
+                    (joueurs.length == 3 && totalPions < 9) ||
+                    (joueurs.length == 4 && totalPions < 8))
+                    setMode(ModeDeJeu.POSE_PINGOUIN);
+		
+		if (getMode() == ModeDeJeu.JEU_COMPLET)
+		    getConfiguration().getJoueurSurConfiguration().decrementNombreTuile();
 	    }
 	}
 	while(c != null && !(c.getJoueurSurConfiguration() instanceof JoueurHumain));
