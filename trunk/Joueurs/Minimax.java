@@ -53,24 +53,27 @@ public class Minimax implements Runnable {
 				}
 			}
 		}
+		boolean recommencer = false;
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){	
 			score = 0;
-			if(!poissonIlot.contains(new Point(coupPossible[i].getYDepart(),coupPossible[i].getXDepart()))){
+			if(!poissonIlot.contains(new Point(coupPossible[i].getYDepart(),coupPossible[i].getXDepart())) || recommencer){
 				cl = cc.clone();
 				score += cl.getTerrain()[coupPossible[i].getYArrivee()][coupPossible[i].getXArrivee()].scorePoisson();
 				cl.effectuerCoup(coupPossible[i]);
-				tmp = Min(cl, max, this.profondeur,nbPingouinsRestants,sipj,score);
+				if(!recommencer)
+					tmp = Min(cl, max, this.profondeur,nbPingouinsRestants,sipj,score);
+				else
+					tmp = Max(cl, max, this.profondeur,nbPingouinsRestants,sipj,score,recommencer);
 				if(tmp > max){
 					max = tmp;
 					maxi = i;
 				}
 			}
+			if(maxi==-1 && i==coupPossible.length-1){
+				recommencer = true;
+				i = -1;
+			} 
 		}	
-		if(maxi==-1){
-			Point suiv = meilleurChemin((int)poissonIlot.get(0).getX(),(int)poissonIlot.get(0).getY(),cc,cc.estIlot((int)poissonIlot.get(0).getX(),(int)poissonIlot.get(0).getY()));
-		//	System.out.println(profondeur+" : Coup suivant = "+coupPossible[(int)suiv.getX()].getXArrivee()+","+coupPossible[(int)suiv.getX()].getYArrivee()+" NB = "+(int)suiv.getY());
-			return coupPossible[0];
-		} 
 
 		return coupPossible[maxi];
 	}
@@ -92,7 +95,7 @@ public class Minimax implements Runnable {
 			cl = clcc.clone();
 			score = cl.getTerrain()[coupPossible[i].getYArrivee()][coupPossible[i].getXArrivee()].scorePoisson();
 			cl.effectuerCoup(coupPossible[i]);
-			tmp = Max(cl, min, profondeur - 1, nbPingouinsRestants, sipj, s);
+			tmp = Max(cl, min, profondeur - 1, nbPingouinsRestants, sipj, s,false);
 			if(tmp < min){
 				min = tmp;
 			}
@@ -104,30 +107,39 @@ public class Minimax implements Runnable {
 	}
 
 
-	public int Max(Configuration cc, int min, int profondeur, int [] nbPingouinsRestants, int [] sipj, int s)
+	public int Max(Configuration cc, int min, int profondeur, int [] nbPingouinsRestants, int [] sipj, int s, boolean recommencer)
 	{
 		Configuration clcc = cc.clone();
-		clcc.setJoueurSurConfiguration(joueur);
+		if(!recommencer)
+			clcc.setJoueurSurConfiguration(joueur);
 		Coup [] coupPossible = clcc.toutCoupsPossibles();
 		int max = Integer.MIN_VALUE, tmp, score;
 		Configuration cl;
 
-		if(coupPossible.length == 0 ) 
+		if(coupPossible.length == 0 ){
+			if (recommencer)
+				System.out.println("trouver");
 			return eval(clcc, nbPingouinsRestants, sipj, s);
+		}
 		else if (profondeur < 1)
 			return eval(clcc, nbPingouinsRestants, sipj, s+coupPossible.length);
-
+		
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){
 			score = 0;
 			cl = clcc.clone();
 			score = cl.getTerrain()[coupPossible[i].getYArrivee()][coupPossible[i].getXArrivee()].scorePoisson();
 			cl.effectuerCoup(coupPossible[i]);
-			tmp = Min(cl, max, profondeur-1,nbPingouinsRestants, sipj, score + s);
+			if(!recommencer)
+				tmp = Min(cl, max, profondeur-1,nbPingouinsRestants, sipj, score + s);
+			else
+				tmp = Max(cl, max, profondeur-1,nbPingouinsRestants, sipj, score + s,true);
+
 			if(tmp > max){
 				max = tmp;
 			}
-			if (min < max)
-				break;
+			if(!recommencer)
+				if (min < max)
+					break;
 		}
 		return max;		
 	}
@@ -175,30 +187,4 @@ public class Minimax implements Runnable {
 
 		return score;
 	}
-
-   public Point meilleurChemin(int i, int j, Configuration configuration, int score){
-      Coup [] lesCoups = configuration.coupsPossiblesCase(i,j);
-      Case [][] terrain =  configuration.getTerrain();
-		System.out.println(score);
-      if(lesCoups == null)
-         return new Point(0,terrain[i][j].scorePoisson());
-      else{
-			int maxScore = 0, indice = 0, tmp;
-			for(int k=0; k<lesCoups.length && !Thread.currentThread().isInterrupted();k++){
-				 tmp = 0;
-				 Configuration configurationBis = configuration.clone();
-				 tmp = configurationBis.effectuerCoup(lesCoups[k]);
-				 tmp += (int)meilleurChemin(lesCoups[k].getXArrivee(),lesCoups[k].getYArrivee(),configurationBis,score).getY();
-
-				 if(maxScore < tmp){
-					  maxScore = tmp	;
-					  indice = k; 
-				 }
-				 if(maxScore == score)
-					  k = lesCoups.length;
-			}
-			return new Point(indice,maxScore);
-      }
-   }
-
 }
