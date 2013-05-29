@@ -6,7 +6,6 @@ import Arbitre.Regles.*;
 import Utilitaires.*;
 
 import java.io.*;
-import java.util.*;
 
 public class Arbitre implements Runnable, Serializable
 {
@@ -330,24 +329,32 @@ public class Arbitre implements Runnable, Serializable
      **/
     public void avancerHistorique()
     {
-        Configuration c = historique.avance();
-        if (c != null)
-        {
+	// Annule jusqu'a un joueur
+	Configuration c = null;
 
-	    // Restaure le score du joueur
-	    getConfiguration().getJoueurSurConfiguration().setScore(getConfiguration().getJoueurSurConfiguration().getScore() + getConfiguration().scoreCoupEffectue());
+	do
+	{
+	    c = historique.avance();
+	    if (c != null)
+	    {
+		
+		// Restaure le score du joueur
+		getConfiguration().getJoueurSurConfiguration().setScore(getConfiguration().getJoueurSurConfiguration().getScore() + getConfiguration().scoreCoupEffectue());
+		
+		getConfiguration().getJoueurSurConfiguration().incrementNombreTuile();
+		
+		// Met à jour la configuration
+		configurationCourante = c;
+		setJoueurCourant(c.getJoueurSurConfiguration());
+	    }
+	} 
+	while (c != null && !(c.getJoueurSurConfiguration() instanceof JoueurHumain));
 
-	    getConfiguration().getJoueurSurConfiguration().incrementNombreTuile();
-
-            // Stop le thread pour lui indique le changement de joueur
-            ArbitreManager.instanceThread.interrupt();
-
-            // Met à jour la configuration
-            configurationCourante = c;
-            setJoueurCourant(c.getJoueurSurConfiguration());
-
-            inter.repaint();
-        }
+		
+	// Stop le thread pour lui indique le changement de joueur
+	ArbitreManager.instanceThread.interrupt();
+		
+	inter.repaint();
     }
 
     /**
@@ -355,21 +362,28 @@ public class Arbitre implements Runnable, Serializable
      **/
     public void reculerHistorique()
     {
-        Configuration c = historique.reculer();
-        if (c != null)
-        {
-            // Stop le thread pour lui indique le changement de joueur
-            ArbitreManager.instanceThread.interrupt();
+	Configuration c = null;
+	do
+	{
+	    c = historique.reculer();
+	    if (c != null)
+	    {	
+		// Met à jour la configuration
+		configurationCourante = c;
+		setJoueurCourant(c.getJoueurSurConfiguration());
+		
+		// Restaure le score du joueur
+		getJoueurCourant().setScore(c.getScoreSurConfiguration());
+		getJoueurCourant().decrementNombreTuile();
+	    }
+	}
+	while(c != null && !(c.getJoueurSurConfiguration() instanceof JoueurHumain));
+	
+	// Stop le thread pour lui indique le changement de joueur
+	ArbitreManager.instanceThread.interrupt();
 
-            // Met à jour la configuration
-            configurationCourante = c;
-            setJoueurCourant(c.getJoueurSurConfiguration());
-	    
-	    // Restaure le score du joueur
-	    getJoueurCourant().setScore(c.getScoreSurConfiguration());
-	    getJoueurCourant().decrementNombreTuile();
-            inter.repaint();
-        }
+	inter.repaint();
+	
     }
 
     /**
@@ -391,15 +405,15 @@ public class Arbitre implements Runnable, Serializable
         for (int i = 0; i < joueurs.length; i++)
         {
             // Ecris la classe à part pour recharger plus tard
-            out.writeObject((String)joueurs[i].getClass().getName());
-            out.writeObject((Joueur)joueurs[i]);
+            out.writeObject(joueurs[i].getClass().getName());
+            out.writeObject(joueurs[i]);
         }
         
         // Tour du joueur en cours
         out.writeInt(getPosition(getJoueurCourant()));
 
         // Liste des configurations
-        out.writeObject((Historique)historique);
+        out.writeObject(historique);
     }
 
     /**
@@ -433,13 +447,5 @@ public class Arbitre implements Runnable, Serializable
 
 	configurationCourante = historique.courante();
 	signalStop = new Signal<Object>();
-    }
-
-    /**
-     * Essaye de parser un objet sans donnée
-     **/
-    private void readObjectNoData() throws ObjectStreamException
-    {
-        throw new NotSerializableException("La sérialization d'un arbitre doit se faire sur une chaine non vide");
     }
 }
