@@ -41,7 +41,7 @@ public class AireDeJeu extends JComponent
     // Nombre de cases sur la longueur
     public int hauteur;
 	
-	
+	protected String s;
     protected double margeHaut, margeGauche, margeDroite, margeBas;
     protected double rayonH, rayonL;
 
@@ -145,6 +145,7 @@ public class AireDeJeu extends JComponent
 
     public void paintComponent(Graphics g)
     {
+    	
 	Graphics2D drawable = (Graphics2D) g;
         
         Arbitre arbitre = ArbitreManager.instance;
@@ -158,7 +159,7 @@ public class AireDeJeu extends JComponent
         {
             if (arbitre.partieFinie())
             {
-            	String s;
+            
                 if(inter.joueurs[0].getScore() > inter.joueurs[1].getScore())
 		{
                     s ="Victoire du joueur 1 - Poissons : " + inter.joueurs[0].getNombreTuile();
