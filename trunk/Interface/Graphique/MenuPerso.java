@@ -1,4 +1,5 @@
 package Interface.Graphique;
+import Joueurs.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
@@ -19,7 +20,7 @@ public class MenuPerso{
 	protected JPanel menuJ4;
 	JPanel cellGauche;
 	JPanel cellDroite;
-	String joueur1 , joueur2 , joueur3 , joueur4 , niveau1 , niveau2 , niveau3 , niveau4;
+	
 	
 	public MenuPerso(JFrame frame, InterfaceGraphique inter)
 	{
@@ -231,23 +232,30 @@ public class MenuPerso{
 	{
 		if(s.compareTo("Partie Personnalisée") == 0)
 		{			
-		setBoutonsJoueur(menuJ1);
-		setBoutonsJoueur(menuJ2);
-		setBoutonsJoueur(menuJ3);
-		setBoutonsJoueur(menuJ4);
+		setBoutonsJoueur(menuJ1,1);
+		setBoutonsJoueur(menuJ2,2);
+		setBoutonsJoueur(menuJ3,3);
+		setBoutonsJoueur(menuJ4,4);
 		addBouton(cellDroite , "Lancer");
 		addBouton(cellGauche , "Retour");
 		}
 	}
-	public void setBoutonsJoueur(JPanel panel)
+	public void setBoutonsJoueur(JPanel panel,int i)
 	{
-	
 			String [] diff = {"Facile","Intermediaire","Difficile"};
 			String [] noms = {"Atos","Portos","Aramis","Dartagnan","Ordinateur","Aucun"};
 			
 			JComboBox names = new JComboBox(noms);
 			names.setSelectedIndex(0);
-			names.addActionListener(new EcouteurDeBox(this,"joueur1",names));
+			if(i == 1)
+				inter.joueur1 = noms[0];
+			if(i == 2)
+				inter.joueur2 = noms[0];
+			if(i == 3)
+				inter.joueur3 = noms[0];
+			if(i == 4)
+				inter.joueur4 = noms[0];
+			names.addActionListener(new EcouteurDeBox(inter,"joueur"+i,names));
 			JPanel pan = new JPanel();
 			pan.setLayout(new BoxLayout(pan, BoxLayout.PAGE_AXIS));
 			pan.add(names);
@@ -257,13 +265,20 @@ public class MenuPerso{
 
 			JComboBox difficultes = new JComboBox(diff);
 			difficultes.setSelectedIndex(1);
-			difficultes.addActionListener(new EcouteurDeBox(this,"niveau1",difficultes));
+			if(i == 1)
+				inter.niveau1 = diff[0];
+			if(i == 2)
+				inter.niveau2 = diff[0];
+			if(i == 3)
+				inter.niveau3 = diff[0];
+			if(i == 4)
+				inter.niveau4 = diff[0];
+			difficultes.addActionListener(new EcouteurDeBox(inter,"niveau"+i,difficultes));
 			pan = new JPanel();
 			pan.setLayout(new BoxLayout(pan, BoxLayout.PAGE_AXIS));
 			pan.add(difficultes);
 			pan.setOpaque(false);
 			panel.add(pan);
-	
-		
 	}
+	
 }

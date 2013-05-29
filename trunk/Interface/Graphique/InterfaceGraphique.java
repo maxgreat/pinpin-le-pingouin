@@ -19,7 +19,7 @@ public class InterfaceGraphique extends Interface
     protected Fond fond;
 	protected Banniere ban;
     private LinkedList<String> oldPage;
-     
+	String joueur1 , joueur2 , joueur3 , joueur4 , niveau1 , niveau2 , niveau3 , niveau4;
      
     public void addBouton(JPanel panel, String S)
 	{
@@ -131,6 +131,38 @@ public class InterfaceGraphique extends Interface
 		{	
 			ArbitreManager.stopperPartie();
 			System.exit(0);
+		}
+		if(S.compareTo( "Lancer") == 0 )
+		{	
+			Joueur [] joueurs = new Joueur[2];
+			if(joueur1.compareTo("Ordinateur") != 0)
+				joueurs[0] = new JoueurHumain();
+			if(joueur2.compareTo("Ordinateur") != 0)
+				joueurs[1] = new JoueurHumain();
+			
+			if(joueur1.compareTo("Ordinateur") == 0)
+				{
+				if(niveau1.compareTo("Facile") == 0)
+					joueurs[0] = new JoueurCPURd();
+				if(niveau1.compareTo("Intermediaire") == 0)
+					joueurs[0] = new JoueurCPUFacile();
+				if(niveau1.compareTo("Difficile") == 0)
+					joueurs[0] = new JoueurCPUMinimaxIncremental();
+				
+				}
+			if(joueur2.compareTo("Ordinateur") == 0)
+				{
+				if(niveau2.compareTo("Facile") == 0)
+					joueurs[1] = new JoueurCPURd();
+				if(niveau2.compareTo("Intermediaire") == 0)
+					joueurs[1] = new JoueurCPUFacile();
+				if(niveau2.compareTo("Difficile") == 0)
+					joueurs[1] = new JoueurCPUMinimaxIncremental();
+				
+				
+				}
+			this.setJoueurs(joueurs);
+			initialiserPartie(joueurs);
 		}
 		if(S.compareTo( "Retour Menu Principal") == 0 )
 		{	
