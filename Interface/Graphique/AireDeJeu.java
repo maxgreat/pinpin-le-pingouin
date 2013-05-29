@@ -31,7 +31,7 @@ public class AireDeJeu extends JComponent
     BufferedImage fondEau = null;
     BufferedImage posePoisson = null;
     BufferedImage bougePoisson = null;
-	
+	BufferedImage entoure = null;
     //images des poissons
     private BufferedImage un_poisson, deux_poissons, trois_poissons , poissonRouge;
 	
@@ -64,6 +64,7 @@ public class AireDeJeu extends JComponent
 	deux_poissons = null;
 	trois_poissons = null;
     poissonRouge = null;
+    entoure = null;
         try 
         {
 	    un_poisson = ImageIO.read(getImage("caseGlaceTest.png"));
@@ -74,7 +75,11 @@ public class AireDeJeu extends JComponent
             System.err.println("erreur lecture images : " +e);
             System.exit(1);
         }
-        
+        try{
+	    entoure = ImageIO.read(getImage("entoure.png"));
+        }catch(Exception e){
+	    System.out.println("Erreur lecture image" + e);
+        }
         try{
 	    imageJoueur1 = ImageIO.read(getImage("pingouin1.png"));
         }catch(Exception e){
@@ -294,7 +299,9 @@ public class AireDeJeu extends JComponent
 							
 			    if(joueur != null){
 				if(coupPrec.x == 2*j && coupPrec.y == i)
-				    drawable.drawOval(tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur());
+					{
+				    drawable.drawImage(entoure,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
+				    }
 				BufferedImage imageJoueur = null;
 				if(joueur == inter.joueurs[0]){
 				    drawable.drawImage(imageJoueur1,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
@@ -333,7 +340,9 @@ public class AireDeJeu extends JComponent
 						
 			    if(joueur != null){
 				if(coupPrec.x == 2*j+1 && coupPrec.y == i)
-				    drawable.drawOval(tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur());
+					{
+				    drawable.drawImage(entoure,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
+				    }
 				BufferedImage imageJoueur = null;
 				if(joueur == inter.joueurs[0]){
 				    drawable.drawImage(imageJoueur1,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
