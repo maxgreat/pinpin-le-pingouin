@@ -114,7 +114,7 @@ public class InterfaceGraphique extends Interface
 		}
 		else if (S.compareTo("Menu Principal") == 0)
 		{	
-			
+			oldPage.push("Menu Principal");
 			MenuPrincipal m = new MenuPrincipal(frame, this);
 			m.setBoutons("demarrage");
 			frame.setContentPane(m.fond);
