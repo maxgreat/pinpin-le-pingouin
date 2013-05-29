@@ -19,6 +19,7 @@ public class MenuPerso{
 	protected JPanel menuJ4;
 	JPanel cellGauche;
 	JPanel cellDroite;
+	String joueur1 , joueur2 , joueur3 , joueur4 , niveau1 , niveau2 , niveau3 , niveau4;
 	
 	public MenuPerso(JFrame frame, InterfaceGraphique inter)
 	{
@@ -231,13 +232,16 @@ public class MenuPerso{
 		if(s.compareTo("Partie Personnalisée") == 0){
 			addBouton(menuJ1, "Nom Joueur 1");
 			
-			String [] difficultes = new String[3];
-			difficultes[0] = "Facile";
-			difficultes[1] = "Intermediaire";
-			difficultes[2] = "Difficile";
-			JComboBox boxIA = new JComboBox(difficultes);
-			boxIA.addActionListener(new EcouteurDeBox(this));
-					
+			String [] diff = {"Facile","Intermediaire","Difficile"};
+			
+			JComboBox difficultes = new JComboBox(diff);
+			difficultes.setSelectedIndex(1);
+			difficultes.addActionListener(new EcouteurDeBox(this,"joueur1",difficultes));
+			JPanel pan = new JPanel();
+			pan.setLayout(new BoxLayout(pan, BoxLayout.PAGE_AXIS));
+			pan.add(difficultes);
+			pan.setOpaque(false);
+			menuJ1.add(pan);
 			addBouton(menuJ2, "Nom Joueur 2");		
 			addBouton(menuJ3, "Nom Joueur 3");		
 			addBouton(menuJ4, "Nom Joueur 4");		
