@@ -132,6 +132,12 @@ public class InterfaceGraphique extends Interface
 			ArbitreManager.stopperPartie();
 			System.exit(0);
 		}
+		if(S.compareTo( "Retour Menu Principal") == 0 )
+		{	
+			ArbitreManager.stopperPartie();
+			afficherPanel("Menu Principal");
+
+		}
 		if(S.compareTo( "Partie Personalisée") == 0 )
 		{
 			MenuPerso m = new MenuPerso(frame, this);
@@ -142,6 +148,10 @@ public class InterfaceGraphique extends Interface
 		if(S.compareTo("Revenir") == 0)
 		{
 			afficherPanel(Old_page.poll());
+		}
+		if(S.compareTo( "Recommencer") == 0 )
+		{
+							
 		}
 		/*if(S.compareTo("Gestion de profil") == 0)
 		{

@@ -332,9 +332,18 @@ public class AireDeJeu extends JComponent{
 				
 				POPMenu popup = new POPMenu();
 				popup.setVisible(true);
-				JButton bQuitter = new JButton();
-				bQuitter.addActionListener(new EcouteurDeBouton("demarrage", inter));
-				popup.add(bQuitter);
+				JPanel pan = new JPanel();
+				JButton bQuitter = new JButton("Quitter");
+				JButton recommencer = new JButton("Recommencer");
+				JButton menuP = new JButton("Menu Principal");
+				recommencer.addActionListener(new EcouteurDeBouton("Recommencer", inter));
+				bQuitter.addActionListener(new EcouteurDeBouton("Quitter", inter));
+				menuP.addActionListener(new EcouteurDeBouton("Retour Menu Principal", inter));
+				pan.add(bQuitter);
+				pan.add(recommencer);
+				pan.add(menuP);
+				popup.setContentPane(pan);
+				popup.pack();
 				this.add(popup);
 				popup.toFront();
 				try {
