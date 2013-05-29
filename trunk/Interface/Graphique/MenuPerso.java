@@ -229,23 +229,39 @@ public class MenuPerso{
 	}
 	public void setBoutons(String s)
 	{
-		if(s.compareTo("Partie Personnalisée") == 0){
-			addBouton(menuJ1, "Nom Joueur 1");
-			
+		if(s.compareTo("Partie Personnalisée") == 0)
+		{			
+		setBoutonsJoueur(menuJ1);
+		setBoutonsJoueur(menuJ2);
+		setBoutonsJoueur(menuJ3);
+		setBoutonsJoueur(menuJ4);
+		}
+	}
+	public void setBoutonsJoueur(JPanel panel)
+	{
+	
 			String [] diff = {"Facile","Intermediaire","Difficile"};
+			String [] noms = {"Atos","Portos","Aramis","Dartagnan","Ordinateur"};
 			
+			JComboBox names = new JComboBox(noms);
+			names.setSelectedIndex(0);
+			names.addActionListener(new EcouteurDeBox(this,"joueur1",names));
+			JPanel pan = new JPanel();
+			pan.setLayout(new BoxLayout(pan, BoxLayout.PAGE_AXIS));
+			pan.add(names);
+			pan.setOpaque(false);
+			panel.add(pan);
+			
+
 			JComboBox difficultes = new JComboBox(diff);
 			difficultes.setSelectedIndex(1);
-			difficultes.addActionListener(new EcouteurDeBox(this,"joueur1",difficultes));
-			JPanel pan = new JPanel();
+			difficultes.addActionListener(new EcouteurDeBox(this,"niveau1",difficultes));
+			pan = new JPanel();
 			pan.setLayout(new BoxLayout(pan, BoxLayout.PAGE_AXIS));
 			pan.add(difficultes);
 			pan.setOpaque(false);
-			menuJ1.add(pan);
-			addBouton(menuJ2, "Nom Joueur 2");		
-			addBouton(menuJ3, "Nom Joueur 3");		
-			addBouton(menuJ4, "Nom Joueur 4");		
-		}
+			panel.add(pan);
+	
+		
 	}
-
 }
