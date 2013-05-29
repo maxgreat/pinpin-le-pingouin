@@ -85,6 +85,16 @@ public class AireDeJeu extends JComponent
 	    System.out.println("Erreur lecture image" + e);
         }
         try{
+	    imageJoueur3 = ImageIO.read(getImage("pingouin3.png"));
+        }catch(Exception e){
+	    System.out.println("Erreur lecture image" + e);
+        }
+        try{
+	    imageJoueur4 = ImageIO.read(getImage("pingouin4.png"));
+        }catch(Exception e){
+	    System.out.println("Erreur lecture image" + e);
+        }
+        try{
 	    boutonMenu = ImageIO.read(getImage("boutonMenu.jpg"));
 	    boutonAnnuler = ImageIO.read(getImage("revenir.png"));
 	    boutonRefaire = ImageIO.read(getImage("refaire.png"));
@@ -161,29 +171,29 @@ public class AireDeJeu extends JComponent
             {
             
                 if(inter.joueurs[0].getScore() > inter.joueurs[1].getScore())
-		{
+				{
                     s ="Victoire du joueur 1 - Poissons : " + inter.joueurs[0].getNombreTuile();
-		}
+				}
                 else if(inter.joueurs[0].getScore() < inter.joueurs[1].getScore())
-		{
+				{
                     s ="Victoire du joueur 2";
-		}
+				}
                 else
-		{
-		    //scores égaux
-		    if(inter.joueurs[0].getNombreTuile() > inter.joueurs[1].getNombreTuile())
-		    {
+				{
+		    	//scores égaux
+		    		if(inter.joueurs[0].getNombreTuile() > inter.joueurs[1].getNombreTuile())
+		    		{
                     	s ="Victoire du joueur 1 - Tuiles : " + inter.joueurs[0].getNombreTuile();
-		    }
-		    else if(inter.joueurs[0].getScore() < inter.joueurs[1].getScore())
-		    {
+		    		}
+		    		else if(inter.joueurs[0].getScore() < inter.joueurs[1].getScore())
+		    		{
                     	s = "Victoire du joueur 2";
-		    }
+		    		}
                     else
-		    {
+		    		{
                     	s ="Egalité" ;	
-		    }
-		}
+                    }
+				}
                
                 // on retourne au menu principal
                 
