@@ -206,7 +206,20 @@ public class MenuPrincipal{
 			addBouton(cellGauche,"Retour");
 			addBouton(cellDroite,"Menu Principal");
 		}
-	
+		else if(s.compareTo("Page 4") == 0){
+			ban = new Banniere("pinpin.png",frame);
+			ban.setPreferredSize(new Dimension(700, (500)/4));
+			addBouton(cellGauche,"Retour");
+			addBouton(cellDroite,"Menu Principal");
+		}
+		else if(s.compareTo("Partie Personalisée") == 0){
+			ban = new Banniere("pinpin.png",frame);
+			ban.setPreferredSize(new Dimension(700, (500)/4));
+			addBouton(cellGauche,"Retour");
+			Menu.setLayout(new GridLayout( 2, 1));
+			addBouton(Menu, "Nouvelle Partie");	
+			addBouton(Menu, "Charger");	
+		}
 	
 	}
 

@@ -230,7 +230,7 @@ public class MenuPerso{
 	}
 	public void setBoutons(String s)
 	{
-		if(s.compareTo("Partie Personnalisée") == 0)
+		if(s.compareTo("Nouvelle Partie") == 0)
 		{			
 		setBoutonsJoueur(menuJ1,1);
 		setBoutonsJoueur(menuJ2,2);

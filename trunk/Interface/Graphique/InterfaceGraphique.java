@@ -203,13 +203,20 @@ public class InterfaceGraphique extends Interface
 			afficherPanel("Menu Principal");
 
 		}
-		if(S.compareTo( "Partie Personalisée") == 0 )
+		if(S.compareTo( "Nouvelle Partie") == 0 )
 		{
-			
+			oldPage.push("Partie Personalisée");
 			MenuPerso m = new MenuPerso(frame, this);
-			m.setBoutons("Partie Personnalisée");
+			m.setBoutons("Nouvelle Partie");
 			frame.setContentPane(m.fond);
 			frame.pack();
+		}
+		if(S.compareTo("Partie Personalisée") == 0)
+		{
+			MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
+			m.setBoutons("Partie Personalisée");
+			frame.setContentPane(m.fond);
+			frame.pack();	
 		}
 		if(S.compareTo("Retour") == 0)
 		{
@@ -219,6 +226,16 @@ public class InterfaceGraphique extends Interface
 		{
 			System.out.println("on a clicker sur recommencer");
 		    ArbitreManager.instance.recommencer();
+		}
+		
+		if(S.compareTo( "Charger") == 0 )
+		{
+		
+		}
+		
+		if(S.compareTo( "Sauvegarder") == 0 )
+		{
+		
 		}
 		/*if(S.compareTo("Gestion de profil") == 0)
 		{
