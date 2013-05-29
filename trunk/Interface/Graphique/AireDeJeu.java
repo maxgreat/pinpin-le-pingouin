@@ -26,6 +26,8 @@ public class AireDeJeu extends JComponent{
 	BufferedImage boutonAnnuler = null;
 	BufferedImage boutonRefaire = null;
 	BufferedImage fondEau = null;
+	BufferedImage posePoisson = null;
+	BufferedImage bougePoisson = null;
 	
 	//images des poissons
 	private BufferedImage un_poisson, deux_poissons, trois_poissons;
@@ -153,20 +155,27 @@ public class AireDeJeu extends JComponent{
         {
             if (arbitre.partieFinie())
             {
+            	String s;
                 if(inter.joueurs[0].getScore() > inter.joueurs[1].getScore())
-                    System.out.println("Victoire du joueur 1 - Poissons : " + inter.joueurs[0].getNombreTuile());
+                    s ="Victoire du joueur 1 - Poissons : " + inter.joueurs[0].getNombreTuile();
                 else if(inter.joueurs[0].getScore() < inter.joueurs[1].getScore())
-                    System.out.println("Victoire du joueur 2");
+                    s ="Victoire du joueur 2";
                 else{ //scores égaux
                 	if(inter.joueurs[0].getNombreTuile() > inter.joueurs[1].getNombreTuile())
-                    	System.out.println("Victoire du joueur 1 - Tuiles : " + inter.joueurs[0].getNombreTuile());
+                    	s ="Victoire du joueur 1 - Tuiles : " + inter.joueurs[0].getNombreTuile();
                 	else if(inter.joueurs[0].getScore() < inter.joueurs[1].getScore())
-                    	System.out.println("Victoire du joueur 2");
+                    	s = "Victoire du joueur 2";
                     else
-                    	System.out.println("Egalité");
-                }
+                    	s ="Egalité" ;	
+                	}
+				System.out.println(s);
+               
                 // on retourne au menu principal
-                ArbitreManager.stopperPartie();
+                
+              
+                //default title and icon
+				JOptionPane.showMessageDialog(frame,s);
+				ArbitreManager.stopperPartie();
                 inter.afficherPanel("Menu Principal");
             }
             else  //partie en cours
@@ -284,12 +293,16 @@ public class AireDeJeu extends JComponent{
     	Point p = tabCase.estDansHexagone(x,y);
     	
     	if(p.x != -1 && p.y != -1){
-			if(ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN){
+			if(ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN)
+			{
+			
+				
 				if(ArbitreManager.instance.getConfiguration().estCoupPossible(new Coup(p.y, p.x, -1, -1)))
 					ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(new Coup(p.y, p.x, -1, -1));
 				else
 					System.out.println("Coup illegal, pas de positionnement ici !");
-				
+					
+
 			}
 			else{ //mode jeu
 				if(coupPrec.x == -1 || coupPrec.y == -1){
