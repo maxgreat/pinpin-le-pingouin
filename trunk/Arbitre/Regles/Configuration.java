@@ -1,7 +1,6 @@
 package Arbitre.Regles;
 
 import java.util.*;
-import java.awt.Point;
 import Joueurs.*;
 import java.io.*;
 import Arbitre.*;
@@ -174,8 +173,8 @@ public class Configuration implements Cloneable, Serializable
     /**
      * Récupère les coordonnées des pîngouins d'un joueur j
      **/
-	public Point [] coordPingouins(Joueur joueur){
-        ArrayList<Point> coord = new ArrayList<Point>();
+	public Couple [] coordPingouins(Joueur joueur){
+        ArrayList<Couple> coord = new ArrayList<Couple>();
         for (int i = 0; i < hauteur; i++)
         {
             for (int j = 0; j < largeur; j++)
@@ -187,12 +186,12 @@ public class Configuration implements Cloneable, Serializable
 		
                 if (joueurSurCase == joueur)
                 {
-						  coord.add(new Point(i,j));
+						  coord.add(new Couple(i,j));
                 }
             }
         }
 
-        return (Point[])coord.toArray(new Point[coord.size()]);
+        return (Couple[])coord.toArray(new Couple[coord.size()]);
 	}
 
     /**
@@ -207,10 +206,10 @@ public class Configuration implements Cloneable, Serializable
 
         for (int i = 0; i < joueurs.length; i++)
         {
-			 Point [] cP = coordPingouins(joueurs[i]);
+			 Couple [] cP = coordPingouins(joueurs[i]);
 			 for (int j = 0; j < cP.length; j++)
 			 {
-				score[i] += estIlot((int)cP[j].getX(),(int)cP[j].getY());
+				score[i] += estIlot(cP[j].getX(),cP[j].getY()).getX();
 			 }            
         }
 
@@ -222,83 +221,85 @@ public class Configuration implements Cloneable, Serializable
 	  * -1 si non
 	  * nombre de poisson sur l'ilot si oui
      **/
-	public int estIlot(int ii, int jj){
+	public Couple estIlot(int ii, int jj){
 		Case [][] terrainCopie = cloneTerrain();
-		int nb = 0;
-		Stack<Point> pile = new Stack();
+		int nbP = 0,nbC = 0;
+		Stack<Couple> pile = new Stack();
 
-		pile.push(new Point(ii,jj));
-		nb += terrainCopie[ii][jj].scorePoisson();
+		pile.push(new Couple(ii,jj));
+		nbP += terrainCopie[ii][jj].scorePoisson();
+		nbC++;
 		terrainCopie[ii][jj].setEtat(Etat.VIDE);
 
-		Point p;
+		Couple p;
 		while(!pile.empty()){
 			p = pile.pop();
-			ArrayList<Point> voisins = getVoisins(terrainCopie,(int)p.getX(),(int)p.getY(),false);
+			ArrayList<Couple> voisins = getVoisins(terrainCopie,p.getX(),p.getY(),false);
 			for(int taille=0;taille<voisins.size();taille++){
 				p = voisins.get(taille);
-				if(terrainCopie[(int)p.getX()][(int)p.getY()].getJoueurSurCase()==null){
-					nb += terrainCopie[(int)p.getX()][(int)p.getY()].scorePoisson();
-					pile.push(new Point((int)p.getX(),(int)p.getY()));
-					terrainCopie[(int)p.getX()][(int)p.getY()].setEtat(Etat.VIDE);
+				if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()==null){
+					nbP += terrainCopie[p.getX()][p.getY()].scorePoisson();
+					nbC++;
+					pile.push(new Couple(p.getX(),p.getY()));
+					terrainCopie[p.getX()][p.getY()].setEtat(Etat.VIDE);
 				}
-				else if(terrainCopie[(int)p.getX()][(int)p.getY()].getJoueurSurCase()!=getJoueurSurConfiguration()){
-					return -1;
+				else if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()!=getJoueurSurConfiguration()){
+					return new Couple(-1,-1);
 				}
 			}
 		}
-		return nb;
+		return new Couple(nbP,nbC);
 	}
 
     /**
      * Récupère les cases voisines non vides et {non occupées(obstacle=true) ou occupées(obstacle=false)} d'une case i,j du terrain
      **/
-	public ArrayList<Point> getVoisins(Case [][] t,int i, int j,boolean obstacle){
-		ArrayList<Point> liste = new ArrayList<Point>();
+	public ArrayList<Couple> getVoisins(Case [][] t,int i, int j,boolean obstacle){
+		ArrayList<Couple> liste = new ArrayList<Couple>();
 		 {
 		     if (i%2 == 0 && j + 1 < largeur - 1 && ((obstacle && !t[i][j + 1].estObstacle()) || (!obstacle && !t[i][j + 1].estVide())))
-					liste.add(new Point(i,j+1));
+					liste.add(new Couple(i,j+1));
 		     else if (i%2 == 1 && j + 1 < largeur && ((obstacle && !t[i][j + 1].estObstacle()) || (!obstacle && !t[i][j + 1].estVide())))
-					liste.add(new Point(i,j+1));
+					liste.add(new Couple(i,j+1));
 		 }
 		 {
 		     if (j - 1 >= 0 && ((obstacle && !t[i][j - 1].estObstacle()) || (!obstacle && !t[i][j - 1].estVide())))
-					liste.add(new Point(i,j-1));
+					liste.add(new Couple(i,j-1));
 		 }
 		 {
 		     if (i - 1 >= 0)
 		     {
 		         if (i%2 == 0 && j + 1 < largeur && ((obstacle && !t[i-1][j + 1].estObstacle()) || (!obstacle && !t[i-1][j + 1].estVide())))
-						liste.add(new Point(i-1,j+1));
+						liste.add(new Couple(i-1,j+1));
 		         else if (i%2 == 1 && j < largeur - 1 && ((obstacle && !t[i-1][j].estObstacle()) || (!obstacle && !t[i-1][j].estVide())))
-						liste.add(new Point(i-1,j));
+						liste.add(new Couple(i-1,j));
 		     }
 		 }
 		 {
 		     if (i - 1 >= 0)
 		     {
 		         if (i%2 == 0 && j < largeur - 1 && ((obstacle && !t[i-1][j].estObstacle()) || (!obstacle && !t[i-1][j].estVide())))
-						liste.add(new Point(i-1,j));
+						liste.add(new Couple(i-1,j));
 		         else if (i%2 == 1 && j - 1 >= 0 && ((obstacle && !t[i-1][j-1].estObstacle()) || (!obstacle && !t[i-1][j-1].estVide())))
-						liste.add(new Point(i-1,j-1));
+						liste.add(new Couple(i-1,j-1));
 		     }
 		 }
 		 {
 		     if (i + 1 < hauteur)
 		     {
 		         if (i%2 == 0 && j + 1 < largeur && ((obstacle && !t[i+1][j+1].estObstacle()) || (!obstacle && !t[i+1][j+1].estVide())))
-						liste.add(new Point(i+1,j+1));
+						liste.add(new Couple(i+1,j+1));
 		         else if (i%2 == 1 && j < largeur - 1 && ((obstacle && !t[i+1][j].estObstacle()) || (!obstacle && !t[i+1][j].estVide())))
-						liste.add(new Point(i+1,j));
+						liste.add(new Couple(i+1,j));
 		     }
 		 }
 		 {
 		     if (i + 1 < hauteur)
 		     {
 		         if (i%2 == 0 && ((obstacle && !t[i+1][j].estObstacle()) || (!obstacle && !t[i+1][j].estVide())))
-						liste.add(new Point(i+1,j));
+						liste.add(new Couple(i+1,j));
 		         else if (i%2 == 1 && j - 1 >= 0 && ((obstacle && !t[i+1][j-1].estObstacle()) || (!obstacle && !t[i+1][j-1].estVide())))
-						liste.add(new Point(i+1,j-1));
+						liste.add(new Couple(i+1,j-1));
 		     }
 		 }
 		return liste;
