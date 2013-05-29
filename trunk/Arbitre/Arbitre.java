@@ -423,6 +423,53 @@ public class Arbitre implements Runnable, Serializable
 	
     }
 
+
+    /**
+     * Recule dans l'historique (annuler)
+     **/
+    public void recommencer()
+    {
+	Configuration c = null;
+	do
+	{
+	    c = historique.reculer();
+	    if (c != null)
+	    {	
+		// Met à jour la configuration
+		configurationCourante = c;
+		setJoueurCourant(c.getJoueurSurConfiguration());
+		
+		// Restaure le score du joueur
+		getJoueurCourant().setScore(c.getScoreSurConfiguration());
+
+		int [] restePingouins = c.getNombrePingouinsParJoueur(joueurs);
+                int totalPions = 0;
+		
+                for (int i = 0; i < restePingouins.length; i++)
+                    totalPions += restePingouins[i];
+
+                // 2 joueurs, 8 pions
+                // 3 joueurs, 9 pions
+                // 4 joueurs, 8 pions
+                if ((joueurs.length == 2 && totalPions < 8) ||
+                    (joueurs.length == 3 && totalPions < 9) ||
+                    (joueurs.length == 4 && totalPions < 8))
+                    setMode(ModeDeJeu.POSE_PINGOUIN);
+		
+		if (getMode() == ModeDeJeu.JEU_COMPLET)
+		    getConfiguration().getJoueurSurConfiguration().decrementNombreTuile();
+	    }
+	}
+	while(c != null);
+	
+	// Stop le thread pour lui indique le changement de joueur
+	ArbitreManager.instanceThread.interrupt();
+
+	inter.repaint();
+	
+    }
+
+
     /**
      * Serialize les données d'une partie
      **/
