@@ -235,13 +235,15 @@ public class MenuPerso{
 		setBoutonsJoueur(menuJ2);
 		setBoutonsJoueur(menuJ3);
 		setBoutonsJoueur(menuJ4);
+		addBouton(cellDroite , "Lancer");
+		addBouton(cellGauche , "Retour");
 		}
 	}
 	public void setBoutonsJoueur(JPanel panel)
 	{
 	
 			String [] diff = {"Facile","Intermediaire","Difficile"};
-			String [] noms = {"Atos","Portos","Aramis","Dartagnan","Ordinateur"};
+			String [] noms = {"Atos","Portos","Aramis","Dartagnan","Ordinateur","Aucun"};
 			
 			JComboBox names = new JComboBox(noms);
 			names.setSelectedIndex(0);
