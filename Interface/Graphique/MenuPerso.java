@@ -17,6 +17,8 @@ public class MenuPerso{
 	protected JPanel menuJ2;
 	protected JPanel menuJ3;
 	protected JPanel menuJ4;
+	JPanel cellGauche;
+	JPanel cellDroite;
 	
 	public MenuPerso(JFrame frame, InterfaceGraphique inter)
 	{
@@ -100,9 +102,26 @@ public class MenuPerso{
 		//-------------------------------------------------------
 		//
 		//Ligne 6
-		JPanel cell61 = new JPanel();
-		cell61.setOpaque(false);
-		cell61.setPreferredSize(new Dimension(700, 500/8));    
+		cellGauche = new JPanel();
+		cellGauche.setOpaque(false);
+		cellGauche.setPreferredSize(new Dimension(700/8, 500/8));
+		//------------------------------------------------------
+		JPanel cell62 = new JPanel();
+		cell62.setOpaque(false);
+		cell62.setPreferredSize(new Dimension(5*700/16, 500/8));
+		//-------------------------------------------------------
+		JPanel cell63 = new JPanel();
+		cell63.setOpaque(false);
+		cell63.setPreferredSize(new Dimension(700/8, 500/8));
+		//------------------------------------------------------
+		JPanel cell64 = new JPanel();
+		cell64.setOpaque(false);
+		cell64.setPreferredSize(new Dimension(5*700/16, 500/8));
+		//-------------------------------------------------------
+		cellDroite = new JPanel();
+		cellDroite.setOpaque(false);
+		cellDroite.setPreferredSize(new Dimension(700/8, 500/8));
+		//-------------------------------------------------------  
 		//-------------------------------------------------------
 		//
 		
@@ -153,7 +172,7 @@ public class MenuPerso{
 		gbc.gridy = 4;
 		gbc.gridheight = 1;
 		gbc.gridwidth = 1;
-		panel.add(cell31, gbc);
+		panel.add(cell51, gbc);
 		//---------------------------------------------
 		gbc.gridx = 1;
 		panel.add(menuJ3, gbc);
@@ -172,8 +191,21 @@ public class MenuPerso{
 		gbc.gridx = 0;
 		gbc.gridy = 5;
 		gbc.gridheight = 1;
+		gbc.gridwidth = 1;
+		panel.add(cellGauche, gbc);
+		//---------------------------------------------
+		gbc.gridx = 1;
+		panel.add(cell62, gbc);
+		//---------------------------------------------
+		gbc.gridx = 2;     
+		panel.add(cell63, gbc);       
+		//---------------------------------------------
+		gbc.gridx = 3;     
+		panel.add(cell64, gbc); 
+		//---------------------------------------------
+		gbc.gridx = 4;  
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		panel.add(cell41, gbc);
+		panel.add(cellDroite, gbc);
 		//--------------------------------------------
 
 
