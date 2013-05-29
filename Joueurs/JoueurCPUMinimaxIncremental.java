@@ -17,6 +17,7 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 	public JoueurCPUMinimaxIncremental() {
 		super();
 		this.j = this;
+		this.finish = false;
 	}
 	
 	public JoueurCPUMinimaxIncremental(Joueur j, Boolean finish) {
