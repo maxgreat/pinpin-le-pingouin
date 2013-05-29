@@ -31,11 +31,8 @@ public class Message implements Serializable
     /**
      * Ecris un objet dans le message (pas l'ID)
      **/
-    public synchronized void write(Object object) throws NotSerializableException
+    public synchronized <T extends Serializable> void write(T object)
     {
-	if (!(object instanceof java.io.Serializable))
-	    throw new NotSerializableException("L'objet écrit doit implementé Serializable");
-
 	data.add(object);
     }
 
@@ -60,22 +57,24 @@ public class Message implements Serializable
     /**
      * Charge les données à partir d'une chaine serialize
      **/
+    @SuppressWarnings("unchecked")
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
     {   
 	setCmd((NetworkCmd)in.readObject());
-	Object tmp = in.readObject();
 	
-	if (tmp instanceof ArrayList<?>)
-	    data = (ArrayList<Object>)tmp;
-	else
-	    throw new IOException("Problème manque liste objet");
+	try
+	{
+	    data = (ArrayList<Object>)in.readObject();
+	}
+	catch (ClassNotFoundException e)
+	{
+	    throw e;
+	}
     }
 
-    /**
-     * Essaye de parser un objet sans donnée
-     **/
-    private void readObjectNoData() throws ObjectStreamException
+
+    public String toString()
     {
-        throw new NotSerializableException("Aucune commande trouvée");
+	return cmd.toString();
     }
 }
