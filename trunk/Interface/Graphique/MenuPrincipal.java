@@ -12,6 +12,8 @@ public class MenuPrincipal{
 	JFrame frame;
 	InterfaceGraphique inter;
 	Banniere ban;
+	JPanel cellGauche;
+	JPanel cellDroite;
 	
 	public MenuPrincipal(JFrame frame, InterfaceGraphique inter)
 	{
@@ -67,15 +69,21 @@ public class MenuPrincipal{
 		//--------------------------------------------------------
 		//
 		//Ligne 4
-		JPanel cellGauche = new JPanel();
-		cellGauche.setBackground(Color.BLACK);
-		cellGauche.setPreferredSize(new Dimension(700/4, 500/8));    
+		cellGauche = new JPanel();
+		cellGauche.setOpaque(false);
+		cellGauche.setPreferredSize(new Dimension(700/8, 500/8)); 
 		JPanel cell42 = new JPanel();
 		cell42.setOpaque(false);
-		cell42.setPreferredSize(new Dimension(700/2, 500/8));    
-		JPanel cellDroite = new JPanel();
-		cellDroite.setBackground(Color.RED);
-		cellDroite.setPreferredSize(new Dimension(700/4, 500/8));
+		cell42.setPreferredSize(new Dimension(700/8, 500/16));   
+		JPanel cell43 = new JPanel();
+		cell43.setOpaque(false);
+		cell43.setPreferredSize(new Dimension(700/2, 500/8));    
+		cellDroite = new JPanel();
+		JPanel cell44 = new JPanel();
+		cell44.setOpaque(false);
+		cell44.setPreferredSize(new Dimension(700/8, 500/16));
+		cellDroite.setOpaque(false);
+		cellDroite.setPreferredSize(new Dimension(700/8, 500/8));
 		
 		//On positionne la case de départ du composant
 		gbc.gridx = 0;
@@ -112,15 +120,28 @@ public class MenuPrincipal{
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		panel.add(cell35, gbc);
 		//---------------------------------------------
+		//
 		//Ligne 4
 		gbc.gridx = 0;
 		gbc.gridy = 3;
 		gbc.gridheight = 1;
-		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		gbc.gridwidth = 1;
+		panel.add(cellGauche, gbc);
+		//---------------------------------------------
+		gbc.gridx = 1;
 		panel.add(cell42, gbc);
+		//---------------------------------------------
+		gbc.gridx = 2;     
+		panel.add(cell43, gbc);       
+		//---------------------------------------------
+		gbc.gridx = 3;     
+		panel.add(cell44, gbc); 
+		//---------------------------------------------
+		gbc.gridx = 4;  
+		gbc.gridwidth = GridBagConstraints.REMAINDER;
+		panel.add(cellDroite, gbc);
 		//--------------------------------------------
 
-		//panel.repaint();
 		fond.add(panel);
 
 	}
@@ -144,6 +165,8 @@ public class MenuPrincipal{
 			addBouton(Menu, "Partie Personalisée");
 			addBouton(Menu, "Options");
 			addBouton(Menu, "Quitter");
+			addBouton(cellGauche,"Retour");
+			addBouton(cellDroite,"Quitter");
 		}
 		else if(s.compareTo("Options") == 0){
 			ban = new Banniere("options.png",frame);
