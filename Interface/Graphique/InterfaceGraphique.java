@@ -151,6 +151,7 @@ public class InterfaceGraphique extends Interface
 		}
 		if(S.compareTo( "Recommencer") == 0 )
 		{
+			System.out.println("on a clicker sur recommencer");
 		    ArbitreManager.instance.recommencer();
 		}
 		/*if(S.compareTo("Gestion de profil") == 0)

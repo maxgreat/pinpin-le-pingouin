@@ -165,11 +165,9 @@ public class AireDeJeu extends JComponent{
                     else
                     	System.out.println("Egalité");
                 }
-                
-                System.out.println("Joueur1 : " + inter.joueurs[0].getNom() +" : "+inter.joueurs[0].getScore() +" : "+inter.joueurs[0].getNombreTuile());
-                System.out.println("Joueur2 : " + inter.joueurs[1].getNom() +" : "+inter.joueurs[1].getScore() +" : "+inter.joueurs[1].getNombreTuile());
-                
-                System.exit(0);
+                // on retourne au menu principal
+                ArbitreManager.stopperPartie();
+                inter.afficherPanel("Menu Principal");
             }
             else  //partie en cours
             {
