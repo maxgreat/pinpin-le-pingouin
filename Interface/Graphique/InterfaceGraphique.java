@@ -46,7 +46,7 @@ public class InterfaceGraphique extends Interface
 		//creation de la fenetre principale
 		frame = new JFrame("pinpin le pingouin");
 		frame.setMinimumSize(new Dimension(700,500));
-		MenuPrincipal m = new MenuPrincipal(frame, this);
+		MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
 		m.setBoutons("demarrage");
 		frame.setContentPane(m.fond);
 		frame.pack();
@@ -115,14 +115,14 @@ public class InterfaceGraphique extends Interface
 		else if (S.compareTo("Menu Principal") == 0)
 		{	
 			oldPage.push("Menu Principal");
-			MenuPrincipal m = new MenuPrincipal(frame, this);
+			MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
 			m.setBoutons("demarrage");
 			frame.setContentPane(m.fond);
 			frame.pack();				
 		}
 		if(S.compareTo( "Options") == 0 )
 		{
-			MenuPrincipal m = new MenuPrincipal(frame, this);
+			MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
 			m.setBoutons("Options");
 			frame.setContentPane(m.fond);
 			frame.pack();				
@@ -131,6 +131,39 @@ public class InterfaceGraphique extends Interface
 		{	
 			ArbitreManager.stopperPartie();
 			System.exit(0);
+		}
+		if(S.compareTo( "Regles du jeux") == 0 )
+		{	
+			
+			oldPage.push("Options");
+			MenuPrincipal m = new MenuPrincipal(frame, this,"reglePremierePage.png");
+			m.setBoutons("regle");
+			frame.setContentPane(m.fond);
+			frame.pack();				
+		}
+		if(S.compareTo("Page 2") == 0 )
+		{	
+			oldPage.push("Regles du jeux");
+			MenuPrincipal m = new MenuPrincipal(frame, this,"regleDeuxiemePage.png");
+			m.setBoutons("Page 2");
+			frame.setContentPane(m.fond);
+			frame.pack();				
+		}
+		if(S.compareTo("Page 3") == 0 )
+		{	
+			oldPage.push("Page 2");
+			MenuPrincipal m = new MenuPrincipal(frame, this,"regleTroisiemePage.png");
+			m.setBoutons("Page 3");
+			frame.setContentPane(m.fond);
+			frame.pack();				
+		}
+		if(S.compareTo("Page 4") == 0 )
+		{	
+			oldPage.push("Page 3");
+			MenuPrincipal m = new MenuPrincipal(frame, this,"regleQuatriemePage.png");
+			m.setBoutons("Page 4");
+			frame.setContentPane(m.fond);
+			frame.pack();				
 		}
 		if(S.compareTo( "Lancer") == 0 )
 		{	
