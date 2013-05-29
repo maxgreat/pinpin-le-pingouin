@@ -12,6 +12,10 @@ public class MenuPerso{
 	JFrame frame;
 	InterfaceGraphique inter;
 	Banniere ban;
+	protected JPanel menuJ1;
+	protected JPanel menuJ2;
+	protected JPanel menuJ3;
+	protected JPanel menuJ4;
 	
 	public MenuPerso(JFrame frame, InterfaceGraphique inter)
 	{
@@ -49,16 +53,16 @@ public class MenuPerso{
 		cell31.setOpaque(false);
 		cell31.setPreferredSize(new Dimension(700/8, 500/4));
 		//Menuj1
-		JPanel menuJ1 = new JPanel();
-		menuJ1.setBackground(Color.BLACK);
+		menuJ1 = new JPanel();
+		menuJ1.setOpaque(false);
 		menuJ1.setPreferredSize(new Dimension(5*700/16, 500/4));
 		//-------------------------------------------------------
 		JPanel cell33 = new JPanel();
 		cell33.setOpaque(false);
 		cell33.setPreferredSize(new Dimension(700/8, 500/4));
 		//Menuj2
-		JPanel menuJ2 = new JPanel();
-		menuJ2.setBackground(Color.ORANGE);
+		menuJ2 = new JPanel();
+		menuJ2.setOpaque(false);
 		menuJ2.setPreferredSize(new Dimension(5*700/16, 500/4));
 		//-------------------------------------------------------
 		JPanel cell35 = new JPanel();
@@ -77,16 +81,16 @@ public class MenuPerso{
 		cell51.setOpaque(false);
 		cell51.setPreferredSize(new Dimension(700/8, 500/4));
 		//Menuj1
-		JPanel menuJ3 = new JPanel();
-		menuJ3.setBackground(Color.RED);
+		menuJ3 = new JPanel();
+		menuJ3.setOpaque(false);
 		menuJ3.setPreferredSize(new Dimension(5*700/16, 500/4));
 		//-------------------------------------------------------
 		JPanel cell53 = new JPanel();
 		cell53.setOpaque(false);
 		cell53.setPreferredSize(new Dimension(700/8, 500/4));
 		//Menuj2
-		JPanel menuJ4 = new JPanel();
-		menuJ4.setBackground(Color.YELLOW);
+		menuJ4 = new JPanel();
+		menuJ4.setOpaque(false);
 		menuJ4.setPreferredSize(new Dimension(5*700/16, 500/4));
 		//-------------------------------------------------------
 		JPanel cell55 = new JPanel();
@@ -191,7 +195,20 @@ public class MenuPerso{
 	}
 	public void setBoutons(String s)
 	{
-	
+		if(s.compareTo("Partie Personnalisée") == 0){
+			addBouton(menuJ1, "Nom Joueur 1");
+			
+			String [] difficultes = new String[3];
+			difficultes[0] = "Facile";
+			difficultes[1] = "Intermediaire";
+			difficultes[2] = "Difficile";
+			JComboBox boxIA = new JComboBox(difficultes);
+			boxIA.addActionListener(new EcouteurDeBox(this));
+					
+			addBouton(menuJ2, "Nom Joueur 2");		
+			addBouton(menuJ3, "Nom Joueur 3");		
+			addBouton(menuJ4, "Nom Joueur 4");		
+		}
 	}
 
 }

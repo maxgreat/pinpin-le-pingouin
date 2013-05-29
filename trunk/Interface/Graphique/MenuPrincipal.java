@@ -25,48 +25,57 @@ public class MenuPrincipal{
 		panel.setOpaque(false);
 		
 		//chargement fond
-		fond = new Fond("backgroundIce1.png",frame);
+		fond = new Fond("backgroundIce2.png",frame);
 		fond.setOpaque(true);
-		fond.setPreferredSize(new Dimension(700,500));
+		//fond.setPreferredSize(new Dimension(700,500));
 		
 		
-		//----------------------------------
+		//------------------------------------------------------
 		GridBagConstraints gbc = new GridBagConstraints();
 		//On crée nos différents conteneurs
 		//Ligne 1
 		ban = new Banniere("pinpin.png",frame);
 		ban.setPreferredSize(new Dimension(700, (500)/4));
-		
+		//------------------------------------------------------
+		//
 		//ligne 2
 		JPanel cell21 = new JPanel();
 		cell21.setOpaque(false);
 		cell21.setPreferredSize(new Dimension(700, 500/16));
-		
+		//------------------------------------------------------
+		//
 		//Ligne 3
 		JPanel cell31 = new JPanel();
 		cell31.setOpaque(false);
 		cell31.setPreferredSize(new Dimension(700/8, (9*500)/16));
+		//-------------------------------------------------------
 		JPanel cell32 = new JPanel();
 		cell32.setOpaque(false);
 		cell32.setPreferredSize(new Dimension(700/8, (9*500)/16));
+		//-------------------------------------------------------
 		//menu du jeu
 		Menu.setLayout(new FlowLayout());
 		Menu.setOpaque(false);
 		Menu.setPreferredSize(new Dimension(700/2, (9*500)/16));
-		
-		
+		//--------------------------------------------------------
 		JPanel cell34 = new JPanel();
 		cell34.setOpaque(false);
 		cell34.setPreferredSize(new Dimension(700/8, (9*500)/16));
 		JPanel cell35 = new JPanel();
 		cell35.setOpaque(false);
 		cell35.setPreferredSize(new Dimension(700/8, (9*500)/16));
-		
+		//--------------------------------------------------------
+		//
 		//Ligne 4
-		JPanel cell41 = new JPanel();
-		cell41.setOpaque(false);
-		cell41.setPreferredSize(new Dimension(700, 500/8));    
-		
+		JPanel cellGauche = new JPanel();
+		cellGauche.setBackground(Color.BLACK);
+		cellGauche.setPreferredSize(new Dimension(700/4, 500/8));    
+		JPanel cell42 = new JPanel();
+		cell42.setOpaque(false);
+		cell42.setPreferredSize(new Dimension(700/2, 500/8));    
+		JPanel cellDroite = new JPanel();
+		cellDroite.setBackground(Color.RED);
+		cellDroite.setPreferredSize(new Dimension(700/4, 500/8));
 		
 		//On positionne la case de départ du composant
 		gbc.gridx = 0;
@@ -108,7 +117,7 @@ public class MenuPrincipal{
 		gbc.gridy = 3;
 		gbc.gridheight = 1;
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
-		panel.add(cell41, gbc);
+		panel.add(cell42, gbc);
 		//--------------------------------------------
 
 		//panel.repaint();
@@ -119,10 +128,7 @@ public class MenuPrincipal{
 	public void addBouton(JPanel panel, String S)
 	{
 		JPanel pan = new JPanel();
-
-		
 		JButton b1 = new JButton(S);
-		
 		b1.addActionListener(new EcouteurDeBouton(S, inter));
 		pan.add(b1,BorderLayout.CENTER);
 		pan.setOpaque(false);	
