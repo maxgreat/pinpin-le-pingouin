@@ -19,7 +19,7 @@ public class AireDeJeu extends JComponent
     Point coupPrec;
 
     boolean showDialog = true;
-	
+	boolean popup1 = true;
     //images des joueurs
     BufferedImage imageJoueur1 = null;
     BufferedImage imageJoueur2 = null;
@@ -44,7 +44,7 @@ public class AireDeJeu extends JComponent
 	protected String s;
     protected double margeHaut, margeGauche, margeDroite, margeBas;
     protected double rayonH, rayonL;
-
+	
     public AireDeJeu(JFrame f, InterfaceGraphique inter){
 	frame = f;
 	
@@ -165,7 +165,7 @@ public class AireDeJeu extends JComponent
 	Graphics2D drawable = (Graphics2D) g;
         
         Arbitre arbitre = ArbitreManager.instance;
-	
+		
         if (arbitre == null)
         { //erreur
             System.out.println("Erreur dans le moteur du jeu.");
@@ -202,7 +202,7 @@ public class AireDeJeu extends JComponent
 				}
                
                 // on retourne au menu principal
-                
+    
               
                 //default title and icon
 		if (showDialog)
@@ -228,6 +228,32 @@ public class AireDeJeu extends JComponent
 		    inter.afficherPanel("Menu Principal");
 		    showDialog = false;
 		}
+		/*
+		TODO
+		s = "placer vos pingouins sur les cases rouges";
+        if (popup1)
+		{
+		    System.out.println(s);
+		    
+		    java.awt.EventQueue.invokeLater(new Runnable()
+			{
+			    private String message;
+			    public void run() 
+			    {
+				JOptionPane.showMessageDialog(null, message, "Informations", JOptionPane.INFORMATION_MESSAGE);
+			    }
+
+			    private Runnable init(String msg)
+			    {
+				message = msg;
+				return this;
+			    }  
+			}.init(s));
+		    popup1 = false;
+		}
+		*/
+		
+		
             }
             else  //partie en cours
             {
@@ -269,8 +295,8 @@ public class AireDeJeu extends JComponent
 		drawable.drawImage(boutonAnnuler, largeur/4, hauteur-(int)rayonH, (int)rayonL*2, (int)rayonH, null);
 		//bouton refaire
 		drawable.drawImage(boutonRefaire, 3*largeur/4, hauteur-(int)rayonH, (int)rayonL*2, (int)rayonH, null);
-				
-				
+		
+		
 				
 		//Tracage des lignes de 7 pavés
 		for(int i=0;i<7;i++){

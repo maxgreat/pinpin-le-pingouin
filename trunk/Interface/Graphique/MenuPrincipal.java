@@ -15,7 +15,7 @@ public class MenuPrincipal{
 	JPanel cellGauche;
 	JPanel cellDroite;
 	
-	public MenuPrincipal(JFrame frame, InterfaceGraphique inter)
+	public MenuPrincipal(JFrame frame, InterfaceGraphique inter,String s)
 	{
 		this.frame = frame;
 		this.inter = inter;
@@ -27,7 +27,7 @@ public class MenuPrincipal{
 		panel.setOpaque(false);
 		
 		//chargement fond
-		fond = new Fond("backgroundIce2.png",frame);
+		fond = new Fond(s,frame);
 		fond.setOpaque(true);
 		//fond.setPreferredSize(new Dimension(700,500));
 		
@@ -173,13 +173,38 @@ public class MenuPrincipal{
 			Menu.setLayout(new GridLayout( 3 , 1));
 			addBouton(Menu, "Son");
 			addBouton(Menu, "Gestion de profil");
+			addBouton(Menu, "Regles du jeux");
 			addBouton(cellGauche,"Retour");
 		}
 		else if(s.compareTo("Gestion de profil") == 0){
-			ban = new Banniere("profil.png",frame);
+			ban = new Banniere("pinpin.png",frame);
 			ban.setPreferredSize(new Dimension(700, (500)/4));
 			addBouton(Menu, "Quitter");
 			addBouton(cellGauche,"Retour");
+		}
+		else if(s.compareTo("regle") == 0){
+			ban = new Banniere("pinpin.png",frame);
+			ban.setPreferredSize(new Dimension(700, (500)/4));
+			addBouton(cellGauche,"Retour");
+			addBouton(cellDroite,"Page 2");
+		}
+		else if(s.compareTo("Page 2") == 0){
+			ban = new Banniere("pinpin.png",frame);
+			ban.setPreferredSize(new Dimension(700, (500)/4));
+			addBouton(cellGauche,"Retour");
+			addBouton(cellDroite,"Page 3");
+		}
+		else if(s.compareTo("Page 3") == 0){
+			ban = new Banniere("pinpin.png",frame);
+			ban.setPreferredSize(new Dimension(700, (500)/4));
+			addBouton(cellGauche,"Retour");
+			addBouton(cellDroite,"Page 4");
+		}
+		else if(s.compareTo("Page 4") == 0){
+			ban = new Banniere("pinpin.png",frame);
+			ban.setPreferredSize(new Dimension(700, (500)/4));
+			addBouton(cellGauche,"Retour");
+			addBouton(cellDroite,"Menu Principal");
 		}
 	
 	
