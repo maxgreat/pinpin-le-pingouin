@@ -165,8 +165,7 @@ public class MenuPrincipal{
 			addBouton(Menu, "Partie Personalisée");
 			addBouton(Menu, "Options");
 			addBouton(Menu, "Quitter");
-			addBouton(cellGauche,"Retour");
-			addBouton(cellDroite,"Quitter");
+			
 		}
 		else if(s.compareTo("Options") == 0){
 			ban = new Banniere("options.png",frame);
@@ -174,12 +173,13 @@ public class MenuPrincipal{
 			Menu.setLayout(new GridLayout( 3 , 1));
 			addBouton(Menu, "Son");
 			addBouton(Menu, "Gestion de profil");
-			addBouton(Menu, "Quitter");
+			addBouton(cellGauche,"Retour");
 		}
 		else if(s.compareTo("Gestion de profil") == 0){
 			ban = new Banniere("profil.png",frame);
 			ban.setPreferredSize(new Dimension(700, (500)/4));
 			addBouton(Menu, "Quitter");
+			addBouton(cellGauche,"Retour");
 		}
 	
 	

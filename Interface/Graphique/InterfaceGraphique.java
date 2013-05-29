@@ -18,7 +18,7 @@ public class InterfaceGraphique extends Interface
     protected JPanel panel;
     protected Fond fond;
 	protected Banniere ban;
-    private LinkedList<String> Old_page;
+    private LinkedList<String> oldPage;
      
      
     public void addBouton(JPanel panel, String S)
@@ -37,8 +37,8 @@ public class InterfaceGraphique extends Interface
     public void run(String [] arguments)
     {	
     	//historique de navigation dans les menus
-    	Old_page = new LinkedList<String>();
-    	
+    	oldPage = new LinkedList<String>();
+    	oldPage.push("Menu Principal");
     	
     	//Dimension de départ	
 		Dimension Dim = new Dimension(700,500);
@@ -66,8 +66,6 @@ public class InterfaceGraphique extends Interface
 			    }
 		    });
 		frame.setVisible(true);
-		
-		Old_page.addFirst("Menu Principal");
     }
     
     /**
@@ -105,6 +103,7 @@ public class InterfaceGraphique extends Interface
 
     public void afficherPanel(String S)
 	{
+		
 		if (S.compareTo("Partie Rapide") == 0 ){
 			//definition des joueurs
 			Joueur [] joueurs = new Joueur[2];
@@ -115,6 +114,7 @@ public class InterfaceGraphique extends Interface
 		}
 		else if (S.compareTo("Menu Principal") == 0)
 		{	
+			
 			MenuPrincipal m = new MenuPrincipal(frame, this);
 			m.setBoutons("demarrage");
 			frame.setContentPane(m.fond);
@@ -140,14 +140,15 @@ public class InterfaceGraphique extends Interface
 		}
 		if(S.compareTo( "Partie Personalisée") == 0 )
 		{
+			
 			MenuPerso m = new MenuPerso(frame, this);
 			m.setBoutons("Partie Personnalisée");
 			frame.setContentPane(m.fond);
 			frame.pack();
 		}
-		if(S.compareTo("Revenir") == 0)
+		if(S.compareTo("Retour") == 0)
 		{
-			afficherPanel(Old_page.poll());
+			afficherPanel(oldPage.pop());
 		}
 		if(S.compareTo( "Recommencer") == 0 )
 		{
