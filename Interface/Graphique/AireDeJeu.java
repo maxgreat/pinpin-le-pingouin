@@ -61,31 +61,32 @@ public class AireDeJeu extends JComponent{
         
         try 
         {
-				un_poisson = ImageIO.read(getImage("caseGlace1.png"));
-				deux_poissons = ImageIO.read(getImage("caseGlace2.png"));
-				trois_poissons = ImageIO.read(getImage("caseGlace3.png"));
+				un_poisson = ImageIO.read(getImage("caseGlaceTest.png"));
+				deux_poissons = ImageIO.read(getImage("caseGlaceTest2.png"));
+				trois_poissons = ImageIO.read(getImage("caseGlaceTest3.png"));
 		} catch (IOException e) {
             System.err.println("erreur lecture images : " +e);
             System.exit(1);
         }
         
         try{
-	   	    imageJoueur1 = ImageIO.read(getImage("pingNoir.png"));
+	   	    imageJoueur1 = ImageIO.read(getImage("pingouin1.png"));
         }catch(Exception e){
         	System.out.println("Erreur lecture image" + e);
         }
         try{
-	   	    imageJoueur2 = ImageIO.read(getImage("pingRouge.png"));
+	   	    imageJoueur2 = ImageIO.read(getImage("pingouin2.png"));
         }catch(Exception e){
         	System.out.println("Erreur lecture image" + e);
         }
         try{
 	   	    boutonMenu = ImageIO.read(getImage("boutonMenu.jpg"));
-	   	    boutonAnnuler = ImageIO.read(getImage("boutonAnnuler.jpg"));
-	   	    boutonRefaire = ImageIO.read(getImage("boutonRefaire.jpg"));
-	   	    fondEau = ImageIO.read(getImage("backgroundWater.jpg"));
+	   	    boutonAnnuler = ImageIO.read(getImage("revenir.png"));
+	   	    boutonRefaire = ImageIO.read(getImage("refaire.png"));
+	   	    fondEau = ImageIO.read(getImage("backgroundWater.png"));
         }catch(Exception e){
         	System.out.println("Erreur lecture image" + e);
+        	System.exit(1);
         }
         
         
