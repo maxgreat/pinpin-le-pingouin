@@ -2,6 +2,7 @@ package Interface.Graphique;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.image.BufferedImage;
+import java.awt.event.*;
 import javax.imageio.*;
 import java.io.IOException;
 import java.net.URL;
