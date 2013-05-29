@@ -25,7 +25,7 @@ public class JoueurCPUMinimax extends Joueur
 		    return placementPossible[r.nextInt(placementPossible.length)];
 	    }
 	    // Créé l'algo minimax
-	    Minimax mini  = new Minimax(this, 2, ArbitreManager.instance);
+	    Minimax mini  = new Minimax(this, 2, ArbitreManager.instance, false);
 	    
 	    Thread t = new Thread(mini);
 	    long startMilli = System.currentTimeMillis();

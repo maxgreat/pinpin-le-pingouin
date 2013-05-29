@@ -9,10 +9,10 @@ public class MinimaxIncremental extends Minimax
     Signal<Object> signalSynchro;
 
 
-    public MinimaxIncremental(Joueur joueur, int profondeur, Arbitre arbitre)
+	public MinimaxIncremental(Joueur joueur, int profondeur, Arbitre arbitre, Boolean finish)
     {
-	super(joueur, profondeur, arbitre);
-	signalSynchro = new Signal<Object>();
+	    super(joueur, profondeur, arbitre, finish);
+	    signalSynchro = new Signal<Object>();
     }
 
 
