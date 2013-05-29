@@ -163,14 +163,14 @@ public class Minimax implements Runnable {
 		Case [][] terrainCopieJ = c.cloneTerrain();
 		Case [][] terrainCopieA = c.cloneTerrain();
 
-		Point [] p =  c.coordPingouins(this.joueur);
+		Couple [] p =  c.coordPingouins(this.joueur);
 		for(int i=0;i<p.length;i++){
-			if(c.getVoisins(terrainCopieJ,(int)p[i].getX(),(int)p[i].getY(),true).size()==1)
+			if(c.getVoisins(terrainCopieJ,p[i].getX(),p[i].getY(),true).size()==1)
 				score -= 200;
 		}
 		p =  c.coordPingouins(this.adversaire);
 		for(int i=0;i<p.length;i++){
-			if(c.getVoisins(terrainCopieJ,(int)p[i].getX(),(int)p[i].getY(),true).size()==1)
+			if(c.getVoisins(terrainCopieJ,p[i].getX(),p[i].getY(),true).size()==1)
 				score += 200;
 		}
 
