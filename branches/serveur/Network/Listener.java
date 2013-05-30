@@ -40,7 +40,7 @@ public class Listener implements Runnable
 	return selector;
     }
 
-    public void registerServeur(SocketChannel serveur)
+    public void register(SocketChannel channel)
     {
 	try
 	{
@@ -48,13 +48,13 @@ public class Listener implements Runnable
 	    {
 		// Le register est bloqué lors du select (bug jvm)
 		getListenerSelector().wakeup();
-		serveur.register(getListenerSelector(), SelectionKey.OP_READ);
+		channel.register(getListenerSelector(), SelectionKey.OP_READ);
 	    }
 	} 
 	catch (ClosedChannelException e)
 	{
-	    System.out.println("Problème lors de l'association du selector au client, serveur déjà partit.");
-	    listeSocket.remove(serveur);
+	    System.out.println("Problème lors de l'association du selector a l'hote, serveur déjà partit.");
+	    listeSocket.remove(channel);
 	}
     }
 
@@ -67,6 +67,7 @@ public class Listener implements Runnable
 	    {
 		if (getListenerSelector().select() == 0)
 		{
+		    System.out.println("boucle");
 		    // Point de synchronisation
 		    synchronized(this.lock)
 		    {
@@ -76,7 +77,6 @@ public class Listener implements Runnable
 	    
 		// Récupère les sockets actives
 		Set<SelectionKey> keys = selector.selectedKeys();
-		System.out.println(keys.size());
 
 		// Parcours les sockets actives
 		Iterator<SelectionKey> it = keys.iterator();
@@ -87,6 +87,9 @@ public class Listener implements Runnable
 		    it.remove();
 		    Message message = null;
 		    SocketChannel socket = (SocketChannel)key.channel();
+
+		    if (!listeSocket.contains(socket))
+			continue;
 
 		    try
 		    {
@@ -105,7 +108,16 @@ public class Listener implements Runnable
 
 			if (buffer.first == 0) 
 			{
-			    socket.read(buffer.second);
+			    try
+			    {
+				if (socket.read(buffer.second) == -1)
+				    throw new DisconnectException();
+			    }
+			    catch (IOException e)
+			    {
+				throw new DisconnectException();
+			    }
+
 			    if (buffer.second.remaining() == 0) 
 			    {
 				buffer.first = buffer.second.getInt(0);
@@ -115,7 +127,16 @@ public class Listener implements Runnable
 			} 
 			else
 			{
-			    socket.read(buffer.second);
+			    try
+			    {
+				if (socket.read(buffer.second) == -1)
+				    throw new DisconnectException();
+			    }
+			    catch (IOException e)
+			    {
+				throw new DisconnectException();
+			    }
+
 			    if (buffer.second.remaining() == 0) 
 			    {
 				ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(buffer.second.array()));
@@ -140,14 +161,25 @@ public class Listener implements Runnable
 		    } 
 		    catch (IOException e)
 		    {
-			System.out.println("Erreur lors de la réception du message de "+socket);
+			e.printStackTrace();
+			System.out.println("Problème lors de la récupération du message de "+message);
 			// Enlève la socket de la liste
 			listeSocket.remove(socket);
+			buffering.remove(socket);
+			key.cancel();
+			socket.close();
+		    }
+		    catch (DisconnectException e)
+		    {
+			System.out.println("Deconnection hôte détecté");
+			// Enlève la socket de la liste
+			listeSocket.remove(socket);
+			buffering.remove(socket);
 			key.cancel();
 			socket.close();
 		    }
 
-		    System.out.println("Réception du message "+message);
+		    getListenerSelector().selectNow();
 		}
 	    }
 	    catch(IOException e)

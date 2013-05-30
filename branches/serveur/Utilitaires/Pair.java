@@ -11,5 +11,19 @@ public class Pair<T, U>
 	this.first = first;
 	this.second = second;
     }
+
+    @SuppressWarnings("unchecked")
+    @Override
+    public boolean equals(Object other)
+    {
+	if (other instanceof Pair<?, ?>)
+	{
+	    Pair<T, U> ot = (Pair<T, U>)other;
+
+	    return ot.first == this.first;
+	}
+
+	return false;
+    }
 }
 

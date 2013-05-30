@@ -53,7 +53,7 @@ public class ConnexionClient
 	}
 
 	listeSocket.add(sc);
-	getListener().registerServeur(sc);
+	getListener().register(sc);
 	
 
 	return sc;
