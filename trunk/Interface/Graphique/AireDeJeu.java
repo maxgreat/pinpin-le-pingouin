@@ -292,8 +292,8 @@ public class AireDeJeu extends JComponent
 				
 				
 				//Dessin des boutons
-				drawable.drawImage(info   ,(int)largeur-tabCase.largeur    ,hauteur - 2*tabCase.hauteur(),tabCase.largeur(),tabCase.hauteur(),null);
-				drawable.drawImage(suggest,(int)largeur-tabCase.largeur ,hauteur + 2*tabCase.hauteur(),tabCase.largeur(),tabCase.hauteur(),null);
+				drawable.drawImage(info,(int)largeur- (int)tabCase.largeur    ,hauteur - 2*(int)tabCase.hauteur,(int)tabCase.largeur,(int)tabCase.hauteur,null);
+				drawable.drawImage(suggest,(int)largeur-(int)tabCase.largeur ,hauteur + 2*(int)tabCase.hauteur,(int)tabCase.largeur,(int)tabCase.hauteur,null);
 				//bouton menu
 				drawable.drawImage(boutonMenu, largeur/2-35, 0, 70,50,null);
 				//bouton annuler
