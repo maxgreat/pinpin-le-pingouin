@@ -151,16 +151,21 @@ public class AireDeJeu extends JComponent
 		//dessin poisson+losange+score
 		drawable.drawImage(poissonJ1, margeGauche/4 , margeHaut/4, margeGauche/4 , margeHaut/4, null);
 		drawable.drawString(" : " + inter.joueurs[0].getScore(), margeGauche/2,7*margeHaut/16);
-		drawable.drawImage(caseJ1, margeGauche/4 , 2*margeHaut/4+1, margeGauche/4 , margeHaut/4, null);	
+		drawable.drawImage(caseJ1, margeGauche/4 , 2*margeHaut/4+1, margeGauche/4 , margeHaut/4, null);
 		drawable.drawString(" : " + inter.joueurs[0].getNombreTuile(), margeGauche/2,11*margeHaut/16);
 		
 		//joueur 2
 		drawable.drawImage(carreGlace,largeur-margeGauche,0,margeGauche,margeHaut, null);
 			
-		drawable.setPaint(Color.red);
-		drawable.drawString("Joueur 2",largeur - 2*margeGauche/3,margeHaut/4);	
-		drawable.drawString(" : " + inter.joueurs[1].getScore(),largeur-margeGauche+20,2*margeHaut/4);
-		drawable.drawString("Tuiles " + inter.joueurs[1].getNombreTuile(),largeur-margeGauche+20,3*margeHaut/4);
+		
+		
+		drawable.drawString("Joueur 2",largeur - 3*margeGauche/4,margeHaut/6);	
+		
+		//dessin poisson+losange+score
+		drawable.drawImage(poissonJ2, largeur-3*margeGauche/4 , margeHaut/4, margeGauche/4 , margeHaut/4, null);
+		drawable.drawString(" : " + inter.joueurs[1].getScore(),largeur-2*margeGauche/4,7*margeHaut/16);
+		drawable.drawImage(caseJ2, largeur-3*margeGauche/4 , 2*margeHaut/4+1, margeGauche/4 , margeHaut/4, null);
+		drawable.drawString(" : " + inter.joueurs[1].getNombreTuile(),largeur-2*margeGauche/4,11*margeHaut/16);
     }       
 
     private URL getImage(String nom) {
