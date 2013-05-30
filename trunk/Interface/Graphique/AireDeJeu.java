@@ -175,19 +175,60 @@ public class AireDeJeu extends JComponent
 
 
 	//
+	//affiche de n pingouins pour le joueur j
+	//
+	private void afficherNPingouins(Graphics2D drawable, int j, int n)
+	{
+		switch(j){
+			case 0: //joueur 1
+				{ 
+					for(int i = 1; i <= n; i++)
+					{
+						drawable.drawImage(imageJoueur1, (i-1)*(int)margeGauche/4, (int)margeHaut, (int)margeGauche/4, (int)margeHaut/4, null);
+					}
+					break;
+				}	
+			case 1: //joueur 2
+				{ 
+					for(int i = 1; i <= n; i++)
+					{
+						drawable.drawImage(imageJoueur2, largeur-((int)margeGauche - (i-1)*(int)margeGauche/4), (int)margeHaut, (int)margeGauche/4, (int)margeHaut/4, null);
+					}
+					break;
+				}	
+		/*	case 2: //joueur 3
+				{ 
+			
+					break;
+				}	
+			case 3: //joueur 4
+				{ 
+			
+					break;
+				}*/	
+		}
+	}
+
+	//
 	//affichage des pingouins qu'il reste à placer
 	//
-	private void afficherPingouins(Graphics2D drawable){
-		//joueur1
+	private void afficherPingouins(Graphics2D drawable)
+	{
+		//on récupère le nombre de pingouins de chaque joueur
+		int [] nbPing = ArbitreManager.instance.getConfiguration().getNombrePingouinsParJoueur(inter.joueurs);
 		
-		
-		
-		
-		
-		//joueur2
-	
-	
-	
+		//Pour chaque joueur on affiche son nombre de pingouins
+		for(int i = 0; i < nbPing.length; i++){
+			if(nbPing.length == 2){
+				afficherNPingouins(drawable, i, 4 - nbPing[i]);
+			}
+			else if(nbPing.length == 3){
+				afficherNPingouins(drawable, i, 4 - nbPing[i]);
+			}
+			else if(nbPing.length == 4){
+				afficherNPingouins(drawable, i, 4 - nbPing[i]);
+			}
+		}
 	}
 
 
@@ -338,8 +379,17 @@ public class AireDeJeu extends JComponent
 			
 			
 			//Dessin des boutons
-			drawable.drawImage(info,largeur/4, 0, (int)tabCase.largeur, (int)tabCase.hauteur,null);
-			drawable.drawImage(suggest,3*largeur/4-(int)tabCase.largeur, 0, (int)tabCase.largeur,(int)tabCase.hauteur,null);
+			
+			//en haut
+			//drawable.drawImage(info,largeur/4, 0, (int)tabCase.largeur, (int)tabCase.hauteur,null);
+			//drawable.drawImage(suggest,3*largeur/4-(int)tabCase.largeur, 0, (int)tabCase.largeur,(int)tabCase.hauteur,null);
+			
+			//sur les cotés
+			drawable.drawImage(info,0, hauteur/2, (int)tabCase.largeur, (int)tabCase.hauteur,null);
+			drawable.drawImage(suggest,largeur-(int)tabCase.largeur, hauteur/2, (int)tabCase.largeur,(int)tabCase.hauteur,null);
+			
+			
+			
 			//bouton menu
 			drawable.drawImage(boutonMenu, largeur/2-35, 0, 70,50,null);
 			//bouton annuler
