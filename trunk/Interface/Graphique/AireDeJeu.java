@@ -234,7 +234,13 @@ public class AireDeJeu extends JComponent
 					return this;
 					}  
 				}.init(s));
-
+		    	try
+			{
+				Thread.sleep(100000);
+			}
+		catch (InterruptedException e)
+			{
+			}
 				ArbitreManager.stopperPartie();
 				inter.afficherPanel("Menu Principal");
 				showDialog = false;

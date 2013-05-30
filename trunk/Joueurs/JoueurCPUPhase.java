@@ -5,6 +5,12 @@ import java.util.Random;
 
 public class JoueurCPUPhase extends Joueur {
       	
+	JoueurCPURandomizable cpuRdizable;
+
+	public JoueurCPUPhase() {
+		this.cpuRdizable = new JoueurCPURandomizable(this);
+	}
+
 	public static String getType() {
 		return "CPU_Phase";
 	}
@@ -15,36 +21,29 @@ public class JoueurCPUPhase extends Joueur {
 			 * Phase de placement
 			 * Utilisation du CPUFacile
 			 **/
-			System.out.println("Utilisation JoueurCPUFacile");
 			JoueurCPUFacile cpuFacile = new JoueurCPUFacile();
 			cpuFacile.setScore(this.getScore());
 			cpuFacile.setNombreTuile(this.getNombreTuile());
 			return cpuFacile.coupSuivant();
 		} else {
-			Joueur adversaire;
-			if (ArbitreManager.instance.getPosition(this) == 1) 
-				adversaire = ArbitreManager.instance.getJoueurParPosition(2);
-			else
-				adversaire = ArbitreManager.instance.getJoueurParPosition(1);
 			Configuration c = ArbitreManager.instance.getConfiguration();	
-			int [] nbPingRest = c.getNombrePingouinsDispoParJoueur(ArbitreManager.instance.getJoueurs());
-			if (nbPingRest[ArbitreManager.instance.getPosition(adversaire) - 1] < 1) {
-				/**
-				 * Phase de terminaison
-				 * Utilisation d'un algo de chemin optimale pour recuperer le plus de poisson
-				 **/
-				/*System.out.println("Utilisation JoueurCPUOptimal");
-				JoueurCPUOptimal jCPUOpt = new JoueurCPUOptimal();
-				return jCPUOpt.coupSuivant();*/
-				System.out.println("Utilisation JoueurCPUMinimaxIncremental Finish : TRUE");
-				JoueurCPUMinimaxIncremental cpuMinimax = new JoueurCPUMinimaxIncremental(this, true);
-				return cpuMinimax.coupSuivant();
+			Boolean finish = true;
+			Couple [] pingouins = c.coordPingouins(this);
+			for (int i = 0; i < pingouins.length && finish; i++) {
+				if (c.nombreCoupsPossiblesCase(pingouins[i].getY(), pingouins[i].getX()) == 0)
+					continue;
+				Couple couple = c.estIlot(pingouins[i].getX(), pingouins[i].getY());
+				if (couple.getX() == -1)
+					finish = false;
+			}
+			if (finish) {
+				System.out.println("Randomizable");
+				return this.cpuRdizable.coupSuivant();
 			}
 			/**
 			 * Phase centrale
 			 * Utilisation du MinimaxIncremental
 			 **/
-			System.out.println("Utilisation JoueurCPUMinimaxIncremental Finish : FALSE");
 			JoueurCPUMinimaxIncremental cpuMinimax = new JoueurCPUMinimaxIncremental(this, false);
 			Coup coup = cpuMinimax.coupSuivant();
 			System.out.println(coup);
