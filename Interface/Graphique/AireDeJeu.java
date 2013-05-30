@@ -175,6 +175,23 @@ public class AireDeJeu extends JComponent
 
 
 	//
+	//affichage des pingouins qu'il reste à placer
+	//
+	private void afficherPingouins(Graphics2D drawable){
+		//joueur1
+		
+		
+		
+		
+		
+		//joueur2
+	
+	
+	
+	}
+
+
+	//
 	//PaintComponent
 	//
     public void paintComponent(Graphics g)
@@ -310,16 +327,19 @@ public class AireDeJeu extends JComponent
 			tabCase.setTab(rayonH, rayonL, margeHaut, margeGauche, largeur, hauteur);
 			Joueur joueur;
 			
-			//On demande a l'utilisateur de placer ses pingouins
+			//Si on est en mode pose pingouins
 			if(ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN){
+					//demande à l'utilisateur de placer les pingouins
 					drawable.drawImage(placement, largeur/4 + (int)rayonL*3, hauteur-(int)rayonH-10, largeur/4 + 30, 2*(int)rayonH/3, null);
+					//affichage des pingouins sous les cases des joueurs
+					afficherPingouins(drawable);
 			}
 			
 			
 			
 			//Dessin des boutons
-			drawable.drawImage(info,(int)largeur- (int)tabCase.largeur    ,hauteur - 2*(int)tabCase.hauteur,(int)tabCase.largeur,(int)tabCase.hauteur,null);
-			drawable.drawImage(suggest,(int)largeur-(int)tabCase.largeur ,hauteur + 2*(int)tabCase.hauteur,(int)tabCase.largeur,(int)tabCase.hauteur,null);
+			drawable.drawImage(info,largeur/4, 0, (int)tabCase.largeur, (int)tabCase.hauteur,null);
+			drawable.drawImage(suggest,3*largeur/4-(int)tabCase.largeur, 0, (int)tabCase.largeur,(int)tabCase.hauteur,null);
 			//bouton menu
 			drawable.drawImage(boutonMenu, largeur/2-35, 0, 70,50,null);
 			//bouton annuler
