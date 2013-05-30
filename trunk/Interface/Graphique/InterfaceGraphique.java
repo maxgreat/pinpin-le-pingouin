@@ -203,20 +203,13 @@ public class InterfaceGraphique extends Interface
 			afficherPanel("Menu Principal");
 
 		}
-		if(S.compareTo( "Nouvelle Partie") == 0 )
+		if(S.compareTo( "Partie Personalisée") == 0 )
 		{
-			oldPage.push("Partie Personalisée");
+			oldPage.push("Menu Principal");
 			MenuPerso m = new MenuPerso(frame, this);
 			m.setBoutons("Nouvelle Partie");
 			frame.setContentPane(m.fond);
 			frame.pack();
-		}
-		if(S.compareTo("Partie Personalisée") == 0)
-		{
-			MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
-			m.setBoutons("Partie Personalisée");
-			frame.setContentPane(m.fond);
-			frame.pack();	
 		}
 		if(S.compareTo("Retour") == 0)
 		{

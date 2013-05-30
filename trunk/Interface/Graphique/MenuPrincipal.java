@@ -160,9 +160,10 @@ public class MenuPrincipal{
 		if(s.compareTo("demarrage") == 0){
 			ban = new Banniere("pinpin.png",frame);
 			ban.setPreferredSize(new Dimension(700, (500)/4));
-			Menu.setLayout(new GridLayout( 4, 1));
+			Menu.setLayout(new GridLayout( 5, 1));
 			addBouton(Menu, "Partie Rapide");
 			addBouton(Menu, "Partie Personalisée");
+			addBouton(Menu, "Charger");
 			addBouton(Menu, "Options");
 			addBouton(Menu, "Quitter");
 			
@@ -212,14 +213,14 @@ public class MenuPrincipal{
 			addBouton(cellGauche,"Retour");
 			addBouton(cellDroite,"Menu Principal");
 		}
-		else if(s.compareTo("Partie Personalisée") == 0){
+		/*else if(s.compareTo("Partie Personalisée") == 0){
 			ban = new Banniere("pinpin.png",frame);
 			ban.setPreferredSize(new Dimension(700, (500)/4));
 			addBouton(cellGauche,"Retour");
 			Menu.setLayout(new GridLayout( 2, 1));
 			addBouton(Menu, "Nouvelle Partie");	
 			addBouton(Menu, "Charger");	
-		}
+		}*/
 	
 	}
 
