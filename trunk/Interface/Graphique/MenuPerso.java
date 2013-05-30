@@ -248,13 +248,25 @@ public class MenuPerso{
 			JComboBox names = new JComboBox(noms);
 			names.setSelectedIndex(0);
 			if(i == 1)
+				{
+				names.setSelectedIndex(0);
 				inter.joueur1 = noms[0];
+				}			
 			if(i == 2)
+				{
+				names.setSelectedIndex(4);
 				inter.joueur2 = noms[0];
+				}			
 			if(i == 3)
+				{
+				names.setSelectedIndex(5);
 				inter.joueur3 = noms[0];
+				}		
 			if(i == 4)
+				{
+				names.setSelectedIndex(5);
 				inter.joueur4 = noms[0];
+				}
 			names.addActionListener(new EcouteurDeBox(inter,"joueur"+i,names));
 			JPanel pan = new JPanel();
 			pan.setLayout(new BoxLayout(pan, BoxLayout.PAGE_AXIS));
@@ -266,13 +278,25 @@ public class MenuPerso{
 			JComboBox difficultes = new JComboBox(diff);
 			difficultes.setSelectedIndex(1);
 			if(i == 1)
+				{
 				inter.niveau1 = diff[0];
+				difficultes.setSelectedIndex(3);
+				}
 			if(i == 2)
+				{
 				inter.niveau2 = diff[0];
+				difficultes.setSelectedIndex(1);
+				}
 			if(i == 3)
+				{
 				inter.niveau3 = diff[0];
+				difficultes.setSelectedIndex(3);
+				}			
 			if(i == 4)
+				{
 				inter.niveau4 = diff[0];
+				difficultes.setSelectedIndex(3);
+				}		
 			difficultes.addActionListener(new EcouteurDeBox(inter,"niveau"+i,difficultes));
 			pan = new JPanel();
 			pan.setLayout(new BoxLayout(pan, BoxLayout.PAGE_AXIS));
