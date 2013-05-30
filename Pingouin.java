@@ -1,6 +1,5 @@
 import Interface.*;
 import Arbitre.*;
-import Joueurs.*;
 
 class Pingouin
 {
