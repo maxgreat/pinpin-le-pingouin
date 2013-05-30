@@ -216,70 +216,82 @@ public class Configuration implements Cloneable, Serializable
         return score;
 	}
 
-    /**
-     * Permet de savoir si un pingouin en i,j est isolé sur un ilot
-	  * -1 si non
-	  * nombre de poisson sur l'ilot si oui
-     **/
+	/**
+	 * Permet de savoir si un pingouin en i,j est isolé sur un ilot
+	 * -1 si non
+	 * nombre de poisson sur l'ilot si oui
+	 **/
 	public Couple estIlot(int ii, int jj){
 		Case [][] terrainCopie = cloneTerrain();
 		int nbP = 0,nbC = 0;
 		Stack<Couple> pile = new Stack();
-
+		int advProxi;
 		pile.push(new Couple(ii,jj));
 		nbP += terrainCopie[ii][jj].scorePoisson();
 		nbC++;
 		terrainCopie[ii][jj].setEtat(Etat.VIDE);
-
+		ArrayList<Couple> voisinsTe = getVoisins(terrainCopie,ii,jj,false);
+		ArrayList<Couple> voisinsTest = getVoisins(terrainCopie,ii,jj,true);
+		advProxi = voisinsTe.size() - voisinsTest.size();
 		Couple p;
 		while(!pile.empty()){
 			p = pile.pop();
 			ArrayList<Couple> voisins = getVoisins(terrainCopie,p.getX(),p.getY(),false);
 			for(int taille=0;taille<voisins.size();taille++){
 				p = voisins.get(taille);
-				if (terrainCopie[p.getX()][p.getY()].getJoueurSurCase() == null) {
+				if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()==null){
 					nbP += terrainCopie[p.getX()][p.getY()].scorePoisson();
 					nbC++;
 					pile.push(new Couple(p.getX(),p.getY()));
 					terrainCopie[p.getX()][p.getY()].setEtat(Etat.VIDE);
-				} else if (terrainCopie[p.getX()][p.getY()].getJoueurSurCase()!=getJoueurSurConfiguration()) {
-					return new Couple(-1,-1);
+				}
+				else if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()!=getJoueurSurConfiguration()){
+					if(advProxi > 0)
+						advProxi--;
+					else
+						return new Couple(-1,-1);
 				}
 			}
 		}
 		return new Couple(nbP,nbC);
 	}
 
-    /**
-     * Permet de savoir si un pingouin en i,j est isolé sur un ilot
-	  * -1 si non
-	  * nombre de poisson sur l'ilot si oui
-     **/
+	/**
+	 * Permet de savoir si un pingouin en i,j est isolé sur un ilot
+	 * -1 si non
+	 * nombre de poisson sur l'ilot si oui
+	 **/
 	public Couple estIlot(int ii, int jj, ArrayList<Couple> liste){
 		Case [][] terrainCopie = cloneTerrain();
 		int nbP = 0,nbC = 0;
 		Stack<Couple> pile = new Stack();
-
+		int advProxi;
 		pile.push(new Couple(ii,jj));
 		nbP += terrainCopie[ii][jj].scorePoisson();
 		nbC++;
 		terrainCopie[ii][jj].setEtat(Etat.VIDE);
-		
+		ArrayList<Couple> voisinsTe = getVoisins(terrainCopie,ii,jj,false);
+		ArrayList<Couple> voisinsTest = getVoisins(terrainCopie,ii,jj,true);
+		advProxi = voisinsTe.size() - voisinsTest.size();
 		Couple p;
 		while(!pile.empty()){
 			p = pile.pop();
 			ArrayList<Couple> voisins = getVoisins(terrainCopie,p.getX(),p.getY(),false);
 			for(int taille=0;taille<voisins.size();taille++){
 				p = voisins.get(taille);
-				if (liste.contains(p)) {
-					return new Couple(-1,-1);
-				} else if (terrainCopie[p.getX()][p.getY()].getJoueurSurCase() == null || terrainCopie[p.getX()][p.getY()].getJoueurSurCase() == getJoueurSurConfiguration()) {
+				if (liste.contains(p))
+					return new Couple(-1, -1);
+				if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()==null || terrainCopie[p.getX()][p.getY()].getJoueurSurCase() == this.getJoueurSurConfiguration()){
 					nbP += terrainCopie[p.getX()][p.getY()].scorePoisson();
 					nbC++;
 					pile.push(new Couple(p.getX(),p.getY()));
 					terrainCopie[p.getX()][p.getY()].setEtat(Etat.VIDE);
-				} else if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()!=getJoueurSurConfiguration()) {
-					return new Couple(-1, -1);
+				}
+				else if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()!=getJoueurSurConfiguration()){
+					if(advProxi > 0)
+						advProxi--;
+					else
+						return new Couple(-1,-1);
 				}
 			}
 		}

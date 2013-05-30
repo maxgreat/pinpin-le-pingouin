@@ -1,7 +1,7 @@
 package Joueurs;
 import Arbitre.*;
 import Arbitre.Regles.*;
-import java.util.Random;
+import java.util.*;
 
 public class JoueurCPUPhase extends Joueur {
       	
@@ -30,9 +30,7 @@ public class JoueurCPUPhase extends Joueur {
 			Boolean finish = true;
 			Couple [] pingouins = c.coordPingouins(this);
 			for (int i = 0; i < pingouins.length && finish; i++) {
-				if (c.nombreCoupsPossiblesCase(pingouins[i].getY(), pingouins[i].getX()) == 0)
-					continue;
-				Couple couple = c.estIlot(pingouins[i].getX(), pingouins[i].getY());
+				Couple couple = c.estIlot(pingouins[i].getX(), pingouins[i].getY(), new ArrayList<Couple>());
 				if (couple.getX() == -1)
 					finish = false;
 			}

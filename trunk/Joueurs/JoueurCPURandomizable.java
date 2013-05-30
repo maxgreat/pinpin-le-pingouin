@@ -31,7 +31,6 @@ public class JoueurCPURandomizable extends Joueur
 				caseRestantes += couple.getY();	
 			liste.add(new Couple(pingouins[i].getX(), pingouins[i].getY()));
 		}
-		System.out.println("Cases restantes " + caseRestantes);
 		Random r = new Random();
 		int max = Integer.MIN_VALUE;
 		ArrayList<Coup> chemin = new ArrayList<Coup>();
@@ -51,7 +50,6 @@ public class JoueurCPURandomizable extends Joueur
 				max = nbCoups;
 				this.path = (ArrayList<Coup>) chemin.clone();
 				if (nbCoups >= caseRestantes) {
-					System.out.println("Solution optimale itération " + i );
 					break;
 				}
 			}
