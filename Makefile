@@ -7,6 +7,8 @@ CLEANDIRS = $(SUBDIRS:%=clean-%)
 
 all: $(EXEC)
 
+jar: $(EXEC)
+	jar cvmf MANIFEST.MF Pingouin.jar $(SUBDIRS) *.class *.java
 
 %.class: %.java
 	$(CC) $(JFLAGS) $<
@@ -25,7 +27,7 @@ $(SUBDIRS):
 	$(MAKE) -C $@
 
 clean: $(CLEANDIRS)
-	rm -rf *.class *~
+	rm -rf *.class *~ *.jar
 
 $(CLEANDIRS):
 	$(MAKE) -C $(@:clean-%=%) clean
