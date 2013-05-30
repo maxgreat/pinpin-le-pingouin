@@ -34,7 +34,8 @@ public class AireDeJeu extends JComponent
 	BufferedImage entoure = null;
 	BufferedImage carreGlace = null;
 	BufferedImage placement = null;
-	
+	BufferedImage info = null;
+	BufferedImage suggest = null;
     //images des poissons
     private BufferedImage un_poisson, deux_poissons, trois_poissons , poissonRouge;
 	
@@ -110,6 +111,8 @@ public class AireDeJeu extends JComponent
 	    boutonAnnuler = ImageIO.read(getImage("revenir.png"));
 	    boutonRefaire = ImageIO.read(getImage("refaire.png"));
 	    fondEau = ImageIO.read(getImage("backgroundWater.png"));
+	    info =  ImageIO.read(getImage("caseGlaceTestAide.png"));
+	    suggest= ImageIO.read(getImage("caseGlaceTestSuggestion.png"));
         }catch(Exception e){
 	    System.out.println("Erreur lecture image" + e);
 	    System.exit(1);
@@ -289,6 +292,8 @@ public class AireDeJeu extends JComponent
 				
 				
 				//Dessin des boutons
+				drawable.drawImage(info   ,(int)largeur-tabCase.largeur    ,hauteur - 2*tabCase.hauteur(),tabCase.largeur(),tabCase.hauteur(),null);
+				drawable.drawImage(suggest,(int)largeur-tabCase.largeur ,hauteur + 2*tabCase.hauteur(),tabCase.largeur(),tabCase.hauteur(),null);
 				//bouton menu
 				drawable.drawImage(boutonMenu, largeur/2-35, 0, 70,50,null);
 				//bouton annuler
@@ -297,7 +302,7 @@ public class AireDeJeu extends JComponent
 				drawable.drawImage(boutonRefaire, 3*largeur/4-(int)rayonL, hauteur-(int)rayonH-10, (int)rayonL*2+20, (int)rayonH, null);
 		
 		
-				
+
 				//Tracage des lignes de 7 pavés
 				for(int i=0;i<7;i++){
 					for(int j=0;j<4;j++){
@@ -340,7 +345,9 @@ public class AireDeJeu extends JComponent
 						}
 					}
 				}
+				// case de suggestions
 				
+		
 				//tracage des lignes de 8
 				for(int i=0;i<8;i++){
 					for(int j=0;j<4;j++){
