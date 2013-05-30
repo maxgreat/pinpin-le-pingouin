@@ -67,14 +67,13 @@ public class Listener implements Runnable
 	    {
 		if (getListenerSelector().select() == 0)
 		{
-		    //System.out.println("Fin Select 1");
 		    // Point de synchronisation
 		    synchronized(this.lock)
 		    {
 		    }
 		    continue;
 		}
-		System.out.println("Fin select 2");
+
 	    
 		// Récupère les sockets actives
 		Set<SelectionKey> keys = selector.selectedKeys();
@@ -107,7 +106,7 @@ public class Listener implements Runnable
 			}
 
 
-			if (buffer.first == 0) 
+			if (buffer.first.equals(0)) 
 			{
 			    try
 			    {
@@ -122,6 +121,7 @@ public class Listener implements Runnable
 			    if (buffer.second.remaining() == 0) 
 			    {
 				buffer.first = buffer.second.getInt(0);
+
 				buffer.second = ByteBuffer.allocate(buffer.first);
 				buffer.second.clear();
 			    }
@@ -149,6 +149,7 @@ public class Listener implements Runnable
 					message = (Message)obj;
 
 				    System.out.println("Réception de "+message);
+				    buffering.remove(socket);
 				}
 				catch (ClassNotFoundException e)
 				{
