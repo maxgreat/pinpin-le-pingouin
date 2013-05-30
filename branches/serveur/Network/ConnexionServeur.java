@@ -15,13 +15,19 @@ public class ConnexionServeur implements Runnable
     protected Set<SocketChannel> listeSocket;
     protected String bindAddr;
     protected int port;
-
+    protected Listener listener;
+    
     public ConnexionServeur(String bindAddr, int port, Set<SocketChannel> listeSocket)
     {
 	Cmd.init();
 	this.listeSocket = listeSocket;
 	this.bindAddr = bindAddr;
 	this.port = port;
+    }
+
+    public void setListener(Listener listener)
+    {
+	this.listener = listener;
     }
 
     public void run()
