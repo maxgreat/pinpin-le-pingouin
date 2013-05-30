@@ -13,8 +13,9 @@ public class EcouteurDeBox implements ActionListener{
 	JComboBox Comb;
 	MenuPerso perso;
 	String current;
+	JFrame frame
 	int i;
-	public EcouteurDeBox(InterfaceGraphique inter , String S, JComboBox Comb,MenuPerso perso,String current,int i){
+	public EcouteurDeBox(InterfaceGraphique inter , String S, JComboBox Comb,MenuPerso perso,String current,int i,JFrame frame){
 		this.inter = inter;
 		this.S = S;
 		this.i = i;
@@ -107,6 +108,7 @@ public class EcouteurDeBox implements ActionListener{
 		{
 		inter.niveau4 = (String)Comb.getSelectedItem();
 		}
+	
 	}
 
 }
