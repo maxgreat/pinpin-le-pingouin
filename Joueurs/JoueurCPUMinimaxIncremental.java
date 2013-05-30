@@ -9,7 +9,7 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 	 * Temps d'attente en seconde
 	 **/
 	static final long TEMPS_ATTENTE_MINIMAL = 1000; 
-	static final long TEMPS_ATTENTE_MAXIMAL = 5000;
+	static final long TEMPS_ATTENTE_MAXIMAL = 1000;
 	
 	Joueur j;
 	Boolean finish;
@@ -84,15 +84,11 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 					return null;
 				}	
 				
-				System.out.println("Attendre signal 2");
-				try
-					{
-						Thread.sleep(200);
-					}
-				catch(InterruptedException epp) {}
-				coup = miniI.getSignalCoup().attendreSignal();
-				System.out.println("Signal reçu 2");
-			
+				System.out.println("Attends coup");
+				Coup tmp = miniI.getSignalCoup().attendreSignal();
+				if (tmp != null)
+					coup = tmp;
+				System.out.println("Coup attendu : " + coup);
 				try {
 					t.join();
 				}
