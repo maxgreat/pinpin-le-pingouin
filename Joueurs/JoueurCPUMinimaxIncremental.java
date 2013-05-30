@@ -84,11 +84,9 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 					return null;
 				}	
 				
-				System.out.println("Attends coup");
 				Coup tmp = miniI.getSignalCoup().attendreSignal();
 				if (tmp != null)
 					coup = tmp;
-				System.out.println("Coup attendu : " + coup);
 				try {
 					t.join();
 				}
