@@ -1,7 +1,7 @@
 package Arbitre.Regles;
 
 
-public class Couple{
+public class Couple extends Object{
 	protected int x;
 	protected int y;
 
@@ -16,5 +16,14 @@ public class Couple{
 
 	public int getY(){
 		return this.y;
+	}
+
+	public boolean equals(Object o){
+		Couple c = (Couple) o;
+		return (this.x == c.getX() && this.y == c.getY());
+	}
+
+	public int hashCode(){
+		return this.x*101 + this.y;
 	}
 }
