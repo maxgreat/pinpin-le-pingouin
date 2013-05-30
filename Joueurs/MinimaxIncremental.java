@@ -23,12 +23,10 @@ public class MinimaxIncremental extends Minimax
 
     public void run()
     {
-	Coup c = minimax(ArbitreManager.instance.getConfiguration().clone());
-	synchronized(signalSynchro)
-	{
+	    Coup c = minimax(ArbitreManager.instance.getConfiguration().clone());
 	    ArbitreManager.instanceThread.interrupt();
-	    getSignalSynchro().attendreSignal();
-	}
-	getSignalCoup().envoyerSignal(c);
+	    System.out.println("Envoyer signal 2");
+	    getSignalCoup().envoyerSignal(c);
+	    System.out.println("Signal envoyé 2");
     }
 }
