@@ -36,8 +36,12 @@ public class Writer implements Runnable
 	    SocketChannel socket = p.first;
 	    Message message = p.second;
 
+	    System.out.println(file.size());
 	    if (!listeSocket.contains(socket))
+	    {
+		file.clean(p);
 		continue;
+	    }
 
 	    try
 	    {
@@ -55,12 +59,21 @@ public class Writer implements Runnable
 		// Ecris taille message + message
 		ByteBuffer wrap = ByteBuffer.wrap(baos.toByteArray());
 		wrap.putInt(0, baos.size()-4);
-		socket.write(wrap);
+		
+		try
+		{
+		    if (socket.write(wrap) != baos.size())
+			throw new DisconnectException();
+		}
+		catch (IOException e)
+		{
+		    throw new DisconnectException();
+		}
+
 	    } 
 	    catch (IOException e)
 	    {
-		System.out.println("Server gone ?");
-		// Enlève la socket de la liste
+		System.out.println("Problème lors de l'écriture sur "+socket);
 		listeSocket.remove(socket);
 		try
 		{
@@ -69,6 +82,19 @@ public class Writer implements Runnable
 		catch (IOException ep)
 		{
 		}
+	    }
+	    catch (DisconnectException e)
+	    {
+		System.out.println("Hote déconnecté");
+		try
+		{
+		    socket.close();
+		} 
+		catch (IOException ep)
+		{
+		}
+		
+		listeSocket.remove(socket);
 	    }
 	}
     }

@@ -20,6 +20,21 @@ public class File<T>
 	notifyAll();
     }
 
+    /**
+     * Cas particulier de clean sur les message
+     **/
+    public synchronized void clean(T obj)
+    {
+	Iterator<T> it = file.iterator();
+	while (it.hasNext()) 
+	{
+	    if (it.next().equals(obj)) 
+	    {
+		it.remove();
+	    }
+	}
+    }
+
     public synchronized T pull()
     {
 	while (file.size() == 0)
@@ -36,8 +51,13 @@ public class File<T>
 	T resultat = file.get(0);
 	file.remove(0);
 
-        notifyAll();
         return resultat;
     }
+
+    public synchronized int size()
+    {
+	return file.size();
+    }
+				    
 }
 	
