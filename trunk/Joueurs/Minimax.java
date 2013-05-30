@@ -39,37 +39,21 @@ public class Minimax implements Runnable {
 		int max= Integer.MIN_VALUE,tmp,maxi=-1, score;
 		Configuration cl;
 		int [] nbPingouinsRestants = cc.getNombrePingouinsDispoParJoueur(arbitre.getJoueurs());
-		//int [] sipj = cc.scoreIlotParJoueur(arbitre.getJoueurs());
-
-		/*		int [] ppj = cl.getNombrePingouinsDispoParJoueur(arbitre.getJoueurs());
-				int nbPingouins = ppj[this.arbitre.getPosition(this.adversaire)-1];*/
-
-		/*ArrayList<Point> poissonIlot = new ArrayList<Point>();
-		int h=-1,l=-1;
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){
-			if(h!=coupPossible[i].getYDepart() || l!=coupPossible[i].getXDepart()){
-			h=coupPossible[i].getYDepart();
-			l=coupPossible[i].getXDepart();
-			if(cc.estIlot(h,l)!=-1){
-					poissonIlot.add(new Point(h,l));
-				}
-			}
-			}*/
-		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){		       	
 			score = 0;
-			//if(!poissonIlot.contains(new Point(coupPossible[i].getYDepart(),coupPossible[i].getXDepart()))){
 			cl = cc.clone();
 			score += cl.getTerrain()[coupPossible[i].getYArrivee()][coupPossible[i].getXArrivee()].scorePoisson();
 			cl.effectuerCoup(coupPossible[i]);
-			tmp = Min(cl, max, this.profondeur,nbPingouinsRestants,score);
+			if (this.finish)
+				tmp = Max(cl, max, this.profondeur,nbPingouinsRestants,score);
+			else 
+				tmp = Min(cl, max, this.profondeur,nbPingouinsRestants,score);
 			if(tmp > max){
 				max = tmp;
 				maxi = i;
 			}
 		}	
 		if(maxi==-1){
-			//Point suiv = meilleurChemin((int)poissonIlot.get(0).getX(),(int)poissonIlot.get(0).getY(),cc,cc.estIlot((int)poissonIlot.get(0).getX(),(int)poissonIlot.get(0).getY()));
-			//	System.out.println(profondeur+" : Coup suivant = "+coupPossible[(int)suiv.getX()].getXArrivee()+","+coupPossible[(int)suiv.getX()].getYArrivee()+" NB = "+(int)suiv.getY());
 			return coupPossible[0];
 		} 
 		
@@ -85,9 +69,6 @@ public class Minimax implements Runnable {
 		
 		if(coupPossible.length == 0 || profondeur < 1) 
 			return eval(clcc, nbPingouinsRestants, s);
-		//else if (profondeur < 1)
-		//return eval(clcc, nbPingouinsRestants, s+coupPossible.length);
-				
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){
 			score = 0;
 			cl = clcc.clone();
@@ -112,19 +93,18 @@ public class Minimax implements Runnable {
 		Coup [] coupPossible = clcc.toutCoupsPossibles();
 		int max = Integer.MIN_VALUE, tmp, score;
 		Configuration cl;
-
-		//if(coupPossible.length == 0 ) 
 		if(coupPossible.length == 0 || profondeur < 1) 
 			return eval(clcc, nbPingouinsRestants, s);
-		//else if (profondeur < 1)
-		//return eval(clcc, nbPingouinsRestants, sipj, s+coupPossible.length);
-
+		
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){
 			score = 0;
 			cl = clcc.clone();
 			score = cl.getTerrain()[coupPossible[i].getYArrivee()][coupPossible[i].getXArrivee()].scorePoisson();
 			cl.effectuerCoup(coupPossible[i]);
-			tmp = Min(cl, max, profondeur-1,nbPingouinsRestants, score + s);
+			if (this.finish)
+				tmp = Max(cl, max, profondeur-1,nbPingouinsRestants,score+s);
+			else 
+				tmp = Min(cl, max, profondeur-1,nbPingouinsRestants,score+s);
 			if(tmp > max){
 				max = tmp;
 			}
@@ -135,11 +115,12 @@ public class Minimax implements Runnable {
 	}
 
 	public int eval(Configuration c, int [] nbPingouinsRestants, int s){
+		if (this.finish) {
+			return s;
+		}	
 		// Nombre de poissons
 		int score = s;
-		if (this.finish) {
-			return score;
-		}
+	
 		int numJ = arbitre.getPosition(this.joueur) - 1;
 		int numA = arbitre.getPosition(this.adversaire) - 1;
 
@@ -174,25 +155,22 @@ public class Minimax implements Runnable {
 				score += 200;
 		}
 
-/*	idem pour le nombre de pingouin restant, regarder le nombre de pingouin isolé au début avec le nombre de poisson quil peuvent avoir
-	et comparer avec la meme chose mais a la fin*/
-
 		return score;
 	}
 
-	public Point meilleurChemin(int i, int j, Configuration configuration, int score){
+	public Couple meilleurChemin(int i, int j, Configuration configuration, int score){
 		Coup [] lesCoups = configuration.coupsPossiblesCase(i,j);
 		Case [][] terrain =  configuration.getTerrain();
 		System.out.println(score);
 		if(lesCoups == null)
-			return new Point(0,terrain[i][j].scorePoisson());
+			return new Couple(0,terrain[i][j].scorePoisson());
 		else{
 			int maxScore = 0, indice = 0, tmp;
 			for(int k=0; k<lesCoups.length && !Thread.currentThread().isInterrupted();k++){
 				tmp = 0;
 				Configuration configurationBis = configuration.clone();
 				tmp = configurationBis.effectuerCoup(lesCoups[k]);
-				tmp += (int)meilleurChemin(lesCoups[k].getXArrivee(),lesCoups[k].getYArrivee(),configurationBis,score).getY();
+				tmp += meilleurChemin(lesCoups[k].getXArrivee(),lesCoups[k].getYArrivee(),configurationBis,score).getY();
 
 				if(maxScore < tmp){
 					maxScore = tmp	;
@@ -201,7 +179,7 @@ public class Minimax implements Runnable {
 				if(maxScore == score)
 					k = lesCoups.length;
 			}
-			return new Point(indice,maxScore);
+			return new Couple(indice,maxScore);
 		}
 	}
 }
