@@ -60,20 +60,21 @@ public class Listener implements Runnable
 
     public void run()
     {
-	while (true) 
+	while (!Thread.currentThread().isInterrupted()) 
 	{
 	    // Attends des données
 	    try
 	    {
 		if (getListenerSelector().select() == 0)
 		{
-		    System.out.println("boucle");
+		    //System.out.println("Fin Select 1");
 		    // Point de synchronisation
 		    synchronized(this.lock)
 		    {
 		    }
 		    continue;
 		}
+		System.out.println("Fin select 2");
 	    
 		// Récupère les sockets actives
 		Set<SelectionKey> keys = selector.selectedKeys();
@@ -154,20 +155,18 @@ public class Listener implements Runnable
 				    System.out.println("Problème lors de la récupération d'un message par un serveur, kick.");
 				    listeSocket.remove(socket);
 				    key.cancel();
-				    socket.close();
 				}
 			    }
 			}
 		    } 
 		    catch (IOException e)
 		    {
-			e.printStackTrace();
 			System.out.println("Problème lors de la récupération du message de "+message);
 			// Enlève la socket de la liste
 			listeSocket.remove(socket);
 			buffering.remove(socket);
 			key.cancel();
-			socket.close();
+	
 		    }
 		    catch (DisconnectException e)
 		    {
@@ -176,11 +175,10 @@ public class Listener implements Runnable
 			listeSocket.remove(socket);
 			buffering.remove(socket);
 			key.cancel();
-			socket.close();
 		    }
-
-		    getListenerSelector().selectNow();
 		}
+
+		keys.clear();
 	    }
 	    catch(IOException e)
 	    {

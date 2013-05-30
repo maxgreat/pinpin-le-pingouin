@@ -16,6 +16,7 @@ public class File<T>
 
     public synchronized void push(T object)
     {
+	System.out.println("push");
 	file.add(object);
 	notifyAll();
     }
@@ -23,16 +24,9 @@ public class File<T>
     /**
      * Cas particulier de clean sur les message
      **/
-    public synchronized void clean(T obj)
+    public synchronized void clean()
     {
-	Iterator<T> it = file.iterator();
-	while (it.hasNext()) 
-	{
-	    if (it.next().equals(obj)) 
-	    {
-		it.remove();
-	    }
-	}
+	file = new ArrayList<T>();
     }
 
     public synchronized T pull()
@@ -45,6 +39,7 @@ public class File<T>
             }
 	    catch (InterruptedException e) 
 	    {
+		return null;
             }
 	}
 

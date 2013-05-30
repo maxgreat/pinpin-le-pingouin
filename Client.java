@@ -48,10 +48,12 @@ public class Client
 	Message ping2 = new Message(NetworkCmd.PING);
 	ping2.write(new Integer(2));
 
-	while (client1.isConnected() || client2.isConnected())
+	while (client1.isRegistered() || client2.isRegistered())
 	{
-	    ws.send(client1, ping1);
-	    ws.send(client2, ping2);
+	    if (client1.isRegistered())
+		ws.send(client1, ping1);
+	    if (client2.isRegistered())
+		ws.send(client2, ping2);
 	}
 
 	System.out.println("Fin");

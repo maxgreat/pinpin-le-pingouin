@@ -29,17 +29,18 @@ public class Writer implements Runnable
 
     public void run()
     {
-	while (true) 
+	while (!Thread.currentThread().isInterrupted()) 
 	{
 	    // pull bloquant
 	    Pair<SocketChannel, Message> p = file.pull();
+	    if (p == null)
+		break;
 	    SocketChannel socket = p.first;
 	    Message message = p.second;
 
-	    System.out.println(file.size());
 	    if (!listeSocket.contains(socket))
 	    {
-		file.clean(p);
+		file.clean();
 		continue;
 	    }
 
