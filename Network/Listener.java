@@ -147,8 +147,14 @@ public class Listener implements Runnable
 				    Object obj = ois.readObject();
 				    if (obj instanceof Message)
 					message = (Message)obj;
+				    else
+					throw new ClassNotFoundException();
 
-				    System.out.println("Réception de "+message);
+				    Cmd infoPacket = Cmd.getInformation(message.getCmd());
+				    if (infoPacket == null)
+					throw new ClassNotFoundException();
+
+				    System.out.println("Informations : "+infoPacket);
 				    buffering.remove(socket);
 				}
 				catch (ClassNotFoundException e)

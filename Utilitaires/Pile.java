@@ -7,6 +7,7 @@ import java.io.*;
  **/
 public class Pile<T> implements Serializable
 {
+    public static final long serialVersionUID = 1L;
     ArrayList<T> pile;
 
     public Pile()
@@ -59,13 +60,5 @@ public class Pile<T> implements Serializable
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
     { 
         pile = (ArrayList<T>)in.readObject();
-    }
-
-    /**
-     * Essaye de parser un objet sans donnée
-     **/
-    private void readObjectNoData() throws ObjectStreamException
-    {
-        throw new NotSerializableException("La sérialization d'une pile doit se faire sur une chaine non vide");
     }
 }

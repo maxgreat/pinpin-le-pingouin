@@ -32,6 +32,22 @@ public class Cmd
 	return type;
     }
 
+    /**
+     * Retourne une commande par sa NetworkCmd
+     **/
+    public static Cmd getInformation(NetworkCmd ncmd)
+    {
+	Iterator<Cmd> it = informations.iterator();
+	while (it.hasNext())
+	{
+	    Cmd c = it.next();
+	    if (c.getCmd() == ncmd)
+		return c;
+	}
+
+	return null;
+    }
+
 
     /**
      * Initialise les données des paquets
@@ -98,5 +114,9 @@ public class Cmd
 	 * Communication Inter-Thread serveur
 	 **/
     }
-	
+
+    public String toString()
+    {
+	return "Type : "+type+" Cmd : "+cmd+" Destinataire : "+qui;
+    }
 }
