@@ -16,7 +16,6 @@ public class File<T>
 
     public synchronized void push(T object)
     {
-	System.out.println("push");
 	file.add(object);
 	notifyAll();
     }

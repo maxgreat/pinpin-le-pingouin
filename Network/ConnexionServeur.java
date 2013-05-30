@@ -76,8 +76,10 @@ public class ConnexionServeur implements Runnable
 		    // Ajoute la socket dans la liste des clients
 		    SocketChannel client = ((ServerSocketChannel)key.channel()).accept();
 		    client.configureBlocking(false);
-		    System.out.println("Nouvelle connexion !");
+		    System.out.println("NOUVELLE CONNEXION");
 		    listeSocket.add(client);
+		    listener.register(client);
+		    
 		}
 		// Remove the selected keys because you've dealt
 		// with them.
