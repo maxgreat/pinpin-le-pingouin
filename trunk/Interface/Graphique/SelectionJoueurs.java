@@ -52,8 +52,13 @@ public void selectionJoueur()
 	Object [] test = joueurs.toArray();
 	names = new JComboBox(test);
 	names.addActionListener(new EcouteurDeBox(this,true));
+	diff = new JComboBox(difficultees.toArray());
+	diff.addActionListener(new EcouteurDeBox(this,false));
+	diff.setVisible(false);
 	joueur.setLayout(new BoxLayout(joueur, BoxLayout.PAGE_AXIS));
+	
 	joueur.add(names);
+	joueur.add(diff);
 	joueur.setOpaque(false);
 	
 	}
@@ -63,20 +68,7 @@ public void selectionDifficulte()
 	
 		if(Ordinateur)
 		{
-			if(menu == 1)
-				joueur = mp.menuJ1;
-			if(menu == 2)
-				joueur = mp.menuJ2;
-			if(menu == 3)
-				joueur = mp.menuJ3;
-			if(menu == 4)
-				joueur = mp.menuJ4;
-			
-			diff = new JComboBox(difficultees.toArray());
-			diff.addActionListener(new EcouteurDeBox(this,false));
-			joueur.add(diff);
-			joueur.setOpaque(false);
-			
+			diff.setVisible(true);
 			System.out.println("on a selectionné l'ordinateur");
 		}
 	}
