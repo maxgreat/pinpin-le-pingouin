@@ -70,29 +70,27 @@ public void selectionJoueur()
 	
 	
 	joueur.setLayout(new BoxLayout(joueur, BoxLayout.PAGE_AXIS));
-	BufferedImage J1 = null;
-	BufferedImage J2 = null;
-	BufferedImage J3 = null;
-	BufferedImage J4 = null;
-	 try 
-        {
-			J1 = ImageIO.read(getImage("j1.png"));
-			J3 = ImageIO.read(getImage("j2.png"));
-			J3 = ImageIO.read(getImage("j3.png"));
-			J4 = ImageIO.read(getImage("j4.png"));
-
-		}catch(Exception e){
-			System.out.println("Erreur lecture image" + e);
-		}
-	if(menu == 1)
-		//joueur.add(J1);
-	if(menu == 4)
-		//joueur.add(J4);
-	if(menu == 3)
-		//joueur.add(J3);
-	if(menu == 2)
-		//joueur.add(J2);
 	
+	if(menu == 1)
+	{
+		Img J1 = new Img("j1.png");
+		joueur.add(J1);	
+	}
+	if(menu == 2)
+	{
+		Img J2 = new Img("j2.png");
+		joueur.add(J2);	
+	}
+	if(menu ==3)
+	{
+		Img J3 = new Img("j3.png");
+		joueur.add(J3);
+	}
+	if(menu == 4)
+	{
+		Img J4 = new Img("j4.png");
+		joueur.add(J4);	
+	}
 	joueur.add(names);
 	joueur.add(diff);
 	joueur.setOpaque(false);
