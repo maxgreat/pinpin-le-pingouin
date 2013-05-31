@@ -272,11 +272,11 @@ public class Configuration implements Cloneable, Serializable
 		int nbP = 0,nbC = 0;
 		Stack<Couple> pile = new Stack();
 		int advProxi = 0;
-		pile.push(new Couple(ii,jj));
+		pile.push(neCw Couple(ii,jj));
 		nbP += terrainCopie[ii][jj].scorePoisson();
 		nbC++;
 		Couple p;
-		boolean phase1 = true;
+		boolean phase1;
 		while(!pile.empty()){
 			p = pile.pop();
 			if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()==getJoueurSurConfiguration()){
@@ -284,6 +284,7 @@ public class Configuration implements Cloneable, Serializable
 				ArrayList<Couple> voisinsTest = getVoisins(terrainCopie,ii,jj,true);
 				advProxi = voisinsTe.size() - voisinsTest.size();
 				terrainCopie[p.getX()][p.getY()].setEtat(Etat.VIDE);
+				phase1 = true;
 			}
 			ArrayList<Couple> voisins = getVoisins(terrainCopie,p.getX(),p.getY(),false);
 			for(int taille=0;taille<voisins.size();taille++){
