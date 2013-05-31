@@ -18,18 +18,23 @@ public class EcouteurDeBox implements ActionListener
 		}
 	public void actionPerformed(ActionEvent e)
 	{
+	JComboBox cb = (JComboBox)e.getSource();
 	if(name)
 		{
-		S.nomJoueur = (String)S.names.getSelectedItem();
+		S.nomJoueur = (String)cb.getSelectedItem();
 		if(S.nomJoueur.compareTo("Ordinateur")==0)
-			S.Ordinateur = true;	
+			{
+			S.Ordinateur = true;
+			S.selectionDifficulte();
+			S.mp.refresh();
+			}
 		S.joueursPris.add(S.nomJoueur);
 		S.joueursPris.remove(S.nomJoueurOld);
 		S.nomJoueurOld = S.nomJoueur;
 		}
 	else
 		{
-		S.difficultésJoueur = (String)S.names.getSelectedItem();
+		S.difficultésJoueur = (String)cb.getSelectedItem();
 		}
 	}
 
