@@ -22,8 +22,6 @@ public class JoueurCPUPhase extends Joueur {
 			 * Utilisation du CPUFacile
 			 **/
 			JoueurCPUFacile cpuFacile = new JoueurCPUFacile();
-			cpuFacile.setScore(this.getScore());
-			cpuFacile.setNombreTuile(this.getNombreTuile());
 			return cpuFacile.coupSuivant();
 		} else {
 			Configuration c = ArbitreManager.instance.getConfiguration();	
@@ -31,8 +29,11 @@ public class JoueurCPUPhase extends Joueur {
 			Couple [] pingouins = c.coordPingouins(this);
 			for (int i = 0; i < pingouins.length && finish; i++) {
 				Couple couple = c.estIlot(pingouins[i].getX(), pingouins[i].getY(), new ArrayList<Couple>());
-				if (couple.getX() == -1)
+				if (couple.getX() == -1) {
 					finish = false;
+					System.out.println("estIlot PAS : " + pingouins[i].getX() + "," + pingouins[i].getY());
+				} else
+					System.out.println("estIlot OK : " + pingouins[i].getX() + "," + pingouins[i].getY());
 			}
 			if (finish) {
 				System.out.println("Randomizable");
