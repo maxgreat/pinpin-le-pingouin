@@ -272,11 +272,11 @@ public class Configuration implements Cloneable, Serializable
 		int nbP = 0,nbC = 0;
 		Stack<Couple> pile = new Stack();
 		int advProxi = 0;
-		pile.push(neCw Couple(ii,jj));
+		pile.push(new Couple(ii,jj));
 		nbP += terrainCopie[ii][jj].scorePoisson();
 		nbC++;
 		Couple p;
-		boolean phase1;
+		boolean phase1 = false;
 		while(!pile.empty()){
 			p = pile.pop();
 			if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()==getJoueurSurConfiguration()){
