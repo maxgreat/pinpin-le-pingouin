@@ -92,23 +92,7 @@ public class EcouteurDeBox implements ActionListener{
 			perso.b4 = false;
 
 		}
-	if(S.compareTo("niveau1") == 0)
-		{
-		inter.niveau1 = (String)Comb.getSelectedItem();
-		}
-	if(S.compareTo("niveau2") == 0)
-		{
-		inter.niveau2 = (String)Comb.getSelectedItem();
-		}
-	if(S.compareTo("niveau3") == 0)
-		{
-		inter.niveau3 = (String)Comb.getSelectedItem();
-		}
-	if(S.compareTo("niveau4") == 0)
-		{
-		inter.niveau4 = (String)Comb.getSelectedItem();
-		}
-	inter.afficherPanel("Partie Personalisée");
+	perso.setBoutons("Nouvelle Partie");
 	}
 
 }

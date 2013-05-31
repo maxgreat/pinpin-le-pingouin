@@ -20,11 +20,8 @@ public class MenuPerso{
 	protected JPanel menuJ4;
 	JPanel cellGauche;
 	JPanel cellDroite;
-
-	boolean b1 = true;
-	boolean b2 = true;
-	boolean b3 = true;
-	boolean b4= true;
+	boolean b1 , b2 , b3 , b4;
+	
 	
 	public MenuPerso(JFrame frame, InterfaceGraphique inter)
 	{
@@ -232,7 +229,7 @@ public class MenuPerso{
 		pan.setOpaque(false);	
 		panel.add(pan);
 	}
-		public void setBoutons(String s)
+	public void setBoutons(String s)
 	{
 		if(s.compareTo("Nouvelle Partie") == 0)
 		{			
@@ -244,13 +241,13 @@ public class MenuPerso{
 		addBouton(cellGauche , "Retour");
 		}
 	}
-
 	public void setBoutonsJoueur(JPanel panel,int i)
 	{
 			String [] diff = {"Facile","Intermediaire","Difficile","Aucune"};
 			String [] noms = {"Atos","Portos","Aramis","Dartagnan","Ordinateur","Aucun"};
 			
 			JComboBox names = new JComboBox(noms);
+			names.setSelectedIndex(0);
 			if(i == 1)
 				{
 				names.setSelectedIndex(0);
@@ -259,21 +256,19 @@ public class MenuPerso{
 			if(i == 2)
 				{
 				names.setSelectedIndex(4);
-				inter.joueur2 = noms[4];
+				inter.joueur2 = noms[0];
 				}			
 			if(i == 3)
 				{
 				names.setSelectedIndex(5);
-				inter.joueur3 = noms[5];
+				inter.joueur3 = noms[0];
 				}		
 			if(i == 4)
 				{
 				names.setSelectedIndex(5);
-				inter.joueur4 = noms[5];
-				} 
-			names.addActionListener(
-			new EcouteurDeBox(inter,"joueur"+i,names,this,(String)names.getSelectedItem(),i)
-			);
+				inter.joueur4 = noms[0];
+				}
+			names.addActionListener(new EcouteurDeBox(inter,"joueur"+i,names,this,"cac",i));
 			JPanel pan = new JPanel();
 			pan.setLayout(new BoxLayout(pan, BoxLayout.PAGE_AXIS));
 			pan.add(names);
@@ -282,10 +277,10 @@ public class MenuPerso{
 			
 
 			JComboBox difficultes = new JComboBox(diff);
-
+			difficultes.setSelectedIndex(1);
 			if(i == 1)
 				{
-				inter.niveau1 = diff[3];
+				inter.niveau1 = diff[0];
 				difficultes.setSelectedIndex(3);
 				}
 			if(i == 2)
@@ -295,23 +290,20 @@ public class MenuPerso{
 				}
 			if(i == 3)
 				{
-				inter.niveau3 = diff[3];
+				inter.niveau3 = diff[0];
 				difficultes.setSelectedIndex(3);
 				}			
 			if(i == 4)
 				{
-				inter.niveau4 = diff[3];
+				inter.niveau4 = diff[0];
 				difficultes.setSelectedIndex(3);
 				}		
-			if((i == 1 && b1) || (i == 2 && b2) || (i == 3 && b3) || (i == 4 && b4))
-			{
-				difficultes.addActionListener(new EcouteurDeDiff(inter,"niveau"+i,difficultes));
-				pan = new JPanel();
-				pan.setLayout(new BoxLayout(pan, BoxLayout.PAGE_AXIS));
-				pan.add(difficultes);
-				pan.setOpaque(false);
-				panel.add(pan);
-			}
+			difficultes.addActionListener(new EcouteurDeDiff(inter,"niveau"+i,difficultes));
+			pan = new JPanel();
+			pan.setLayout(new BoxLayout(pan, BoxLayout.PAGE_AXIS));
+			pan.add(difficultes);
+			pan.setOpaque(false);
+			panel.add(pan);
 	}
 	
 }
