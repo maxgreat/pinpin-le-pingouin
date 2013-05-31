@@ -19,8 +19,8 @@ public class InterfaceGraphique extends Interface
     protected Fond fond;
 	protected Banniere ban;
     private LinkedList<String> oldPage;
-	String joueur1 , joueur2 , joueur3 , joueur4 , niveau1 , niveau2 , niveau3 , niveau4;
-     
+    Joueur [] joueurs = new Joueur[2];
+
     public void addBouton(JPanel panel, String S)
 	{
 		JPanel pan = new JPanel();
@@ -31,12 +31,15 @@ public class InterfaceGraphique extends Interface
 		pan.add(b1);
 		pan.setOpaque(false);	
 		panel.add(pan);
+
 	}
      
      
     public void run(String [] arguments)
     {	
     	//historique de navigation dans les menus
+		joueurs[0] = new JoueurHumain();
+		joueurs[1] = new JoueurCPUPhase();
     	oldPage = new LinkedList<String>();
     	oldPage.push("Menu Principal");
     	
@@ -100,15 +103,12 @@ public class InterfaceGraphique extends Interface
     
     
     
-
+	
     public void afficherPanel(String S)
 	{
 		
 		if (S.compareTo("Partie Rapide") == 0 ){
 			//definition des joueurs
-			Joueur [] joueurs = new Joueur[2];
-			joueurs[0] = new JoueurHumain();
-			joueurs[1] = new JoueurCPUPhase();
 			this.setJoueurs(joueurs);
 			initialiserPartie(joueurs);
 		}
@@ -167,33 +167,6 @@ public class InterfaceGraphique extends Interface
 		}
 		if(S.compareTo( "Lancer") == 0 )
 		{	
-			Joueur [] joueurs = new Joueur[2];
-			if(joueur1.compareTo("Ordinateur") != 0)
-				joueurs[0] = new JoueurHumain();
-			if(joueur2.compareTo("Ordinateur") != 0)
-				joueurs[1] = new JoueurHumain();
-			
-			if(joueur1.compareTo("Ordinateur") == 0)
-				{
-				if(niveau1.compareTo("Facile") == 0)
-					joueurs[0] = new JoueurCPURd();
-				if(niveau1.compareTo("Intermediaire") == 0)
-					joueurs[0] = new JoueurCPUFacile();
-				if(niveau1.compareTo("Difficile") == 0)
-					joueurs[0] = new JoueurCPUMinimaxIncremental();
-				
-				}
-			if(joueur2.compareTo("Ordinateur") == 0)
-				{
-				if(niveau2.compareTo("Facile") == 0)
-					joueurs[1] = new JoueurCPURd();
-				if(niveau2.compareTo("Intermediaire") == 0)
-					joueurs[1] = new JoueurCPUFacile();
-				if(niveau2.compareTo("Difficile") == 0)
-					joueurs[1] = new JoueurCPUMinimaxIncremental();
-				
-				
-				}
 			this.setJoueurs(joueurs);
 			initialiserPartie(joueurs);
 		}

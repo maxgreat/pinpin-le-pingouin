@@ -34,10 +34,12 @@ public class MenuPerso{
 			noms.add("Dartagnan");
 			noms.add("Ordinateur");
 			noms.add("Aucun");
+			
 			diff.add("Facile");
 			diff.add("Intermediaire");
 			diff.add("Difficile");
-			diff.add("Aucune");
+
+			
 		this.frame = frame;
 		this.inter = inter;
 		Dimension Dim = new Dimension(700,500);	
@@ -223,10 +225,10 @@ public class MenuPerso{
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		panel.add(cellDroite, gbc);
 		//--------------------------------------------
-		J3 = new SelectionJoueurs(menuJ3,noms,joueursPris,diff,this,3);
-		J4 = new SelectionJoueurs(menuJ4,noms,joueursPris,diff,this,4);
-		J2 = new SelectionJoueurs(menuJ2,noms,joueursPris,diff,this,2);
-		J1 = new SelectionJoueurs(menuJ1,noms,joueursPris,diff,this,1);
+		J3 = new SelectionJoueurs(menuJ3,noms,joueursPris,diff,this,inter,3);
+		J4 = new SelectionJoueurs(menuJ4,noms,joueursPris,diff,this,inter,4);
+		J2 = new SelectionJoueurs(menuJ2,noms,joueursPris,diff,this,inter,2);
+		J1 = new SelectionJoueurs(menuJ1,noms,joueursPris,diff,this,inter,1);
 		//panel.repaint();
 		fond.add(panel);
 

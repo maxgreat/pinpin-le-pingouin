@@ -34,8 +34,10 @@ MenuPerso mp;
 JComboBox names;
 JComboBox diff;
 int menu;
-public SelectionJoueurs(JPanel joueur,  LinkedList<String> joueurs , LinkedList<String> joueursPris, LinkedList<String> difficultees,MenuPerso mp, int menu)
+InterfaceGraphique inter;
+public SelectionJoueurs(JPanel joueur,  LinkedList<String> joueurs , LinkedList<String> joueursPris, LinkedList<String> difficultees,MenuPerso mp,InterfaceGraphique inter ,int menu)
 	{
+		this.inter = inter;
 		this.menu = menu;
 		this.joueur = joueur;
 		this.joueurs = joueurs;
@@ -51,9 +53,9 @@ public void selectionJoueur()
 
 	Object [] test = joueurs.toArray();
 	names = new JComboBox(test);
-	names.addActionListener(new EcouteurDeBox(this,true));
+	names.addActionListener(new EcouteurDeBox(this,true,mp.inter,menu));
 	diff = new JComboBox(difficultees.toArray());
-	diff.addActionListener(new EcouteurDeBox(this,false));
+	diff.addActionListener(new EcouteurDeBox(this,false,mp.inter,menu));
 	diff.setVisible(false);
 	joueur.setLayout(new BoxLayout(joueur, BoxLayout.PAGE_AXIS));
 	
