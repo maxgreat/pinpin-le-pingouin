@@ -234,6 +234,7 @@ public class Configuration implements Cloneable, Serializable
 		ArrayList<Couple> voisinsTest = getVoisins(terrainCopie,ii,jj,true);
 		advProxi = voisinsTe.size() - voisinsTest.size();
 		Couple p;
+		boolean phase1 = true;
 		while(!pile.empty()){
 			p = pile.pop();
 			ArrayList<Couple> voisins = getVoisins(terrainCopie,p.getX(),p.getY(),false);
@@ -246,12 +247,13 @@ public class Configuration implements Cloneable, Serializable
 					terrainCopie[p.getX()][p.getY()].setEtat(Etat.VIDE);
 				}
 				else if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()!=getJoueurSurConfiguration()){
-					if(advProxi > 0)
+					if(advProxi > 0 && phase1)
 						advProxi--;
 					else
 						return new Couple(-1,-1);
 				}
 			}
+			phase1 = false;
 		}
 		return new Couple(nbP,nbC);
 	}
@@ -274,6 +276,7 @@ public class Configuration implements Cloneable, Serializable
 		ArrayList<Couple> voisinsTest = getVoisins(terrainCopie,ii,jj,true);
 		advProxi = voisinsTe.size() - voisinsTest.size();
 		Couple p;
+		boolean phase1 = true;
 		while(!pile.empty()){
 			p = pile.pop();
 			ArrayList<Couple> voisins = getVoisins(terrainCopie,p.getX(),p.getY(),false);
@@ -288,12 +291,13 @@ public class Configuration implements Cloneable, Serializable
 					terrainCopie[p.getX()][p.getY()].setEtat(Etat.VIDE);
 				}
 				else if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()!=getJoueurSurConfiguration()){
-					if(advProxi > 0)
+					if(advProxi > 0 && phase1)
 						advProxi--;
 					else
 						return new Couple(-1,-1);
 				}
 			}
+			phase1 = false;
 		}
 		return new Couple(nbP,nbC);
 	}
