@@ -30,7 +30,6 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 	{
 		return "CPU_MinimaxIncremental";
 	}
-
 	public Coup coupSuivant()
 	{
 		// Phase de placement

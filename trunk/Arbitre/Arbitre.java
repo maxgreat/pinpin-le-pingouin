@@ -110,8 +110,9 @@ public class Arbitre implements Runnable, Serializable
      * Lance et joue la partie
      **/
     public void run()
-    {
-        while (!estFini && !forceStop)
+    {   
+        while(!forceStop){
+        while (!forceStop && !estFini)
         {
             int tourJoueur = getPosition(getJoueurCourant());
 
@@ -188,11 +189,11 @@ public class Arbitre implements Runnable, Serializable
             // Si plus personne ne peut jouer on arrête
             if (totalPouvantJouer < 0)
                 estFini = true;
-        }
+             }
 
         // Nettoie le terrain à la fin de la partie
         if (!forceStop && estFini)
-        {
+        { System.out.println("je calcul");
             int [] scoresJoueurs = getConfiguration().nettoyerConfiguration(joueurs);
             
             // Met à jour le score de tous les joueurs
@@ -200,17 +201,18 @@ public class Arbitre implements Runnable, Serializable
                 joueurs[i].setScore(joueurs[i].getScore() + scoresJoueurs[i]);
             
         }
-
+        
         // Informe l'interface
         inter.repaint();
 
         // Attends qu'on lui signal la fin d'une partie (sauf si force le stop)
-        if (!forceStop)
+        if (!forceStop || estFini)
             signalStop.attendreSignal();
 
+        }
         return;
     }
-
+  
     /**
      * Sauvegarde l'historique de jeu dans un fichier
      **/
@@ -256,7 +258,10 @@ public class Arbitre implements Runnable, Serializable
     {
         return estFini;
     }
-
+    public void setPartieFinie(boolean fini)
+    {
+        estFini = fini;
+    }
     /**
      * Met en place l'interface
      **/
@@ -429,7 +434,10 @@ public class Arbitre implements Runnable, Serializable
      **/
     public void recommencer()
     {
+    estFini = false;
+
 	Configuration c = null;
+   Joueur [] lesjoueurs = new Joueur[2];
 	do
 	{
 	    c = historique.reculer();
@@ -461,10 +469,9 @@ public class Arbitre implements Runnable, Serializable
 	    }
 	}
 	while(c != null);
-	
+
 	// Stop le thread pour lui indique le changement de joueur
 	ArbitreManager.instanceThread.interrupt();
-
 	inter.repaint();
 	
     }

@@ -58,7 +58,7 @@ public class AireDeJeu extends JComponent
     public int largeur;
     // hauteur de l'aire
     public int hauteur;
-	
+	protected String s2;
 	protected String s;
     protected double margeHaut, margeGauche, margeDroite, margeBas;
     protected double rayonH, rayonL;
@@ -243,7 +243,8 @@ public class AireDeJeu extends JComponent
 	Graphics2D drawable = (Graphics2D) g;
         
         Arbitre arbitre = ArbitreManager.instance;
-		
+			hauteur = this.getHeight();
+			largeur = this.getWidth();
         if (arbitre == null)
         { //erreur
             System.out.println("Erreur dans le moteur du jeu. L'abitre vaut null.");
@@ -252,28 +253,34 @@ public class AireDeJeu extends JComponent
         
         if (arbitre.partieFinie())
         { //La partie est terminée
+            arbitre.setPartieFinie(false);
             if(inter.joueurs[0].getScore() > inter.joueurs[1].getScore())
 			{
-                s ="Victoire du joueur 1 - Poissons : " + inter.joueurs[0].getNombreTuile();
+                s ="Victoire du joueur 1 - Poissons : " + inter.joueurs[0].getScore()+", Tuiles : "+ inter.joueurs[0].getNombreTuile()+" !!!";
+                s2 = "Defaite du joueur 2 - Poissons : " + inter.joueurs[1].getScore()+", Tuiles : "+ inter.joueurs[1].getNombreTuile()+".";
 			}
             else if(inter.joueurs[0].getScore() < inter.joueurs[1].getScore())
 			{
-                s ="Victoire du joueur 2";
+                s2 = "Defaite du joueur 1 - Poissons : " + inter.joueurs[0].getScore()+", Tuiles : "+inter.joueurs[0].getNombreTuile()+".";
+                s ="Victoire du joueur 2 - Poissons : "+inter.joueurs[1].getScore()+", Tuiles : "+inter.joueurs[1].getNombreTuile()+" !!!";
 			}
             else
 			{
 	    	//scores égaux
 	    		if(inter.joueurs[0].getNombreTuile() > inter.joueurs[1].getNombreTuile())
 	    		{
-                	s ="Victoire du joueur 1 - Tuiles : " + inter.joueurs[0].getNombreTuile();
+                 s ="   Victoire du joueur 1 - Poissons : " + inter.joueurs[0].getScore()+", Tuiles : "+ inter.joueurs[0].getNombreTuile()+" !!!   ";
+                 s2 = "   Defaite du joueur 2 - Poissons : " + inter.joueurs[1].getScore()+", Tuiles : "+ inter.joueurs[1].getNombreTuile()+".   ";
 	    		}
 	    		else if(inter.joueurs[0].getScore() < inter.joueurs[1].getScore())
 	    		{
-                	s = "Victoire du joueur 2";
+                 s2 = "   Defaite du joueur 1 - Poissons : " + inter.joueurs[0].getScore()+", Tuiles : "+inter.joueurs[0].getNombreTuile()+".   ";
+                 s ="   Victoire du joueur 2 - Poissons : "+inter.joueurs[1].getScore()+", Tuiles : "+inter.joueurs[1].getNombreTuile()+" !!!   ";
 	    		}
                 else
 	    		{
-                	s ="Egalité" ;	
+                	s ="   Egalité   ";
+                  s2 = "   Poissons : " + inter.joueurs[0].getScore()+", Tuiles : "+inter.joueurs[0].getNombreTuile()+".   ";
                 }
 			}
            
@@ -285,23 +292,35 @@ public class AireDeJeu extends JComponent
 			{
 				System.out.println(s);
 			
-				java.awt.EventQueue.invokeLater(new Runnable()
-				{
-					private String message;
-					public void run() 
-					{
-					JOptionPane.showMessageDialog(null, message, "Fin de partie", JOptionPane.INFORMATION_MESSAGE);
-					}
-
-					private Runnable init(String msg)
-					{
-					message = msg;
-					return this;
-					}  
-				}.init(s));
-
-				ArbitreManager.stopperPartie();
-				inter.afficherPanel("Menu Principal");
+				POPMenuVictoire popup = new POPMenuVictoire(hauteur,largeur);
+					popup.addInternalFrameListener(new EcouteurDeFenetre(this));
+					JLabel score = new JLabel (s);
+               JLabel score2 = new JLabel(s2);
+					popup.setVisible(true);
+					JPanel panFin = new JPanel();
+					JButton bQuitter = new JButton("Quitter");
+					JButton recommencer = new JButton("Recommencer");
+					JButton menuP = new JButton("Menu Principal");
+					JButton save = new JButton("Sauvegarder");
+					panFin.setLayout(new GridLayout( 3, 2));
+					recommencer.addActionListener(new EcouteurDeBouton("Recommencer", inter));
+					bQuitter.addActionListener(new EcouteurDeBouton("Quitter", inter));
+					menuP.addActionListener(new EcouteurDeBouton("Retour Menu Principal", inter));
+					save.addActionListener(new EcouteurDeBouton("Sauvegarder", inter));
+               panFin.add(score);
+               panFin.add(score2);
+					panFin.add(save);
+					panFin.add(recommencer);
+					panFin.add(menuP);
+					panFin.add(bQuitter);
+               popup.setSize(largeur/2,hauteur);
+					popup.setContentPane(panFin);
+					popup.pack();
+					this.add(popup);
+					popup.toFront();
+					try {
+						popup.setSelected(true);
+					} catch (java.beans.PropertyVetoException e) {}
 				showDialog = false;
 			}
 			/*
@@ -330,20 +349,17 @@ public class AireDeJeu extends JComponent
 			*/
 	
 	
-        }//fin traitement partie finie
+        }//fin traitement partie finie 
         
-        else  //partie en cours
-        {
+       //partie en cours
+        
             //Recuperation de la configuration
             Configuration config = arbitre.getConfiguration();
             //Recuperation du Terrain
             Case [][] c = config.getTerrain();
             
             //Recuperation de la hauteur et de la largeur	
-			hauteur = this.getHeight();
-			largeur = this.getWidth();
-			        
-			        
+		
 			//redefinition des marges
 			margeHaut = (double)hauteur/8.0;
 			margeGauche = (double)largeur/8.0;
@@ -480,8 +496,7 @@ public class AireDeJeu extends JComponent
 						}
 					}
 				}
-			}
-			
+						
 			
     	} //fin affichage partie en cours
 
@@ -495,8 +510,9 @@ public class AireDeJeu extends JComponent
     	{
 			if(ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN)
 			{	
-				if(ArbitreManager.instance.getConfiguration().estCoupPossible(new Coup(p.y, p.x, -1, -1)))
+				if(ArbitreManager.instance.getConfiguration().estCoupPossible(new Coup(p.y, p.x, -1, -1))){
 					ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(new Coup(p.y, p.x, -1, -1));
+            }
 				else
 					System.out.println("Coup illegal, pas de positionnement ici !");
 			}

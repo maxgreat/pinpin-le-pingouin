@@ -37,6 +37,10 @@ public class Configuration implements Cloneable, Serializable
     /**
      * Getter des éléments
      **/
+    public void setTerrain (Case [][] t)
+    {
+       this.terrain = t;
+    }
     public int getLargeur()
     {
         return largeur;
@@ -97,7 +101,7 @@ public class Configuration implements Cloneable, Serializable
     }
 
     public void setCoupEffectue(Coup coup)
-    {
+    {  
         this.coupEffectue = coup;
     }
 
