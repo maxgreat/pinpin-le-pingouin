@@ -28,6 +28,11 @@ public class EcouteurDeBox implements ActionListener
 			S.selectionDifficulte();
 			S.mp.refresh();
 			}
+		if(S.nomJoueur.compareTo("Ordinateur")!=0)
+			{
+			S.Ordinateur = true;
+			S.diff.setVisible(false);
+			}
 		S.joueursPris.add(S.nomJoueur);
 		S.joueursPris.remove(S.nomJoueurOld);
 		S.nomJoueurOld = S.nomJoueur;
