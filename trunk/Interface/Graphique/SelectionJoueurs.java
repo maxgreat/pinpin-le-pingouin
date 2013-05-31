@@ -53,11 +53,45 @@ public void selectionJoueur()
 
 	Object [] test = joueurs.toArray();
 	names = new JComboBox(test);
-	names.addActionListener(new EcouteurDeBox(this,true,mp.inter,menu));
 	diff = new JComboBox(difficultees.toArray());
-	diff.addActionListener(new EcouteurDeBox(this,false,mp.inter,menu));
 	diff.setVisible(false);
+	if(menu == 3 || menu == 4)
+		names.setSelectedItem("Aucun");
+	if(menu == 1)
+		names.setSelectedItem("Atos");
+	if(menu == 2)
+		{
+		names.setSelectedItem("Ordinateur");
+		diff.setVisible(true);
+		}
+		diff.setSelectedItem("Intermediaire");
+	names.addActionListener(new EcouteurDeBox(this,true,mp.inter,menu));
+	diff.addActionListener(new EcouteurDeBox(this,false,mp.inter,menu));
+	
+	
 	joueur.setLayout(new BoxLayout(joueur, BoxLayout.PAGE_AXIS));
+	BufferedImage J1 = null;
+	BufferedImage J2 = null;
+	BufferedImage J3 = null;
+	BufferedImage J4 = null;
+	 try 
+        {
+			J1 = ImageIO.read(getImage("j1.png"));
+			J3 = ImageIO.read(getImage("j2.png"));
+			J3 = ImageIO.read(getImage("j3.png"));
+			J4 = ImageIO.read(getImage("j4.png"));
+
+		}catch(Exception e){
+			System.out.println("Erreur lecture image" + e);
+		}
+	if(menu == 1)
+		//joueur.add(J1);
+	if(menu == 4)
+		//joueur.add(J4);
+	if(menu == 3)
+		//joueur.add(J3);
+	if(menu == 2)
+		//joueur.add(J2);
 	
 	joueur.add(names);
 	joueur.add(diff);
@@ -71,11 +105,14 @@ public void selectionDifficulte()
 		if(Ordinateur)
 		{
 			diff.setVisible(true);
-			System.out.println("on a selectionné l'ordinateur");
 		}
 	}
 public JPanel getPan()
 	{
 	return joueur;
 	}
+	private URL getImage(String nom) {
+        ClassLoader cl = getClass().getClassLoader();
+        return cl.getResource("Interface/Graphique/Img/" + nom);
+    }
 } 

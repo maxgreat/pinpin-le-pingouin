@@ -145,7 +145,7 @@ public class AireDeJeu extends JComponent
 		drawable.drawImage(imageJoueur1, margeGauche, 0 , 2*margeGauche/3, 2*margeHaut/3, null);
 		
 		drawable.setPaint(Color.black);
-		drawable.drawString("Joueur : " + inter.joueurs[0].getNom(), margeGauche/4 , margeHaut/6);
+		drawable.drawString(inter.joueurs[0].getNom(), margeGauche/4 , margeHaut/6);
 		
 		//dessin poisson+losange+score
 		drawable.drawImage(poissonJ1, margeGauche/4 , margeHaut/4, margeGauche/4 , margeHaut/4, null);
@@ -160,7 +160,7 @@ public class AireDeJeu extends JComponent
 		drawable.drawImage(imageJoueur2, largeur-margeGauche-2*margeGauche/3, 0 , 2*margeGauche/3, 2*margeHaut/3, null);
 			
 			
-		drawable.drawString("Joueur : " + inter.joueurs[1].getNom(),largeur - 3*margeGauche/4,margeHaut/6);	
+		drawable.drawString(inter.joueurs[1].getNom(),largeur - 3*margeGauche/4,margeHaut/6);	
 		
 		//dessin poisson+losange+score
 		drawable.drawImage(poissonJ2, largeur-3*margeGauche/4 , margeHaut/4, margeGauche/4 , margeHaut/4, null);
@@ -295,25 +295,25 @@ public class AireDeJeu extends JComponent
 				POPMenuVictoire popup = new POPMenuVictoire(hauteur,largeur);
 					popup.addInternalFrameListener(new EcouteurDeFenetre(this));
 					JLabel score = new JLabel (s);
-               JLabel score2 = new JLabel(s2);
+               		JLabel score2 = new JLabel(s2);
 					popup.setVisible(true);
 					JPanel panFin = new JPanel();
 					JButton bQuitter = new JButton("Quitter");
 					JButton recommencer = new JButton("Recommencer");
 					JButton menuP = new JButton("Menu Principal");
 					JButton save = new JButton("Sauvegarder");
-					panFin.setLayout(new GridLayout( 3, 2));
+					panFin.setLayout(new GridLayout( 6, 1));
 					recommencer.addActionListener(new EcouteurDeBouton("Recommencer", inter));
 					bQuitter.addActionListener(new EcouteurDeBouton("Quitter", inter));
 					menuP.addActionListener(new EcouteurDeBouton("Retour Menu Principal", inter));
 					save.addActionListener(new EcouteurDeBouton("Sauvegarder", inter));
-               panFin.add(score);
-               panFin.add(score2);
+               		panFin.add(score);
+               		panFin.add(score2);
 					panFin.add(save);
 					panFin.add(recommencer);
 					panFin.add(menuP);
 					panFin.add(bQuitter);
-               popup.setSize(largeur/2,hauteur);
+               		popup.setSize(largeur/3,hauteur);
 					popup.setContentPane(panFin);
 					popup.pack();
 					this.add(popup);
