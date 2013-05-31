@@ -246,6 +246,10 @@ public class Configuration implements Cloneable, Serializable
 					pile.push(new Couple(p.getX(),p.getY()));
 					terrainCopie[p.getX()][p.getY()].setEtat(Etat.VIDE);
 				}
+				else if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()==getJoueurSurConfiguration()){
+					if(advProxi > 0 && phase1)
+						advProxi--;
+				}
 				else if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()!=getJoueurSurConfiguration()){
 					if(advProxi > 0 && phase1)
 						advProxi--;
@@ -267,28 +271,37 @@ public class Configuration implements Cloneable, Serializable
 		Case [][] terrainCopie = cloneTerrain();
 		int nbP = 0,nbC = 0;
 		Stack<Couple> pile = new Stack();
-		int advProxi;
+		int advProxi = 0;
 		pile.push(new Couple(ii,jj));
 		nbP += terrainCopie[ii][jj].scorePoisson();
 		nbC++;
-		terrainCopie[ii][jj].setEtat(Etat.VIDE);
-		ArrayList<Couple> voisinsTe = getVoisins(terrainCopie,ii,jj,false);
-		ArrayList<Couple> voisinsTest = getVoisins(terrainCopie,ii,jj,true);
-		advProxi = voisinsTe.size() - voisinsTest.size();
 		Couple p;
 		boolean phase1 = true;
 		while(!pile.empty()){
 			p = pile.pop();
+			if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()==getJoueurSurConfiguration()){
+				ArrayList<Couple> voisinsTe = getVoisins(terrainCopie,ii,jj,false);
+				ArrayList<Couple> voisinsTest = getVoisins(terrainCopie,ii,jj,true);
+				advProxi = voisinsTe.size() - voisinsTest.size();
+				terrainCopie[p.getX()][p.getY()].setEtat(Etat.VIDE);
+			}
 			ArrayList<Couple> voisins = getVoisins(terrainCopie,p.getX(),p.getY(),false);
 			for(int taille=0;taille<voisins.size();taille++){
 				p = voisins.get(taille);
 				if (liste.contains(p))
 					return new Couple(-1, -1);
-				if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()==null || terrainCopie[p.getX()][p.getY()].getJoueurSurCase() == this.getJoueurSurConfiguration()){
+				if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()==null){
 					nbP += terrainCopie[p.getX()][p.getY()].scorePoisson();
 					nbC++;
 					pile.push(new Couple(p.getX(),p.getY()));
 					terrainCopie[p.getX()][p.getY()].setEtat(Etat.VIDE);
+				}
+				else if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()==getJoueurSurConfiguration()){
+					if(advProxi > 0 && phase1)
+						advProxi--;
+					nbP += terrainCopie[p.getX()][p.getY()].scorePoisson();
+					nbC++;
+					pile.push(new Couple(p.getX(),p.getY()));
 				}
 				else if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()!=getJoueurSurConfiguration()){
 					if(advProxi > 0 && phase1)
