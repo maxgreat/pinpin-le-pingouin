@@ -21,7 +21,8 @@ public class AireDeJeu extends JComponent
     boolean showDialog = true;
 	boolean popup1 = true;
 	boolean menuOuvert = false;
-    //images des joueurs
+	
+    //definition des images
     BufferedImage imageJoueur1 = null;
     BufferedImage imageJoueur2 = null;
     BufferedImage imageJoueur3 = null;
@@ -47,18 +48,23 @@ public class AireDeJeu extends JComponent
 	BufferedImage caseJ4 = null;
 	
     //images des poissons
-    private BufferedImage un_poisson, deux_poissons, trois_poissons , poissonRouge;
+    BufferedImage un_poisson = null;
+    BufferedImage deux_poissons = null;
+    BufferedImage trois_poissons = null;
+    BufferedImage poissonRouge = null;
 	
 
-    // Nombre de cases sur la largeur	
+    // largeur de l'aire	
     public int largeur;
-    // Nombre de cases sur la longueur
+    // hauteur de l'aire
     public int hauteur;
 	
 	protected String s;
     protected double margeHaut, margeGauche, margeDroite, margeBas;
     protected double rayonH, rayonL;
 	
+	
+	//Constructeur
     public AireDeJeu(JFrame f, InterfaceGraphique inter){
 		frame = f;
 	
@@ -72,11 +78,8 @@ public class AireDeJeu extends JComponent
 	    tabCase.initHexagone();
 	    coupPrec = new Point(-1,-1);
 
-		un_poisson = null;
-		deux_poissons = null;
-		trois_poissons = null;
-		poissonRouge = null;
-		entoure = null;
+		//
+		//Chargement des Images
         try 
         {
 			un_poisson = ImageIO.read(getImage("caseGlaceTest.png"));
@@ -85,16 +88,11 @@ public class AireDeJeu extends JComponent
 			poissonRouge = ImageIO.read(getImage("caseGlaceTestPose.png"));
 			carreGlace = ImageIO.read(getImage("carreGlace.png"));
 			placement = ImageIO.read(getImage("placement.png"));
-		} catch (IOException e) {
-		        System.err.println("erreur lecture images : " +e);
-		        System.exit(1);
-		}
-		try{
 			entoure = ImageIO.read(getImage("entoure.png"));
 		}catch(Exception e){
 			System.out.println("Erreur lecture image" + e);
 		}
-		try{
+		try{ //chargement image joueurs
 			imageJoueur1 = ImageIO.read(getImage("pingouin1.png"));
 			imageJoueur2 = ImageIO.read(getImage("pingouin2.png"));
 			//imageJoueur3 = ImageIO.read(getImage("pingouin3.png"));
@@ -102,7 +100,7 @@ public class AireDeJeu extends JComponent
 		}catch(Exception e){
 			System.out.println("Erreur lecture image" + e);
 		}
-		try{
+		try{  //chargement images boutons et icones
 			boutonMenu = ImageIO.read(getImage("boutonMenu.jpg"));
 			boutonAnnuler = ImageIO.read(getImage("revenir.png"));
 			boutonRefaire = ImageIO.read(getImage("refaire.png"));
@@ -146,7 +144,7 @@ public class AireDeJeu extends JComponent
 		drawable.drawImage(carreGlace, 0,0, margeGauche, margeHaut, null);
 		
 		drawable.setPaint(Color.black);
-		drawable.drawString("Joueur 1", margeGauche/4 , margeHaut/6);
+		drawable.drawString("Joueur : " + inter.joueurs[0].getNom(), margeGauche/4 , margeHaut/6);
 		
 		//dessin poisson+losange+score
 		drawable.drawImage(poissonJ1, margeGauche/4 , margeHaut/4, margeGauche/4 , margeHaut/4, null);
@@ -154,12 +152,12 @@ public class AireDeJeu extends JComponent
 		drawable.drawImage(caseJ1, margeGauche/4 , 2*margeHaut/4+1, margeGauche/4 , margeHaut/4, null);
 		drawable.drawString(" : " + inter.joueurs[0].getNombreTuile(), margeGauche/2,11*margeHaut/16);
 		
+		
+		
 		//joueur 2
 		drawable.drawImage(carreGlace,largeur-margeGauche,0,margeGauche,margeHaut, null);
 			
-		
-		
-		drawable.drawString("Joueur 2",largeur - 3*margeGauche/4,margeHaut/6);	
+		drawable.drawString("Joueur : " + inter.joueurs[1].getNom(),largeur - 3*margeGauche/4,margeHaut/6);	
 		
 		//dessin poisson+losange+score
 		drawable.drawImage(poissonJ2, largeur-3*margeGauche/4 , margeHaut/4, margeGauche/4 , margeHaut/4, null);
@@ -167,6 +165,7 @@ public class AireDeJeu extends JComponent
 		drawable.drawImage(caseJ2, largeur-3*margeGauche/4 , 2*margeHaut/4+1, margeGauche/4 , margeHaut/4, null);
 		drawable.drawString(" : " + inter.joueurs[1].getNombreTuile(),largeur-2*margeGauche/4,11*margeHaut/16);
     }       
+
 
     private URL getImage(String nom) {
         ClassLoader cl = getClass().getClassLoader();
@@ -184,7 +183,7 @@ public class AireDeJeu extends JComponent
 				{ 
 					for(int i = 1; i <= n; i++)
 					{
-						drawable.drawImage(imageJoueur1, (i-1)*(int)margeGauche/4, (int)margeHaut, (int)margeGauche/4, (int)margeHaut/4, null);
+						drawable.drawImage(imageJoueur1, (i-1)*(int)margeGauche/4, (int)margeHaut, 2*(int)margeGauche/4, 2*(int)margeHaut/4, null);
 					}
 					break;
 				}	
@@ -192,7 +191,7 @@ public class AireDeJeu extends JComponent
 				{ 
 					for(int i = 1; i <= n; i++)
 					{
-						drawable.drawImage(imageJoueur2, largeur-((int)margeGauche - (i-1)*(int)margeGauche/4), (int)margeHaut, (int)margeGauche/4, (int)margeHaut/4, null);
+						drawable.drawImage(imageJoueur2, largeur-((int)margeGauche - (i-1)*(int)margeGauche/4), (int)margeHaut, 2*(int)margeGauche/4, 2*(int)margeHaut/4, null);
 					}
 					break;
 				}	
