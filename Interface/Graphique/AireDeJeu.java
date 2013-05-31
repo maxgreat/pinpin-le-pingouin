@@ -142,6 +142,7 @@ public class AireDeJeu extends JComponent
     	showDialog = true;
     	//joueur1
 		drawable.drawImage(carreGlace, 0,0, margeGauche, margeHaut, null);
+		drawable.drawImage(imageJoueur1, margeGauche, 0 , 2*margeGauche/3, 2*margeHaut/3, null);
 		
 		drawable.setPaint(Color.black);
 		drawable.drawString("Joueur : " + inter.joueurs[0].getNom(), margeGauche/4 , margeHaut/6);
@@ -156,6 +157,8 @@ public class AireDeJeu extends JComponent
 		
 		//joueur 2
 		drawable.drawImage(carreGlace,largeur-margeGauche,0,margeGauche,margeHaut, null);
+		drawable.drawImage(imageJoueur2, largeur-margeGauche-2*margeGauche/3, 0 , 2*margeGauche/3, 2*margeHaut/3, null);
+			
 			
 		drawable.drawString("Joueur : " + inter.joueurs[1].getNom(),largeur - 3*margeGauche/4,margeHaut/6);	
 		
@@ -412,7 +415,7 @@ public class AireDeJeu extends JComponent
 			
 					   	}
 						else if(c[2*j][i].getEtat() == Etat.TROIS_POISSONS){
-						drawable.drawImage(trois_poissons,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
+							drawable.drawImage(trois_poissons,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
 						}
 						
 						joueur = c[2*j][i].getJoueurSurCase();
