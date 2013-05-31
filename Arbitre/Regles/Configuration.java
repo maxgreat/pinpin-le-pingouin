@@ -266,6 +266,7 @@ public class Configuration implements Cloneable, Serializable
 	 * Permet de savoir si un pingouin en i,j est isolé sur un ilot
 	 * -1 si non
 	 * nombre de poisson sur l'ilot si oui
+	 * /!\/!\ A utiliser seulement pour savoir si TOUT les pingouins sont sur un ilot
 	 **/
 	public Couple estIlot(int ii, int jj, ArrayList<Couple> liste){
 		Case [][] terrainCopie = cloneTerrain();
@@ -280,8 +281,8 @@ public class Configuration implements Cloneable, Serializable
 		while(!pile.empty()){
 			p = pile.pop();
 			if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()==getJoueurSurConfiguration()){
-				ArrayList<Couple> voisinsTe = getVoisins(terrainCopie,ii,jj,false);
-				ArrayList<Couple> voisinsTest = getVoisins(terrainCopie,ii,jj,true);
+				ArrayList<Couple> voisinsTe = getVoisins(terrainCopie,p.getX(),p.getY(),false);
+				ArrayList<Couple> voisinsTest = getVoisins(terrainCopie,p.getX(),p.getY(),true);
 				advProxi = voisinsTe.size() - voisinsTest.size();
 				terrainCopie[p.getX()][p.getY()].setEtat(Etat.VIDE);
 				phase1 = true;
@@ -290,7 +291,7 @@ public class Configuration implements Cloneable, Serializable
 			for(int taille=0;taille<voisins.size();taille++){
 				p = voisins.get(taille);
 				if (liste.contains(p))
-					return new Couple(-1, -1);
+					return new Couple(-2,-2);
 				if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()==null){
 					nbP += terrainCopie[p.getX()][p.getY()].scorePoisson();
 					nbC++;
