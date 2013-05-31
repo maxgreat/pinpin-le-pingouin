@@ -274,17 +274,15 @@ public class Configuration implements Cloneable, Serializable
 		Stack<Couple> pile = new Stack();
 		int advProxi = 0;
 		pile.push(new Couple(ii,jj));
-		nbP += terrainCopie[ii][jj].scorePoisson();
-		nbC++;
 		Couple p;
 		boolean phase1 = false;
 		while(!pile.empty()){
 			p = pile.pop();
-			if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()==getJoueurSurConfiguration()){
+			if(terrain[p.getX()][p.getY()].getJoueurSurCase()==getJoueurSurConfiguration()){
 				ArrayList<Couple> voisinsTe = getVoisins(terrainCopie,p.getX(),p.getY(),false);
 				ArrayList<Couple> voisinsTest = getVoisins(terrainCopie,p.getX(),p.getY(),true);
 				advProxi = voisinsTe.size() - voisinsTest.size();
-				terrainCopie[p.getX()][p.getY()].setEtat(Etat.VIDE);
+
 				phase1 = true;
 			}
 			ArrayList<Couple> voisins = getVoisins(terrainCopie,p.getX(),p.getY(),false);
@@ -304,6 +302,7 @@ public class Configuration implements Cloneable, Serializable
 					nbP += terrainCopie[p.getX()][p.getY()].scorePoisson();
 					nbC++;
 					pile.push(new Couple(p.getX(),p.getY()));
+					terrainCopie[p.getX()][p.getY()].setEtat(Etat.VIDE);
 				}
 				else if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()!=getJoueurSurConfiguration()){
 					if(advProxi > 0 && phase1)
