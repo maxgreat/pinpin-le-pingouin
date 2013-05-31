@@ -18,9 +18,9 @@ public class SelectionJoueurs{
 JPanel joueur = new JPanel();
 
 // les listes de difficultés des deux 
- LinkedList<String> joueurs;
- LinkedList<String> joueursPris;
- LinkedList<String> difficultees;
+LinkedList<String> joueurs;
+LinkedList<String> joueursPris;
+LinkedList<String> difficultees;
 
 //les informations sur le joueur
 boolean Ordinateur;
@@ -33,9 +33,9 @@ String nomJoueurOld;
 JComboBox names;
 JComboBox diff;
 
-public SelectionJoueurs(JPanel nomJoueur,  LinkedList<String> Joueurs , LinkedList<String> JoueursPris, LinkedList<String> difficultees)
+public SelectionJoueurs(JPanel joueur,  LinkedList<String> joueurs , LinkedList<String> JoueursPris, LinkedList<String> difficultees)
 	{
-		this.joueur = nomJoueur;
+		this.joueur = joueur;
 		this.joueurs = joueurs;
 		this.joueursPris = joueursPris;
 		this.difficultees=difficultees;
@@ -43,14 +43,16 @@ public SelectionJoueurs(JPanel nomJoueur,  LinkedList<String> Joueurs , LinkedLi
 
 public void selectionJoueur()
 	{
-	names = new JComboBox(joueurs.toArray());
+
+	Object [] test = joueurs.toArray();
+	names = new JComboBox(test);
 	names.addActionListener(new EcouteurDeBox(this,true));
 	joueur.setLayout(new BoxLayout(joueur, BoxLayout.PAGE_AXIS));
 	joueur.add(names);
 	joueur.setOpaque(false);
 	}
 
-public void selectionDifficulté()
+public void selectionDifficulte()
 	{
 		if(Ordinateur)
 		{
@@ -58,5 +60,9 @@ public void selectionDifficulté()
 			diff.addActionListener(new EcouteurDeBox(this,false));
 		}
 	}
-
+public JPanel getPan()
+	{
+	System.out.println("caca");
+	return joueur;
+	}
 } 
