@@ -194,10 +194,30 @@ public class JoueurCPUCouly extends Joueur {
 			}
 			return placementPossible[imax];
 		}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 		// Phase de jeu
       try{
       //do what you want to do before sleeping
-      Thread.sleep(1000);//sleep for 1000 ms
+      Thread.sleep(2000);//sleep for 1000 ms
   
       }
       catch(InterruptedException ie){
@@ -292,7 +312,7 @@ public class JoueurCPUCouly extends Joueur {
                 if(unIlotPersonnel)
                    System.out.println("le pingouin en "+i+" "+j+" est sur un ilot");
                 if(nombreCaseAdjacente == 1 && !unIlotPersonnel){
-	                max = 0;
+	                max = 5;
 						 imax = i;
 						 jmax = j; 
                    System.out.println("le pingouin en "+i+" "+j+" a qu'une sortie");
@@ -300,18 +320,20 @@ public class JoueurCPUCouly extends Joueur {
 		       } 
 			}    
 			Case tmp;
+         int nbCaseLibre =-9;
 			for (int i = 0; i < coupPossible.length; i++) {
 				tmp = terrain[coupPossible[i].getYArrivee()][coupPossible[i].getXArrivee()];
-			 	if (coupPossible[i].getYDepart() == imax && coupPossible[i].getXDepart()==jmax && tmp.scorePoisson() > max && !unIlotPersonnel || tmp.scorePoisson() > max && !unIlotPersonnel && max != 0 ) {
-					imax2 = i;
-                                  System.out.println("le pingouin en "+imax+" "+jmax);
+			 	if (coupPossible[i].getYDepart() == imax && coupPossible[i].getXDepart()==jmax && !unIlotPersonnel && ArbitreManager.instance.getConfiguration().nombreCoupsPossiblesCase(coupPossible[i].getYArrivee(), coupPossible[i].getXArrivee())>nbCaseLibre-tmp.scorePoisson()*2 || !unIlotPersonnel && max != 5 && ArbitreManager.instance.getConfiguration().nombreCoupsPossiblesCase(coupPossible[i].getYArrivee(), coupPossible[i].getXArrivee())>nbCaseLibre-tmp.scorePoisson()*2 ) {
+					
+               /*                   System.out.println("le pingouin en "+imax+" "+jmax);
                System.out.println(" 1 : "+(coupPossible[i].getYDepart() == imax && coupPossible[i].getXDepart()==jmax && tmp.scorePoisson() > max && !unIlotPersonnel)+" 2 : "+(tmp.scorePoisson() > max && !unIlotPersonnel && max != 0));
-               System.out.println("le pingouin en "+coupPossible[i].getYDepart()+" "+coupPossible[i].getXDepart()+" est le max");
-					max = tmp.scorePoisson();
-					if (max > 2) {
-						break;
-					}
-				}
+               System.out.println("le pingouin en "+coupPossible[i].getYDepart()+" "+coupPossible[i].getXDepart()+" est le max");*/
+               
+              nbCaseLibre = ArbitreManager.instance.getConfiguration().nombreCoupsPossiblesCase(coupPossible[i].getYArrivee(), coupPossible[i].getXArrivee())+2*tmp.scorePoisson();
+		        imax2 = i;
+				  max = tmp.scorePoisson();
+
+             }
 			}
       }
       else{
@@ -387,8 +409,8 @@ public class JoueurCPUCouly extends Joueur {
               
               nombreCaseAdjacente = nombreDeCasesAdjacentes(i,j);
               nombreCaseAdjacenteSuivante = nombreDeCasesAdjacentes(ibis,jbis);
-
-              if(nombreCaseAdjacente < minCase && nombreCaseAdjacenteSuivante >1){
+// Faire recursif celon ennemi de tel sorte a gagner le max de points
+              if(nombreCaseAdjacente < minCase && nombreCaseAdjacenteSuivante == 2){
                   minCase = nombreCaseAdjacente;
                   minCaseSuiv = nombreCaseAdjacenteSuivante;
                   imax2 = k;
@@ -563,7 +585,7 @@ public class JoueurCPUCouly extends Joueur {
    }
  
    public static String getType() {
-	   return "CPU_Facile";
+	   return "CPU_Couly";
    }
    
    public ScoreCoup meilleurChemin(int i, int j, Configuration configuration, int occurence){
@@ -572,7 +594,7 @@ public class JoueurCPUCouly extends Joueur {
 
       ScoreCoup coupJoue = null;
       int nombreCoups = configuration.nombreCoupsPossiblesCase(j, i);
-
+      System.out.println("mon i et j : "+i+" "+j);
       if(occurence == 0)
          return new ScoreCoup(0, null);
       if(nombreCoups == 0)
