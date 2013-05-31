@@ -20,11 +20,24 @@ public class MenuPerso{
 	protected JPanel menuJ4;
 	JPanel cellGauche;
 	JPanel cellDroite;
-	boolean b1 , b2 , b3 , b4;
-	
+	SelectionJoueurs J1 , J2 ,J3 ,J4;
+	LinkedList<String> noms = new LinkedList<String>();
+	LinkedList<String> diff = new LinkedList<String>();
+	LinkedList<String> joueursPris = new LinkedList<String>();
+			
 	
 	public MenuPerso(JFrame frame, InterfaceGraphique inter)
 	{
+		noms.add("Atos");
+			noms.add("Portos");
+			noms.add("Aramis");
+			noms.add("Dartagnan");
+			noms.add("Ordinateur");
+			noms.add("Aucun");
+			diff.add("Facile");
+			diff.add("Intermediaire");
+			diff.add("Difficile");
+			diff.add("Aucune");
 		this.frame = frame;
 		this.inter = inter;
 		Dimension Dim = new Dimension(700,500);	
@@ -210,9 +223,10 @@ public class MenuPerso{
 		gbc.gridwidth = GridBagConstraints.REMAINDER;
 		panel.add(cellDroite, gbc);
 		//--------------------------------------------
-
-
-
+		J3 = new SelectionJoueurs(menuJ3,noms,joueursPris,diff,this,3);
+		J4 = new SelectionJoueurs(menuJ4,noms,joueursPris,diff,this,4);
+		J2 = new SelectionJoueurs(menuJ2,noms,joueursPris,diff,this,2);
+		J1 = new SelectionJoueurs(menuJ1,noms,joueursPris,diff,this,1);
 		//panel.repaint();
 		fond.add(panel);
 
@@ -243,48 +257,48 @@ public class MenuPerso{
 	}
 	public void setBoutonsJoueur(JPanel panel,int i)
 	{
-			LinkedList<String> noms = new LinkedList<String>();
-			LinkedList<String> diff = new LinkedList<String>();
-			LinkedList<String> joueursPris = new LinkedList<String>();
-			noms.add("Atos");
-			noms.add("Portos");
-			noms.add("Aramis");
-			noms.add("Dartagnan");
-			noms.add("Ordinateur");
-			noms.add("Aucun");
-			diff.add("Facile");
-			diff.add("Intermediaire");
-			diff.add("Difficile");
-			diff.add("Aucune");
-
+			
 			if(i == 1)
 			{
-			SelectionJoueurs J1 = new SelectionJoueurs(menuJ1,noms,joueursPris,diff);
 			J1.selectionJoueur();
 			J1.selectionDifficulte();
 			menuJ1 = J1.getPan();
 			}
 			if(i == 2)
 			{
-			SelectionJoueurs J2 = new SelectionJoueurs(menuJ2,noms,joueursPris,diff);
 			J2.selectionJoueur();
 			J2.selectionDifficulte();
 			menuJ2 = J2.getPan();
 			}
 			if(i == 3)
 			{
-			SelectionJoueurs J3 = new SelectionJoueurs(menuJ3,noms,joueursPris,diff);
 			J3.selectionJoueur();
 			J3.selectionDifficulte();
 			menuJ3 = J3.getPan();
 			}
 			if(i == 4)
-			{
-			SelectionJoueurs J4 = new SelectionJoueurs(menuJ4,noms,joueursPris,diff);
+			{		
 			J4.selectionJoueur();
 			J4.selectionDifficulte();
 			menuJ4 = J4.getPan();
 			}
+	}
+	public void refresh()
+	{
+		System.out.println("appel a refresh");
+		if(menuJ4.equals(J4.getPan()))
+			System.out.println("le panel 4 est identique");
+		if(menuJ3.equals(J3.getPan()))
+			System.out.println("le panel 3 est identique");
+		if(menuJ2.equals(J2.getPan()))
+			System.out.println("le panel 2 est identique");
+		if(menuJ1.equals(J1.getPan()))
+			System.out.println("le panel 1 est identique");
+		menuJ4 = J4.getPan();
+		menuJ3 = J3.getPan();
+		menuJ2 = J2.getPan();
+		menuJ1 = J1.getPan();
+		fond.repaint();
 	}
 
 	
