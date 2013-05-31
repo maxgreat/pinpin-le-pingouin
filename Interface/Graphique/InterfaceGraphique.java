@@ -39,7 +39,9 @@ public class InterfaceGraphique extends Interface
     {	
     	//historique de navigation dans les menus
 		joueurs[0] = new JoueurHumain();
-		joueurs[1] = new JoueurCPUPhase();
+		joueurs[1] = new JoueurCPURd();
+		joueurs[0].setNom("defaut1");
+		joueurs[1].setNom("defaut2");
     	oldPage = new LinkedList<String>();
     	oldPage.push("Menu Principal");
     	
