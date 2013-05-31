@@ -24,21 +24,23 @@ LinkedList<String> difficultees;
 
 //les informations sur le joueur
 boolean Ordinateur;
-String nomJoueur;
+String nomJoueur = new String();
 String difficultésJoueur;
 //il nous faut l'ancien joueur pour pouvoir l'enlever de joueursPris
-String nomJoueurOld;
+String nomJoueurOld = new String();
 
 //les combobox
 JComboBox names;
 JComboBox diff;
 
-public SelectionJoueurs(JPanel joueur,  LinkedList<String> joueurs , LinkedList<String> JoueursPris, LinkedList<String> difficultees)
+public SelectionJoueurs(JPanel joueur,  LinkedList<String> joueurs , LinkedList<String> joueursPris, LinkedList<String> difficultees)
 	{
 		this.joueur = joueur;
 		this.joueurs = joueurs;
 		this.joueursPris = joueursPris;
 		this.difficultees=difficultees;
+		nomJoueur = joueurs.getFirst();
+		difficultésJoueur = difficultees.getFirst();
 	}
 
 public void selectionJoueur()
@@ -62,7 +64,6 @@ public void selectionDifficulte()
 	}
 public JPanel getPan()
 	{
-	System.out.println("caca");
 	return joueur;
 	}
 } 

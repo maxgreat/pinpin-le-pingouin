@@ -245,7 +245,7 @@ public class MenuPerso{
 	{
 			LinkedList<String> noms = new LinkedList<String>();
 			LinkedList<String> diff = new LinkedList<String>();
-			LinkedList<String> joueurspris = new LinkedList<String>();
+			LinkedList<String> joueursPris = new LinkedList<String>();
 			noms.add("Atos");
 			noms.add("Portos");
 			noms.add("Aramis");
@@ -257,24 +257,34 @@ public class MenuPerso{
 			diff.add("Difficile");
 			diff.add("Aucune");
 
-
-			SelectionJoueurs J1 = new SelectionJoueurs(menuJ1,noms,joueurspris,diff);
+			if(i == 1)
+			{
+			SelectionJoueurs J1 = new SelectionJoueurs(menuJ1,noms,joueursPris,diff);
 			J1.selectionJoueur();
 			J1.selectionDifficulte();
 			menuJ1 = J1.getPan();
-			SelectionJoueurs J2 = new SelectionJoueurs(menuJ2,noms,joueurspris,diff);
+			}
+			if(i == 2)
+			{
+			SelectionJoueurs J2 = new SelectionJoueurs(menuJ2,noms,joueursPris,diff);
 			J2.selectionJoueur();
 			J2.selectionDifficulte();
 			menuJ2 = J2.getPan();
-			SelectionJoueurs J3 = new SelectionJoueurs(menuJ3,noms,joueurspris,diff);
-			
+			}
+			if(i == 3)
+			{
+			SelectionJoueurs J3 = new SelectionJoueurs(menuJ3,noms,joueursPris,diff);
 			J3.selectionJoueur();
 			J3.selectionDifficulte();
 			menuJ3 = J3.getPan();
-			SelectionJoueurs J4 = new SelectionJoueurs(menuJ4,noms,joueurspris,diff);
+			}
+			if(i == 4)
+			{
+			SelectionJoueurs J4 = new SelectionJoueurs(menuJ4,noms,joueursPris,diff);
 			J4.selectionJoueur();
 			J4.selectionDifficulte();
 			menuJ4 = J4.getPan();
+			}
 	}
 
 	
