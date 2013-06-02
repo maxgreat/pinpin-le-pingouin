@@ -1,10 +1,11 @@
 package Interface.Console;
 
+import Network.*;
+import java.nio.channels.*;
 import Interface.*;
 import Joueurs.*;
 import Arbitre.*;
 import Arbitre.Regles.*;
-import Utilitaires.*;
 
 import java.util.*;
 
@@ -38,6 +39,11 @@ public class InterfaceConsole extends Interface
      * Couleur des joueurs selon leur rang
      **/
     public static final String [] couleurs = { RED, YELLOW, BLUE, PURPLE };
+
+    
+    public static final String DEFAULT_ADDR = "localhost";
+    public static final int DEFAULT_PORT = 4242;
+
 
     /**
      * Le tableau des joueurs
@@ -108,16 +114,40 @@ public class InterfaceConsole extends Interface
     {
         printBanniere();
 
-        System.out.println("Seul le mode joueur contre joueur est disponible pour le moment.");
-        System.out.println("Tappez entré si vous êtes d'accord avec ça, ou CTRL+C pour quitter de manière sale (shame on you)...");
+//        System.out.println("Seul le mode joueur contre joueur est disponible pour le moment.");
+//        System.out.println("Tappez entré si vous êtes d'accord avec ça, ou CTRL+C pour quitter de manière sale (shame on you)...");
 
-        in.nextLine();
+	System.out.println("Connexion au serveur...");
 
+	String addr = DEFAULT_ADDR;
+	int port = DEFAULT_PORT;
+
+	Set<SocketChannel> listeSocket = new HashSet<SocketChannel>();
+	listeSocket = Collections.synchronizedSet(listeSocket);
+
+	if (args.length > 2)
+	{
+	    addr = args[2];
+	    port = Integer.valueOf(args[1]);
+	}
+		
+	ConnexionClient cs = new ConnexionClient(addr, port, listeSocket);
+	Listener ls        = new Listener(listeSocket);
+	Writer ws          = new Writer(listeSocket);
+	cs.setListener(ls);
+
+	Thread tListener = new Thread(ls);
+	Thread tWriter = new Thread(ws);
+
+	tListener.start();
+	tWriter.start();
+	
+	SocketChannel client1 = cs.connectClient();
 
         // Créé la partie avec les données de base
         this.joueurs = new Joueur[2];
         //joueurs[0] = new JoueurCPURd();
-	joueurs[0] = new JoueurCPUFacile();
+	joueurs[0] = new JoueurHumain();
         joueurs[0].setNom("David");
 
 	joueurs[1] = new JoueurCPUMinimaxIncremental();
