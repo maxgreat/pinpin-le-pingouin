@@ -14,7 +14,7 @@ public class EcouteurDeBouton implements ActionListener{
 	}
 
 	public void actionPerformed(ActionEvent e)
-    	{
+    {
 		inter.afficherPanel(message);	
 	}
 }

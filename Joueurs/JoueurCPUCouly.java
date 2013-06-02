@@ -19,6 +19,7 @@ public class JoueurCPUCouly extends Joueur {
       int minCase = 0;
       Coup [] coupPossible = ArbitreManager.instance.getConfiguration().toutCoupsPossibles();	
       int [][] tableau = new int[hauteur][largeur];
+      Configuration config = ArbitreManager.instance.getConfiguration();
 		// Phase de placement
 		System.out.println("A mon tour");
       if (ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN) {
@@ -193,8 +194,35 @@ public class JoueurCPUCouly extends Joueur {
 			}
 			return placementPossible[imax];
 		}
-		// Phase de jeu
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+		// Phase de jeu
+      try{
+      //do what you want to do before sleeping
+      Thread.sleep(2000);//sleep for 1000 ms
+  
+      }
+      catch(InterruptedException ie){
+       //If this thread was intrrupted by nother thread 
+	   }
       boolean unIlotPersonnel = false;
       boolean adversaireTrouve;
       max = 50;
@@ -213,7 +241,7 @@ public class JoueurCPUCouly extends Joueur {
          }
       }
       System.out.println("nb case vide "+nombreCasesVides);
-      if(nombreCasesVides < 20){
+      if(nombreCasesVides < 16){
          int minAdj = 7;
          max = -1;
 		   for (int i = 0; i < hauteur; i++)
@@ -281,75 +309,99 @@ public class JoueurCPUCouly extends Joueur {
                 }
 	             
                 nombreCaseAdjacente = nombreDeCasesAdjacentes(i,j);
-              
+                if(unIlotPersonnel)
+                   System.out.println("le pingouin en "+i+" "+j+" est sur un ilot");
                 if(nombreCaseAdjacente == 1 && !unIlotPersonnel){
-	                max = 0;
+	                max = 5;
 						 imax = i;
 						 jmax = j; 
-
+                   System.out.println("le pingouin en "+i+" "+j+" a qu'une sortie");
 	             }			
 		       } 
 			}    
-
 			Case tmp;
+         int nbCaseLibre =-9;
 			for (int i = 0; i < coupPossible.length; i++) {
 				tmp = terrain[coupPossible[i].getYArrivee()][coupPossible[i].getXArrivee()];
-			 	if (coupPossible[i].getYDepart() == imax && coupPossible[i].getXDepart()==jmax && tmp.scorePoisson() > max && unIlotPersonnel || tmp.scorePoisson() > max && !unIlotPersonnel) {
-					imax2 = i;
-					max = tmp.scorePoisson();
-					if (max > 2) {
-						break;
-					}
-				}
+			 	if (coupPossible[i].getYDepart() == imax && coupPossible[i].getXDepart()==jmax && !unIlotPersonnel && ArbitreManager.instance.getConfiguration().nombreCoupsPossiblesCase(coupPossible[i].getYArrivee(), coupPossible[i].getXArrivee())>nbCaseLibre-tmp.scorePoisson()*2 || !unIlotPersonnel && max != 5 && ArbitreManager.instance.getConfiguration().nombreCoupsPossiblesCase(coupPossible[i].getYArrivee(), coupPossible[i].getXArrivee())>nbCaseLibre-tmp.scorePoisson()*2 ) {
+					
+               /*                   System.out.println("le pingouin en "+imax+" "+jmax);
+               System.out.println(" 1 : "+(coupPossible[i].getYDepart() == imax && coupPossible[i].getXDepart()==jmax && tmp.scorePoisson() > max && !unIlotPersonnel)+" 2 : "+(tmp.scorePoisson() > max && !unIlotPersonnel && max != 0));
+               System.out.println("le pingouin en "+coupPossible[i].getYDepart()+" "+coupPossible[i].getXDepart()+" est le max");*/
+               
+              nbCaseLibre = ArbitreManager.instance.getConfiguration().nombreCoupsPossiblesCase(coupPossible[i].getYArrivee(), coupPossible[i].getXArrivee())+2*tmp.scorePoisson();
+		        imax2 = i;
+				  max = tmp.scorePoisson();
+
+             }
 			}
-		}
+      }
       else{
           Coup dernierPingouinSeul;
           
           boolean trouver = false;
           int minCaseSuiv;
           int nombreCaseAdjacenteSuivante;
+          
           for (int k = 0; k < coupPossible.length; k++) {
               int i = coupPossible[k].getYDepart();
               int j = coupPossible[k].getXDepart();
-              
+              adversaireTrouve = false;    
               unIlotPersonnel = false;
               minCase =7;
               minCaseSuiv = 7;
               nombreCaseAdjacente = 0;
               nombreCaseAdjacenteSuivante = 0;
-	           if(i%2 == 0 && j < largeur-2 && !terrain[i][j+1].estObstacle())
+	           if(i%2 == 0 && j < largeur-2 && !terrain[i][j+1].estObstacle() && !adversaireTrouve){
 				      unIlotPersonnel = estSeulSurIlot(i,j+1,i,j);
-	           
-              if(i%2 == 1 && j < largeur-1 && !terrain[i][j+1].estObstacle())
+	               adversaireTrouve = !unIlotPersonnel;
+              }
+              if(i%2 == 1 && j < largeur-1 && !terrain[i][j+1].estObstacle() && !adversaireTrouve){
 					   unIlotPersonnel = estSeulSurIlot(i,j+1,i,j);              
-               
-	           if(j>=1 && !terrain[i][j-1].estObstacle())
+                  adversaireTrouve = !unIlotPersonnel;
+              }
+	           if(j>=1 && !terrain[i][j-1].estObstacle() && !adversaireTrouve){
 	               unIlotPersonnel = estSeulSurIlot(i,j-1,i,j);
-	            
-	           if(i%2==0 && j>=0 && i<hauteur-1 && !terrain[i+1][j].estObstacle())
+	               adversaireTrouve = !unIlotPersonnel;
+              }
+	           if(i%2==0 && j>=0 && i<hauteur-1 && !terrain[i+1][j].estObstacle() && !adversaireTrouve){
 					   unIlotPersonnel = estSeulSurIlot(i+1,j,i,j);
-              if(i%2==0 && j>=0 && i>0 &&!terrain[i-1][j].estObstacle())
+                  adversaireTrouve = !unIlotPersonnel;
+              }
+              if(i%2==0 && j>=0 && i>0 &&!terrain[i-1][j].estObstacle()&& !adversaireTrouve){
 					   unIlotPersonnel = estSeulSurIlot(i-1,j,i,j);
-              if(i%2==1 && j>=1 && i<hauteur-1 && !terrain[i+1][j-1].estObstacle())
+                  adversaireTrouve = !unIlotPersonnel;
+              }
+              if(i%2==1 && j>=1 && i<hauteur-1 && !terrain[i+1][j-1].estObstacle()&& !adversaireTrouve){
 					   unIlotPersonnel = estSeulSurIlot(i+1,j-1,i,j);
-              if(i%2==1 && j>=1 && i>0 &&!terrain[i-1][j-1].estObstacle())
+                  adversaireTrouve = !unIlotPersonnel;
+              }
+              if(i%2==1 && j>=1 && i>0 &&!terrain[i-1][j-1].estObstacle()&& !adversaireTrouve){
 					   unIlotPersonnel = estSeulSurIlot(i-1,j-1,i,j);
-	           
-	           if(i%2==0 && j<largeur-1 && i<hauteur-1 && !terrain[i+1][j+1].estObstacle())
+	               adversaireTrouve = !unIlotPersonnel;
+              }
+	           if(i%2==0 && j<largeur-1 && i<hauteur-1 && !terrain[i+1][j+1].estObstacle()&& !adversaireTrouve){
 					   unIlotPersonnel = estSeulSurIlot(i+1,j+1,i,j);
-              if(i%2==0 && j< largeur-1 && i>0 &&!terrain[i-1][j+1].estObstacle())
+                  adversaireTrouve = !unIlotPersonnel;
+              }
+              if(i%2==0 && j< largeur-1 && i>0 &&!terrain[i-1][j+1].estObstacle()&& !adversaireTrouve){
 					   unIlotPersonnel = estSeulSurIlot(i-1,j+1,i,j);
-              if(i%2==1 && j<largeur-2 && i<hauteur-1 && !terrain[i+1][j].estObstacle())
+                  adversaireTrouve = !unIlotPersonnel;
+              }
+              if(i%2==1 && j<largeur-2 && i<hauteur-1 && !terrain[i+1][j].estObstacle()&& !adversaireTrouve){
 					   unIlotPersonnel = estSeulSurIlot(i+1,j,i,j);
-              if(i%2==1 && j<largeur-2 && i>0 &&!terrain[i-1][j].estObstacle())
+                  adversaireTrouve = !unIlotPersonnel;
+              }
+              if(i%2==1 && j<largeur-2 && i>0 &&!terrain[i-1][j].estObstacle()&& !adversaireTrouve){
 					   unIlotPersonnel = estSeulSurIlot(i-1,j,i,j);
+                  adversaireTrouve = !unIlotPersonnel;
+              }
               if(unIlotPersonnel){
-                 //System.out.println("Le pingouin "+i+" "+j+" peut etre sur un ilot");
+                 System.out.println("Le pingouin "+i+" "+j+" est sur un ilot");
               
                   continue;
               }
-
+              System.out.println(" i, j :"+i+" "+j);
 
        
               int ibis = coupPossible[k].getYArrivee();
@@ -357,8 +409,8 @@ public class JoueurCPUCouly extends Joueur {
               
               nombreCaseAdjacente = nombreDeCasesAdjacentes(i,j);
               nombreCaseAdjacenteSuivante = nombreDeCasesAdjacentes(ibis,jbis);
-
-              if(nombreCaseAdjacente < minCase && nombreCaseAdjacenteSuivante >1 && nombreCaseAdjacenteSuivante < minCaseSuiv){
+// Faire recursif celon ennemi de tel sorte a gagner le max de points
+              if(nombreCaseAdjacente < minCase && nombreCaseAdjacenteSuivante == 2){
                   minCase = nombreCaseAdjacente;
                   minCaseSuiv = nombreCaseAdjacenteSuivante;
                   imax2 = k;
@@ -533,7 +585,7 @@ public class JoueurCPUCouly extends Joueur {
    }
  
    public static String getType() {
-	   return "CPU_Facile";
+	   return "CPU_Couly";
    }
    
    public ScoreCoup meilleurChemin(int i, int j, Configuration configuration, int occurence){
@@ -542,7 +594,7 @@ public class JoueurCPUCouly extends Joueur {
 
       ScoreCoup coupJoue = null;
       int nombreCoups = configuration.nombreCoupsPossiblesCase(j, i);
-
+      System.out.println("mon i et j : "+i+" "+j);
       if(occurence == 0)
          return new ScoreCoup(0, null);
       if(nombreCoups == 0)

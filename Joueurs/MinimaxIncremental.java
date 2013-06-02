@@ -9,10 +9,10 @@ public class MinimaxIncremental extends Minimax
     Signal<Object> signalSynchro;
 
 
-    public MinimaxIncremental(Joueur joueur, int profondeur, Arbitre arbitre)
+	public MinimaxIncremental(Joueur joueur, int profondeur, Arbitre arbitre, Boolean finish)
     {
-	super(joueur, profondeur, arbitre);
-	signalSynchro = new Signal<Object>();
+	    super(joueur, profondeur, arbitre, finish);
+	    signalSynchro = new Signal<Object>();
     }
 
 
@@ -23,12 +23,8 @@ public class MinimaxIncremental extends Minimax
 
     public void run()
     {
-	Coup c = minimax(ArbitreManager.instance.getConfiguration().clone());
-	synchronized(signalSynchro)
-	{
+	    Coup c = minimax(ArbitreManager.instance.getConfiguration().clone());
 	    ArbitreManager.instanceThread.interrupt();
-	    getSignalSynchro().attendreSignal();
-	}
-	getSignalCoup().envoyerSignal(c);
+	    getSignalCoup().envoyerSignal(c);
     }
 }
