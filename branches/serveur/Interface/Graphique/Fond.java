@@ -29,13 +29,11 @@ public void paintComponent(Graphics g)
                     System.exit(1);
         }
 		
-	g.drawImage(Fond, 0, 0,frame.getWidth(),frame.getHeight(), null);
+	g.drawImage(Fond, 0, 0,frame.getWidth()-2,frame.getHeight()-30, null);
     }
 private URL getImage(String nom)
     {
         ClassLoader cl = getClass().getClassLoader();
         return cl.getResource("Interface/Graphique/Img/" + nom);
     }
-
-
 }

@@ -9,4 +9,20 @@ Coup coup;
        score =sc;
        coup = c;
     }
+
+	 public int getScore(){
+		return score;
+	 }
+
+	 public void setScore(int s){
+		score = s;
+	 }
+
+	 public Coup getCoup(){
+		return coup;
+	 }
+
+	 public void setCoup(Coup c){
+		coup = c;
+	 }
 }

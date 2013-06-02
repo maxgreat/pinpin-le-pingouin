@@ -1,7 +1,6 @@
 package Arbitre.Regles;
 
 import java.util.*;
-import java.awt.Point;
 import Joueurs.*;
 import java.io.*;
 import Arbitre.*;
@@ -38,6 +37,10 @@ public class Configuration implements Cloneable, Serializable
     /**
      * Getter des éléments
      **/
+    public void setTerrain (Case [][] t)
+    {
+       this.terrain = t;
+    }
     public int getLargeur()
     {
         return largeur;
@@ -52,6 +55,19 @@ public class Configuration implements Cloneable, Serializable
     {
         return terrain;
     }
+
+	public int getNbCasesRestantes() {
+		int res = 0;
+		for (int i = 0; i < this.getHauteur(); i++) {
+			for (int j = 0; j < this.getLargeur(); j++) {
+				if (i%2 == 0 && j == largeur - 1)
+					continue;
+				if (this.getTerrain()[i][j].getEtat() != Etat.VIDE)
+					res++;
+			}
+		}
+		return res;
+	}
 
     public Joueur getJoueurSurConfiguration()
     {
@@ -85,7 +101,7 @@ public class Configuration implements Cloneable, Serializable
     }
 
     public void setCoupEffectue(Coup coup)
-    {
+    {  
         this.coupEffectue = coup;
     }
 
@@ -159,87 +175,200 @@ public class Configuration implements Cloneable, Serializable
     }
 
     /**
-     * Permet de savoir si un pingouin en i,j est isolé sur un ilot
+     * Récupère les coordonnées des pîngouins d'un joueur j
      **/
-	public boolean estIlot(int ii, int jj){
-		Case [][] terrainCopie = new Case[hauteur][largeur];
+	public Couple [] coordPingouins(Joueur joueur){
+        ArrayList<Couple> coord = new ArrayList<Couple>();
+        for (int i = 0; i < hauteur; i++)
+        {
+            for (int j = 0; j < largeur; j++)
+            {
+                if (i%2 == 0 && j == largeur - 1)
+                    continue;
 
-		Stack<Point> pile = new Stack();
+                Joueur joueurSurCase = terrain[i][j].getJoueurSurCase();
+		
+                if (joueurSurCase == joueur)
+                {
+						  coord.add(new Couple(i,j));
+                }
+            }
+        }
 
-		for (int i = 0; i < hauteur; i++){
-			for (int j = 0; j < largeur; j++){
-				if (i%2 == 0 && j == largeur - 1)
-				  continue;
-				terrainCopie[i][j] = terrain[i][j].clone();
-				if (i==ii && j==jj){
-					pile.push(new Point(i,j));
-					terrainCopie[i][j].setEtat(Etat.VIDE);
-				}
-			}
-		}
-		Point p;
-		while(!pile.empty()){
-			p = pile.pop();
-			ArrayList<Point> voisins = getVoisins(terrainCopie,(int)p.getX(),(int)p.getY(),false);
-			for(int taille=0;taille<voisins.size();taille++){
-				p = voisins.remove(0);
-				if(terrainCopie[(int)p.getX()][(int)p.getY()].getJoueurSurCase()!=getJoueurSurConfiguration())
-					return false;
-				pile.push(new Point((int)p.getX(),(int)p.getY()));
-			}
-		}
-		return true;
+        return (Couple[])coord.toArray(new Couple[coord.size()]);
 	}
 
     /**
+     * Retourne le score que rapporte tout les pingouins isolé par joueurs
+     **/
+	public int [] scoreIlotParJoueur(Joueur [] joueurs){
+        int [] score = new int[joueurs.length];
+        ArrayList<Joueur> joueurList = new ArrayList<Joueur>(Arrays.asList(joueurs));
+	
+        for (int i = 0; i < joueurs.length; i++)
+            score[i] = 0;
+
+        for (int i = 0; i < joueurs.length; i++)
+        {
+			 Couple [] cP = coordPingouins(joueurs[i]);
+			 for (int j = 0; j < cP.length; j++)
+			 {
+				score[i] += estIlot(cP[j].getX(),cP[j].getY()).getX();
+			 }            
+        }
+
+        return score;
+	}
+
+	/**
+	 * Permet de savoir si un pingouin en i,j est isolé sur un ilot
+	 * -1 si non
+	 * nombre de poisson sur l'ilot si oui
+	 **/
+	public Couple estIlot(int ii, int jj){
+		Case [][] terrainCopie = cloneTerrain();
+		int nbP = 0,nbC = 0;
+		Stack<Couple> pile = new Stack();
+		int advProxi;
+		pile.push(new Couple(ii,jj));
+		nbP += terrainCopie[ii][jj].scorePoisson();
+		nbC++;
+		terrainCopie[ii][jj].setEtat(Etat.VIDE);
+		ArrayList<Couple> voisinsTe = getVoisins(terrainCopie,ii,jj,false);
+		ArrayList<Couple> voisinsTest = getVoisins(terrainCopie,ii,jj,true);
+		advProxi = voisinsTe.size() - voisinsTest.size();
+		Couple p;
+		boolean phase1 = true;
+		while(!pile.empty()){
+			p = pile.pop();
+			ArrayList<Couple> voisins = getVoisins(terrainCopie,p.getX(),p.getY(),false);
+			for(int taille=0;taille<voisins.size();taille++){
+				p = voisins.get(taille);
+				if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()==null){
+					nbP += terrainCopie[p.getX()][p.getY()].scorePoisson();
+					nbC++;
+					pile.push(new Couple(p.getX(),p.getY()));
+					terrainCopie[p.getX()][p.getY()].setEtat(Etat.VIDE);
+				}
+				else if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()==getJoueurSurConfiguration()){
+					if(advProxi > 0 && phase1)
+						advProxi--;
+				}
+				else if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()!=getJoueurSurConfiguration()){
+					if(advProxi > 0 && phase1)
+						advProxi--;
+					else
+						return new Couple(-1,-1);
+				}
+			}
+			phase1 = false;
+		}
+		return new Couple(nbP,nbC);
+	}
+
+	/**
+	 * Permet de savoir si un pingouin en i,j est isolé sur un ilot
+	 * -1 si non
+	 * nombre de poisson sur l'ilot si oui
+	 * /!\/!\ A utiliser seulement pour savoir si TOUT les pingouins sont sur un ilot
+	 **/
+	public Couple estIlot(int ii, int jj, ArrayList<Couple> liste){
+		Case [][] terrainCopie = cloneTerrain();
+		int nbP = 0,nbC = 0;
+		Stack<Couple> pile = new Stack();
+		int advProxi = 0;
+		pile.push(new Couple(ii,jj));
+		Couple p;
+		boolean phase1 = false;
+		while(!pile.empty()){
+			p = pile.pop();
+			if(terrain[p.getX()][p.getY()].getJoueurSurCase()==getJoueurSurConfiguration()){
+				ArrayList<Couple> voisinsTe = getVoisins(terrainCopie,p.getX(),p.getY(),false);
+				ArrayList<Couple> voisinsTest = getVoisins(terrainCopie,p.getX(),p.getY(),true);
+				advProxi = voisinsTe.size() - voisinsTest.size();
+
+				phase1 = true;
+			}
+			ArrayList<Couple> voisins = getVoisins(terrainCopie,p.getX(),p.getY(),false);
+			for(int taille=0;taille<voisins.size();taille++){
+				p = voisins.get(taille);
+				if (liste.contains(p))
+					return new Couple(-2,-2);
+				if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()==null){
+					nbP += terrainCopie[p.getX()][p.getY()].scorePoisson();
+					nbC++;
+					pile.push(new Couple(p.getX(),p.getY()));
+					terrainCopie[p.getX()][p.getY()].setEtat(Etat.VIDE);
+				}
+				else if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()==getJoueurSurConfiguration()){
+					if(advProxi > 0 && phase1)
+						advProxi--;
+					nbP += terrainCopie[p.getX()][p.getY()].scorePoisson();
+					nbC++;
+					pile.push(new Couple(p.getX(),p.getY()));
+					terrainCopie[p.getX()][p.getY()].setEtat(Etat.VIDE);
+				}
+				else if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()!=getJoueurSurConfiguration()){
+					if(advProxi > 0 && phase1)
+						advProxi--;
+					else
+						return new Couple(-1,-1);
+				}
+			}
+			phase1 = false;
+		}
+		return new Couple(nbP,nbC);
+	}
+	
+    /**
      * Récupère les cases voisines non vides et {non occupées(obstacle=true) ou occupées(obstacle=false)} d'une case i,j du terrain
      **/
-	public ArrayList<Point> getVoisins(Case [][] t,int i, int j,boolean obstacle){
-		ArrayList<Point> liste = new ArrayList<Point>();
+	public ArrayList<Couple> getVoisins(Case [][] t,int i, int j,boolean obstacle){
+		ArrayList<Couple> liste = new ArrayList<Couple>();
 		 {
 		     if (i%2 == 0 && j + 1 < largeur - 1 && ((obstacle && !t[i][j + 1].estObstacle()) || (!obstacle && !t[i][j + 1].estVide())))
-					liste.add(new Point(i,j+1));
+					liste.add(new Couple(i,j+1));
 		     else if (i%2 == 1 && j + 1 < largeur && ((obstacle && !t[i][j + 1].estObstacle()) || (!obstacle && !t[i][j + 1].estVide())))
-					liste.add(new Point(i,j+1));
+					liste.add(new Couple(i,j+1));
 		 }
 		 {
 		     if (j - 1 >= 0 && ((obstacle && !t[i][j - 1].estObstacle()) || (!obstacle && !t[i][j - 1].estVide())))
-					liste.add(new Point(i,j-1));
+					liste.add(new Couple(i,j-1));
 		 }
 		 {
 		     if (i - 1 >= 0)
 		     {
 		         if (i%2 == 0 && j + 1 < largeur && ((obstacle && !t[i-1][j + 1].estObstacle()) || (!obstacle && !t[i-1][j + 1].estVide())))
-						liste.add(new Point(i-1,j+1));
+						liste.add(new Couple(i-1,j+1));
 		         else if (i%2 == 1 && j < largeur - 1 && ((obstacle && !t[i-1][j].estObstacle()) || (!obstacle && !t[i-1][j].estVide())))
-						liste.add(new Point(i-1,j));
+						liste.add(new Couple(i-1,j));
 		     }
 		 }
 		 {
 		     if (i - 1 >= 0)
 		     {
 		         if (i%2 == 0 && j < largeur - 1 && ((obstacle && !t[i-1][j].estObstacle()) || (!obstacle && !t[i-1][j].estVide())))
-						liste.add(new Point(i-1,j));
+						liste.add(new Couple(i-1,j));
 		         else if (i%2 == 1 && j - 1 >= 0 && ((obstacle && !t[i-1][j-1].estObstacle()) || (!obstacle && !t[i-1][j-1].estVide())))
-						liste.add(new Point(i-1,j-1));
+						liste.add(new Couple(i-1,j-1));
 		     }
 		 }
 		 {
 		     if (i + 1 < hauteur)
 		     {
 		         if (i%2 == 0 && j + 1 < largeur && ((obstacle && !t[i+1][j+1].estObstacle()) || (!obstacle && !t[i+1][j+1].estVide())))
-						liste.add(new Point(i+1,j+1));
+						liste.add(new Couple(i+1,j+1));
 		         else if (i%2 == 1 && j < largeur - 1 && ((obstacle && !t[i+1][j].estObstacle()) || (!obstacle && !t[i+1][j].estVide())))
-						liste.add(new Point(i+1,j));
+						liste.add(new Couple(i+1,j));
 		     }
 		 }
 		 {
 		     if (i + 1 < hauteur)
 		     {
 		         if (i%2 == 0 && ((obstacle && !t[i+1][j].estObstacle()) || (!obstacle && !t[i+1][j].estVide())))
-						liste.add(new Point(i+1,j));
+						liste.add(new Couple(i+1,j));
 		         else if (i%2 == 1 && j - 1 >= 0 && ((obstacle && !t[i+1][j-1].estObstacle()) || (!obstacle && !t[i+1][j-1].estVide())))
-						liste.add(new Point(i+1,j-1));
+						liste.add(new Couple(i+1,j-1));
 		     }
 		 }
 		return liste;
@@ -782,6 +911,7 @@ public class Configuration implements Cloneable, Serializable
         return score;
     }
 
+
     /**
      * Nettoie le terrain des pingouins qui sont isolés en renvoyant le score de
      * Chaque joueur 
@@ -827,6 +957,27 @@ public class Configuration implements Cloneable, Serializable
         }
 
         return new Configuration(largeur, hauteur, terrainCopie, getJoueurSurConfiguration(), getCoupEffectue());
+    }
+
+    /**
+     * Clone un terrain
+     **/
+    public Case [][] cloneTerrain()
+    {
+        Case [][] terrainCopie = new Case[hauteur][largeur];
+        
+        for (int i = 0; i < hauteur; i++)
+        {
+            for (int j = 0; j < largeur; j++)
+            {
+                if (i%2 == 0 && j == largeur - 1)
+                    continue;
+
+                terrainCopie[i][j] = terrain[i][j].clone();
+            }
+        }
+
+        return terrainCopie;
     }
 
     /**
