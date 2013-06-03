@@ -17,14 +17,17 @@ public class AireDeJeu extends JComponent
     JPanel pan;
     InterfaceGraphique inter;
     private Point coupPrec;
-    
+    private Point coupPrec2;
+
+
     private Point centreAide = null;
     private Point centreSuggestion = null;
 
     boolean showDialog = true;
-	boolean popup1 = true;
-	boolean menuOuvert = false;
-	
+	 boolean popup1 = true;
+	 boolean menuOuvert = false;
+	 boolean aide = false;
+
     //definition des images
     BufferedImage imageJoueur1 = null;
     BufferedImage imageJoueur2 = null;
@@ -40,6 +43,7 @@ public class AireDeJeu extends JComponent
 	BufferedImage carreGlace = null;
 	BufferedImage placement = null;
 	BufferedImage info = null;
+	BufferedImage nonInfo = null;
 	BufferedImage suggest = null;
 	BufferedImage poissonJ1 = null;
 	BufferedImage poissonJ2 = null;
@@ -55,7 +59,9 @@ public class AireDeJeu extends JComponent
     BufferedImage deux_poissons = null;
     BufferedImage trois_poissons = null;
     BufferedImage poissonRouge = null;
-	
+	 BufferedImage un_poisson_aide = null;
+	 BufferedImage deux_poissons_aide = null;
+    BufferedImage trois_poissons_aide = null;
 
     // largeur de l'aire	
     public int largeur;
@@ -92,6 +98,9 @@ public class AireDeJeu extends JComponent
 			carreGlace = ImageIO.read(getImage("carreGlace.png"));
 			placement = ImageIO.read(getImage("placement.png"));
 			entoure = ImageIO.read(getImage("entoure.png"));
+         un_poisson_aide = ImageIO.read(getImage("caseGlaceTestPose.png"));
+			deux_poissons_aide = ImageIO.read(getImage("caseGlaceTest2Aide.png"));
+			trois_poissons_aide = ImageIO.read(getImage("caseGlaceTest3Aide.png"));
 		}catch(Exception e){
 			System.out.println("Erreur lecture image" + e);
 		}
@@ -109,6 +118,7 @@ public class AireDeJeu extends JComponent
 			boutonRefaire = ImageIO.read(getImage("refaire.png"));
 			fondEau = ImageIO.read(getImage("backgroundWater.png"));
 			info =  ImageIO.read(getImage("caseGlaceTestAide.png"));
+         nonInfo =  ImageIO.read(getImage("caseGlaceTestNonAide.png"));
 			suggest= ImageIO.read(getImage("caseGlaceTestSuggestion.png"));
 			poissonJ1 = ImageIO.read(getImage("poisson1.png"));
 			poissonJ2 = ImageIO.read(getImage("poisson2.png"));
@@ -358,6 +368,7 @@ public class AireDeJeu extends JComponent
 		
 		//Si on est en mode pose pingouins
 		if(ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN){
+            coupPrec = new Point(-1,-1);
 				//demande à l'utilisateur de placer les pingouins
 				drawable.drawImage(placement, largeur/4 + (int)rayonL*3, hauteur-(int)rayonH-10, largeur/4 + 30, 2*(int)rayonH/3, null);
 				//affichage des pingouins sous les cases des joueurs
@@ -370,7 +381,10 @@ public class AireDeJeu extends JComponent
 	
 		
 		//sur les cotés
-		drawable.drawImage(info,0, hauteur/2, (int)tabCase.largeur, (int)tabCase.hauteur,null);
+      if(aide)
+			drawable.drawImage(info,0, hauteur/2, (int)tabCase.largeur, (int)tabCase.hauteur,null);
+      else
+			drawable.drawImage(nonInfo,0, hauteur/2, (int)tabCase.largeur, (int)tabCase.hauteur,null);
 		drawable.drawImage(suggest,largeur-(int)tabCase.largeur, hauteur/2, (int)tabCase.largeur,(int)tabCase.hauteur,null);
 		
 		
@@ -468,7 +482,28 @@ public class AireDeJeu extends JComponent
 				}
 			}
     	} //fin affichage partie en cours
+      if(aide){
+         if(coupPrec.x != -1 && coupPrec.y != -1){
+				Coup [] coup =  ArbitreManager.instance.getConfiguration().coupsPossiblesCase(coupPrec.y, coupPrec.x);
 
+		      int i,j;
+			
+				for(int k = 0; k < coup.length;k++){
+
+				   i = coup[k].getXArrivee();
+				   j = coup[k].getYArrivee();
+				   if(c[j][i].getEtat() == Etat.DEUX_POISSONS){
+					   drawable.drawImage(deux_poissons_aide,tabCase.sommetG_x(i,j),tabCase.sommetG_y(i,j),tabCase.largeur(),tabCase.hauteur(),null);
+					}
+					else if(c[j][i].getEtat() == Etat.UN_POISSON){
+					   drawable.drawImage(un_poisson_aide,tabCase.sommetG_x(i,j),tabCase.sommetG_y(i,j),tabCase.largeur(),tabCase.hauteur(),null);
+					}
+					else if(c[j][i].getEtat() == Etat.TROIS_POISSONS){
+					   drawable.drawImage(trois_poissons_aide,tabCase.sommetG_x(i,j),tabCase.sommetG_y(i,j),tabCase.largeur(),tabCase.hauteur(),null);
+					} 
+		      }  
+		   }
+       }
     }//fin methode paint
 
 
@@ -499,7 +534,7 @@ public class AireDeJeu extends JComponent
 					Case [][] t = ArbitreManager.instance.getConfiguration().getTerrain();
 					if(t[p.x][p.y] != null){
 						if(t[p.x][p.y].getJoueurSurCase() == ArbitreManager.instance.getJoueurCourant()) {
-							coupPrec.x = p.x;
+						   coupPrec.x = p.x;
 							coupPrec.y = p.y;
 						}
 					}
@@ -580,13 +615,27 @@ public class AireDeJeu extends JComponent
 					ArbitreManager.instance.avancerHistorique();
 				}
 			}//fin clic sur la bande du bas
-			//if distance(y, centreAide) < hauteur du bouton aide
-				//afficher aide
-			//}
-			//if distance( (x,y), centreSuggestion) < hauteur du bouton suggestion
+			else if(x < margeGauche )
+			{//clic sur le bouton aide
+				if (y > hauteur/2 && x < (int)tabCase.largeur && y <(int)tabCase.hauteur+hauteur/2) 
+					//afficher aide 		drawable.drawImage(info,0, hauteur/2, (int)tabCase.largeur, (int)tabCase.hauteur,null);
+					aide();
+			}
+			else if(x > largeur - margeGauche)
+			{//clic sur le bouton suggestion
+				//if distance(y, centreSuggestion) < hauteur du bouton suggestion
 					//jouer coup
-			//}
+			}
     	}
+
     	this.repaint();
+    }
+    
+
+    public void aide(){
+       if(aide)
+          aide = false;    	
+       else
+          aide = true;
     }
 }
