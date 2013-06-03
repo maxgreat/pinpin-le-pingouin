@@ -16,13 +16,13 @@ public class JoueurCPUUniversel extends Joueur
 	 **/
 	int level;
 	JoueurCPUPhase cpuDiff;
-	JoueurCPUMinimax cpuInter;
+	JoueurCPUPhaseInter cpuInter;
 	JoueurCPUFacile cpuFacile;
 	
 	public JoueurCPUUniversel(int level) {
 		this.level = level;
 		this.cpuDiff = new JoueurCPUPhase(this);
-		this.cpuInter = new JoueurCPUMinimax(this);
+		this.cpuInter = new JoueurCPUPhaseInter(this);
 		this.cpuFacile = new JoueurCPUFacile();
 	}
 
