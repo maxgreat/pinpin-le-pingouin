@@ -111,7 +111,7 @@ public class Arbitre implements Runnable, Serializable
      **/
     public void run()
     {   
-        while (!forceStop && !estFini)
+        while (!forceStop)
 	    {
             int tourJoueur = getPosition(getJoueurCourant());
 
@@ -187,9 +187,18 @@ public class Arbitre implements Runnable, Serializable
 
             // Si plus personne ne peut jouer on arrête
             if (totalPouvantJouer < 0)
+            {
                 estFini = true;
-	    }
 
+                int [] scoresJoueurs = getConfiguration().nettoyerConfiguration(joueurs);
+                getConfiguration().estFinale = true;
+                // Met à jour le score de tous les joueurs
+                for (int i = 0; i < scoresJoueurs.length; i++)
+                    joueurs[i].setScore(joueurs[i].getScore() + scoresJoueurs[i]);
+                inter.repaint();
+            }
+	    }
+        /*
         // Nettoie le terrain à la fin de la partie
         if (!forceStop && estFini)
 	    { 
@@ -207,7 +216,7 @@ public class Arbitre implements Runnable, Serializable
         // Attends qu'on lui signal la fin d'une partie (sauf si force le stop)
         if (!forceStop || estFini)
             signalStop.attendreSignal();
-
+        */
         return;
     }
   
@@ -230,6 +239,7 @@ public class Arbitre implements Runnable, Serializable
             System.err.println("Impossible de sauvegarder dans le fichier "+filename);
 	    }
     }
+
 
     /**
      * Charge la sauvegarde
@@ -343,8 +353,6 @@ public class Arbitre implements Runnable, Serializable
 		
                 // Restaure le score du joueur
                 getConfiguration().getJoueurSurConfiguration().setScore(getConfiguration().getJoueurSurConfiguration().getScore() + getConfiguration().scoreCoupEffectue());
-
-
 		
                 int [] restePingouins = c.getNombrePingouinsParJoueur(joueurs);
                 int totalPions = 0;
@@ -370,6 +378,13 @@ public class Arbitre implements Runnable, Serializable
                 // Met à jour la configuration
                 configurationCourante = c;
                 setJoueurCourant(c.getJoueurSurConfiguration());
+
+
+                if (getConfiguration().estFinale)
+                {
+                    estFini = true;
+                    System.out.println("Est finale");
+                }
 		    }
 	    } 
         while (c != null && !(c.getJoueurSurConfiguration() instanceof JoueurHumain));
@@ -392,6 +407,7 @@ public class Arbitre implements Runnable, Serializable
             c = historique.reculer();
             if (c != null)
 		    {	
+                estFini = false;
                 // Met à jour la configuration
                 configurationCourante = c;
                 setJoueurCourant(c.getJoueurSurConfiguration());
@@ -415,6 +431,7 @@ public class Arbitre implements Runnable, Serializable
 		
                 if (getMode() == ModeDeJeu.JEU_COMPLET)
                     getConfiguration().getJoueurSurConfiguration().decrementNombreTuile();
+                    
 		    }
 	    }
         while(c != null && !(c.getJoueurSurConfiguration() instanceof JoueurHumain));
@@ -432,14 +449,13 @@ public class Arbitre implements Runnable, Serializable
      **/
     public Configuration recommencer()
     {
-        estFini = false;
-
         Configuration c = null;
         do
 	    {
             c = historique.reculer();
             if (c != null)
 		    {	
+                estFini = false;
                 // Met à jour la configuration
                 configurationCourante = c;
                 setJoueurCourant(c.getJoueurSurConfiguration());
