@@ -69,6 +69,9 @@ public class JoueurCPUFacile extends Joueur {
 				}
 			}
 		}
+		try {
+			Thread.sleep(500);
+		} catch (Exception e) {}
 		return coupPossible[imax];
 	}
 	
