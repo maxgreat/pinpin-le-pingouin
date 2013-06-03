@@ -19,15 +19,22 @@ public class AireDeJeu extends JComponent
     private Point clicPrec;
     private Point clicPrec2;
 	private Coup coupPrec;
+	int largeurMenu;
+	int hauteurMenu;
+	int largeurAide;
+	int hauteurAide;
+	int largeurAnnuler;
+	int hauteurAnnuler;
+
 
 
     private Point centreAide = null;
     private Point centreSuggestion = null;
 
     boolean showDialog = true;
-	 boolean popup1 = true;
-	 boolean menuOuvert = false;
-	 boolean aide = false;
+	boolean popup1 = true;
+	boolean menuOuvert = false;
+	boolean aide = false;
 
     //definition des images
     BufferedImage imageJoueur1 = null;
@@ -46,6 +53,7 @@ public class AireDeJeu extends JComponent
 	BufferedImage info = null;
 	BufferedImage nonInfo = null;
 	BufferedImage suggest = null;
+	BufferedImage infoBulle = null;
 	BufferedImage poissonJ1 = null;
 	BufferedImage poissonJ2 = null;
 	BufferedImage poissonJ3 = null;
@@ -74,8 +82,11 @@ public class AireDeJeu extends JComponent
     protected double rayonH, rayonL;
 	
 	
+	//-------------------------------------------------
 	//Constructeur
-    public AireDeJeu(JFrame f, InterfaceGraphique inter){
+    //-------------------------------------------------
+    public AireDeJeu(JFrame f, InterfaceGraphique inter)
+    {
 		frame = f;
 	
 		largeur = 8;
@@ -121,8 +132,9 @@ public class AireDeJeu extends JComponent
 			boutonRefaire = ImageIO.read(getImage("refaire.png"));
 			fondEau = ImageIO.read(getImage("backgroundWater.png"));
 			info =  ImageIO.read(getImage("caseGlaceTestAide.png"));
-         nonInfo =  ImageIO.read(getImage("caseGlaceTestNonAide.png"));
+         	nonInfo =  ImageIO.read(getImage("caseGlaceTestNonAide.png"));
 			suggest= ImageIO.read(getImage("caseGlaceTestSuggestion.png"));
+			infoBulle = ImageIO.read(getImage("caseGlaceTestNonAide.png"));
 			poissonJ1 = ImageIO.read(getImage("poisson1.png"));
 			poissonJ2 = ImageIO.read(getImage("poisson2.png"));
 			//poissonJ3 = ImageIO.read(getImage("poisson3.png"));
@@ -140,19 +152,22 @@ public class AireDeJeu extends JComponent
         
     }
 
+    //-------------------------------------------------
     public int getHauteur()
     {
         return hauteur;
     }
 
+    //-------------------------------------------------
     public int getLargeur()
     {
         return largeur;
     }
     
-    //
+    
+    //-------------------------------------------------
     //affiche les carres des joueurs
-    //
+    //-------------------------------------------------
     private void afficherCarres(Graphics2D drawable, int margeGauche, int margeHaut)
     {
     	showDialog = true;
@@ -192,9 +207,9 @@ public class AireDeJeu extends JComponent
     }
 
 
-	//
+    //-------------------------------------------------
 	//affiche de n pingouins pour le joueur j
-	//
+    //-------------------------------------------------
 	private void afficherNPingouins(Graphics2D drawable, int j, int n)
 	{
 		switch(j){
@@ -227,9 +242,9 @@ public class AireDeJeu extends JComponent
 		}
 	}
 
-	//
+    //-------------------------------------------------
 	//affichage des pingouins qu'il reste à placer
-	//
+    //-------------------------------------------------
 	private void afficherPingouins(Graphics2D drawable)
 	{
 		//on récupère le nombre de pingouins de chaque joueur
@@ -250,9 +265,9 @@ public class AireDeJeu extends JComponent
 	}
 
 
-	//
+    //-------------------------------------------------
 	//PaintComponent
-	//
+    //-------------------------------------------------
     public void paintComponent(Graphics g)
     {
     	
@@ -339,8 +354,6 @@ public class AireDeJeu extends JComponent
 	
         }//fin traitement partie finie 
         
-       //partie en cours
-    
         //Recuperation de la configuration
         Configuration config = arbitre.getConfiguration();
         //Recuperation du Terrain
@@ -366,35 +379,43 @@ public class AireDeJeu extends JComponent
 		
 		//maj du tableau case
 		tabCase.setTab(rayonH, rayonL, margeHaut, margeGauche, largeur, hauteur);
-		Joueur joueur;
+		
 		
 		//Si on est en mode pose pingouins
-		if(ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN){
+		if(ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN)
+		{
 				afficherPingouins(drawable);
 		}
 		
 		
 		
 		//Dessin des boutons
-		//sur les cotés
-      if(aide)
-			drawable.drawImage(info,0, hauteur/2, (int)tabCase.largeur, (int)tabCase.hauteur,null);
-      else
-			drawable.drawImage(nonInfo,0, hauteur/2, (int)tabCase.largeur, (int)tabCase.hauteur,null);
+		largeurMenu = largeur/8;
+		hauteurMenu = (int)margeHaut/2;
+		largeurAide = (int)tabCase.largeur()/2;
+		hauteurAide = (int)tabCase.hauteur()/2;
+		largeurAnnuler = largeur/8;
+		hauteurAnnuler = (int)margeHaut/4;
+		
+		//bouton aide
+		if(aide)
+			drawable.drawImage(info, largeur/2-largeurMenu/2-largeurAide, 0, largeurAide, hauteurAide,null);
+		else
+			drawable.drawImage(nonInfo,largeur/2-largeurMenu/2-largeurAide, 0, largeurAide, hauteurAide,null);
+		//bouton info bulle
+		drawable.drawImage(infoBulle, largeur/2+largeurMenu/2, 0, largeurAide, hauteurAide, null);
+		//bouton suggestion
 		drawable.drawImage(suggest,largeur-(int)tabCase.largeur, hauteur/2, (int)tabCase.largeur,(int)tabCase.hauteur,null);
-		
-		
-		
 		//bouton menu
-		drawable.drawImage(boutonMenu, largeur/2-35, 0, 70,50,null);
+		drawable.drawImage(boutonMenu, largeur/2-largeurMenu/2, 0, largeurMenu,hauteurMenu,null);
 		//bouton annuler
-		drawable.drawImage(boutonAnnuler, largeur/4, hauteur-(int)rayonH-10, (int)rayonL*2+20, (int)rayonH, null);
+		drawable.drawImage(boutonAnnuler, largeur/4, hauteur-(int)margeHaut/2, largeurAnnuler, hauteurAnnuler, null);
 		//bouton refaire
-		drawable.drawImage(boutonRefaire, 3*largeur/4-(int)rayonL, hauteur-(int)rayonH-10, (int)rayonL*2+20, (int)rayonH, null);
+		drawable.drawImage(boutonRefaire, 3*largeur/4-largeurAnnuler, hauteur-(int)margeHaut/2, largeurAnnuler, hauteurAnnuler, null);
 
 
 		
-
+		Joueur joueur;
 		//Tracage des lignes de 7 pavés
 		for(int i=0;i<7;i++)
 		{
@@ -419,6 +440,8 @@ public class AireDeJeu extends JComponent
 						drawable.drawImage(trois_poissons,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
 					}
 					
+					
+					//dessin du joueur
 					joueur = c[2*j][i].getJoueurSurCase();
 					
 					if(joueur != null){
@@ -458,6 +481,8 @@ public class AireDeJeu extends JComponent
 						drawable.drawImage(trois_poissons,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
 					}
 				
+				
+					//dessin du joueur
 					joueur = c[2*j+1][i].getJoueurSurCase();
 				
 					if(joueur != null){
@@ -473,6 +498,7 @@ public class AireDeJeu extends JComponent
 				}
 			}
     	} //fin boucle for
+      
       
          if(aide)
          {
@@ -590,7 +616,7 @@ public class AireDeJeu extends JComponent
 		}//fin cadre de jeu
     	else
     	{ //on regarde si on a cliquer sur un bouton	
-			if(x > (largeur/2 - 35) && x < (largeur/2 + 35) && y < 50)
+			if(x > (largeur/2 - largeurMenu/2) && x < (largeur/2 + largeurMenu/2) && y < hauteurMenu)
 			{//clic sur menu
 				//Clic sur le bouton menu;
 				if(!menuOuvert)
@@ -627,45 +653,43 @@ public class AireDeJeu extends JComponent
 				}
 			}//fin clic sur menu
 			
-			else if(y > hauteur - (int)rayonH)
+			else if(y > (hauteur-margeHaut/2) && y < hauteur-margeHaut/2+hauteurAnnuler)
 			{//clic dans la bande en bas
-				if(x > largeur/4 && x < (largeur/4 + (int)rayonL*2))
+				if(x > largeur/4 && x < (largeur/4 + largeurAnnuler)) 
 				{
 					//Clic sur Retour
 					clicPrec.x = -1;
 					clicPrec.y = -1;
 					ArbitreManager.instance.reculerHistorique();
 				}
-				else if(x > (3*largeur/4) && x < (3*largeur/4 + (int)rayonL*2))
-				{   //clic sur refaire
+				else if(x > (3*largeur/4-largeurAnnuler) && x < (3*largeur/4))
+				{   
+					//clic sur refaire
 					clicPrec.x = -1;
 					clicPrec.y = -1;
 					ArbitreManager.instance.avancerHistorique();
 				}
 			}//fin clic sur la bande du bas
 			
-			else if(x < margeGauche )
-			{
-			
-				if (y > hauteur/2 && y <(int)tabCase.hauteur+hauteur/2)
-				{ 
-				//
-				//clic sur le bouton aide
-				//
-					//afficher aide 		drawable.drawImage(info,0, hauteur/2, (int)tabCase.largeur, (int)tabCase.hauteur,null);
-					aide = !aide;
-				}
-			}
-			else if(x > largeur - margeGauche)
+			if(x > largeur - margeGauche)
 			{
 				if (y > hauteur/2 && y <(int)tabCase.hauteur+hauteur/2) 
 				{
-				//
 				//clic sur le bouton suggestion
-				//
 					ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(inter.joueurs[0].getCoup());
 					clicPrec.x = p.x;
 					clicPrec.y = p.y;
+				}
+			}
+			if(y < hauteurAide)
+			{
+				if(x > (largeur/2-largeurMenu/2-largeurAide) && x < largeur/2-largeurMenu/2)
+				{ //clic sur aide
+					aide = !aide;
+				}
+				if(x > (largeur/2+largeurMenu/2) && x < largeur/2+largeurMenu/2+largeurAide)
+				{ //clic sur infobulle
+					aide = !aide;
 				}
 			}
     	}
