@@ -41,8 +41,6 @@ public class InterfaceTest extends Interface {
 				      
 					public void actionPerformed(ActionEvent evt)
 					{
-						System.out.println("tick");
-						
 						Interface inter = ArbitreManager.instance.getInterface();
 						((InterfaceTest)inter).time.stop();
 						ArbitreManager.stopperPartie();
@@ -56,7 +54,6 @@ public class InterfaceTest extends Interface {
 							{
 							}
 						}
-						System.out.println("Relance");
 						ArbitreManager.initialiserPartie(inter.joueurs, ArbitreManager.LARGEUR_GRILLE, ArbitreManager.HAUTEUR_GRILLE,inter);
 						ArbitreManager.lancerPartie();				
 					       
@@ -64,8 +61,6 @@ public class InterfaceTest extends Interface {
 				
 				});
 			time.start();
-		} else {
-			System.out.println("Coup joué");
 		}
 	}
 	
@@ -96,7 +91,6 @@ public class InterfaceTest extends Interface {
 							interrupt = true;
 						}
 					}
-					System.out.println("fin");
 				}
 			});
 		t.start();

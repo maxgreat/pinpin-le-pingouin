@@ -8,22 +8,32 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 	/**
 	 * Temps d'attente en seconde
 	 **/
-	static final long TEMPS_ATTENTE_MINIMAL = 1000; 
-	static final long TEMPS_ATTENTE_MAXIMAL = 1000;
+	static final long TEMPS_ATTENTE_MINIMAL = 500; 
 	
 	Joueur j;
 	Boolean finish;
+	long tmpMax;
 
 	public JoueurCPUMinimaxIncremental() {
 		super();
 		this.j = this;
 		this.finish = false;
+		this.tmpMax = 1000;
+		System.out.println("Changement a faire -> apeller JoueurCPUUniversel");
+	}
+
+	public JoueurCPUMinimaxIncremental(long tmpMax) {
+		super();
+		this.j = this;
+		this.finish = false;
+		this.tmpMax = tmpMax;
 	}
 	
-	public JoueurCPUMinimaxIncremental(Joueur j, Boolean finish) {
+	public JoueurCPUMinimaxIncremental(Joueur j, Boolean finish, long tmpMax) {
 		super();
 		this.j = j;
 		this.finish = finish;
+		this.tmpMax = tmpMax;
 	}
 	
 	public static String getType()
@@ -56,7 +66,7 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 		}
 		
 		// tant que tempsCourant - tempsDepart < TEMPS_ATTENTE_MAXIMAL
-		while (pas < 100 && System.currentTimeMillis() - startMilli < TEMPS_ATTENTE_MAXIMAL) {
+		while (pas < 100 && System.currentTimeMillis() - startMilli < this.tmpMax) {
 			if (ArbitreManager.instance.getForceStop()) {
 		       		return null;
 			}
@@ -65,7 +75,7 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 			t = new Thread(miniI);
 			try {
 				t.start();
-				Thread.sleep(TEMPS_ATTENTE_MAXIMAL - (System.currentTimeMillis() - startMilli));
+				Thread.sleep(this.tmpMax - (System.currentTimeMillis() - startMilli));
 				try {
 					t.interrupt();
 					t.join();

@@ -3,17 +3,17 @@ import Arbitre.*;
 import Arbitre.Regles.*;
 import java.util.*;
 
-public class JoueurCPUPhase extends Joueur {
+public class JoueurCPUPhaseInter extends Joueur {
       	
 	JoueurCPURandomizable cpuRdizable;
 	Joueur player;
 
-	public JoueurCPUPhase() {
+	public JoueurCPUPhaseInter() {
 		this.cpuRdizable = new JoueurCPURandomizable(this);
 		this.player = this;
 	}
 
-	public JoueurCPUPhase(Joueur j) {
+	public JoueurCPUPhaseInter(Joueur j) {
 		this.cpuRdizable = new JoueurCPURandomizable(j);
 		this.player = j;
 	}
@@ -45,7 +45,7 @@ public class JoueurCPUPhase extends Joueur {
 			 * Phase centrale
 			 * Utilisation du MinimaxIncremental
 			 **/
-			JoueurCPUMinimaxIncremental cpuMinimax = new JoueurCPUMinimaxIncremental(this.player, false, 5000);
+			JoueurCPUMinimaxIncremental cpuMinimax = new JoueurCPUMinimaxIncremental(this.player, false, 1000);
 			Coup coup = cpuMinimax.coupSuivant();
 			return coup;
 		}
