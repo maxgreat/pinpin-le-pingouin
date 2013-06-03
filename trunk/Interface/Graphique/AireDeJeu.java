@@ -513,14 +513,14 @@ public class AireDeJeu extends JComponent
 		}
        
        //tracage du coup précédent
-	/*	coupPrec = ArbitreManager.instance.getConfiguration().getCoupEffectue();
-		if(coupPrec != null)
+		coupPrec = ArbitreManager.instance.dernierCoup();
+		if(ArbitreManager.instance.getMode() != ModeDeJeu.POSE_PINGOUIN && coupPrec != null)
 		{
-			System.out.println("Coup prec n'est pas nul");
-			drawable.drawImage(entoure, tabCase.sommetG_x(coupPrec.getYDepart(), coupPrec.getXDepart()), tabCase.sommetG_y(coupPrec.getYDepart(), coupPrec.getXDepart()), tabCase.largeur(), tabCase.hauteur(), null);
+			System.out.println(coupPrec);
+            drawable.drawImage(entoure, tabCase.sommetG_x(coupPrec.getYDepart(), coupPrec.getXDepart()), tabCase.sommetG_y(coupPrec.getYDepart(), coupPrec.getXDepart()), tabCase.largeur(), tabCase.hauteur(), null);
 			drawable.drawImage(entoure, tabCase.sommetG_x(coupPrec.getYArrivee(), coupPrec.getXArrivee()), tabCase.sommetG_y(coupPrec.getYArrivee(), coupPrec.getXArrivee()), tabCase.largeur(), tabCase.hauteur(), null);
 		}	
-      */ 
+      
        
        
     }//fin methode paint

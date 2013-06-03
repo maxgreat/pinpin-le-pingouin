@@ -75,7 +75,21 @@ public class Historique implements Serializable
      **/
     public Configuration courante()
     {
-	return pileAvant.peek();
+        return pileAvant.peek();
+    }
+
+    /**
+     * Retourne l'avant-derni-re configuration
+     **/
+    public Configuration avantDerniere()
+    {
+        if (!peutReculer())
+            return null;
+
+        Configuration c = reculer();
+        avance();
+        
+        return c;
     }
 
 

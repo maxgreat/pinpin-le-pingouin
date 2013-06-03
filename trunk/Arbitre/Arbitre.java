@@ -319,8 +319,6 @@ public class Arbitre implements Runnable, Serializable
         inter.repaint();
     }
 
-    
-
     /**
      * Retourne le joueur courant
      **/
@@ -548,5 +546,19 @@ public class Arbitre implements Runnable, Serializable
 
         configurationCourante = historique.courante();
         signalStop = new Signal<Object>();
+    }
+
+    /**
+     * Retourne le dernier coup joué
+     **/
+
+    public Coup dernierCoup()
+    {
+        Configuration c = historique.avantDerniere();
+        
+        if (c != null)
+            return c.getCoupEffectue();
+        else
+            return null;
     }
 }
