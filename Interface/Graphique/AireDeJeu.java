@@ -88,6 +88,7 @@ public class AireDeJeu extends JComponent
 	    tabCase.initHexagone();
 	    clicPrec = new Point(-1,-1);
 		coupPrec = new Coup(-1,-1,-1,-1);
+		aide = true;
 		
 		//
 		//Chargement des Images
@@ -369,18 +370,12 @@ public class AireDeJeu extends JComponent
 		
 		//Si on est en mode pose pingouins
 		if(ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN){
-            clicPrec = new Point(-1,-1);
-				//demande à l'utilisateur de placer les pingouins
-				drawable.drawImage(placement, largeur/4 + (int)rayonL*3, hauteur-(int)rayonH-10, largeur/4 + 30, 2*(int)rayonH/3, null);
-				//affichage des pingouins sous les cases des joueurs
 				afficherPingouins(drawable);
 		}
 		
 		
 		
 		//Dessin des boutons
-	
-		
 		//sur les cotés
       if(aide)
 			drawable.drawImage(info,0, hauteur/2, (int)tabCase.largeur, (int)tabCase.hauteur,null);
@@ -513,14 +508,14 @@ public class AireDeJeu extends JComponent
 		}
        
        //tracage du coup précédent
-		coupPrec = ArbitreManager.instance.dernierCoup();
-		if(ArbitreManager.instance.getMode() != ModeDeJeu.POSE_PINGOUIN && coupPrec != null)
+		coupPrec = ArbitreManager.instance.getConfiguration().getCoupEffectue();
+		if(coupPrec != null)
 		{
-			System.out.println(coupPrec);
-            drawable.drawImage(entoure, tabCase.sommetG_x(coupPrec.getYDepart(), coupPrec.getXDepart()), tabCase.sommetG_y(coupPrec.getYDepart(), coupPrec.getXDepart()), tabCase.largeur(), tabCase.hauteur(), null);
-			drawable.drawImage(entoure, tabCase.sommetG_x(coupPrec.getYArrivee(), coupPrec.getXArrivee()), tabCase.sommetG_y(coupPrec.getYArrivee(), coupPrec.getXArrivee()), tabCase.largeur(), tabCase.hauteur(), null);
+			if(coupPrec.getYDepart() != -1 && coupPrec.getXDepart() != -1)
+				drawable.drawImage(entoure, tabCase.sommetG_x(coupPrec.getXDepart(), coupPrec.getYDepart()), tabCase.sommetG_y(coupPrec.getXDepart(), coupPrec.getYDepart()), tabCase.largeur(), tabCase.hauteur(), null);
+			if(coupPrec.getYArrivee() != -1 && coupPrec.getXArrivee() != -1)
+				drawable.drawImage(entoure, tabCase.sommetG_x(coupPrec.getXArrivee(), coupPrec.getYArrivee()), tabCase.sommetG_y(coupPrec.getXArrivee(), coupPrec.getYArrivee()), tabCase.largeur(), tabCase.hauteur(), null);
 		}	
-      
        
        
     }//fin methode paint
@@ -631,6 +626,7 @@ public class AireDeJeu extends JComponent
 					} catch (java.beans.PropertyVetoException e) {}
 				}
 			}//fin clic sur menu
+			
 			else if(y > hauteur - (int)rayonH)
 			{//clic dans la bande en bas
 				if(x > largeur/4 && x < (largeur/4 + (int)rayonL*2))
@@ -647,16 +643,30 @@ public class AireDeJeu extends JComponent
 					ArbitreManager.instance.avancerHistorique();
 				}
 			}//fin clic sur la bande du bas
+			
 			else if(x < margeGauche )
-			{//clic sur le bouton aide
-				if (y > hauteur/2 && x < (int)tabCase.largeur && y <(int)tabCase.hauteur+hauteur/2) 
+			{
+			
+				if (y > hauteur/2 && y <(int)tabCase.hauteur+hauteur/2)
+				{ 
+				//
+				//clic sur le bouton aide
+				//
 					//afficher aide 		drawable.drawImage(info,0, hauteur/2, (int)tabCase.largeur, (int)tabCase.hauteur,null);
-					aide = true;
+					aide = !aide;
+				}
 			}
 			else if(x > largeur - margeGauche)
-			{//clic sur le bouton suggestion
-				//if distance(y, centreSuggestion) < hauteur du bouton suggestion
-					//jouer coup
+			{
+				if (y > hauteur/2 && y <(int)tabCase.hauteur+hauteur/2) 
+				{
+				//
+				//clic sur le bouton suggestion
+				//
+					ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(inter.joueurs[0].getCoup());
+					clicPrec.x = p.x;
+					clicPrec.y = p.y;
+				}
 			}
     	}
 
