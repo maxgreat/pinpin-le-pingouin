@@ -16,8 +16,9 @@ public class AireDeJeu extends JComponent
     JFrame frame;
     JPanel pan;
     InterfaceGraphique inter;
-    private Point coupPrec;
-    private Point coupPrec2;
+    private Point clicPrec;
+    private Point clicPrec2;
+	private Coup coupPrec;
 
 
     private Point centreAide = null;
@@ -59,8 +60,8 @@ public class AireDeJeu extends JComponent
     BufferedImage deux_poissons = null;
     BufferedImage trois_poissons = null;
     BufferedImage poissonRouge = null;
-	 BufferedImage un_poisson_aide = null;
-	 BufferedImage deux_poissons_aide = null;
+	BufferedImage un_poisson_aide = null;
+	BufferedImage deux_poissons_aide = null;
     BufferedImage trois_poissons_aide = null;
 
     // largeur de l'aire	
@@ -85,8 +86,9 @@ public class AireDeJeu extends JComponent
 		//création du tableau de case
 	    tabCase = new Hexagone();
 	    tabCase.initHexagone();
-	    coupPrec = new Point(-1,-1);
-
+	    clicPrec = new Point(-1,-1);
+		coupPrec = new Coup(-1,-1,-1,-1);
+		
 		//
 		//Chargement des Images
         try 
@@ -275,8 +277,7 @@ public class AireDeJeu extends JComponent
                 s ="Victoire du joueur 2 - Poissons : "+inter.joueurs[1].getScore()+", Tuiles : "+inter.joueurs[1].getNombreTuile()+" !!!";
 			}
             else
-			{
-	    	//scores égaux
+			{//scores égaux
 	    		if(inter.joueurs[0].getNombreTuile() > inter.joueurs[1].getNombreTuile())
 	    		{
                  s ="   Victoire du joueur 1 - Poissons : " + inter.joueurs[0].getScore()+", Tuiles : "+ inter.joueurs[0].getNombreTuile()+" !!!   ";
@@ -368,7 +369,7 @@ public class AireDeJeu extends JComponent
 		
 		//Si on est en mode pose pingouins
 		if(ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN){
-            coupPrec = new Point(-1,-1);
+            clicPrec = new Point(-1,-1);
 				//demande à l'utilisateur de placer les pingouins
 				drawable.drawImage(placement, largeur/4 + (int)rayonL*3, hauteur-(int)rayonH-10, largeur/4 + 30, 2*(int)rayonH/3, null);
 				//affichage des pingouins sous les cases des joueurs
@@ -397,9 +398,11 @@ public class AireDeJeu extends JComponent
 		drawable.drawImage(boutonRefaire, 3*largeur/4-(int)rayonL, hauteur-(int)rayonH-10, (int)rayonL*2+20, (int)rayonH, null);
 
 
+		
 
 		//Tracage des lignes de 7 pavés
-		for(int i=0;i<7;i++){
+		for(int i=0;i<7;i++)
+		{
 			for(int j=0;j<4;j++){
 				if(c[2*j][i] != null){               
 					if(c[2*j][i].getEtat() == Etat.DEUX_POISSONS){
@@ -424,10 +427,6 @@ public class AireDeJeu extends JComponent
 					joueur = c[2*j][i].getJoueurSurCase();
 					
 					if(joueur != null){
-						if(coupPrec.x == 2*j && coupPrec.y == i)
-						{
-							drawable.drawImage(entoure,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
-						}
 						BufferedImage imageJoueur = null;
 						if(joueur == inter.joueurs[0])
 						{
@@ -442,7 +441,8 @@ public class AireDeJeu extends JComponent
 		}
 
 		//tracage des lignes de 8
-		for(int i=0;i<8;i++){
+		for(int i=0;i<8;i++)
+		{
 			for(int j=0;j<4;j++){
 				if(c[2*j+1][i] != null){                  
 					if(c[2*j+1][i].getEtat() == Etat.DEUX_POISSONS){
@@ -466,10 +466,6 @@ public class AireDeJeu extends JComponent
 					joueur = c[2*j+1][i].getJoueurSurCase();
 				
 					if(joueur != null){
-						if(coupPrec.x == 2*j+1 && coupPrec.y == i)
-						{
-							drawable.drawImage(entoure,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
-						}
 						BufferedImage imageJoueur = null;
 						if(joueur == inter.joueurs[0])
 						{
@@ -481,29 +477,49 @@ public class AireDeJeu extends JComponent
 					}
 				}
 			}
-    	} //fin affichage partie en cours
-      if(aide){
-         if(coupPrec.x != -1 && coupPrec.y != -1){
-				Coup [] coup =  ArbitreManager.instance.getConfiguration().coupsPossiblesCase(coupPrec.y, coupPrec.x);
-
-		      int i,j;
-			
-				for(int k = 0; k < coup.length;k++){
-
-				   i = coup[k].getXArrivee();
-				   j = coup[k].getYArrivee();
-				   if(c[j][i].getEtat() == Etat.DEUX_POISSONS){
-					   drawable.drawImage(deux_poissons_aide,tabCase.sommetG_x(i,j),tabCase.sommetG_y(i,j),tabCase.largeur(),tabCase.hauteur(),null);
-					}
-					else if(c[j][i].getEtat() == Etat.UN_POISSON){
-					   drawable.drawImage(un_poisson_aide,tabCase.sommetG_x(i,j),tabCase.sommetG_y(i,j),tabCase.largeur(),tabCase.hauteur(),null);
-					}
-					else if(c[j][i].getEtat() == Etat.TROIS_POISSONS){
-					   drawable.drawImage(trois_poissons_aide,tabCase.sommetG_x(i,j),tabCase.sommetG_y(i,j),tabCase.largeur(),tabCase.hauteur(),null);
-					} 
-		      }  
-		   }
-       }
+    	} //fin boucle for
+      
+         if(clicPrec.x != -1 && clicPrec.y != -1)
+         {
+			Coup [] coup =  ArbitreManager.instance.getConfiguration().coupsPossiblesCase(clicPrec.y, clicPrec.x);
+	        int i,j;
+		
+			for(int k = 0; k < coup.length;k++)
+			{
+			   i = coup[k].getXArrivee();
+			   j = coup[k].getYArrivee();
+			   if(c[j][i].getEtat() == Etat.DEUX_POISSONS)
+			   {
+				   drawable.drawImage(deux_poissons_aide,tabCase.sommetG_x(i,j),tabCase.sommetG_y(i,j),tabCase.largeur(),tabCase.hauteur(),null);
+				}
+				else if(c[j][i].getEtat() == Etat.UN_POISSON)
+				{
+				   drawable.drawImage(un_poisson_aide,tabCase.sommetG_x(i,j),tabCase.sommetG_y(i,j),tabCase.largeur(),tabCase.hauteur(),null);
+				}
+				else if(c[j][i].getEtat() == Etat.TROIS_POISSONS)
+				{
+				   drawable.drawImage(trois_poissons_aide,tabCase.sommetG_x(i,j),tabCase.sommetG_y(i,j),tabCase.largeur(),tabCase.hauteur(),null);
+				} 
+	      }  
+	   }
+       
+        //affichage du joueur selectionné
+        if(clicPrec.x != -1 && clicPrec.y != -1)
+		{ 
+			drawable.drawImage(entoure, tabCase.sommetG_x(clicPrec.y, clicPrec.x), tabCase.sommetG_y(clicPrec.y, clicPrec.x), tabCase.largeur(), tabCase.hauteur(), null);
+		}
+       
+       //tracage du coup précédent
+		coupPrec = ArbitreManager.instance.getConfiguration().getCoupEffectue();
+		if(coupPrec != null)
+		{
+			System.out.println("Coup prec n'est pas nul");
+			drawable.drawImage(entoure, tabCase.sommetG_x(coupPrec.getYDepart(), coupPrec.getXDepart()), tabCase.sommetG_y(coupPrec.getYDepart(), coupPrec.getXDepart()), tabCase.largeur(), tabCase.hauteur(), null);
+			drawable.drawImage(entoure, tabCase.sommetG_x(coupPrec.getYArrivee(), coupPrec.getXArrivee()), tabCase.sommetG_y(coupPrec.getYArrivee(), coupPrec.getXArrivee()), tabCase.largeur(), tabCase.hauteur(), null);
+		}	
+       
+       
+       
     }//fin methode paint
 
 
@@ -529,24 +545,24 @@ public class AireDeJeu extends JComponent
 			
 			else
 			{ //mode jeu
-				if(coupPrec.x == -1 || coupPrec.y == -1)
+				if(clicPrec.x == -1 || clicPrec.y == -1)
 				{ //le coup precedent est nul
 					Case [][] t = ArbitreManager.instance.getConfiguration().getTerrain();
 					if(t[p.x][p.y] != null){
 						if(t[p.x][p.y].getJoueurSurCase() == ArbitreManager.instance.getJoueurCourant()) {
-						   coupPrec.x = p.x;
-							coupPrec.y = p.y;
+						   clicPrec.x = p.x;
+							clicPrec.y = p.y;
 						}
 					}
 				} //fin coup precedent nul
 				else 
 				{ //le coup precedent est sur un pingouin du joueur
-					Coup c = new Coup(coupPrec.y, coupPrec.x, p.y, p.x);
+					Coup c = new Coup(clicPrec.y, clicPrec.x, p.y, p.x);
 					if(ArbitreManager.instance.getConfiguration().estCoupPossible(c))
 					{ //le coup demandé est possible
 						ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(c);
-						coupPrec.x = p.x;
-						coupPrec.y = p.y;
+						clicPrec.x = p.x;
+						clicPrec.y = p.y;
 					}
 					else
 					{//coup non dispo
@@ -554,18 +570,19 @@ public class AireDeJeu extends JComponent
 						Case [][] t = ArbitreManager.instance.getConfiguration().getTerrain();
 						if(t[p.x][p.y].getJoueurSurCase() == ArbitreManager.instance.getJoueurCourant()) 
 						{//clic sur un pingouin du joueur
-							coupPrec.x = p.x;
-							coupPrec.y = p.y;
+							clicPrec.x = p.x;
+							clicPrec.y = p.y;
 						}//fin si
 						else
 						{//on annule la selecion du pingouin
-							coupPrec = new Point(-1, -1);
+							clicPrec = new Point(-1, -1);
 						}//fin else
 					}//fin coup non dispo
 				}//fin else
 			} //fin mode jeu
 		}//fin cadre de jeu
-    	else{ //on regarde si on a cliquer sur un bouton	
+    	else
+    	{ //on regarde si on a cliquer sur un bouton	
 			if(x > (largeur/2 - 35) && x < (largeur/2 + 35) && y < 50)
 			{//clic sur menu
 				//Clic sur le bouton menu;
