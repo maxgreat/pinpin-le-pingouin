@@ -479,11 +479,12 @@ public class AireDeJeu extends JComponent
 			}
     	} //fin boucle for
       
-      if(clicPrec.x != -1 && clicPrec.y != -1 && aide)
-      {
+         
+         if(clicPrec.x != -1 && clicPrec.y != -1)
+         {
 			Coup [] coup =  ArbitreManager.instance.getConfiguration().coupsPossiblesCase(clicPrec.y, clicPrec.x);
 	        int i,j;
-		   
+		
 			for(int k = 0; k < coup.length;k++)
 			{
 			   i = coup[k].getXArrivee();
@@ -510,14 +511,14 @@ public class AireDeJeu extends JComponent
 		}
        
        //tracage du coup précédent
-		coupPrec = ArbitreManager.instance.getConfiguration().getCoupEffectue();
+	/*	coupPrec = ArbitreManager.instance.getConfiguration().getCoupEffectue();
 		if(coupPrec != null)
 		{
 			System.out.println("Coup prec n'est pas nul");
 			drawable.drawImage(entoure, tabCase.sommetG_x(coupPrec.getYDepart(), coupPrec.getXDepart()), tabCase.sommetG_y(coupPrec.getYDepart(), coupPrec.getXDepart()), tabCase.largeur(), tabCase.hauteur(), null);
 			drawable.drawImage(entoure, tabCase.sommetG_x(coupPrec.getYArrivee(), coupPrec.getXArrivee()), tabCase.sommetG_y(coupPrec.getYArrivee(), coupPrec.getXArrivee()), tabCase.largeur(), tabCase.hauteur(), null);
 		}	
-       
+      */ 
        
        
     }//fin methode paint
@@ -557,27 +558,36 @@ public class AireDeJeu extends JComponent
 				} //fin coup precedent nul
 				else 
 				{ //le coup precedent est sur un pingouin du joueur
-					Coup c = new Coup(clicPrec.y, clicPrec.x, p.y, p.x);
-					if(ArbitreManager.instance.getConfiguration().estCoupPossible(c))
-					{ //le coup demandé est possible
-						ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(c);
-						clicPrec.x = p.x;
-						clicPrec.y = p.y;
+				
+					if(clicPrec.x == p.x && clicPrec.y == p.y)
+					{
+						clicPrec.x = -1;
+						clicPrec.y = -1;
 					}
 					else
-					{//coup non dispo
-						System.out.println("Le coup " + c + " n'est pas pas autorisé"); 
-						Case [][] t = ArbitreManager.instance.getConfiguration().getTerrain();
-						if(t[p.x][p.y].getJoueurSurCase() == ArbitreManager.instance.getJoueurCourant()) 
-						{//clic sur un pingouin du joueur
+					{
+						Coup c = new Coup(clicPrec.y, clicPrec.x, p.y, p.x);
+						if(ArbitreManager.instance.getConfiguration().estCoupPossible(c))
+						{ //le coup demandé est possible
+							ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(c);
 							clicPrec.x = p.x;
 							clicPrec.y = p.y;
-						}//fin si
+						}
 						else
-						{//on annule la selecion du pingouin
-							clicPrec = new Point(-1, -1);
-						}//fin else
-					}//fin coup non dispo
+						{//coup non dispo
+							System.out.println("Le coup " + c + " n'est pas pas autorisé"); 
+							Case [][] t = ArbitreManager.instance.getConfiguration().getTerrain();
+							if(t[p.x][p.y].getJoueurSurCase() == ArbitreManager.instance.getJoueurCourant()) 
+							{//clic sur un pingouin du joueur
+								clicPrec.x = p.x;
+								clicPrec.y = p.y;
+							}//fin si
+							else
+							{//on annule la selecion du pingouin
+								clicPrec = new Point(-1, -1);
+							}//fin else
+						}//fin coup non dispo
+					}
 				}//fin else
 			} //fin mode jeu
 		}//fin cadre de jeu
@@ -624,11 +634,14 @@ public class AireDeJeu extends JComponent
 				if(x > largeur/4 && x < (largeur/4 + (int)rayonL*2))
 				{
 					//Clic sur Retour
+					clicPrec.x = -1;
+					clicPrec.y = -1;
 					ArbitreManager.instance.reculerHistorique();
 				}
 				else if(x > (3*largeur/4) && x < (3*largeur/4 + (int)rayonL*2))
 				{   //clic sur refaire
-					System.out.println("Refaire");
+					clicPrec.x = -1;
+					clicPrec.y = -1;
 					ArbitreManager.instance.avancerHistorique();
 				}
 			}//fin clic sur la bande du bas
