@@ -370,10 +370,7 @@ public class AireDeJeu extends JComponent
 		
 		
 		//Dessin des boutons
-		
-		//en haut
-		//drawable.drawImage(info,largeur/4, 0, (int)tabCase.largeur, (int)tabCase.hauteur,null);
-		//drawable.drawImage(suggest,3*largeur/4-(int)tabCase.largeur, 0, (int)tabCase.largeur,(int)tabCase.hauteur,null);
+	
 		
 		//sur les cotés
 		drawable.drawImage(info,0, hauteur/2, (int)tabCase.largeur, (int)tabCase.hauteur,null);
@@ -432,8 +429,6 @@ public class AireDeJeu extends JComponent
 				}
 			}
 		}
-		// case de suggestions
-		
 
 		//tracage des lignes de 8
 		for(int i=0;i<8;i++){
@@ -478,8 +473,6 @@ public class AireDeJeu extends JComponent
     	} //fin affichage partie en cours
 
     }//fin methode paint
-
-
 
 
 	//
@@ -559,10 +552,10 @@ public class AireDeJeu extends JComponent
 					JButton menuP = new JButton("Menu Principal");
 					JButton save = new JButton("Sauvegarder");
 					pan.setLayout(new GridLayout( 4, 1));
-					recommencer.addActionListener(new EcouteurDeBouton("Recommencer", inter));
-					bQuitter.addActionListener(new EcouteurDeBouton("Quitter", inter));
-					menuP.addActionListener(new EcouteurDeBouton("Retour Menu Principal", inter));
-					save.addActionListener(new EcouteurDeBouton("Sauvegarder", inter));
+					recommencer.addActionListener(new EcouteurDeBoutonMenu("Recommencer", inter, popup));
+					bQuitter.addActionListener(new EcouteurDeBoutonMenu("Quitter", inter, popup));
+					menuP.addActionListener(new EcouteurDeBoutonMenu("Retour Menu Principal", inter, popup));
+					save.addActionListener(new EcouteurDeBoutonMenu("Sauvegarder", inter, popup));
 					pan.add(save,BorderLayout.CENTER);
 					pan.add(recommencer,BorderLayout.CENTER);
 					pan.add(menuP,BorderLayout.CENTER);
@@ -590,17 +583,12 @@ public class AireDeJeu extends JComponent
 					ArbitreManager.instance.avancerHistorique();
 				}
 			}//fin clic sur la bande du bas
-			else if(x > margeGauche )
-			{//clic sur le bouton aide
-				//if distance(y, centreAide) < hauteur du bouton aide
-					//afficher aide
-
-			}
-			else if(x > largeur - margeGauche)
-			{//clic sur le bouton suggestion
-				//if distance(y, centreSuggestion) < hauteur du bouton suggestion
+			//if distance(y, centreAide) < hauteur du bouton aide
+				//afficher aide
+			//}
+			//if distance( (x,y), centreSuggestion) < hauteur du bouton suggestion
 					//jouer coup
-			}
+			//}
     	}
     	this.repaint();
     }
