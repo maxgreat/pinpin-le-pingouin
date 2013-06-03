@@ -16,23 +16,26 @@ public class Case implements Cloneable, Serializable
     public Case(Etat e, Joueur joueurSurCase)
     {
         this.e = e;
-        this.position = ArbitreManager.instance.getPosition(joueurSurCase);
+        if (joueurSurCase == null)
+            this.position = 0;
+        else
+            this.position = ArbitreManager.instance.getPosition(joueurSurCase);
     }
 
     public Joueur getJoueurSurCase()
     {
-	if (this.position == 0)
-	    return null;
+        if (this.position == 0)
+            return null;
 
         return ArbitreManager.instance.getJoueurParPosition(position);
     }
 
     public void setJoueurSurCase(Joueur joueurSurCase)
     {
-	if (joueurSurCase == null)
-	    this.position = 0;
-	else
-	    this.position = ArbitreManager.instance.getPosition(joueurSurCase);
+        if (joueurSurCase == null)
+            this.position = 0;
+        else
+            this.position = ArbitreManager.instance.getPosition(joueurSurCase);
     }
 
     public Etat getEtat()
@@ -106,7 +109,7 @@ public class Case implements Cloneable, Serializable
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
     { 
         int position = in.readInt();
-	Etat e = (Etat)in.readObject();
+        Etat e = (Etat)in.readObject();
 
         this.position = position;
         setEtat(e);

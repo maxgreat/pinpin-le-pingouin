@@ -1,6 +1,7 @@
 package Interface.Graphique;
 import javax.swing.*;
 import Arbitre.*;
+import Arbitre.Regles.*;
 import java.awt.*;
 import java.awt.event.*;
 import Interface.*;
@@ -21,6 +22,8 @@ public class InterfaceGraphique extends Interface
     private LinkedList<String> oldPage;
     Joueur [] joueurs = new Joueur[2];
 
+    public String filename = null;
+
     public void addBouton(JPanel panel, String S)
 	{
 		JPanel pan = new JPanel();
@@ -37,6 +40,10 @@ public class InterfaceGraphique extends Interface
      
     public void run(String [] arguments)
     {	
+
+        if (arguments.length > 0)
+            filename = arguments[0];
+
     	//historique de navigation dans les menus
 		joueurs[0] = new JoueurHumain();
 		joueurs[1] = new JoueurCPURd();
@@ -89,17 +96,25 @@ public class InterfaceGraphique extends Interface
     
     public void initialiserPartie(Joueur [] j)
     {		
-    		//lancement de la partie
-			ArbitreManager.initialiserPartie(j ,ArbitreManager.LARGEUR_GRILLE, ArbitreManager.HAUTEUR_GRILLE, this); 
-			ArbitreManager.lancerPartie();
+        if (filename != null)
+        {
+            Case [][] terrain = Configuration.terrainOfficiel(filename);
+            ArbitreManager.initialiserPartie(j ,ArbitreManager.LARGEUR_GRILLE, ArbitreManager.HAUTEUR_GRILLE, this, terrain); 
+        }
+        else
+        {   
+            // Lancement de la partie
+            ArbitreManager.initialiserPartie(j ,ArbitreManager.LARGEUR_GRILLE, ArbitreManager.HAUTEUR_GRILLE, this); 
+        }
+        ArbitreManager.lancerPartie();
 			
-			aire = new AireDeJeu(frame, this);
-			aire.setPreferredSize(new Dimension(700,500));
-			aire.addMouseListener(new EcouteurDeSouris(aire));
-			aire.repaint();
-			aire.setVisible(true);
-			frame.setContentPane(aire);
-			frame.pack();
+        aire = new AireDeJeu(frame, this);
+        aire.setPreferredSize(new Dimension(700,500));
+        aire.addMouseListener(new EcouteurDeSouris(aire));
+        aire.repaint();
+        aire.setVisible(true);
+        frame.setContentPane(aire);
+        frame.pack();
     }
     
     
@@ -206,28 +221,28 @@ public class InterfaceGraphique extends Interface
 		
 		}
 		/*if(S.compareTo("Gestion de profil") == 0)
-		{
-			removeFrame(frame);
-			Old_page.addFirst("Gestion de profil");
-			Menu.add(P.Tab[3]);
-			Menu.add(P.Tab[5]);
-			fond.add(ban);
-			fond.add(Menu);
-			frame.add(fond);
-			frame.repaint();
-			frame.pack();	
-		}
-		if(S.compareTo("Classements") == 0)
-		{
-			removeFrame(frame);
+          {
+          removeFrame(frame);
+          Old_page.addFirst("Gestion de profil");
+          Menu.add(P.Tab[3]);
+          Menu.add(P.Tab[5]);
+          fond.add(ban);
+          fond.add(Menu);
+          frame.add(fond);
+          frame.repaint();
+          frame.pack();	
+          }
+          if(S.compareTo("Classements") == 0)
+          {
+          removeFrame(frame);
 			
-			Old_page.addFirst("Classement");
-			Menu.add(P.Tab[4]);
-			Menu.add(P.Tab[5]);
-			fond.add(Menu);
-			frame.add(fond);
-			frame.repaint();
-			frame.pack();	
-		}*/
+          Old_page.addFirst("Classement");
+          Menu.add(P.Tab[4]);
+          Menu.add(P.Tab[5]);
+          fond.add(Menu);
+          frame.add(fond);
+          frame.repaint();
+          frame.pack();	
+          }*/
 	}
 }

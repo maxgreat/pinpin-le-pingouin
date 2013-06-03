@@ -124,17 +124,9 @@ public class ArbitreManager
     /**
      * Initialise une partie
      **/
+
     public static Arbitre initialiserPartie(Joueur [] joueurs, int largeur, int hauteur, Interface inter)
     {
-        // Créé l'arbitre
-        instance = new Arbitre(joueurs, largeur, hauteur);
-  
-        // Initialise le score des joueurs
-        for (int i = 0; i < joueurs.length; i++)
-        {
-            joueurs[i].setScore(0);
-            joueurs[i].setNombreTuile(0);
-        }
 
 
         // Créé le terrain de base
@@ -277,6 +269,22 @@ public class ArbitreManager
             }
         }
                     
+        return initialiserPartie(joueurs, largeur, hauteur, inter, terrain);
+    }
+
+
+    public static Arbitre initialiserPartie(Joueur [] joueurs, int largeur, int hauteur, Interface inter, Case [][] terrain)
+    {
+        // Créé l'arbitre
+        instance = new Arbitre(joueurs, largeur, hauteur);
+  
+        // Initialise le score des joueurs
+        for (int i = 0; i < joueurs.length; i++)
+        {
+            joueurs[i].setScore(0);
+            joueurs[i].setNombreTuile(0);
+        }
+
 
         // Lie l'interface
         instance.setInterface(inter);

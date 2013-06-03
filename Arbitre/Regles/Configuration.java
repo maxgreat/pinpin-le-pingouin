@@ -39,7 +39,7 @@ public class Configuration implements Cloneable, Serializable
      **/
     public void setTerrain (Case [][] t)
     {
-       this.terrain = t;
+        this.terrain = t;
     }
     public int getLargeur()
     {
@@ -165,8 +165,8 @@ public class Configuration implements Cloneable, Serializable
 		
                 if (joueurSurCase != null)
                 {
-						  if(!getVoisins(this.terrain,i,j,true).isEmpty())
-                    		pingouins[joueurList.indexOf(joueurSurCase)]++;
+                    if(!getVoisins(this.terrain,i,j,true).isEmpty())
+                        pingouins[joueurList.indexOf(joueurSurCase)]++;
                 }
             }
         }
@@ -190,7 +190,7 @@ public class Configuration implements Cloneable, Serializable
 		
                 if (joueurSurCase == joueur)
                 {
-						  coord.add(new Couple(i,j));
+                    coord.add(new Couple(i,j));
                 }
             }
         }
@@ -204,20 +204,20 @@ public class Configuration implements Cloneable, Serializable
 	public int [] scoreIlotParJoueur(Joueur [] joueurs){
         int [] score = new int[joueurs.length];
         ArrayList<Joueur> joueurList = new ArrayList<Joueur>(Arrays.asList(joueurs));
-		  Joueur sauv = getJoueurSurConfiguration();
+        Joueur sauv = getJoueurSurConfiguration();
         for (int i = 0; i < joueurs.length; i++)
             score[i] = 0;
 
         for (int i = 0; i < joueurs.length; i++)
         {
-			 Couple [] cP = coordPingouins(joueurs[i]);
-			 setJoueurSurConfiguration(joueurs[i]);
-			 for (int j = 0; j < cP.length; j++)
-			 {
+            Couple [] cP = coordPingouins(joueurs[i]);
+            setJoueurSurConfiguration(joueurs[i]);
+            for (int j = 0; j < cP.length; j++)
+            {
 				score[i] += estIlot(cP[j].getX(),cP[j].getY()).getX();
-			 }            
+            }            
         }
-		  setJoueurSurConfiguration(sauv);
+        setJoueurSurConfiguration(sauv);
         return score;
 	}
 
@@ -326,52 +326,52 @@ public class Configuration implements Cloneable, Serializable
      **/
 	public ArrayList<Couple> getVoisins(Case [][] t,int i, int j,boolean obstacle){
 		ArrayList<Couple> liste = new ArrayList<Couple>();
-		 {
-		     if (i%2 == 0 && j + 1 < largeur - 1 && ((obstacle && !t[i][j + 1].estObstacle()) || (!obstacle && !t[i][j + 1].estVide())))
-					liste.add(new Couple(i,j+1));
-		     else if (i%2 == 1 && j + 1 < largeur && ((obstacle && !t[i][j + 1].estObstacle()) || (!obstacle && !t[i][j + 1].estVide())))
-					liste.add(new Couple(i,j+1));
-		 }
-		 {
-		     if (j - 1 >= 0 && ((obstacle && !t[i][j - 1].estObstacle()) || (!obstacle && !t[i][j - 1].estVide())))
-					liste.add(new Couple(i,j-1));
-		 }
-		 {
-		     if (i - 1 >= 0)
-		     {
-		         if (i%2 == 0 && j + 1 < largeur && ((obstacle && !t[i-1][j + 1].estObstacle()) || (!obstacle && !t[i-1][j + 1].estVide())))
-						liste.add(new Couple(i-1,j+1));
-		         else if (i%2 == 1 && j < largeur - 1 && ((obstacle && !t[i-1][j].estObstacle()) || (!obstacle && !t[i-1][j].estVide())))
-						liste.add(new Couple(i-1,j));
-		     }
-		 }
-		 {
-		     if (i - 1 >= 0)
-		     {
-		         if (i%2 == 0 && j < largeur - 1 && ((obstacle && !t[i-1][j].estObstacle()) || (!obstacle && !t[i-1][j].estVide())))
-						liste.add(new Couple(i-1,j));
-		         else if (i%2 == 1 && j - 1 >= 0 && ((obstacle && !t[i-1][j-1].estObstacle()) || (!obstacle && !t[i-1][j-1].estVide())))
-						liste.add(new Couple(i-1,j-1));
-		     }
-		 }
-		 {
-		     if (i + 1 < hauteur)
-		     {
-		         if (i%2 == 0 && j + 1 < largeur && ((obstacle && !t[i+1][j+1].estObstacle()) || (!obstacle && !t[i+1][j+1].estVide())))
-						liste.add(new Couple(i+1,j+1));
-		         else if (i%2 == 1 && j < largeur - 1 && ((obstacle && !t[i+1][j].estObstacle()) || (!obstacle && !t[i+1][j].estVide())))
-						liste.add(new Couple(i+1,j));
-		     }
-		 }
-		 {
-		     if (i + 1 < hauteur)
-		     {
-		         if (i%2 == 0 && ((obstacle && !t[i+1][j].estObstacle()) || (!obstacle && !t[i+1][j].estVide())))
-						liste.add(new Couple(i+1,j));
-		         else if (i%2 == 1 && j - 1 >= 0 && ((obstacle && !t[i+1][j-1].estObstacle()) || (!obstacle && !t[i+1][j-1].estVide())))
-						liste.add(new Couple(i+1,j-1));
-		     }
-		 }
+        {
+            if (i%2 == 0 && j + 1 < largeur - 1 && ((obstacle && !t[i][j + 1].estObstacle()) || (!obstacle && !t[i][j + 1].estVide())))
+                liste.add(new Couple(i,j+1));
+            else if (i%2 == 1 && j + 1 < largeur && ((obstacle && !t[i][j + 1].estObstacle()) || (!obstacle && !t[i][j + 1].estVide())))
+                liste.add(new Couple(i,j+1));
+        }
+        {
+            if (j - 1 >= 0 && ((obstacle && !t[i][j - 1].estObstacle()) || (!obstacle && !t[i][j - 1].estVide())))
+                liste.add(new Couple(i,j-1));
+        }
+        {
+            if (i - 1 >= 0)
+            {
+                if (i%2 == 0 && j + 1 < largeur && ((obstacle && !t[i-1][j + 1].estObstacle()) || (!obstacle && !t[i-1][j + 1].estVide())))
+                    liste.add(new Couple(i-1,j+1));
+                else if (i%2 == 1 && j < largeur - 1 && ((obstacle && !t[i-1][j].estObstacle()) || (!obstacle && !t[i-1][j].estVide())))
+                    liste.add(new Couple(i-1,j));
+            }
+        }
+        {
+            if (i - 1 >= 0)
+            {
+                if (i%2 == 0 && j < largeur - 1 && ((obstacle && !t[i-1][j].estObstacle()) || (!obstacle && !t[i-1][j].estVide())))
+                    liste.add(new Couple(i-1,j));
+                else if (i%2 == 1 && j - 1 >= 0 && ((obstacle && !t[i-1][j-1].estObstacle()) || (!obstacle && !t[i-1][j-1].estVide())))
+                    liste.add(new Couple(i-1,j-1));
+            }
+        }
+        {
+            if (i + 1 < hauteur)
+            {
+                if (i%2 == 0 && j + 1 < largeur && ((obstacle && !t[i+1][j+1].estObstacle()) || (!obstacle && !t[i+1][j+1].estVide())))
+                    liste.add(new Couple(i+1,j+1));
+                else if (i%2 == 1 && j < largeur - 1 && ((obstacle && !t[i+1][j].estObstacle()) || (!obstacle && !t[i+1][j].estVide())))
+                    liste.add(new Couple(i+1,j));
+            }
+        }
+        {
+            if (i + 1 < hauteur)
+            {
+                if (i%2 == 0 && ((obstacle && !t[i+1][j].estObstacle()) || (!obstacle && !t[i+1][j].estVide())))
+                    liste.add(new Couple(i+1,j));
+                else if (i%2 == 1 && j - 1 >= 0 && ((obstacle && !t[i+1][j-1].estObstacle()) || (!obstacle && !t[i+1][j-1].estVide())))
+                    liste.add(new Couple(i+1,j-1));
+            }
+        }
 		return liste;
 	}
 
@@ -379,11 +379,11 @@ public class Configuration implements Cloneable, Serializable
      * Indique si un joueur peut encore bouger sur une configuration donnée
      **/
 	public int nombrePoissonsRestant(){
-	  int nb = 0;
-	  for (int i = 0; i < hauteur; i++)
-	  {
-		   for (int j = 0; j < largeur; j++)
-		   {
+        int nb = 0;
+        for (int i = 0; i < hauteur; i++)
+        {
+            for (int j = 0; j < largeur; j++)
+            {
 				if ((i%2 == 0 && j == largeur - 1) || (terrain[i][j].estObstacle()))
 					continue;
 
@@ -555,12 +555,12 @@ public class Configuration implements Cloneable, Serializable
 
         // Mode pose de pingouin
         if (mode == ModeDeJeu.POSE_PINGOUIN && (xArrivee != -1 || yArrivee != -1))
-	    return false;
+            return false;
 	    
-	if (mode == ModeDeJeu.JEU_COMPLET && (xDepart == -1 || xArrivee == -1 || yDepart == -1 || yArrivee == -1))
-	    return false;
+        if (mode == ModeDeJeu.JEU_COMPLET && (xDepart == -1 || xArrivee == -1 || yDepart == -1 || yArrivee == -1))
+            return false;
 
-	return estCoupPossible(coup);
+        return estCoupPossible(coup);
     }
 
 
@@ -1038,255 +1038,312 @@ public class Configuration implements Cloneable, Serializable
     
     public Coup[] coupsPossiblesCase(int j, int i){
 
-    ArrayList<Coup> liste = new ArrayList<Coup>();
+        ArrayList<Coup> liste = new ArrayList<Coup>();
     
 
-          // Sortie du terrain
-          if (i%2 == 0 && j == largeur - 1)
-              return null;
+        // Sortie du terrain
+        if (i%2 == 0 && j == largeur - 1)
+            return null;
 
-     /*     // Regarde les cases du joueur en cours
-          if (terrain[i][j].getJoueurSurCase() != getJoueurSurConfiguration())
-              continue;
-*/
-          // Vers la droite
-          {
-              int l = j + 1;
-              if (i%2 == 0)
-              {
-                  while (l < largeur - 1 && !terrain[i][l].estObstacle())
-                  {
-							 //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +i);
-                      liste.add(new Coup(j, i, l, i));
-                      l++;
-                  }
-              }
-              else
-              {
-                  while (l < largeur && !terrain[i][l].estObstacle())
-                  {
-                      //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +i);
-							 liste.add(new Coup(j, i, l, i));
-                      l++;
-                  }
-              }
-          }
+        /*     // Regarde les cases du joueur en cours
+               if (terrain[i][j].getJoueurSurCase() != getJoueurSurConfiguration())
+               continue;
+        */
+        // Vers la droite
+        {
+            int l = j + 1;
+            if (i%2 == 0)
+            {
+                while (l < largeur - 1 && !terrain[i][l].estObstacle())
+                {
+                    //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +i);
+                    liste.add(new Coup(j, i, l, i));
+                    l++;
+                }
+            }
+            else
+            {
+                while (l < largeur && !terrain[i][l].estObstacle())
+                {
+                    //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +i);
+                    liste.add(new Coup(j, i, l, i));
+                    l++;
+                }
+            }
+        }
 
-          // Vers la gauche
-          {
-              int l = j - 1;
-              while (l >= 0 && !terrain[i][l].estObstacle())
-              {
-                      //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +i);
-                  liste.add(new Coup(j, i, l, i));
-                  l--;
-              }
-          }
+        // Vers la gauche
+        {
+            int l = j - 1;
+            while (l >= 0 && !terrain[i][l].estObstacle())
+            {
+                //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +i);
+                liste.add(new Coup(j, i, l, i));
+                l--;
+            }
+        }
 
-          // Vers le haut droit
-          {
-              int l = j;
-              int k = i - 1;
+        // Vers le haut droit
+        {
+            int l = j;
+            int k = i - 1;
 
-              while(k >= 0)
-              {
-                  if (k%2 == 1)
-                      l++;
+            while(k >= 0)
+            {
+                if (k%2 == 1)
+                    l++;
 
-                  if ((k%2 == 0 && l >= largeur - 1) || (k%2 == 1 && l >= largeur) || terrain[k][l].estObstacle())
-                      break;
-                      //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +k);
+                if ((k%2 == 0 && l >= largeur - 1) || (k%2 == 1 && l >= largeur) || terrain[k][l].estObstacle())
+                    break;
+                //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +k);
 
-                  liste.add(new Coup(j, i, l, k));
-                  k--;
-              }
-          }
+                liste.add(new Coup(j, i, l, k));
+                k--;
+            }
+        }
 
-          // Vers le haut gauche
-          {
+        // Vers le haut gauche
+        {
 
-              int l = j;
-              int k = i - 1;
+            int l = j;
+            int k = i - 1;
 
-              while(k >= 0)
-              {
-                  if (k%2 == 0)
-                      l--;
+            while(k >= 0)
+            {
+                if (k%2 == 0)
+                    l--;
 
-                  if (l < 0 || terrain[k][l].estObstacle())
-                      break;
+                if (l < 0 || terrain[k][l].estObstacle())
+                    break;
 
-                      //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +k);
-                  liste.add(new Coup(j, i, l, k));
-                  k--;
-              }
-          }
+                //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +k);
+                liste.add(new Coup(j, i, l, k));
+                k--;
+            }
+        }
 
-          // Vers le bas droit
-          {
-              int l = j;
-              int k = i + 1;
+        // Vers le bas droit
+        {
+            int l = j;
+            int k = i + 1;
 
-              while(k < hauteur)
-              {
-                  if (k%2 == 1)
-                      l++;
+            while(k < hauteur)
+            {
+                if (k%2 == 1)
+                    l++;
 
-                  if ((k%2 == 0 && l == largeur - 1) || (k%2 == 1 && l == largeur) || terrain[k][l].estObstacle())
-                      break;
-                      //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +k);
+                if ((k%2 == 0 && l == largeur - 1) || (k%2 == 1 && l == largeur) || terrain[k][l].estObstacle())
+                    break;
+                //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +k);
 
-                  liste.add(new Coup(j, i, l, k));
-                  k++;
-              }
-          }
+                liste.add(new Coup(j, i, l, k));
+                k++;
+            }
+        }
 
-          // Vers le bas gauche
-          {
-              int l = j;
-              int k = i + 1;
+        // Vers le bas gauche
+        {
+            int l = j;
+            int k = i + 1;
 
-              while(l >= 0 && k < hauteur)
-              {
-                  if (k%2 == 0)
-                      l--;
+            while(l >= 0 && k < hauteur)
+            {
+                if (k%2 == 0)
+                    l--;
 
-                  if (l < 0 || terrain[k][l].estObstacle())
-                      break;
-                      //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +k);
+                if (l < 0 || terrain[k][l].estObstacle())
+                    break;
+                //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +k);
 
-                  liste.add(new Coup(j, i, l, k));
-                  k++;
-              }
-          }
-          Coup[] tab = new Coup[liste.size()];
-          liste.toArray(tab);
-		    return tab;
+                liste.add(new Coup(j, i, l, k));
+                k++;
+            }
+        }
+        Coup[] tab = new Coup[liste.size()];
+        liste.toArray(tab);
+        return tab;
     }
 
     public int nombreCoupsPossiblesCase(int i, int j){
- // Sortie du terrain
-       int nombreCoups = 0;
-          if (i%2 == 0 && j == largeur - 1)
-              return nombreCoups;
+        // Sortie du terrain
+        int nombreCoups = 0;
+        if (i%2 == 0 && j == largeur - 1)
+            return nombreCoups;
 
-     /*     // Regarde les cases du joueur en cours
-          if (terrain[i][j].getJoueurSurCase() != getJoueurSurConfiguration())
-              continue;
-*/
-          // Vers la droite
-          {
-              int l = j + 1;
-              if (i%2 == 0)
-              {
-                  while (l < largeur - 1 && !terrain[i][l].estObstacle())
-                  {
-							 //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +i);
-                      nombreCoups++;
-							 l++;
-                  }
-              }
-              else
-              {
-                  while (l < largeur && !terrain[i][l].estObstacle())
-                  {
-                      //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +i);
-							 nombreCoups++;
-                      l++;
-                  }
-              }
-          }
+        /*     // Regarde les cases du joueur en cours
+               if (terrain[i][j].getJoueurSurCase() != getJoueurSurConfiguration())
+               continue;
+        */
+        // Vers la droite
+        {
+            int l = j + 1;
+            if (i%2 == 0)
+            {
+                while (l < largeur - 1 && !terrain[i][l].estObstacle())
+                {
+                    //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +i);
+                    nombreCoups++;
+                    l++;
+                }
+            }
+            else
+            {
+                while (l < largeur && !terrain[i][l].estObstacle())
+                {
+                    //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +i);
+                    nombreCoups++;
+                    l++;
+                }
+            }
+        }
 
-          // Vers la gauche
-          {
-              int l = j - 1;
-              while (l >= 0 && !terrain[i][l].estObstacle())
-              {
-                      //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +i);
-                  nombreCoups++;
-                  l--;
-              }
-          }
+        // Vers la gauche
+        {
+            int l = j - 1;
+            while (l >= 0 && !terrain[i][l].estObstacle())
+            {
+                //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +i);
+                nombreCoups++;
+                l--;
+            }
+        }
 
-          // Vers le haut droit
-          {
-              int l = j;
-              int k = i - 1;
+        // Vers le haut droit
+        {
+            int l = j;
+            int k = i - 1;
 
-              while(k >= 0)
-              {
-                  if (k%2 == 1)
-                      l++;
+            while(k >= 0)
+            {
+                if (k%2 == 1)
+                    l++;
 
-                  if ((k%2 == 0 && l >= largeur - 1) || (k%2 == 1 && l >= largeur) || terrain[k][l].estObstacle())
-                      break;
-                      //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +k);
+                if ((k%2 == 0 && l >= largeur - 1) || (k%2 == 1 && l >= largeur) || terrain[k][l].estObstacle())
+                    break;
+                //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +k);
 
-                  nombreCoups++;
-                  k--;
-              }
-          }
+                nombreCoups++;
+                k--;
+            }
+        }
 
-          // Vers le haut gauche
-          {
+        // Vers le haut gauche
+        {
 
-              int l = j;
-              int k = i - 1;
+            int l = j;
+            int k = i - 1;
 
-              while(k >= 0)
-              {
-                  if (k%2 == 0)
-                      l--;
+            while(k >= 0)
+            {
+                if (k%2 == 0)
+                    l--;
 
-                  if (l < 0 || terrain[k][l].estObstacle())
-                      break;
+                if (l < 0 || terrain[k][l].estObstacle())
+                    break;
 
-                      //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +k);
-                  nombreCoups++;
-                  k--;
-              }
-          }
+                //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +k);
+                nombreCoups++;
+                k--;
+            }
+        }
 
-          // Vers le bas droit
-          {
-              int l = j;
-              int k = i + 1;
+        // Vers le bas droit
+        {
+            int l = j;
+            int k = i + 1;
 
-              while(k < hauteur)
-              {
-                  if (k%2 == 1)
-                      l++;
+            while(k < hauteur)
+            {
+                if (k%2 == 1)
+                    l++;
 
-                  if ((k%2 == 0 && l == largeur - 1) || (k%2 == 1 && l == largeur) || terrain[k][l].estObstacle())
-                      break;
-                      //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +k);
+                if ((k%2 == 0 && l == largeur - 1) || (k%2 == 1 && l == largeur) || terrain[k][l].estObstacle())
+                    break;
+                //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +k);
 
-                  nombreCoups++;
-                  k++;
-              }
-          }
+                nombreCoups++;
+                k++;
+            }
+        }
 
-          // Vers le bas gauche
-          {
-              int l = j;
-              int k = i + 1;
+        // Vers le bas gauche
+        {
+            int l = j;
+            int k = i + 1;
 
-              while(l >= 0 && k < hauteur)
-              {
-                  if (k%2 == 0)
-                      l--;
+            while(l >= 0 && k < hauteur)
+            {
+                if (k%2 == 0)
+                    l--;
 
-                  if (l < 0 || terrain[k][l].estObstacle())
-                      break;
-                      //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +k);
+                if (l < 0 || terrain[k][l].estObstacle())
+                    break;
+                //System.out.println("Coup possible : "+j+ " " +i+" "+l+ " " +k);
 
-                  nombreCoups++;
-                  k++;
-              }
-          }
-		    return nombreCoups;
+                nombreCoups++;
+                k++;
+            }
+        }
+        return nombreCoups;
     }
 	          
+    /**
+     * Charge un terrain dont le format est libre
+     **/
+    public static Case [][] terrainOfficiel(String filename)
+    {
+        int hauteur = ArbitreManager.HAUTEUR_GRILLE;
+        int largeur = ArbitreManager.LARGEUR_GRILLE;
+        Case [][] terrain = new Case[hauteur][largeur];
 
+        int i = 0;
+        int j = 0;
+        
+        try 
+	    {
+            BufferedReader reader = new BufferedReader(new FileReader(filename));
+            Scanner intReader = new Scanner(reader);
 
+            int case_ = 0;
+
+            while (intReader.hasNextInt())
+            {
+                case_ = intReader.nextInt();
+                
+                if (case_ == 1)
+                    terrain[i][j] = new Case(Etat.UN_POISSON, null);
+                else if (case_ == 2)
+                    terrain[i][j] = new Case(Etat.DEUX_POISSONS, null);
+                else
+                    terrain[i][j] = new Case(Etat.TROIS_POISSONS, null);
+
+                if (i%2 == 0 && j == largeur - 2)
+                {
+                    i++;
+                    j = 0;
+                }
+                else if (i%2 == 1 && j == largeur  - 1)
+                {
+                    i++;
+                    j = 0;
+                }
+                else
+                {
+                    j++;
+                }
+            }
+
+            if (i != ArbitreManager.HAUTEUR_GRILLE || j != 0)
+                throw new IOException();
+
+            reader.close();
+	    }
+        catch (IOException e) 
+	    {
+            System.err.println("Impossible de lire le terrain du fichier "+filename);
+            return null;
+	    }
+
+        return terrain;
+    }
 }
