@@ -29,12 +29,12 @@ public class Arbitre implements Runnable, Serializable
 
     public Arbitre(Joueur [] joueurs, int largeur, int hauteur)
     {
-	this.joueurs = joueurs;
-	this.joueurCourant = joueurs[0];
-	this.largeur = largeur;
-	this.hauteur = hauteur;
-	this.signalStop = new Signal<Object>();
-	this.historique = new Historique(ArbitreManager.LIMITE_HISTORIQUE);
+        this.joueurs = joueurs;
+        this.joueurCourant = joueurs[0];
+        this.largeur = largeur;
+        this.hauteur = hauteur;
+        this.signalStop = new Signal<Object>();
+        this.historique = new Historique(ArbitreManager.LIMITE_HISTORIQUE);
     }
     
     /**
@@ -42,19 +42,19 @@ public class Arbitre implements Runnable, Serializable
      **/
     public int getPosition(Joueur joueur)
     {
-	int i = 1;
+        int i = 1;
 
-	if (joueur == null)
-	    return 0;
+        if (joueur == null)
+            return 0;
 
-	while (i <= joueurs.length && joueurs[i - 1] != joueur)
-	    i++;
+        while (i <= joueurs.length && joueurs[i - 1] != joueur)
+            i++;
 
-	// Si on a pas trouvé
-	if (i > joueurs.length)
-	    return 0;
+        // Si on a pas trouvé
+        if (i > joueurs.length)
+            return 0;
 
-	return i;
+        return i;
     }
 
     /**
@@ -62,47 +62,47 @@ public class Arbitre implements Runnable, Serializable
      **/
     public Joueur getJoueurParPosition(int position)
     {
-	if (position < 1 || joueurs == null || position > joueurs.length)
-	    return null;
+        if (position < 1 || joueurs == null || position > joueurs.length)
+            return null;
 
-	return joueurs[position - 1];
+        return joueurs[position - 1];
     }
     /**
      * Retourne l'ensemble des joueurs
      **/
     public Joueur [] getJoueurs() {
-	return this.joueurs;
+        return this.joueurs;
     }
            
 
     public int getLargeur()
     {
-	return largeur;
+        return largeur;
     }
 
     public int getHauteur()
     {
-	return hauteur;
+        return hauteur;
     }
 
     public void setLargeur(int largeur)
     {
-	this.largeur = largeur;
+        this.largeur = largeur;
     }
 
     public void setHauteur(int hauteur)
     {
-	this.hauteur = hauteur;
+        this.hauteur = hauteur;
     }
 
     public ModeDeJeu getMode()
     {
-	return mode;
+        return mode;
     }
 
     public void setMode(ModeDeJeu mode)
     {
-	this.mode = mode;
+        this.mode = mode;
     }
 
 
@@ -111,104 +111,104 @@ public class Arbitre implements Runnable, Serializable
      **/
     public void run()
     {   
-	while (!forceStop && !estFini)
+        while (!forceStop && !estFini)
 	    {
-		int tourJoueur = getPosition(getJoueurCourant());
+            int tourJoueur = getPosition(getJoueurCourant());
 
-		// Récupère le coup du joueur
-		Coup coup = getJoueurCourant().coupSuivant();
-		while (coup != null && !getConfiguration().estCoupPossible(coup, getMode()))
+            // Récupère le coup du joueur
+            Coup coup = getJoueurCourant().coupSuivant();
+            while (coup != null && !getConfiguration().estCoupPossible(coup, getMode()))
 		    {
-			//System.out.println("Mauvais coup !"+getMode());
-			//System.out.println(coup);
-			// Envoyer signal joueur mauvais coup
-			coup = getJoueurCourant().coupSuivant();
+                //System.out.println("Mauvais coup !"+getMode());
+                //System.out.println(coup);
+                // Envoyer signal joueur mauvais coup
+                coup = getJoueurCourant().coupSuivant();
 		    } 
 
 	    
-		// Changement d'historique
-		if (coup == null && !forceStop)
-		    continue; // Refait un tour, le joueur courant à changer
+            // Changement d'historique
+            if (coup == null && !forceStop)
+                continue; // Refait un tour, le joueur courant à changer
 	    
-		// Effectue et vérifie la fin de partie
-		Configuration configurationSuivante = configurationCourante.clone();
+            // Effectue et vérifie la fin de partie
+            Configuration configurationSuivante = configurationCourante.clone();
 	    
-		// Vérifie si une fin forcée n'a pas été déclanchée entre temps
-		if (forceStop)
-		    break;
+            // Vérifie si une fin forcée n'a pas été déclanchée entre temps
+            if (forceStop)
+                break;
 
-		// Lance le coup proposé
-		getConfiguration().setCoupEffectue(coup);
-		int score = configurationSuivante.effectuerCoup(coup);
+            // Lance le coup proposé
+            getConfiguration().setCoupEffectue(coup);
+            int score = configurationSuivante.effectuerCoup(coup);
 
-		// Met à jour le score du joueur
-		getJoueurCourant().setScore(getJoueurCourant().getScore() + score);
+            // Met à jour le score du joueur
+            getJoueurCourant().setScore(getJoueurCourant().getScore() + score);
 
-		// Change le mode de jeu si nécessaire
-		if (getMode() == ModeDeJeu.POSE_PINGOUIN)
+            // Change le mode de jeu si nécessaire
+            if (getMode() == ModeDeJeu.POSE_PINGOUIN)
 		    {
-			int [] restePingouins = configurationSuivante.getNombrePingouinsParJoueur(joueurs);
-			int totalPions = 0;
+                int [] restePingouins = configurationSuivante.getNombrePingouinsParJoueur(joueurs);
+                int totalPions = 0;
 
-			for (int i = 0; i < restePingouins.length; i++)
-			    totalPions += restePingouins[i];
+                for (int i = 0; i < restePingouins.length; i++)
+                    totalPions += restePingouins[i];
 
-			// 2 joueurs, 8 pions
-			// 3 joueurs, 9 pions
-			// 4 joueurs, 8 pions
-			if ((joueurs.length == 2 && totalPions == 8) ||
-			    (joueurs.length == 3 && totalPions == 9) ||
-			    (joueurs.length == 4 && totalPions == 8))
-			    setMode(ModeDeJeu.JEU_COMPLET);
+                // 2 joueurs, 8 pions
+                // 3 joueurs, 9 pions
+                // 4 joueurs, 8 pions
+                if ((joueurs.length == 2 && totalPions == 8) ||
+                    (joueurs.length == 3 && totalPions == 9) ||
+                    (joueurs.length == 4 && totalPions == 8))
+                    setMode(ModeDeJeu.JEU_COMPLET);
 		    }
-		// Vient de gagner une tuile
-		else if (getMode() == ModeDeJeu.JEU_COMPLET)
+            // Vient de gagner une tuile
+            else if (getMode() == ModeDeJeu.JEU_COMPLET)
 		    {
-			getJoueurCourant().incrementNombreTuile();
+                getJoueurCourant().incrementNombreTuile();
 		    }
 
-		// Change de joueur (en prenant en compte ceux qui peuvent jouer)
-		int totalPouvantJouer = joueurs.length;
-		do
+            // Change de joueur (en prenant en compte ceux qui peuvent jouer)
+            int totalPouvantJouer = joueurs.length;
+            do
 		    {
-			tourJoueur = (tourJoueur % joueurs.length) + 1;
-			setJoueurCourant(getJoueurParPosition(tourJoueur));
-			configurationSuivante.setJoueurSurConfiguration(getJoueurParPosition(tourJoueur));
-			configurationSuivante.setScoreSurConfiguration(configurationSuivante.getJoueurSurConfiguration().getScore());
-			totalPouvantJouer--;
+                tourJoueur = (tourJoueur % joueurs.length) + 1;
+                setJoueurCourant(getJoueurParPosition(tourJoueur));
+                configurationSuivante.setJoueurSurConfiguration(getJoueurParPosition(tourJoueur));
+                configurationSuivante.setScoreSurConfiguration(configurationSuivante.getJoueurSurConfiguration().getScore());
+                totalPouvantJouer--;
 
 		    } while (totalPouvantJouer >= 0 && 
-			     (getMode() == ModeDeJeu.JEU_COMPLET &&
-			      !configurationSuivante.peutJouer(getJoueurCourant())
-			      ));
+                     (getMode() == ModeDeJeu.JEU_COMPLET &&
+                      !configurationSuivante.peutJouer(getJoueurCourant())
+                      ));
 
-		// Met en place la configuration
-		setConfiguration(configurationSuivante);
+            // Met en place la configuration
+            setConfiguration(configurationSuivante);
 
-		// Si plus personne ne peut jouer on arrête
-		if (totalPouvantJouer < 0)
-		    estFini = true;
+            // Si plus personne ne peut jouer on arrête
+            if (totalPouvantJouer < 0)
+                estFini = true;
 	    }
 
-	// Nettoie le terrain à la fin de la partie
-	if (!forceStop && estFini)
+        // Nettoie le terrain à la fin de la partie
+        if (!forceStop && estFini)
 	    { 
-		int [] scoresJoueurs = getConfiguration().nettoyerConfiguration(joueurs);
+            int [] scoresJoueurs = getConfiguration().nettoyerConfiguration(joueurs);
             
-		// Met à jour le score de tous les joueurs
-		for (int i = 0; i < scoresJoueurs.length; i++)
-		    joueurs[i].setScore(joueurs[i].getScore() + scoresJoueurs[i]);
+            // Met à jour le score de tous les joueurs
+            for (int i = 0; i < scoresJoueurs.length; i++)
+                joueurs[i].setScore(joueurs[i].getScore() + scoresJoueurs[i]);
             
 	    }
         
-	// Informe l'interface
-	inter.repaint();
+        // Informe l'interface
+        inter.repaint();
 
-	// Attends qu'on lui signal la fin d'une partie (sauf si force le stop)
-	if (!forceStop || estFini)
-	    signalStop.attendreSignal();
+        // Attends qu'on lui signal la fin d'une partie (sauf si force le stop)
+        if (!forceStop || estFini)
+            signalStop.attendreSignal();
 
-	return;
+        return;
     }
   
     /**
@@ -216,18 +216,18 @@ public class Arbitre implements Runnable, Serializable
      **/
     public void sauvegarderPartie(String filename)
     {
-	System.out.println("Sauvegarde de la partie dans "+filename);
-	Sauvegarde save = new Sauvegarde();
-	save.setArbitre(this);
+        System.out.println("Sauvegarde de la partie dans "+filename);
+        Sauvegarde save = new Sauvegarde();
+        save.setArbitre(this);
 
-	try 
+        try 
 	    {
-		FileOutputStream fstream = new FileOutputStream(filename);
-		save.save(fstream);
+            FileOutputStream fstream = new FileOutputStream(filename);
+            save.save(fstream);
 	    }
-	catch (IOException e) 
+        catch (IOException e) 
 	    {
-		System.err.println("Impossible de sauvegarder dans le fichier "+filename);
+            System.err.println("Impossible de sauvegarder dans le fichier "+filename);
 	    }
     }
 
@@ -236,9 +236,9 @@ public class Arbitre implements Runnable, Serializable
      **/
     public void chargerPartie(Interface inter)
     {
-	this.inter = inter;
-	this.inter.setJoueurs(joueurs);
-	this.inter.repaint();
+        this.inter = inter;
+        this.inter.setJoueurs(joueurs);
+        this.inter.repaint();
     }
 
     /**
@@ -246,7 +246,7 @@ public class Arbitre implements Runnable, Serializable
      **/
     public Signal<Object> getSignalStop()
     {
-	return signalStop;
+        return signalStop;
     }
 
     /**
@@ -254,18 +254,18 @@ public class Arbitre implements Runnable, Serializable
      **/
     public boolean partieFinie()
     {
-	return estFini;
+        return estFini;
     }
     public void setPartieFinie(boolean fini)
     {
-	estFini = fini;
+        estFini = fini;
     }
     /**
      * Met en place l'interface
      **/
     public void setInterface(Interface inter)
     {
-	this.inter = inter;
+        this.inter = inter;
     }
 
     /**
@@ -273,7 +273,7 @@ public class Arbitre implements Runnable, Serializable
      **/
     public Interface getInterface()
     {
-	return inter;
+        return inter;
     }
 
     /**
@@ -281,12 +281,12 @@ public class Arbitre implements Runnable, Serializable
      **/
     public void setForceStop(boolean status)
     {
-	forceStop = status;
+        forceStop = status;
     }
 
     public boolean getForceStop()
     {
-	return forceStop;
+        return forceStop;
     }
 
     /**
@@ -294,7 +294,7 @@ public class Arbitre implements Runnable, Serializable
      **/
     public Configuration getConfiguration()
     {
-	return configurationCourante;
+        return configurationCourante;
     }
 
 
@@ -304,9 +304,9 @@ public class Arbitre implements Runnable, Serializable
      **/
     public void setConfiguration(Configuration c)
     {
-	historique.ajout(c);
-	this.configurationCourante = c;
-	inter.repaint();
+        historique.ajout(c);
+        this.configurationCourante = c;
+        inter.repaint();
     }
 
     
@@ -316,7 +316,7 @@ public class Arbitre implements Runnable, Serializable
      **/
     public Joueur getJoueurCourant()
     {
-	return joueurCourant;
+        return joueurCourant;
     }
 
     /**
@@ -324,7 +324,7 @@ public class Arbitre implements Runnable, Serializable
      **/
     public void setJoueurCourant(Joueur j)
     {
-	joueurCourant = j;
+        joueurCourant = j;
     }
 
     /**
@@ -332,53 +332,53 @@ public class Arbitre implements Runnable, Serializable
      **/
     public void avancerHistorique()
     {
-	// Annule jusqu'a un joueur
-	Configuration c = null;
+        // Annule jusqu'a un joueur
+        Configuration c = null;
 
-	do
+        do
 	    {
-		c = historique.avance();
-		if (c != null)
+            c = historique.avance();
+            if (c != null)
 		    {
 		
-			// Restaure le score du joueur
-			getConfiguration().getJoueurSurConfiguration().setScore(getConfiguration().getJoueurSurConfiguration().getScore() + getConfiguration().scoreCoupEffectue());
+                // Restaure le score du joueur
+                getConfiguration().getJoueurSurConfiguration().setScore(getConfiguration().getJoueurSurConfiguration().getScore() + getConfiguration().scoreCoupEffectue());
 
 
 		
-			int [] restePingouins = c.getNombrePingouinsParJoueur(joueurs);
-			int totalPions = 0;
+                int [] restePingouins = c.getNombrePingouinsParJoueur(joueurs);
+                int totalPions = 0;
 		
-			for (int i = 0; i < restePingouins.length; i++)
-			    totalPions += restePingouins[i];
+                for (int i = 0; i < restePingouins.length; i++)
+                    totalPions += restePingouins[i];
 
-			// 2 joueurs, 8 pions
-			// 3 joueurs, 9 pions
-			// 4 joueurs, 8 pions
-			if (getMode() == ModeDeJeu.POSE_PINGOUIN && 
-			    ((joueurs.length == 2 && totalPions == 8) ||
-			     (joueurs.length == 3 && totalPions == 9) ||
-			     (joueurs.length == 4 && totalPions == 8)))
+                // 2 joueurs, 8 pions
+                // 3 joueurs, 9 pions
+                // 4 joueurs, 8 pions
+                if (getMode() == ModeDeJeu.POSE_PINGOUIN && 
+                    ((joueurs.length == 2 && totalPions == 8) ||
+                     (joueurs.length == 3 && totalPions == 9) ||
+                     (joueurs.length == 4 && totalPions == 8)))
 			    {
-				setMode(ModeDeJeu.JEU_COMPLET);
+                    setMode(ModeDeJeu.JEU_COMPLET);
 			    }
-			else if (getMode() == ModeDeJeu.JEU_COMPLET)
-			    getConfiguration().getJoueurSurConfiguration().incrementNombreTuile();
+                else if (getMode() == ModeDeJeu.JEU_COMPLET)
+                    getConfiguration().getJoueurSurConfiguration().incrementNombreTuile();
 
 		
 		
-			// Met à jour la configuration
-			configurationCourante = c;
-			setJoueurCourant(c.getJoueurSurConfiguration());
+                // Met à jour la configuration
+                configurationCourante = c;
+                setJoueurCourant(c.getJoueurSurConfiguration());
 		    }
 	    } 
-	while (c != null && !(c.getJoueurSurConfiguration() instanceof JoueurHumain));
+        while (c != null && !(c.getJoueurSurConfiguration() instanceof JoueurHumain));
 
 		
-	// Stop le thread pour lui indique le changement de joueur
-	ArbitreManager.instanceThread.interrupt();
+        // Stop le thread pour lui indique le changement de joueur
+        ArbitreManager.instanceThread.interrupt();
 		
-	inter.repaint();
+        inter.repaint();
     }
 
     /**
@@ -386,43 +386,43 @@ public class Arbitre implements Runnable, Serializable
      **/
     public void reculerHistorique()
     {
-	Configuration c = null;
-	do
+        Configuration c = null;
+        do
 	    {
-		c = historique.reculer();
-		if (c != null)
+            c = historique.reculer();
+            if (c != null)
 		    {	
-			// Met à jour la configuration
-			configurationCourante = c;
-			setJoueurCourant(c.getJoueurSurConfiguration());
+                // Met à jour la configuration
+                configurationCourante = c;
+                setJoueurCourant(c.getJoueurSurConfiguration());
 		
-			// Restaure le score du joueur
-			getJoueurCourant().setScore(c.getScoreSurConfiguration());
+                // Restaure le score du joueur
+                getJoueurCourant().setScore(c.getScoreSurConfiguration());
 
-			int [] restePingouins = c.getNombrePingouinsParJoueur(joueurs);
-			int totalPions = 0;
+                int [] restePingouins = c.getNombrePingouinsParJoueur(joueurs);
+                int totalPions = 0;
 		
-			for (int i = 0; i < restePingouins.length; i++)
-			    totalPions += restePingouins[i];
+                for (int i = 0; i < restePingouins.length; i++)
+                    totalPions += restePingouins[i];
 
-			// 2 joueurs, 8 pions
-			// 3 joueurs, 9 pions
-			// 4 joueurs, 8 pions
-			if ((joueurs.length == 2 && totalPions < 8) ||
-			    (joueurs.length == 3 && totalPions < 9) ||
-			    (joueurs.length == 4 && totalPions < 8))
-			    setMode(ModeDeJeu.POSE_PINGOUIN);
+                // 2 joueurs, 8 pions
+                // 3 joueurs, 9 pions
+                // 4 joueurs, 8 pions
+                if ((joueurs.length == 2 && totalPions < 8) ||
+                    (joueurs.length == 3 && totalPions < 9) ||
+                    (joueurs.length == 4 && totalPions < 8))
+                    setMode(ModeDeJeu.POSE_PINGOUIN);
 		
-			if (getMode() == ModeDeJeu.JEU_COMPLET)
-			    getConfiguration().getJoueurSurConfiguration().decrementNombreTuile();
+                if (getMode() == ModeDeJeu.JEU_COMPLET)
+                    getConfiguration().getJoueurSurConfiguration().decrementNombreTuile();
 		    }
 	    }
-	while(c != null && !(c.getJoueurSurConfiguration() instanceof JoueurHumain));
+        while(c != null && !(c.getJoueurSurConfiguration() instanceof JoueurHumain));
 	
-	// Stop le thread pour lui indique le changement de joueur
-	ArbitreManager.instanceThread.interrupt();
+        // Stop le thread pour lui indique le changement de joueur
+        ArbitreManager.instanceThread.interrupt();
 
-	inter.repaint();
+        inter.repaint();
 	
     }
 
@@ -430,48 +430,45 @@ public class Arbitre implements Runnable, Serializable
     /**
      * Recule dans l'historique (annuler)
      **/
-    public void recommencer()
+    public Configuration recommencer()
     {
-	estFini = false;
+        estFini = false;
 
-	Configuration c = null;
-	Joueur [] lesjoueurs = new Joueur[2];
-	do
+        Configuration c = null;
+
+        do
 	    {
-		c = historique.reculer();
-		if (c != null)
+            c = historique.reculer();
+            if (c != null)
 		    {	
-			// Met à jour la configuration
-			configurationCourante = c;
-			setJoueurCourant(c.getJoueurSurConfiguration());
+                // Met à jour la configuration
+                configurationCourante = c;
+                setJoueurCourant(c.getJoueurSurConfiguration());
 		
-			// Restaure le score du joueur
-			getJoueurCourant().setScore(c.getScoreSurConfiguration());
+                // Restaure le score du joueur
+                getJoueurCourant().setScore(c.getScoreSurConfiguration());
 
-			int [] restePingouins = c.getNombrePingouinsParJoueur(joueurs);
-			int totalPions = 0;
+                int [] restePingouins = c.getNombrePingouinsParJoueur(joueurs);
+                int totalPions = 0;
 		
-			for (int i = 0; i < restePingouins.length; i++)
-			    totalPions += restePingouins[i];
+                for (int i = 0; i < restePingouins.length; i++)
+                    totalPions += restePingouins[i];
 
-			// 2 joueurs, 8 pions
-			// 3 joueurs, 9 pions
-			// 4 joueurs, 8 pions
-			if ((joueurs.length == 2 && totalPions < 8) ||
-			    (joueurs.length == 3 && totalPions < 9) ||
-			    (joueurs.length == 4 && totalPions < 8))
-			    setMode(ModeDeJeu.POSE_PINGOUIN);
+                // 2 joueurs, 8 pions
+                // 3 joueurs, 9 pions
+                // 4 joueurs, 8 pions
+                if ((joueurs.length == 2 && totalPions < 8) ||
+                    (joueurs.length == 3 && totalPions < 9) ||
+                    (joueurs.length == 4 && totalPions < 8))
+                    setMode(ModeDeJeu.POSE_PINGOUIN);
 		
-			if (getMode() == ModeDeJeu.JEU_COMPLET)
-			    getConfiguration().getJoueurSurConfiguration().decrementNombreTuile();
+                if (getMode() == ModeDeJeu.JEU_COMPLET)
+                    getConfiguration().getJoueurSurConfiguration().decrementNombreTuile();
 		    }
 	    }
-	while(c != null);
+        while(c != null);
 
-	// Stop le thread pour lui indique le changement de joueur
-	ArbitreManager.instanceThread.interrupt();
-	inter.repaint();
-	
+        return getConfiguration();
     }
 
 
@@ -480,29 +477,29 @@ public class Arbitre implements Runnable, Serializable
      **/
     private void writeObject(ObjectOutputStream out) throws IOException
     {
-	// Largeur
-	out.writeInt(getLargeur());
-	// Hauteur
-	out.writeInt(getHauteur());
-	// Mode de jeu
-	out.writeObject(getMode());
+        // Largeur
+        out.writeInt(getLargeur());
+        // Hauteur
+        out.writeInt(getHauteur());
+        // Mode de jeu
+        out.writeObject(getMode());
         
-	// Nombre de joueurs
-	out.writeInt(joueurs.length);
+        // Nombre de joueurs
+        out.writeInt(joueurs.length);
 
-	// Liste des joueurs
-	for (int i = 0; i < joueurs.length; i++)
+        // Liste des joueurs
+        for (int i = 0; i < joueurs.length; i++)
 	    {
-		// Ecris la classe à part pour recharger plus tard
-		out.writeObject(joueurs[i].getClass().getName());
-		out.writeObject(joueurs[i]);
+            // Ecris la classe à part pour recharger plus tard
+            out.writeObject(joueurs[i].getClass().getName());
+            out.writeObject(joueurs[i]);
 	    }
         
-	// Tour du joueur en cours
-	out.writeInt(getPosition(getJoueurCourant()));
+        // Tour du joueur en cours
+        out.writeInt(getPosition(getJoueurCourant()));
 
-	// Liste des configurations
-	out.writeObject(historique);
+        // Liste des configurations
+        out.writeObject(historique);
     }
 
     /**
@@ -510,31 +507,31 @@ public class Arbitre implements Runnable, Serializable
      **/
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
     { 
-	// Largeur
-	setLargeur(in.readInt());
-	// Hauteur
-	setHauteur(in.readInt());
-	// Mode de jeu
-	setMode((ModeDeJeu)in.readObject());
+        // Largeur
+        setLargeur(in.readInt());
+        // Hauteur
+        setHauteur(in.readInt());
+        // Mode de jeu
+        setMode((ModeDeJeu)in.readObject());
 
-	// Nombre de joueurs
-	joueurs = new Joueur[in.readInt()];
+        // Nombre de joueurs
+        joueurs = new Joueur[in.readInt()];
         
-	// Liste des joueurs
-	for (int i = 0; i < joueurs.length; i++)
+        // Liste des joueurs
+        for (int i = 0; i < joueurs.length; i++)
 	    {
-		// Charge le joueur en dynamic cast
-		String type = (String)in.readObject();
-		joueurs[i] =(Joueur)( Class.forName(type).cast(in.readObject()));
+            // Charge le joueur en dynamic cast
+            String type = (String)in.readObject();
+            joueurs[i] =(Joueur)( Class.forName(type).cast(in.readObject()));
 	    }
         
-	// Tour du joueur en cours
-	setJoueurCourant(getJoueurParPosition(in.readInt()));
+        // Tour du joueur en cours
+        setJoueurCourant(getJoueurParPosition(in.readInt()));
 
-	// Liste des configurations
-	historique = (Historique)in.readObject();
+        // Liste des configurations
+        historique = (Historique)in.readObject();
 
-	configurationCourante = historique.courante();
-	signalStop = new Signal<Object>();
+        configurationCourante = historique.courante();
+        signalStop = new Signal<Object>();
     }
 }

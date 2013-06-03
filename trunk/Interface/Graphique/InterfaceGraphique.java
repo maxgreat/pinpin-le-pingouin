@@ -193,7 +193,7 @@ public class InterfaceGraphique extends Interface
 		if(S.compareTo( "Recommencer") == 0 )
 		{
 			System.out.println("on a clicker sur recommencer");
-		    ArbitreManager.instance.recommencer();
+		    ArbitreManager.recommencerPartie();
 		}
 		
 		if(S.compareTo( "Charger") == 0 )
