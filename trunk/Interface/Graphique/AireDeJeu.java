@@ -296,34 +296,34 @@ public class AireDeJeu extends JComponent
 				System.out.println(s);
 			
 				POPMenuVictoire popup = new POPMenuVictoire(hauteur,largeur);
-					popup.addInternalFrameListener(new EcouteurDeFenetre(this));
-					JLabel score = new JLabel (s);
-               		JLabel score2 = new JLabel(s2);
-					popup.setVisible(true);
-					JPanel panFin = new JPanel();
-					JButton bQuitter = new JButton("Quitter");
-					JButton recommencer = new JButton("Recommencer");
-					JButton menuP = new JButton("Menu Principal");
-					JButton save = new JButton("Sauvegarder");
-					panFin.setLayout(new GridLayout( 6, 1));
-					recommencer.addActionListener(new EcouteurDeBouton("Recommencer", inter));
-					bQuitter.addActionListener(new EcouteurDeBouton("Quitter", inter));
-					menuP.addActionListener(new EcouteurDeBouton("Retour Menu Principal", inter));
-					save.addActionListener(new EcouteurDeBouton("Sauvegarder", inter));
-               		panFin.add(score);
-               		panFin.add(score2);
-					panFin.add(save);
-					panFin.add(recommencer);
-					panFin.add(menuP);
-					panFin.add(bQuitter);
-               		popup.setSize(largeur/3,hauteur);
-					popup.setContentPane(panFin);
-					popup.pack();
-					this.add(popup);
-					popup.toFront();
-					try {
-						popup.setSelected(true);
-					} catch (java.beans.PropertyVetoException e) {}
+				popup.addInternalFrameListener(new EcouteurDeFenetre(this));
+				JLabel score = new JLabel (s);
+           		JLabel score2 = new JLabel(s2);
+				popup.setVisible(true);
+				JPanel panFin = new JPanel();
+				JButton bQuitter = new JButton("Quitter");
+				JButton recommencer = new JButton("Recommencer");
+				JButton menuP = new JButton("Menu Principal");
+				JButton save = new JButton("Sauvegarder");
+				panFin.setLayout(new GridLayout( 6, 1));
+				recommencer.addActionListener(new EcouteurDeBoutonMenuVictoire("Recommencer", inter, popup));
+				bQuitter.addActionListener(new EcouteurDeBoutonMenuVictoire("Quitter", inter, popup));
+				menuP.addActionListener(new EcouteurDeBoutonMenuVictoire("Retour Menu Principal", inter, popup));
+				save.addActionListener(new EcouteurDeBoutonMenuVictoire("Sauvegarder", inter, popup));
+           		panFin.add(score);
+           		panFin.add(score2);
+				panFin.add(save);
+				panFin.add(recommencer);
+				panFin.add(menuP);
+				panFin.add(bQuitter);
+           		popup.setSize(largeur/3,hauteur);
+				popup.setContentPane(panFin);
+				popup.pack();
+				this.add(popup);
+				popup.toFront();
+				try {
+					popup.setSelected(true);
+				} catch (java.beans.PropertyVetoException e) {}
 				showDialog = false;
 			}
 	

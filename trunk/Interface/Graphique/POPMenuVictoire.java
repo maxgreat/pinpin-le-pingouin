@@ -15,4 +15,14 @@ public class POPMenuVictoire extends JInternalFrame{
       
 	}
 	
+	public void close(){
+		try{
+			this.setClosed(true);
+		}catch(Exception e){
+			System.out.println("Erreur fermeture menu : " + e);
+			System.exit(1);
+		}
+	}
+	
+	
 }
