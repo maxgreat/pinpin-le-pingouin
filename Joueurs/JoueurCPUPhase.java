@@ -28,7 +28,6 @@ public class JoueurCPUPhase extends Joueur {
 			 * Phase de placement
 			 * Utilisation du CPUFacile
 			 **/
-			System.out.println("Facile");
 			JoueurCPUFacile cpuFacile = new JoueurCPUFacile();
 			return cpuFacile.coupSuivant();
 		} else {
@@ -37,24 +36,17 @@ public class JoueurCPUPhase extends Joueur {
 			Couple [] pingouins = c.coordPingouins(this.player);
 			for (int i = 0; i < pingouins.length && finish; i++) {
 				Couple couple = c.estIlot(pingouins[i].getX(), pingouins[i].getY(), new ArrayList<Couple>());
-				if (couple.getX() == -1) {
+				if (couple.getX() == -1) 
 					finish = false;
-					System.out.println("estIlot PAS : " + pingouins[i].getX() + "," + pingouins[i].getY());
-				} else
-					System.out.println("estIlot OK : " + pingouins[i].getX() + "," + pingouins[i].getY());
 			}
-			if (finish) {
-				System.out.println("Randomizable");
+			if (finish) 
 				return this.cpuRdizable.coupSuivant();
-			}
 			/**
 			 * Phase centrale
 			 * Utilisation du MinimaxIncremental
 			 **/
-			System.out.println("Incremental");
 			JoueurCPUMinimaxIncremental cpuMinimax = new JoueurCPUMinimaxIncremental(this.player, false);
 			Coup coup = cpuMinimax.coupSuivant();
-			System.out.println(coup);
 			return coup;
 		}
 	}

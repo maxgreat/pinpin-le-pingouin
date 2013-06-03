@@ -12,7 +12,7 @@ public abstract class Joueur implements Serializable
     
     
     public Joueur()
-    {   System.out.println("aaa");
+    { 
         // Signal d'attente sur un coup (clic souris si graphique, coordonnée si console, etc.)
         signalCoup = new Signal<Coup>();
     }

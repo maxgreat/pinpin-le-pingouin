@@ -39,7 +39,6 @@ public class JoueurCPUMinimax extends Joueur {
 		t.start();
 	    
 		Coup c = mini.getSignalCoup().attendreSignal();
-		System.out.println(c);
 		// Demande de stop forcé
 		if (c == null) {
 			t.interrupt();
