@@ -78,32 +78,32 @@ public class EcouteurDeBox implements ActionListener
 				{
 				if(test.compareTo("Facile") == 0)
 					{
-					inter.joueurs[0] = new JoueurCPURd();
+					inter.joueurs[0] = new JoueurCPUUniversel(3);
 					inter.joueurs[0].setNom("Ordinateur");
 					}
 				if(test.compareTo("Intermediaire") == 0)
 					{
-					inter.joueurs[0] = new JoueurCPUMinimaxIncremental();
+					inter.joueurs[0] = new JoueurCPUUniversel(2);
 					inter.joueurs[0].setNom("Ordinateur");
 					}
 				if(test.compareTo("Difficile") == 0)
-					inter.joueurs[0] = new JoueurCPUPhase();
+					inter.joueurs[0] = new JoueurCPUUniversel(1);
 					inter.joueurs[0].setNom("Ordinateur");
 				}
 			if(i == 2)
 				if(test.compareTo("Facile") == 0)
 					{
-					inter.joueurs[1] = new JoueurCPURd();
+					inter.joueurs[1] = new JoueurCPUUniversel(3);
 					inter.joueurs[1].setNom("Ordinateur");
 					}
 				if(test.compareTo("Intermediaire") == 0)
 					{
-					inter.joueurs[1] = new JoueurCPUMinimaxIncremental();
+					inter.joueurs[1] = new JoueurCPUUniversel(2);
 					inter.joueurs[1].setNom("Ordinateur");
 					}
 				if(test.compareTo("Difficile") == 0)
 					{
-					inter.joueurs[1] = new JoueurCPUPhase();
+					inter.joueurs[1] = new JoueurCPUUniversel(1);
 					inter.joueurs[1].setNom("Ordinateur");
 					}
 			if(i == 3){}
