@@ -51,6 +51,9 @@ public class JoueurCPUFacile extends Joueur {
 					imax = i;
 				}
 			}
+			try {
+				Thread.sleep(500);
+			} catch (Exception e) {}
 			return placementPossible[imax];
 		}
 		// Phase de jeu

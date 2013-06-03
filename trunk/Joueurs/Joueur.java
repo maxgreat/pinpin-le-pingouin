@@ -24,6 +24,14 @@ public abstract class Joueur implements Serializable
     {
         return signalCoup;
     }
+	
+	/**
+	 * Renvoi un coup au joueur humain
+	 **/
+	public Coup getCoup() {
+		JoueurCPUPhase j = new JoueurCPUPhase(this);
+		return j.coupSuivant();
+	}
 
     /**
      * Gestion du score
