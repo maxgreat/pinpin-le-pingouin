@@ -204,19 +204,20 @@ public class Configuration implements Cloneable, Serializable
 	public int [] scoreIlotParJoueur(Joueur [] joueurs){
         int [] score = new int[joueurs.length];
         ArrayList<Joueur> joueurList = new ArrayList<Joueur>(Arrays.asList(joueurs));
-	
+		  Joueur sauv = getJoueurSurConfiguration();
         for (int i = 0; i < joueurs.length; i++)
             score[i] = 0;
 
         for (int i = 0; i < joueurs.length; i++)
         {
 			 Couple [] cP = coordPingouins(joueurs[i]);
+			 setJoueurSurConfiguration(joueurs[i]);
 			 for (int j = 0; j < cP.length; j++)
 			 {
 				score[i] += estIlot(cP[j].getX(),cP[j].getY()).getX();
 			 }            
         }
-
+		  setJoueurSurConfiguration(sauv);
         return score;
 	}
 
