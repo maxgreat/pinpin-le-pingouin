@@ -479,30 +479,32 @@ public class AireDeJeu extends JComponent
 			}
     	} //fin boucle for
       
-         
-         if(clicPrec.x != -1 && clicPrec.y != -1)
+         if(aide)
          {
-			Coup [] coup =  ArbitreManager.instance.getConfiguration().coupsPossiblesCase(clicPrec.y, clicPrec.x);
-	        int i,j;
+		     if(clicPrec.x != -1 && clicPrec.y != -1)
+		     {
+				Coup [] coup =  ArbitreManager.instance.getConfiguration().coupsPossiblesCase(clicPrec.y, clicPrec.x);
+			    int i,j;
 		
-			for(int k = 0; k < coup.length;k++)
-			{
-			   i = coup[k].getXArrivee();
-			   j = coup[k].getYArrivee();
-			   if(c[j][i].getEtat() == Etat.DEUX_POISSONS)
-			   {
-				   drawable.drawImage(deux_poissons_aide,tabCase.sommetG_x(i,j),tabCase.sommetG_y(i,j),tabCase.largeur(),tabCase.hauteur(),null);
-				}
-				else if(c[j][i].getEtat() == Etat.UN_POISSON)
+				for(int k = 0; k < coup.length;k++)
 				{
-				   drawable.drawImage(un_poisson_aide,tabCase.sommetG_x(i,j),tabCase.sommetG_y(i,j),tabCase.largeur(),tabCase.hauteur(),null);
-				}
-				else if(c[j][i].getEtat() == Etat.TROIS_POISSONS)
-				{
-				   drawable.drawImage(trois_poissons_aide,tabCase.sommetG_x(i,j),tabCase.sommetG_y(i,j),tabCase.largeur(),tabCase.hauteur(),null);
-				} 
-	      }  
-	   }
+				   i = coup[k].getXArrivee();
+				   j = coup[k].getYArrivee();
+				   if(c[j][i].getEtat() == Etat.DEUX_POISSONS)
+				   {
+					   drawable.drawImage(deux_poissons_aide,tabCase.sommetG_x(i,j),tabCase.sommetG_y(i,j),tabCase.largeur(),tabCase.hauteur(),null);
+					}
+					else if(c[j][i].getEtat() == Etat.UN_POISSON)
+					{
+					   drawable.drawImage(un_poisson_aide,tabCase.sommetG_x(i,j),tabCase.sommetG_y(i,j),tabCase.largeur(),tabCase.hauteur(),null);
+					}
+					else if(c[j][i].getEtat() == Etat.TROIS_POISSONS)
+					{
+					   drawable.drawImage(trois_poissons_aide,tabCase.sommetG_x(i,j),tabCase.sommetG_y(i,j),tabCase.largeur(),tabCase.hauteur(),null);
+					} 
+			  }  
+	   		}
+	   	}
        
         //affichage du joueur selectionné
         if(clicPrec.x != -1 && clicPrec.y != -1)
@@ -649,7 +651,7 @@ public class AireDeJeu extends JComponent
 			{//clic sur le bouton aide
 				if (y > hauteur/2 && x < (int)tabCase.largeur && y <(int)tabCase.hauteur+hauteur/2) 
 					//afficher aide 		drawable.drawImage(info,0, hauteur/2, (int)tabCase.largeur, (int)tabCase.hauteur,null);
-					aide();
+					aide = true;
 			}
 			else if(x > largeur - margeGauche)
 			{//clic sur le bouton suggestion
@@ -660,12 +662,5 @@ public class AireDeJeu extends JComponent
 
     	this.repaint();
     }
-    
-
-    public void aide(){
-       if(aide)
-          aide = false;    	
-       else
-          aide = true;
-    }
+   
 }
