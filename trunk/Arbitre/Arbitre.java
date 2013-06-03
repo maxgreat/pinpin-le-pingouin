@@ -435,7 +435,6 @@ public class Arbitre implements Runnable, Serializable
         estFini = false;
 
         Configuration c = null;
-
         do
 	    {
             c = historique.reculer();
