@@ -249,10 +249,7 @@ public class AireDeJeu extends JComponent
 			hauteur = this.getHeight();
 			largeur = this.getWidth();
         if (arbitre == null)
-        { //erreur
-            System.out.println("Erreur dans le moteur du jeu. L'abitre vaut null.");
-            System.exit(0);
-        }
+            return;
         
         if (arbitre.partieFinie())
         { //La partie est terminée

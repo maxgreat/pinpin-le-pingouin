@@ -86,6 +86,40 @@ public class ArbitreManager
         instanceThread.start();
     }
 
+    /**
+     * Recommence une partie
+     **/
+    public static void recommencerPartie()
+    {
+        Joueur [] joueurs = instance.getJoueurs();
+        int largeur = instance.getLargeur();
+        int hauteur = instance.getHauteur();
+        Interface inter = instance.getInterface();
+
+        System.out.println(hauteur+" x "+largeur);
+        Configuration c = instance.recommencer();
+
+        stopperPartie();
+
+        // Créé l'arbitre
+        instance = new Arbitre(joueurs, largeur, hauteur);
+  
+        // Initialise le score des joueurs
+        for (int i = 0; i < joueurs.length; i++)
+        {
+            joueurs[i].setScore(0);
+            joueurs[i].setNombreTuile(0);
+        }
+               
+
+        // Lie l'interface
+        instance.setInterface(inter);
+
+        // Met en place ce terrain
+        instance.setConfiguration(c.clone());
+
+        lancerPartie();
+    }
 
     /**
      * Initialise une partie
