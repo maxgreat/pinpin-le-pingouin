@@ -479,11 +479,11 @@ public class AireDeJeu extends JComponent
 			}
     	} //fin boucle for
       
-         if(clicPrec.x != -1 && clicPrec.y != -1)
-         {
+      if(clicPrec.x != -1 && clicPrec.y != -1 && aide)
+      {
 			Coup [] coup =  ArbitreManager.instance.getConfiguration().coupsPossiblesCase(clicPrec.y, clicPrec.x);
 	        int i,j;
-		
+		   
 			for(int k = 0; k < coup.length;k++)
 			{
 			   i = coup[k].getXArrivee();
