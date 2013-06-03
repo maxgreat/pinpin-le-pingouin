@@ -61,16 +61,16 @@ public class InterfaceTest extends Interface {
 				
 				});
 			time.start();
-		}
+		} 
 	}
 	
 	/**
 	 * run() lance les différentes actions à effectuer
 	 **/
 	public  void run(String [] args) {
-		this.joueurs = new Joueur[2];
-		this.joueurs[0] = new JoueurCPUUniversel(2);
-		this.joueurs[1] = new JoueurCPUUniversel(3);
+		this.joueurs = new Joueur[args.length];
+		this.joueurs[0] = new JoueurCPUUniversel(Integer.valueOf(args[0]));
+		this.joueurs[1] = new JoueurCPUUniversel(Integer.valueOf(args[1]));
 		ArbitreManager.initialiserPartie(joueurs, ArbitreManager.LARGEUR_GRILLE, ArbitreManager.HAUTEUR_GRILLE, this);
 
 		Thread t = new Thread(new Runnable() 
