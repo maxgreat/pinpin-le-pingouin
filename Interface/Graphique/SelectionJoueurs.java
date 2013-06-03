@@ -33,7 +33,6 @@ MenuPerso mp;
 //les combobox
 JComboBox names;
 JComboBox diff;
-
 int menu;
 JPanel vide;
 JPanel buttons;
@@ -55,7 +54,7 @@ public void selectionJoueur()
 	{
 
 	Object [] test = joueurs.toArray();
-	JPanel buttons = new JPanel();
+	buttons = new JPanel();
 	diff = new JComboBox(difficultees.toArray());
 	names = new JComboBox(test);
 	diff.setVisible(false);
@@ -97,6 +96,7 @@ public void selectionDifficulte()
 	names.setVisible(Humain);
 	diff.setVisible(Ordinateur);
 	vide.setVisible(Aucun);
+	
 	}
 public JPanel getPan()
 	{
