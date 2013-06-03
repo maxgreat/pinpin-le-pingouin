@@ -31,7 +31,6 @@ public class ArbitreManager
         if (instanceThread == null)
             return;
 
-        System.out.println("Demande d'arrêt");
         instance.setForceStop(true);
         instance.signalStop.envoyerSignal();
 
@@ -43,7 +42,7 @@ public class ArbitreManager
         // Rééssaie si interrompu
         while (interrupted)
         {
-		System.out.println("Je passe dans la boucle");
+
             try
             {
                 interrupted = false;       
@@ -57,8 +56,6 @@ public class ArbitreManager
 
         instanceThread = null;
         instance = null;
-
-        System.out.println("Arrêt fini");
     }
 
     /**
@@ -98,6 +95,14 @@ public class ArbitreManager
         // Créé l'arbitre
         instance = new Arbitre(joueurs, largeur, hauteur);
   
+        // Initialise le score des joueurs
+        for (int i = 0; i < joueurs.length; i++)
+        {
+            joueurs[i].setScore(0);
+            joueurs[i].setNombreTuile(0);
+        }
+
+
         // Créé le terrain de base
         Case [][] terrain = new Case[hauteur][largeur];
 
