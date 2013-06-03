@@ -5,6 +5,7 @@ package Interface;
  **/
 import Interface.Graphique.InterfaceGraphique;
 import Interface.Console.InterfaceConsole;
+import Interface.Console.InterfaceTest;
 
 public class InterfaceFabrique
 {
@@ -17,7 +18,7 @@ public class InterfaceFabrique
         if (console)
         {
             // Interface console
-            return (Interface)(new InterfaceConsole());
+            return (Interface)(new InterfaceTest());
         }
         else
         {

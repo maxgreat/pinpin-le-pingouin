@@ -43,6 +43,7 @@ public class ArbitreManager
         // Rééssaie si interrompu
         while (interrupted)
         {
+		System.out.println("Je passe dans la boucle");
             try
             {
                 interrupted = false;       

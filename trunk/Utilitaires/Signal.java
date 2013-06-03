@@ -49,7 +49,8 @@ public class Signal<T>
 	 **/
 	public synchronized void envoyerSignal()
 				 {
-
+					 Object tmp = new Object();
+					 this.donnee = (T) tmp;
 					 notifyAll();
 				 }
 }
