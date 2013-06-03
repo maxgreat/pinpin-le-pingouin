@@ -2,5 +2,5 @@ package Arbitre.Regles;
 
 public enum ModeDeJeu
 {
-    POSE_PINGOUIN, JEU_COMPLET
+    POSE_PINGOUIN, JEU_COMPLET, PARTIE_FINIE
 }

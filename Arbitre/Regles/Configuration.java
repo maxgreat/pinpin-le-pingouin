@@ -13,7 +13,7 @@ public class Configuration implements Cloneable, Serializable
     protected int joueurSurConfiguration;
     protected int scoreSurConfiguration;
     protected Coup coupEffectue;
-
+    public boolean estFinale = false;
 
     public Configuration(int largeur, int hauteur, Case [][] terrain, Joueur joueurSurConfiguration)
     {
@@ -957,7 +957,10 @@ public class Configuration implements Cloneable, Serializable
             }
         }
 
-        return new Configuration(largeur, hauteur, terrainCopie, getJoueurSurConfiguration(), getCoupEffectue());
+        Configuration c = new Configuration(largeur, hauteur, terrainCopie, getJoueurSurConfiguration(), getCoupEffectue());
+        c.estFinale = estFinale;
+
+        return c;
     }
 
     /**
