@@ -20,6 +20,6 @@ public abstract class Interface
 
     public void setJoueurs(Joueur [] joueurs)
     {
-	this.joueurs = joueurs;
+        this.joueurs = joueurs;
     }
 }

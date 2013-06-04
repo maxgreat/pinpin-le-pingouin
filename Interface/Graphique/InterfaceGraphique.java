@@ -20,7 +20,7 @@ public class InterfaceGraphique extends Interface
     protected Fond fond;
 	protected Banniere ban;
     private LinkedList<String> oldPage;
-    Joueur [] joueurs = new Joueur[2];
+    //    Joueur [] joueurs = new Joueur[2];
 
     public String filename = null;
 
@@ -45,10 +45,13 @@ public class InterfaceGraphique extends Interface
             filename = arguments[0];
 
     	//historique de navigation dans les menus
+        this.joueurs = new Joueur[2];
 		joueurs[0] = new JoueurHumain();
-		joueurs[1] = new JoueurCPUPhase();
+		joueurs[1] = new JoueurCPUUniversel(2);
+
 		joueurs[0].setNom("defaut1");
 		joueurs[1].setNom("defaut2");
+
     	oldPage = new LinkedList<String>();
     	oldPage.push("Menu Principal");
     	
