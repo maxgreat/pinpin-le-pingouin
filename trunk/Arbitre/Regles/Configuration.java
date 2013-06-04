@@ -1373,4 +1373,29 @@ public class Configuration implements Cloneable, Serializable
 
         return terrain;
     }
+
+
+    public int nombrePoissonIlot(int ii, int jj){
+		Case [][] terrainCopie = cloneTerrain();
+		int nbP = 0;
+		Stack<Couple> pile = new Stack();
+		pile.push(new Couple(ii,jj));
+		nbP += terrainCopie[ii][jj].scorePoisson();
+		terrainCopie[ii][jj].setEtat(Etat.VIDE);
+      Couple p;
+		while(!pile.empty()){
+			p = pile.pop();
+			ArrayList<Couple> voisins = getVoisins(terrainCopie,p.getX(),p.getY(),false);
+			for(int taille=0;taille<voisins.size();taille++){
+				p = voisins.get(taille);
+				if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()==null){
+					nbP += terrainCopie[p.getX()][p.getY()].scorePoisson();
+					pile.push(new Couple(p.getX(),p.getY()));
+					terrainCopie[p.getX()][p.getY()].setEtat(Etat.VIDE);
+				}
+			}
+		}
+		return nbP;
+	}
+
 }
