@@ -199,26 +199,40 @@ public class Configuration implements Cloneable, Serializable
 	}
 
     /**
-     * Retourne le score que rapporte tout les pingouins isolé par joueurs
+     * Retourne le score que rapporte tout les pingouins isolé par joueurs et le nb pingouin isolé par joueur dans un tableau de couple(scoreIlot,Pingouin sur ilot)
      **/
-	public int [] scoreIlotParJoueur(Joueur [] joueurs){
-        int [] score = new int[joueurs.length];
+	public Couple [] scoreIlotParJoueur(Joueur [] joueurs){
+        Couple [] res = new Couple[joueurs.length];
         ArrayList<Joueur> joueurList = new ArrayList<Joueur>(Arrays.asList(joueurs));
         Joueur sauv = getJoueurSurConfiguration();
         for (int i = 0; i < joueurs.length; i++)
-            score[i] = 0;
+            res[i] = new Couple(0,0);
 
         for (int i = 0; i < joueurs.length; i++)
         {
             Couple [] cP = coordPingouins(joueurs[i]);
             setJoueurSurConfiguration(joueurs[i]);
+				ArrayList<Couple> liste = new ArrayList<Couple>();
+				Couple pres;
+				int n,b;
             for (int j = 0; j < cP.length; j++)
             {
-				score[i] += estIlot(cP[j].getX(),cP[j].getY()).getX();
+					if((n=estIlot(cP[j].getX(), cP[j].getY(), new ArrayList<Couple>(), 0).getX()) != -1){
+						res[i].setX(res[i].getX()+terrain[cP[j].getX()][cP[j].getY()].scorePoisson());
+						if(estIlot(cP[j].getX(), cP[j].getY(),liste, 1).getX() != -2){
+							res[i].setX(res[i].getX()+n);
+						}else{
+							pres = estIlot(cP[j].getX(), cP[j].getY(),liste, 0);
+							if(n > (b=estIlot(pres.getX(), pres.getY(), new ArrayList<Couple>(), 0).getX()))
+								res[i].setX(res[i].getX()+n-b);
+						}
+						res[i].setY(res[i].getY()+1);
+						liste.add(cP[j]);
+					}
             }            
         }
         setJoueurSurConfiguration(sauv);
-        return score;
+        return res;
 	}
 
 	/**
@@ -226,25 +240,29 @@ public class Configuration implements Cloneable, Serializable
 	 * -1 si non
 	 * nombre de poisson sur l'ilot si oui
 	 **/
-	public Couple estIlot(int ii, int jj){
+	public Couple estIlot(int ii, int jj, ArrayList<Couple> liste, int inutile){
 		Case [][] terrainCopie = cloneTerrain();
 		int nbP = 0,nbC = 0;
 		Stack<Couple> pile = new Stack();
 		int advProxi;
 		pile.push(new Couple(ii,jj));
-		nbP += terrainCopie[ii][jj].scorePoisson();
-		nbC++;
+		/*nbP += terrainCopie[ii][jj].scorePoisson();
+		nbC++;*/
 		terrainCopie[ii][jj].setEtat(Etat.VIDE);
 		ArrayList<Couple> voisinsTe = getVoisins(terrainCopie,ii,jj,false);
 		ArrayList<Couple> voisinsTest = getVoisins(terrainCopie,ii,jj,true);
 		advProxi = voisinsTe.size() - voisinsTest.size();
-		Couple p;
-		boolean phase1 = true;
+		Couple p, pres=new Couple(0,0);
+		boolean phase1 = true, amie = false;
 		while(!pile.empty()){
 			p = pile.pop();
 			ArrayList<Couple> voisins = getVoisins(terrainCopie,p.getX(),p.getY(),false);
 			for(int taille=0;taille<voisins.size();taille++){
 				p = voisins.get(taille);
+				if(liste.contains(p)){
+					amie = true;
+					pres = p;
+				}
 				if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()==null){
 					nbP += terrainCopie[p.getX()][p.getY()].scorePoisson();
 					nbC++;
@@ -264,7 +282,13 @@ public class Configuration implements Cloneable, Serializable
 			}
 			phase1 = false;
 		}
-		return new Couple(nbP,nbC);
+		if(amie)
+			if(inutile==1)
+				return new Couple(-2, -2);
+			else
+				return pres;
+		else
+			return new Couple(nbP,nbC);
 	}
 
 	/**

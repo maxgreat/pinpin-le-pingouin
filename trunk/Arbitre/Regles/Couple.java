@@ -18,6 +18,14 @@ public class Couple extends Object{
 		return this.y;
 	}
 
+	public void setX(int n){
+		this.x = n;
+	}
+
+	public void setY(int n){
+		this.y = n;
+	}
+
 	public boolean equals(Object o){
 		Couple c = (Couple) o;
 		return (this.x == c.getX() && this.y == c.getY());

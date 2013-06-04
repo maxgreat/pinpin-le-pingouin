@@ -2,6 +2,8 @@ package Joueurs;
 import Arbitre.*;
 import Arbitre.Regles.*;
 import java.util.Random;
+import java.util.*;
+import java.io.*;
 
 public class JoueurCPUCoulyMinimax extends Joueur
 {
@@ -167,7 +169,7 @@ Case [][] terrain = ArbitreManager.instance.getConfiguration().getTerrain();
    Boolean finish = true;
 	Couple [] pingouins = ArbitreManager.instance.getConfiguration().coordPingouins(this.j);
 	for (int i = 0; i < pingouins.length && finish; i++) {
-		Couple couple = ArbitreManager.instance.getConfiguration().estIlot(pingouins[i].getX(), pingouins[i].getY());
+		Couple couple = ArbitreManager.instance.getConfiguration().estIlot(pingouins[i].getX(), pingouins[i].getY(), new ArrayList<Couple>(), 0);
 		if (couple.getX() == -1)
 			finish = false;
 	}
