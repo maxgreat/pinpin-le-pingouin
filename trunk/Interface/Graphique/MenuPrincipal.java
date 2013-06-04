@@ -4,6 +4,7 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import javax.imageio.*;
 import java.io.IOException;
+import java .io.File;
 import java.net.URL;
 
 public class MenuPrincipal{
@@ -149,9 +150,20 @@ public class MenuPrincipal{
 	public void addBouton(JPanel panel, String S)
 	{
 		JPanel pan = new JPanel();
-		JButton b1 = new JButton(new ImageIcon("Interface/Graphique/Img/" + S));
-		b1.setBorder(BorderFactory.createEmptyBorder());
-		b1.setContentAreaFilled(false);
+        File f = new File("Interface/Graphique/Img/"+S);
+        JButton b1 = null;
+        // Test l'existence du fichier d'image avant d'essayer de le charger
+        if(f.exists())
+        {
+            b1 = new JButton(new ImageIcon("Interface/Graphique/Img/" + S));
+            b1.setBorder(BorderFactory.createEmptyBorder());
+            b1.setContentAreaFilled(false);
+        }
+        else
+        {
+            b1 = new JButton(S);
+        }
+
 		b1.addActionListener(new EcouteurDeBouton(S, inter));
 		pan.add(b1,BorderLayout.CENTER);
 		pan.setOpaque(false);	
@@ -171,6 +183,7 @@ public class MenuPrincipal{
 			
 		}
 		else if(s.compareTo("Options") == 0){
+
 			ban = new Banniere("options.png",frame);
 			ban.setPreferredSize(new Dimension(700, (500)/4));
 			Menu.setLayout(new GridLayout( 3 , 1));
