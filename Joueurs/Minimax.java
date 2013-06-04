@@ -144,15 +144,15 @@ public class Minimax implements Runnable {
 		// nouveau Ilot
 		Couple [] newsipj = c.scoreIlotParJoueur(arbitre.getJoueurs());
 		if(newsipj[numA].getY()>sipj[numA].getY()){
-			if (newsipj[numA].getX()-sipj[numA].getX() >= (c.nombrePoissonsRestant()-sipj[numA].getX())/6)
+			if (newsipj[numA].getX()-sipj[numA].getX() >= (c.nombrePoissonsRestant()-sipj[numA].getX())/5)
 				score = score - 100 - (newsipj[numA].getX()-sipj[numA].getX());
-			if (newsipj[numA].getX()- sipj[numA].getX() < (c.nombrePoissonsRestant()-sipj[numA].getX())/6)
+			if (newsipj[numA].getX()- sipj[numA].getX() < (c.nombrePoissonsRestant()-sipj[numA].getX())/5)
 				score = score + 100 + (newsipj[numA].getX()-sipj[numA].getX());
 		}
 		if(newsipj[numJ].getY()>sipj[numJ].getY()){
-			if (newsipj[numJ].getX()-sipj[numJ].getX() < (c.nombrePoissonsRestant()-sipj[numJ].getX())/6)
+			if (newsipj[numJ].getX()-sipj[numJ].getX() < (c.nombrePoissonsRestant()-sipj[numJ].getX())/5)
 				score = score - 100 - (newsipj[numJ].getX()-sipj[numJ].getX());
-			if (newsipj[numJ].getX()-sipj[numJ].getX() >= (c.nombrePoissonsRestant()-sipj[numJ].getX())/6)
+			if (newsipj[numJ].getX()-sipj[numJ].getX() >= (c.nombrePoissonsRestant()-sipj[numJ].getX())/5)
 				score = score + 100 + (newsipj[numJ].getX()-sipj[numJ].getX());
 		}
 
