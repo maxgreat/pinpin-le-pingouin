@@ -2,6 +2,8 @@ package Interface.Graphique;
 import Interface.*;
 import java.awt.event.*;
 import java.io.*;
+import java.awt.*;
+import javax.swing.*;
 import Arbitre.*;
 import Joueurs.*;
 
@@ -31,7 +33,17 @@ public class EcouteurCharger implements ActionListener{
 				System.out.println("aller");
 			}
 		} else if (this.opt == 1) {
-			return;
+			if (this.charger.getList().getSelectedValue() != null) {
+				if (JOptionPane.showConfirmDialog(null,
+							      "Supprimer la sauvegarde \"" +
+							      this.charger.getList().getSelectedValue() + "\" ?",
+							      null , 
+								  JOptionPane.YES_NO_OPTION) == 0) {
+					File f = new File("Save/" + this.charger.getList().getSelectedValue());
+					f.delete();
+					this.charger.listLoad();
+				}
+			}
 		}
 	}
 }
