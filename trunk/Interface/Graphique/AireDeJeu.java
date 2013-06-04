@@ -446,6 +446,7 @@ public class AireDeJeu extends JComponent
 					
 					if(joueur != null){
 						BufferedImage imageJoueur = null;
+
 						if(joueur == inter.joueurs[0])
 						{
 							drawable.drawImage(imageJoueur1,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
