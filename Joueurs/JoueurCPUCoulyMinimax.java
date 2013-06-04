@@ -11,7 +11,7 @@ public class JoueurCPUCoulyMinimax extends Joueur
      * Temps d'attente en seconde
      **/
     static final long TEMPS_ATTENTE_MINIMAL = 1000; 
-    static final long TEMPS_ATTENTE_MAXIMAL = 5000;
+    static final long TEMPS_ATTENTE_MAXIMAL = 8000;
 	
 	Joueur j;
    boolean finish;
@@ -53,7 +53,7 @@ Case [][] terrain = ArbitreManager.instance.getConfiguration().getTerrain();
       int [][] tableau = new int[hauteur][largeur];
       Configuration config = ArbitreManager.instance.getConfiguration();
 		// Phase de placement
-		System.out.println("A mon tour");
+	//	System.out.println("A mon tour");
    	Coup [] placementPossible = ArbitreManager.instance.getConfiguration().toutPlacementsPossibles();
 		int score = 0, ci, cj;
       for(int i = 0; i< hauteur; i++){
@@ -68,13 +68,16 @@ Case [][] terrain = ArbitreManager.instance.getConfiguration().getTerrain();
                if(i%2 == 0 && j == 7)
                      continue;
                if(tableau[i][j] != 0)
-                tableau[i][j] =terrain[i][j].scorePoisson();
-               if(terrain[i][j].estObstacle()){
-                   tableau[i][j] = 0;
-
-					   if(i%2 == 0 && j < largeur-2){
+                 tableau[i][j] =terrain[i][j].scorePoisson();
+           }
+       }
+       Coup [] lesCoups = config.toutCoupsPossibles();
+       for(int z = 0; z<lesCoups.length; z++){
+           tableau[lesCoups[z].getYArrivee()][lesCoups[z].getXArrivee()] = 0;
+       }
+					/*   if(i%2 == 0 && j < largeur-2){
 							tableau[i][j+1] = 0;
-                     System.out.println("0 en "+i+" "+(j+1));
+
 				      }
 				      if(i%2 == 1 && j < largeur-1){
 							tableau[i][j+1] = 0;
@@ -105,16 +108,13 @@ Case [][] terrain = ArbitreManager.instance.getConfiguration().getTerrain();
 				      }
 				      if(i%2==1 && j<largeur-2 && i>0){
 							tableau[i-1][j] = 0;
-				      }
-               }
-           }
-       }
-      for(int i = 0; i<8; i++){
+				      }*/
+      /*for(int i = 0; i<8; i++){
          for(int j = 0;j<8;j++){
             System.out.print(tableau[i][j]);
          }
          System.out.println(" ");
-      }
+      }*/
       int l;
      max = 0;   
      for (int i = 0; i < placementPossible.length; i++) {
@@ -144,7 +144,7 @@ Case [][] terrain = ArbitreManager.instance.getConfiguration().getTerrain();
 **
 */
   try{
-      Thread.sleep(2500);//sleep for 1000 ms
+      Thread.sleep(500);//sleep for 1000 ms
   
    }
    catch(InterruptedException ie){
@@ -174,7 +174,7 @@ Case [][] terrain = ArbitreManager.instance.getConfiguration().getTerrain();
 			finish = false;
 	}
 	if (finish) {
-		System.out.println("Randomizable");
+	//	System.out.println("Randomizable");
 		return this.cpuRdizable.coupSuivant();
 	}
    

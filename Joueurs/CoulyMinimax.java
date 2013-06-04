@@ -61,7 +61,7 @@ public class CoulyMinimax implements Runnable {
 		}
       p = cc.coordPingouins(joueur); 
       Case [][] terrain= new Case[8][8];
-     
+      int nbPoissonsIle;
       Couple [] pp =  cc.coordPingouins(this.joueur); 
 		for(int i = 0; i < coupPossible.length && !Thread.currentThread().isInterrupted(); i++){	
 			score = 0;
@@ -69,7 +69,27 @@ public class CoulyMinimax implements Runnable {
           	cl = cc.clone();
 				score += cl.getTerrain()[coupPossible[i].getYArrivee()][coupPossible[i].getXArrivee()].scorePoisson();
             score = score*score*2;
-            for(int j=0;j<pp.length;j++){
+           
+            h=coupPossible[i].getYDepart();
+			   l=coupPossible[i].getXDepart();
+            
+			   if(!poissonIlot.contains(new Point(coupPossible[i].getXDepart(),coupPossible[i].getYDepart()))){
+               nbPoissonsIle = cc.nombrePoissonIlot(h,l);
+			      h=coupPossible[i].getYArrivee();
+			      l=coupPossible[i].getXArrivee();
+               int nbpoissons;
+			      if((nbpoissons=cc.estIlot(h,l,new ArrayList<Couple> (),0).getX())>nbPoissonsIle/3){
+                  System.out.println("nb pois : "+nbpoissons+" "+nbPoissonsIle);
+                  score += (int)(((float)nbpoissons/(float)nbPoissonsIle)*100.0);
+               }
+            }   
+		      
+				score += cl.getTerrain()[coupPossible[i].getYArrivee()][coupPossible[i].getXArrivee()].scorePoisson();
+
+
+
+
+          /* for(int j=0;j<pp.length;j++){
                 int nbCaseAdj = nombreDeCasesAdjacentes((int)pp[j].getX(),(int)pp[j].getY(),cc.cloneTerrain());
 			       if(nbCaseAdj ==5)
                    score += 2 ;
@@ -81,7 +101,7 @@ public class CoulyMinimax implements Runnable {
                    score += 11;
                 if(nbCaseAdj == 1)
                    score += 16;
-		      }
+		      }*/
 				for(int k = 0; k<nbPingouinsRestants[arbitre.getPosition(joueur)-1];k++){
 		         int ii = coupPossible[i].getYArrivee();
 		         int jj = coupPossible[i].getXArrivee();

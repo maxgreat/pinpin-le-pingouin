@@ -434,7 +434,10 @@ public class AireDeJeu extends JComponent
 					{
 				   		if (arbitre.getMode() == ModeDeJeu.POSE_PINGOUIN)
 				   		{
-				   			drawable.drawImage(poissonRouge,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);			   		
+                        if(aide && c[2*j][i].getJoueurSurCase() == null && ArbitreManager.instance.getJoueurCourant() instanceof JoueurHumain)
+				   			   drawable.drawImage(poissonRouge,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);			  
+                        else
+                           drawable.drawImage(un_poisson,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
 				   		}
 				   		else
 				   		{
@@ -477,7 +480,10 @@ public class AireDeJeu extends JComponent
 					{
 						if (arbitre.getMode() == ModeDeJeu.POSE_PINGOUIN)
 						{
-							drawable.drawImage(poissonRouge,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
+							if(aide && c[2*j+1][i].getJoueurSurCase() == null && ArbitreManager.instance.getJoueurCourant() instanceof JoueurHumain)
+				   			   drawable.drawImage(poissonRouge,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);			  
+                        else
+                           drawable.drawImage(un_poisson,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
 						}
 						else
 						{
@@ -509,7 +515,10 @@ public class AireDeJeu extends JComponent
       
          if(aide)
          {
-		     if(clicPrec.x != -1 && clicPrec.y != -1)
+
+		     if(clicPrec.x != -1 && clicPrec.y != -1 && 
+              c[clicPrec.x][clicPrec.y].getJoueurSurCase() == ArbitreManager.instance.getJoueurCourant() &&
+              c[clicPrec.x][clicPrec.y].getJoueurSurCase() instanceof JoueurHumain)
 		     {
 				Coup [] coup =  ArbitreManager.instance.getConfiguration().coupsPossiblesCase(clicPrec.y, clicPrec.x);
 			    int i,j;
