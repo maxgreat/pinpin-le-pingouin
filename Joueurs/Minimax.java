@@ -48,7 +48,7 @@ public class Minimax implements Runnable {
 			if(h!=coupPossible[i].getYDepart() || l!=coupPossible[i].getXDepart()){
 				h=coupPossible[i].getYDepart();
 				l=coupPossible[i].getXDepart();
-				if(cc.estIlot(h,l).getX()!=-1){
+				if(cc.estIlot(h, l, new ArrayList<Couple>(), 0).getX()!=-1){
 					poissonIlot.add(new Couple(h,l));
 				}
 			}
@@ -131,7 +131,7 @@ public class Minimax implements Runnable {
 		// Nombre de poissons
 		int score = s;
 		int [] nbPingouinsRestants = cDeb.getNombrePingouinsDispoParJoueur(arbitre.getJoueurs());
-		int [] sipj = cDeb.scoreIlotParJoueur(arbitre.getJoueurs());
+		Couple [] sipj = cDeb.scoreIlotParJoueur(arbitre.getJoueurs());
 
 		int numJ = arbitre.getPosition(this.joueur) - 1;
 		int numA = arbitre.getPosition(this.adversaire) - 1;
@@ -142,16 +142,16 @@ public class Minimax implements Runnable {
 		score -= (nbPingouinsRestants[numJ] - newNbPingouinsRestants[numJ]) * 250;
 		
 		// nouveau Ilot
-		int [] newsipj = c.scoreIlotParJoueur(arbitre.getJoueurs());
-		if (newsipj[numA]-sipj[numA] >= c.nombrePoissonsRestant()/5)
-			score = score - 200 - (newsipj[numA]-sipj[numA]);
-		if (newsipj[numJ]-sipj[numJ] < c.nombrePoissonsRestant()/5)
-			score = score - 200 - (newsipj[numJ]-sipj[numJ]);
-		if (newsipj[numJ]-sipj[numJ] >= c.nombrePoissonsRestant()/5)
-			score = score + 200 + (newsipj[numJ]-sipj[numJ]);
-		if (newsipj[numA]- sipj[numA] < c.nombrePoissonsRestant()/5)
-			score = score + 200 + (newsipj[numA]-sipj[numA]);
-
+	/*	Couple [] newsipj = c.scoreIlotParJoueur(arbitre.getJoueurs());
+		if (newsipj[numA].getX()-sipj[numA].getX() >= c.nombrePoissonsRestant()/5)
+			score = score - 200 - (newsipj[numA].getX()-sipj[numA].getX());
+		if (newsipj[numJ].getX()-sipj[numJ].getX() < c.nombrePoissonsRestant()/5)
+			score = score - 200 - (newsipj[numJ].getX()-sipj[numJ].getX());
+		if (newsipj[numJ].getX()-sipj[numJ].getX() >= c.nombrePoissonsRestant()/5)
+			score = score + 200 + (newsipj[numJ].getX()-sipj[numJ].getX());
+		if (newsipj[numA].getX()- sipj[numA].getX() < c.nombrePoissonsRestant()/5)
+			score = score + 200 + (newsipj[numA].getX()-sipj[numA].getX());
+*/
 		// pingouin presque bloqué
 		Case [][] terrainCopieJ = c.cloneTerrain();
 		Case [][] terrainCopieA = c.cloneTerrain();

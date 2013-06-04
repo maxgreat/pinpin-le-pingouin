@@ -39,7 +39,7 @@ public class CoulyMinimax implements Runnable {
 		int max= Integer.MIN_VALUE,tmp,maxi=-1, score;
 		Configuration cl,cloneConf;
 		int [] nbPingouinsRestants = cc.getNombrePingouinsDispoParJoueur(arbitre.getJoueurs());
-		int [] sipj = cc.scoreIlotParJoueur(arbitre.getJoueurs());
+		Couple [] sipj = cc.scoreIlotParJoueur(arbitre.getJoueurs());
 		/*		int [] ppj = cl.getNombrePingouinsDispoParJoueur(arbitre.getJoueurs());
 				int nbPingouins = ppj[this.arbitre.getPosition(this.adversaire)-1];*/
 
@@ -51,7 +51,7 @@ public class CoulyMinimax implements Runnable {
 			if(h!=coupPossible[i].getYDepart() || l!=coupPossible[i].getXDepart()){
 				h=coupPossible[i].getYDepart();
 				l=coupPossible[i].getXDepart();
-				if(cc.estIlot(h,l).getX()!=-1){
+				if(cc.estIlot(h, l, new ArrayList<Couple>(), 0).getX()!=-1){
 	            System.out.println("le pingouin "+h+" "+l+" est isolé");
 					poissonIlot.add(new Point(h,l));
 
@@ -130,7 +130,7 @@ public class CoulyMinimax implements Runnable {
 		return coupPossible[maxi];
 	}
 
-	public int Min(Configuration cc, int max, int profondeur, int [] nbPingouinsRestants, int [] sipj, int s) {
+	public int Min(Configuration cc, int max, int profondeur, int [] nbPingouinsRestants, Couple [] sipj, int s) {
 		Configuration clcc = cc.clone();
 		clcc.setJoueurSurConfiguration(this.adversaire);
 		Coup [] coupPossible = clcc.toutCoupsPossibles();
@@ -160,7 +160,7 @@ public class CoulyMinimax implements Runnable {
 	}
 
 
-	public int Max(Configuration cc, int min, int profondeur, int [] nbPingouinsRestants, int [] sipj, int s)
+	public int Max(Configuration cc, int min, int profondeur, int [] nbPingouinsRestants, Couple [] sipj, int s)
 	{
 		Configuration clcc = cc.clone();
 		clcc.setJoueurSurConfiguration(joueur);
@@ -189,7 +189,7 @@ public class CoulyMinimax implements Runnable {
 		return max;		
 	}
 
-	public int eval(Configuration c, int [] nbPingouinsRestants, int [] sipj, int s){
+	public int eval(Configuration c, int [] nbPingouinsRestants, Couple [] sipj, int s){
 		// Nombre de poissons
 		int score = s;
 		int nbCasesRestantes = c.getNbCasesRestantes();
@@ -202,15 +202,15 @@ public class CoulyMinimax implements Runnable {
 		score -= (nbPingouinsRestants[numJ] - newNbPingouinsRestants[numJ]) * 300;
 		int nbPoissonsRestants = c.nombrePoissonsRestant();
 		// nouveau Ilot
-		int [] newsipj = c.scoreIlotParJoueur(arbitre.getJoueurs());
-		if (newsipj[numA]-sipj[numA] >= nbPoissonsRestants/8)
-			score = score - 200 - (newsipj[numA]-sipj[numA]);
-		if (newsipj[numJ]-sipj[numJ] < nbPoissonsRestants/8)
-			score = score - 200 - (newsipj[numJ]-sipj[numJ]);
-		if (newsipj[numJ]-sipj[numJ] >= nbPoissonsRestants/12)
-			score = score + 200+ (newsipj[numJ]-sipj[numJ]);
-		if (newsipj[numA]-sipj[numA] < nbPoissonsRestants/12)
-			score = score + 200+ (newsipj[numA]-sipj[numA]);
+		Couple [] newsipj = c.scoreIlotParJoueur(arbitre.getJoueurs());
+		if (newsipj[numA].getX()-sipj[numA].getX() >= nbPoissonsRestants/8)
+			score = score - 200 - (newsipj[numA].getX()-sipj[numA].getX());
+		if (newsipj[numJ].getX()-sipj[numJ].getX() < nbPoissonsRestants/8)
+			score = score - 200 - (newsipj[numJ].getX()-sipj[numJ].getX());
+		if (newsipj[numJ].getX()-sipj[numJ].getX() >= nbPoissonsRestants/12)
+			score = score + 200+ (newsipj[numJ].getX()-sipj[numJ].getX());
+		if (newsipj[numA].getX()-sipj[numA].getX() < nbPoissonsRestants/12)
+			score = score + 200+ (newsipj[numA].getX()-sipj[numA].getX());
 
 		// pingouin presque bloqué
 		Case [][] terrainCopieJ = c.cloneTerrain();
