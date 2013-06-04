@@ -29,15 +29,15 @@ public class MenuPerso{
 	public MenuPerso(JFrame frame, InterfaceGraphique inter)
 	{
 		noms.add("Atos");
-			noms.add("Portos");
-			noms.add("Aramis");
-			noms.add("Dartagnan");
-			noms.add("Ordinateur");
-			noms.add("Aucun");
-			
-			diff.add("Facile");
-			diff.add("Intermediaire");
-			diff.add("Difficile");
+        noms.add("Portos");
+        noms.add("Aramis");
+        noms.add("Dartagnan");
+        noms.add("Ordinateur");
+        noms.add("Aucun");
+		
+        diff.add("Facile");
+        diff.add("Intermediaire");
+        diff.add("Difficile");
 
 			
 		this.frame = frame;
@@ -249,41 +249,41 @@ public class MenuPerso{
 	{
 		if(s.compareTo("Nouvelle Partie") == 0)
 		{			
-		setBoutonsJoueur(menuJ1,1);
-		setBoutonsJoueur(menuJ2,2);
-		setBoutonsJoueur(menuJ3,3);
-		setBoutonsJoueur(menuJ4,4);
-		addBouton(cellDroite , "Lancer");
-		addBouton(cellGauche , "Retour");
+            setBoutonsJoueur(menuJ1,1);
+            setBoutonsJoueur(menuJ2,2);
+            setBoutonsJoueur(menuJ3,3);
+            setBoutonsJoueur(menuJ4,4);
+            addBouton(cellDroite , "Lancer");
+            addBouton(cellGauche , "Retour");
 		}
 	}
 	public void setBoutonsJoueur(JPanel panel,int i)
 	{
 			
-			if(i == 1)
-			{
+        if(i == 1)
+        {
 			J1.selectionJoueur();
 			J1.selectionDifficulte();
 			menuJ1 = J1.getPan();
-			}
-			if(i == 2)
-			{
+        }
+        if(i == 2)
+        {
 			J2.selectionJoueur();
 			J2.selectionDifficulte();
 			menuJ2 = J2.getPan();
-			}
-			if(i == 3)
-			{
+        }
+        if(i == 3)
+        {
 			J3.selectionJoueur();
 			J3.selectionDifficulte();
 			menuJ3 = J3.getPan();
-			}
-			if(i == 4)
-			{		
+        }
+        if(i == 4)
+        {		
 			J4.selectionJoueur();
 			J4.selectionDifficulte();
 			menuJ4 = J4.getPan();
-			}
+        }
 	}
 	public void refresh()
 	{

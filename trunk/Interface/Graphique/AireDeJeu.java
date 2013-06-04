@@ -225,7 +225,7 @@ public class AireDeJeu extends JComponent
 				{ 
 					for(int i = 1; i <= n; i++)
 					{
-						drawable.drawImage(imageJoueur2, largeur-((int)margeGauche - (i-1)*(int)margeGauche/4), (int)margeHaut, (int)margeGauche/2, (int)margeHaut/2, null);
+						drawable.drawImage(imageJoueur2, largeur-((int)margeGauche - (i-2)*(int)margeGauche/4), (int)margeHaut, (int)margeGauche/2, (int)margeHaut/2, null);
 					}
 					break;
 				}	
