@@ -46,7 +46,7 @@ public class InterfaceGraphique extends Interface
 
     	//historique de navigation dans les menus
 		joueurs[0] = new JoueurHumain();
-		joueurs[1] = new JoueurCPURd();
+		joueurs[1] = new JoueurCPUPhase();
 		joueurs[0].setNom("defaut1");
 		joueurs[1].setNom("defaut2");
     	oldPage = new LinkedList<String>();
@@ -124,7 +124,7 @@ public class InterfaceGraphique extends Interface
     public void afficherPanel(String S)
 	{
 		
-		if (S.compareTo("Partie Rapide") == 0 ){
+		if (S.compareTo("partieRapide.png") == 0 ){
 			//definition des joueurs
 			this.setJoueurs(joueurs);
 			initialiserPartie(joueurs);
@@ -137,14 +137,14 @@ public class InterfaceGraphique extends Interface
 			frame.setContentPane(m.fond);
 			frame.pack();				
 		}
-		if(S.compareTo( "Options") == 0 )
+		if(S.compareTo( "options.png") == 0 )
 		{
 			MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
 			m.setBoutons("Options");
 			frame.setContentPane(m.fond);
 			frame.pack();				
 		}
-		if(S.compareTo( "Quitter") == 0 )
+		if(S.compareTo( "quitter.png") == 0 )
 		{	
 			ArbitreManager.stopperPartie();
 			System.exit(0);
@@ -194,7 +194,7 @@ public class InterfaceGraphique extends Interface
 
 		}
 
-		if(S.compareTo("Partie Personalisée") == 0)
+		if(S.compareTo("partiePerso.png") == 0)
 		{
 			MenuPerso m = new MenuPerso(frame, this);
 			m.setBoutons("Nouvelle Partie");
@@ -211,14 +211,20 @@ public class InterfaceGraphique extends Interface
 		    ArbitreManager.recommencerPartie();
 		}
 		
-		if(S.compareTo( "Charger") == 0 )
+		if(S.compareTo( "charger.png") == 0 )
 		{
-		
+			Charger c = new Charger(frame, this);
+			frame.setContentPane(c.fond);
+			frame.pack();	
 		}
 		
 		if(S.compareTo( "Sauvegarder") == 0 )
 		{
-		
+			String file = JOptionPane.showInputDialog(null,
+								      "Nom de la sauvegarde ?",
+								      null,
+								      JOptionPane.QUESTION_MESSAGE);
+			ArbitreManager.sauvegarderPartie("Save/"+file);
 		}
 		/*if(S.compareTo("Gestion de profil") == 0)
           {

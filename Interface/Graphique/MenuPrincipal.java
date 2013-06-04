@@ -149,7 +149,9 @@ public class MenuPrincipal{
 	public void addBouton(JPanel panel, String S)
 	{
 		JPanel pan = new JPanel();
-		JButton b1 = new JButton(S);
+		JButton b1 = new JButton(new ImageIcon("Interface/Graphique/Img/" + S));
+		b1.setBorder(BorderFactory.createEmptyBorder());
+		b1.setContentAreaFilled(false);
 		b1.addActionListener(new EcouteurDeBouton(S, inter));
 		pan.add(b1,BorderLayout.CENTER);
 		pan.setOpaque(false);	
@@ -161,11 +163,11 @@ public class MenuPrincipal{
 			ban = new Banniere("pinpin.png",frame);
 			ban.setPreferredSize(new Dimension(700, (500)/4));
 			Menu.setLayout(new GridLayout( 5, 1));
-			addBouton(Menu, "Partie Rapide");
-			addBouton(Menu, "Partie Personalisée");
-			addBouton(Menu, "Charger");
-			addBouton(Menu, "Options");
-			addBouton(Menu, "Quitter");
+			addBouton(Menu, "partieRapide.png");
+			addBouton(Menu, "partiePerso.png");
+			addBouton(Menu, "charger.png");
+			addBouton(Menu, "options.png");
+			addBouton(Menu, "quitter.png");
 			
 		}
 		else if(s.compareTo("Options") == 0){
