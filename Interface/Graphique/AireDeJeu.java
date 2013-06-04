@@ -45,6 +45,10 @@ public class AireDeJeu extends JComponent
     BufferedImage imageJoueur2Selected = null;
     BufferedImage imageJoueur3Selected = null;
     BufferedImage imageJoueur4Selected = null;
+    BufferedImage imageJoueur1Load = null;
+    BufferedImage imageJoueur2Load = null;
+    BufferedImage imageJoueur3Load = null;
+    BufferedImage imageJoueur4Load = null;
     BufferedImage boutonMenu = null;
     BufferedImage boutonAnnuler = null;
     BufferedImage boutonRefaire = null;
@@ -132,6 +136,12 @@ public class AireDeJeu extends JComponent
 			imageJoueur2Selected = ImageIO.read(getImage("pingouin2_selected.png"));
 			imageJoueur3Selected = ImageIO.read(getImage("pingouin3_selected.png"));
 			imageJoueur4Selected = ImageIO.read(getImage("pingouin4_selected.png"));
+
+            imageJoueur1Load = ImageIO.read(getImage("pingouin1_load.gif"));
+			imageJoueur2Load = ImageIO.read(getImage("pingouin2_load.gif"));
+			imageJoueur3Load = ImageIO.read(getImage("pingouin3_load.gif"));
+			imageJoueur4Load = ImageIO.read(getImage("pingouin4_load.gif"));
+
 		}catch(Exception e){
 			System.out.println("Erreur lecture image" + e);
 		}
@@ -185,9 +195,16 @@ public class AireDeJeu extends JComponent
         Arbitre instance = ArbitreManager.instance;
 
         if (instance.getPosition(instance.getJoueurCourant()) == 1)
-            drawable.drawImage(imageJoueur1Selected, margeGauche, 0 , 2*margeGauche/3, 2*margeHaut/3, null);
+        {
+            if (instance.getJoueurCourant() instanceof JoueurHumain)
+                drawable.drawImage(imageJoueur1Selected, margeGauche, 0 , 2*margeGauche/3, 2*margeHaut/3, null);
+            else
+                drawable.drawImage(imageJoueur1Load, margeGauche, 0 , 2*margeGauche/3, 2*margeHaut/3, null);
+        }
         else
+        {
             drawable.drawImage(imageJoueur1, margeGauche, 0 , 2*margeGauche/3, 2*margeHaut/3, null);
+        }
 		
 		drawable.setPaint(Color.black);
 		drawable.drawString(inter.joueurs[0].getNom(), margeGauche/4 , margeHaut/6);
@@ -202,10 +219,18 @@ public class AireDeJeu extends JComponent
 		
 		//joueur 2
 		drawable.drawImage(carreGlace,largeur-margeGauche,0,margeGauche,margeHaut, null);
+
         if (instance.getPosition(instance.getJoueurCourant()) == 2)
-            drawable.drawImage(imageJoueur2Selected, largeur-margeGauche-2*margeGauche/3, 0 , 2*margeGauche/3, 2*margeHaut/3, null);
+        {
+            if (instance.getJoueurCourant() instanceof JoueurHumain)
+                drawable.drawImage(imageJoueur2Selected, largeur-margeGauche-2*margeGauche/3, 0 , 2*margeGauche/3, 2*margeHaut/3, null);
+            else
+                drawable.drawImage(imageJoueur2Load, largeur-margeGauche-2*margeGauche/3, 0 , 2*margeGauche/3, 2*margeHaut/3, null);
+        }
         else
+        {
             drawable.drawImage(imageJoueur2, largeur-margeGauche-2*margeGauche/3, 0 , 2*margeGauche/3, 2*margeHaut/3, null);
+        }
 
 
 			
