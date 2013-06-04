@@ -19,13 +19,9 @@ public class Charger {
 		fond.setOpaque(true);
 		fond.setPreferredSize(new Dimension(700,500));
 
-		// On récupère le nom des fichiers
-		String [] data;
-		File repertoire = new File("Save");
-		data = repertoire.list();
-
 		// Création de la liste avec les noms de fichiers
-		list = new JList(data);
+		list = new JList();
+		listLoad();
 		list.setPreferredSize(new Dimension(250,150));
 		list.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
 		list.setLayoutOrientation(JList.VERTICAL);
@@ -36,15 +32,30 @@ public class Charger {
 		btnCharger.addActionListener(new EcouteurCharger(this, inter, 0));
 
 		JButton btnDelete = new JButton("Supprimer");
-		btnCharger.addActionListener(new EcouteurCharger(this, inter, 1));
+		btnDelete.addActionListener(new EcouteurCharger(this, inter, 1));
 
+		JButton btnRetour = new JButton("Retour");
+		btnRetour.addActionListener(new EcouteurDeBouton("Retour", inter));
 
 		fond.add(btnCharger);
+		fond.add(btnDelete);
+		fond.add(btnRetour);
 		fond.add(list);
 	}
 
 	public JList getList() {
 		return this.list;
+	}
+
+	public void listLoad() {
+		String [] data;
+		File repertoire = new File("Save");
+		data = repertoire.list();
+		DefaultListModel model = new DefaultListModel();
+		for (int i = 0; i < data.length; i++) {
+			model.add(0,data[i]);
+		}
+		list.setModel(model);
 	}
 }
 
