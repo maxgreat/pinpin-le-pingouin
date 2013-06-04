@@ -384,9 +384,15 @@ public class AireDeJeu extends JComponent
 		//Si on est en mode pose pingouins
 		if(ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN)
 		{
-				afficherPingouins(drawable);
+            afficherPingouins(drawable);
+            drawable.drawString("Veuillez placer vos pingouins.", largeur/4 + (int)rayonL*3, hauteur-(int)rayonH-10);
 		}
-		
+        else if (ArbitreManager.instance.getMode() == ModeDeJeu.JEU_COMPLET)
+        {
+            Arbitre instance = ArbitreManager.instance;
+
+            drawable.drawString("Au tour de "+instance.getJoueurCourant().getNom()+".", largeur/4 + (int)rayonL*3, hauteur-(int)rayonH-10);
+        }		
 		
 		
 		//Dessin des boutons
