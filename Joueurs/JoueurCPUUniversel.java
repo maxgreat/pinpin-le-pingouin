@@ -19,7 +19,8 @@ public class JoueurCPUUniversel extends Joueur
 	JoueurCPUPhaseInter cpuInter;
 	JoueurCPUFacile cpuFacile;
 	
-	public JoueurCPUUniversel(int level) {
+	public JoueurCPUUniversel(int level) 
+    {
 		this.level = level;
 		this.cpuDiff = new JoueurCPUPhase(this);
 		this.cpuInter = new JoueurCPUPhaseInter(this);
