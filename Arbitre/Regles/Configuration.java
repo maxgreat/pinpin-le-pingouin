@@ -933,6 +933,8 @@ public class Configuration implements Cloneable, Serializable
             terrain[c.getYArrivee()][c.getXArrivee()].setJoueurSurCase(getJoueurSurConfiguration());
         }
 
+        setCoupEffectue(c);
+
         return score;
     }
 

@@ -196,6 +196,8 @@ public class Arbitre implements Runnable, Serializable
                 for (int i = 0; i < scoresJoueurs.length; i++)
                     joueurs[i].setScore(joueurs[i].getScore() + scoresJoueurs[i]);
                 inter.repaint();
+
+                getSignalStop().attendreSignal();
             }
 	    }
         /*
