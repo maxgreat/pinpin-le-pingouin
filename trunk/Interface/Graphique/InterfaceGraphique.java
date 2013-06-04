@@ -147,7 +147,7 @@ public class InterfaceGraphique extends Interface
 			frame.setContentPane(m.fond);
 			frame.pack();				
 		}
-		if(S.compareTo( "quitter.png") == 0 )
+		if(S.compareTo( "quitter.png") == 0 || S.compareTo("Quitter") == 0)
 		{	
 			ArbitreManager.stopperPartie();
 			System.exit(0);
