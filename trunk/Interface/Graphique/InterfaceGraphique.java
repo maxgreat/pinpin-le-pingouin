@@ -20,7 +20,7 @@ public class InterfaceGraphique extends Interface
     protected Fond fond;
 	protected Banniere ban;
     private LinkedList<String> oldPage;
-    //    Joueur [] joueurs = new Joueur[2];
+     Joueur [] joueurstemp = new Joueur[4];
 
     public String filename = null;
 
@@ -187,8 +187,8 @@ public class InterfaceGraphique extends Interface
 		}
 		if(S.compareTo( "Lancer") == 0 )
 		{	
-			this.setJoueurs(joueurs);
-			initialiserPartie(joueurs);
+			this.setJoueurs(joueurstemp);
+			initialiserPartie(joueurstemp);
 		}
 		if(S.compareTo( "Retour Menu Principal") == 0 )
 		{	
@@ -259,5 +259,9 @@ public class InterfaceGraphique extends Interface
           frame.repaint();
           frame.pack();	
           }*/
+	}
+	public void setTab(Joueur[] joueurs)
+	{
+		joueurstemp = joueurs;
 	}
 }

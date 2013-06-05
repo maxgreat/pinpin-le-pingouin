@@ -25,31 +25,13 @@ public class EcouteurDeBox implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		JComboBox cb = (JComboBox)e.getSource();
-		String test = (String)cb.getSelectedItem();
-		if(i == 1)
-			{	
-			if(test.compareTo("Ordinateur") != 0)
-				{
-				inter.joueurs[0] = new JoueurHumain();
-				inter.joueurs[0].setNom(test);
-				}
-			}
-		if(i == 2)
-			{	
-			if(test.compareTo("Ordinateur")!= 0)
-				{
-				inter.joueurs[1] = new JoueurHumain();
-				inter.joueurs[1].setNom(test);
-				}
-			}
-		if(i == 3)
-			{	
-		
-			}
-		if(i == 4)
-			{	
-		
-			}
+		String test = (String)cb.getSelectedItem();	
+		if(test.compareTo("Ordinateur") != 0)
+		{
+			S.Sjoueurs[i-1] = new JoueurHumain();
+			S.Sjoueurs[i-1].setNom(test);
+		}
+
 			
 		if(name)
 		{
@@ -60,7 +42,7 @@ public class EcouteurDeBox implements ActionListener
 				S.selectionDifficulte();
 				S.mp.refresh();
 			}
-		if(S.nomJoueur.compareTo("Ordinateur")!=0)
+			if(S.nomJoueur.compareTo("Ordinateur")!=0)
 			{
 				S.Ordinateur = true;
 				S.diff.setVisible(false);
@@ -73,46 +55,28 @@ public class EcouteurDeBox implements ActionListener
 	
 
 		{
-			S.difficultésJoueur = (String)cb.getSelectedItem();
-			if(i == 1)
-				{
-				if(test.compareTo("Facile") == 0)
-					{
-					inter.joueurs[0] = new JoueurCPUUniversel(3);
-					inter.joueurs[0].setNom("Ordinateur");
-					}
-				if(test.compareTo("Intermediaire") == 0)
-					{
-					inter.joueurs[0] = new JoueurCPUUniversel(2);
-					inter.joueurs[0].setNom("Ordinateur");
-					}
-				if(test.compareTo("Difficile") == 0)
-					inter.joueurs[0] = new JoueurCPUUniversel(1);
-					inter.joueurs[0].setNom("Ordinateur");
-				}
-			if(i == 2)
-				if(test.compareTo("Facile") == 0)
-					{
-					inter.joueurs[1] = new JoueurCPUUniversel(3);
-					inter.joueurs[1].setNom("Ordinateur");
-					}
-				if(test.compareTo("Intermediaire") == 0)
-					{
-					inter.joueurs[1] = new JoueurCPUUniversel(2);
-					inter.joueurs[1].setNom("Ordinateur");
-					}
-				if(test.compareTo("Difficile") == 0)
-					{
-					inter.joueurs[1] = new JoueurCPUUniversel(1);
-					inter.joueurs[1].setNom("Ordinateur");
-					}
-			if(i == 3){}
-				
-			if(i == 4){}
-			
+		S.difficultésJoueur = (String)cb.getSelectedItem();
+		if(test.compareTo("Facile") == 0)
+		{
+			S.Sjoueurs[i-1] = new JoueurCPUUniversel(3);
+			S.Sjoueurs[i-1].setNom("Ordinateur(niveau 1)");
+		}
+		if(test.compareTo("Intermediaire") == 0)
+		{
+			S.Sjoueurs[i-1] = new JoueurCPUUniversel(2);
+			S.Sjoueurs[i-1].setNom("Ordinateur(niveau 2)");
+		}
+		if(test.compareTo("Difficile") == 0)
+		{		
+			S.Sjoueurs[i-1] = new JoueurCPUUniversel(1);
+			S.Sjoueurs[i-1].setNom("Ordinateur(niveau 3)");
+		}		
 			
 			
 		}
+	
+	inter.setTab(S.i
+Sjoueurs);
 	}
 
 }

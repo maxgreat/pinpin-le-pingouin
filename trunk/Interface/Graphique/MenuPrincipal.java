@@ -149,7 +149,7 @@ public class MenuPrincipal{
 	
 	public void addBouton(JPanel panel, String S)
 	{
-		JPanel pan = new JPanel();
+	JPanel pan = new JPanel();
         File f = new File("Interface/Graphique/Img/"+S);
         JButton b1 = null;
         // Test l'existence du fichier d'image avant d'essayer de le charger
