@@ -26,38 +26,8 @@ public class EcouteurDeBox implements ActionListener
 	public void actionPerformed(ActionEvent e)
 	{
 		JComboBox cb = (JComboBox)e.getSource();
-		String test = (String)cb.getSelectedItem();	
-
-        if (type.estJoueur())
-		{        
-			S.Sjoueurs[i-1] = new JoueurHumain();
-			S.Sjoueurs[i-1].setNom((String)cb.getSelectedItem());
-        }
-        else if (type.estOrdinateur())
-        {
-            S.difficultesJoueur = (String)cb.getSelectedItem();
-            if(test.compareTo("Facile") == 0)
-            {
-                S.Sjoueurs[i-1] = new JoueurCPUUniversel(3);
-                S.Sjoueurs[i-1].setNom("Ordinateur (facile)");
-            }
-            if(test.compareTo("Intermediaire") == 0)
-            {
-                S.Sjoueurs[i-1] = new JoueurCPUUniversel(2);
-                S.Sjoueurs[i-1].setNom("Ordinateur (intermédiaire)");
-            }
-            if(test.compareTo("Difficile") == 0)
-            {		
-                S.Sjoueurs[i-1] = new JoueurCPUUniversel(1);
-                S.Sjoueurs[i-1].setNom("Ordinateur (difficile)");
-            }
-        }	
-        else
-        {
-            S.Sjoueurs[i-1] = null;
-        }
-        
-        inter.setTab(S.Sjoueurs);
-	}
-
+		String test = (String)cb.getSelectedItem();
+      S.affecterJoueur(i,test,type);
+   }
+      
 }

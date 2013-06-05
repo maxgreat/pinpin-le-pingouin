@@ -64,6 +64,7 @@ public class SelectionJoueurs{
 
 	}
 
+
     public void selectionJoueur()
 	{
 
@@ -87,6 +88,7 @@ public class SelectionJoueurs{
         buttons.add(b1);
         buttons.add(b2);
         buttons.add(b3);
+
         names.addActionListener(new EcouteurDeBox(this, partage, mp.inter, menu));
         diff.addActionListener(new EcouteurDeBox(this, partage, mp.inter, menu));
         vide = new JPanel();
@@ -106,6 +108,36 @@ public class SelectionJoueurs{
         selectionDifficulte(partage);
 	
 	}
+   public void affecterJoueur(int i, String s,SelectionJoueur type){
+      Sjoueurs = inter.getTab();
+      
+        if (type.estJoueur())
+		{        
+			Sjoueurs[i-1] = new JoueurHumain();
+			Sjoueurs[i-1].setNom(s);
+        }
+        else if (type.estOrdinateur())
+        {         
+            difficultesJoueur = s;
+            if(s.compareTo("Facile") == 0)
+            {
+                Sjoueurs[i-1] = new JoueurCPUUniversel(3);
+                Sjoueurs[i-1].setNom("Ordinateur (facile)");
+            }
+            if(s.compareTo("Intermediaire") == 0)
+            {
+                Sjoueurs[i-1] = new JoueurCPUUniversel(2);
+                Sjoueurs[i-1].setNom("Ordinateur (intermédiaire)");
+            }
+            if(s.compareTo("Difficile") == 0)
+            {		
+                Sjoueurs[i-1] = new JoueurCPUUniversel(1);
+                Sjoueurs[i-1].setNom("Ordinateur (difficile)");
+            }
+        }	
+        
+        inter.setTab(Sjoueurs);
+   } 
 
     public void selectionDifficulte(SelectionJoueur type)
 	{
