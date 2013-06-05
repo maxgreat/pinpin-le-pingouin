@@ -161,7 +161,7 @@ public class InterfaceGraphique extends Interface
 			frame.setContentPane(m.fond);
 			frame.pack();				
 		}
-		if(S.compareTo("Son") == 0 )
+		if(S.compareTo("son.png") == 0 )
 		{
 			MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
 			m.setBoutons("Son");
@@ -220,7 +220,7 @@ public class InterfaceGraphique extends Interface
 			ArbitreManager.stopperPartie();
 			System.exit(0);
 		}
-		if(S.compareTo( "Regles") == 0 )
+		if(S.compareTo( "reglesDuJeu.png") == 0 )
 		{	
 		regle = new JFrame("Regles");
 		regle.setMinimumSize(new Dimension(700,500));
@@ -292,7 +292,7 @@ public class InterfaceGraphique extends Interface
 			frame.setContentPane(m.fond);
 			frame.pack();	
 		}
-		if(S.compareTo("Retour") == 0)
+		if(S.compareTo("retour.png") == 0)
 		{
 			afficherPanel(oldPage.pop());
 		}
