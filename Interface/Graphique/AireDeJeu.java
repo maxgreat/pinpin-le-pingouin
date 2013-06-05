@@ -157,7 +157,7 @@ public class AireDeJeu extends JComponent
 			System.out.println("Erreur lecture image" + e);
 		}
 		try{  //chargement images boutons et icones
-			boutonMenu = ImageIO.read(getImage("boutonMenu.jpg"));
+			boutonMenu = ImageIO.read(getImage("boutonMenu.png"));
 			boutonAnnuler = ImageIO.read(getImage("revenir.png"));
 			boutonRefaire = ImageIO.read(getImage("refaire.png"));
 			fondEau = ImageIO.read(getImage("backgroundWater.png"));
@@ -499,14 +499,9 @@ public class AireDeJeu extends JComponent
         }	
 		
 		
-		
-
-            
-		
-		
 		//Dessin des boutons
 		largeurMenu = largeur/8;
-		hauteurMenu = (int)margeHaut/2;
+		hauteurMenu = 2*(int)margeHaut/3;
 		largeurAide = (int)((float)tabCase.largeur()/1.5);
 		hauteurAide = (int)((float)tabCase.hauteur()/1.5);
 		largeurAnnuler = largeur/8;
@@ -662,7 +657,6 @@ public class AireDeJeu extends JComponent
       
         if(aide)
         {
-
             if(clicPrec.x != -1 && clicPrec.y != -1 && 
                c[clicPrec.x][clicPrec.y].getJoueurSurCase() == ArbitreManager.instance.getJoueurCourant() &&
                c[clicPrec.x][clicPrec.y].getJoueurSurCase() instanceof JoueurHumain)
