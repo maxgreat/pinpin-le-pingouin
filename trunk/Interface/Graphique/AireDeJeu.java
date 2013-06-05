@@ -35,7 +35,7 @@ public class AireDeJeu extends JComponent
 
     boolean showDialog = true;
 	boolean popup1 = true;
-	boolean menuOuvert = false;
+	protected boolean menuOuvert = false;
 	boolean aide = false;
     boolean optionCoupPrec = false;
 
@@ -115,7 +115,8 @@ public class AireDeJeu extends JComponent
 	    tabCase.initHexagone();
 	    clicPrec = new Point(-1,-1);
 		coupPrec = new Coup(-1,-1,-1,-1);
-		//aide = true;
+		aide = true;
+		optionCoupPrec = true;
 		
 		//
 		//Chargement des Images
@@ -489,14 +490,18 @@ public class AireDeJeu extends JComponent
 		if(ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN)
 		{
             afficherPingouins(drawable);
-            drawable.drawString("Veuillez placer vos pingouins.", largeur/4 + (int)rayonL*3, hauteur-(int)rayonH-10);
+            drawable.drawString("A " + ArbitreManager.instance.getJoueurCourant().getNom()+" de placer ses pingouins.", largeur/4 + (int)rayonL*3, hauteur-(int)rayonH-10);
 		}
-        else if (ArbitreManager.instance.getMode() == ModeDeJeu.JEU_COMPLET)
+        else
         {
-            Arbitre instance = ArbitreManager.instance;
+        	Arbitre instance = ArbitreManager.instance;
+            drawable.drawString("Au tour de "+instance.getJoueurCourant().getNom()+" de deplacer ses pingouins", largeur/4 + (int)rayonL*3, hauteur-(int)rayonH-10);
+        }	
+		
+		
+		
 
-            drawable.drawString("Au tour de "+instance.getJoueurCourant().getNom()+".", largeur/4 + (int)rayonL*3, hauteur-(int)rayonH-10);
-        }		
+            
 		
 		
 		//Dessin des boutons
@@ -854,6 +859,66 @@ public class AireDeJeu extends JComponent
 				if(x > (largeur/2+largeurMenu/2) && x < largeur/2+largeurMenu/2+largeurAide)
 				{ //clic sur derniercoupjoue
 					optionCoupPrec = !optionCoupPrec;
+				}
+			}
+			if(!menuOuvert){
+				if(y < margeGauche && x < margeHaut)
+				{//clic sur la case joueur 1
+					MenuSelectionIA menuIA = new MenuSelectionIA(inter.joueurs[0], this);
+					this.add(menuIA);
+					menuIA.pack();
+
+					menuIA.toFront();
+					try {
+						menuIA.setSelected(true);
+					} catch (java.beans.PropertyVetoException e) {}
+					menuIA.addInternalFrameListener(new EcouteurDeFenetre(this));
+					menuOuvert = true;
+				}
+				else if(y < margeGauche && x > largeur - margeHaut)
+				{//clic sur la case joueur 2
+					MenuSelectionIA menuIA = new MenuSelectionIA(inter.joueurs[1], this);
+					this.add(menuIA);
+					menuIA.pack();
+
+					menuIA.toFront();
+					try {
+						menuIA.setSelected(true);
+					} catch (java.beans.PropertyVetoException e) {}
+					menuIA.addInternalFrameListener(new EcouteurDeFenetre(this));
+					menuOuvert = true;
+				}
+				else if(y > hauteur-margeGauche && x < margeHaut)
+				{//clic sur la case joueur 3
+					if(inter.joueurs.length >= 3)
+					{
+						MenuSelectionIA menuIA = new MenuSelectionIA(inter.joueurs[2], this);
+						this.add(menuIA);
+						menuIA.pack();
+
+						menuIA.toFront();
+						try {
+							menuIA.setSelected(true);
+						} catch (java.beans.PropertyVetoException e) {}
+						menuIA.addInternalFrameListener(new EcouteurDeFenetre(this));
+						menuOuvert = true;
+					}
+				} 
+				else if(y > hauteur-margeGauche && x > largeur - margeGauche)
+				{//clic sur la case joueur 4
+					if(inter.joueurs.length >= 3)
+					{
+						MenuSelectionIA menuIA = new MenuSelectionIA(inter.joueurs[3], this);
+						this.add(menuIA);
+						menuIA.pack();
+
+						menuIA.toFront();
+						try {
+							menuIA.setSelected(true);
+						} catch (java.beans.PropertyVetoException e) {}
+						menuIA.addInternalFrameListener(new EcouteurDeFenetre(this));
+						menuOuvert = true;
+					}
 				}
 			}
     	}
