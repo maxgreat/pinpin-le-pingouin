@@ -232,37 +232,20 @@ public class InterfaceGraphique extends Interface
 		{
 			String file = JOptionPane.showInputDialog(null,
 								      "Nom de la sauvegarde ?",
-								      null,
+									      null,
 								      JOptionPane.QUESTION_MESSAGE);
 			ArbitreManager.sauvegarderPartie("Save/"+file);
 		}
-		/*if(S.compareTo("Gestion de profil") == 0)
-          {
-          removeFrame(frame);
-          Old_page.addFirst("Gestion de profil");
-          Menu.add(P.Tab[3]);
-          Menu.add(P.Tab[5]);
-          fond.add(ban);
-          fond.add(Menu);
-          frame.add(fond);
-          frame.repaint();
-          frame.pack();	
-          }
-          if(S.compareTo("Classements") == 0)
-          {
-          removeFrame(frame);
-			
-          Old_page.addFirst("Classement");
-          Menu.add(P.Tab[4]);
-          Menu.add(P.Tab[5]);
-          fond.add(Menu);
-          frame.add(fond);
-          frame.repaint();
-          frame.pack();	
-          }*/
+
 	}
 	public void setTab(Joueur[] joueurs)
 	{
-		joueurstemp = joueurs;
+		ArrayList<Joueur> tmp = new ArrayList<Joueur>();
+
+		for (int i = 0; i < joueurs.length; i++)
+			if (joueurs[i] != null)
+				tmp.add(joueurs[i]);
+
+		joueurstemp = (Joueur []) tmp.toArray();
 	}
-}
+}	

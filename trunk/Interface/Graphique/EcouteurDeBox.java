@@ -76,6 +76,7 @@ public class EcouteurDeBox implements ActionListener
 		}
 	
 	inter.setTab(S.Sjoueurs);
+	
 	}
 
 }
