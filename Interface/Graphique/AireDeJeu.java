@@ -56,13 +56,13 @@ public class AireDeJeu extends JComponent
     BufferedImage posePoisson = null;
     BufferedImage bougePoisson = null;
 	BufferedImage entoure = null;
-   BufferedImage entoureJaune = null;
+    BufferedImage entoureJaune = null;
 	BufferedImage carreGlace = null;
 	BufferedImage placement = null;
 	BufferedImage info = null;
 	BufferedImage nonInfo = null;
-   BufferedImage optionCoupPrecActif= null;
-   BufferedImage optionCoupPrecNonActif = null;
+    BufferedImage optionCoupPrecActif= null;
+    BufferedImage optionCoupPrecNonActif = null;
 	BufferedImage suggest = null;
 	BufferedImage infoBulle = null;
 	BufferedImage poissonJ1 = null;
@@ -237,17 +237,59 @@ public class AireDeJeu extends JComponent
         {
             drawable.drawImage(imageJoueur2, largeur-margeGauche-2*margeGauche/3, 0 , 2*margeGauche/3, 2*margeHaut/3, null);
         }
-
-
-			
-			
-		drawable.drawString(inter.joueurs[1].getNom(),largeur - 3*margeGauche/4,margeHaut/6);	
+        
+        drawable.drawString(inter.joueurs[1].getNom(),largeur - 3*margeGauche/4,margeHaut/6);	
 		
 		//dessin poisson+losange+score
 		drawable.drawImage(poissonJ2, largeur-3*margeGauche/4 , margeHaut/4, margeGauche/4 , margeHaut/4, null);
 		drawable.drawString(" : " + inter.joueurs[1].getScore(),largeur-2*margeGauche/4,7*margeHaut/16);
 		drawable.drawImage(caseJ2, largeur-3*margeGauche/4 , 2*margeHaut/4+1, margeGauche/4 , margeHaut/4, null);
 		drawable.drawString(" : " + inter.joueurs[1].getNombreTuile(),largeur-2*margeGauche/4,11*margeHaut/16);
+        
+        
+        
+        
+        
+        
+        
+        //joueur 3
+    /*    if(inter.joueurs.length >= 3){
+		    drawable.drawImage(carreGlace,0,hauteur-margeHaut,margeGauche,margeHaut, null);
+
+		    if (instance.getPosition(instance.getJoueurCourant()) == 3)
+		    {
+		        if (instance.getJoueurCourant() instanceof JoueurHumain)
+		            drawable.drawImage(imageJoueur3Selected, margeGauche, hauteur-2*margeHaut/3 , 2*margeGauche/3, 2*margeHaut/3, null);
+		        else
+		            drawable.drawImage(imageJoueur3Load, margeGauche, hauteur-2*margeHaut/3 , 2*margeGauche/3, 2*margeHaut/3, null);
+		    }
+		    else
+		    {
+		        drawable.drawImage(imageJoueur3, margeGauche, hauteur-2*margeHaut/3 , 2*margeGauche/3, 2*margeHaut/3, null);
+		    }
+        }
+        
+    */    
+        //joueur 4
+  /*      if(inter.joueurs.length > 3){
+		    if(inter.joueurs.length >= 3){
+				drawable.drawImage(carreGlace,largeur-margeGauche,hauteur-margeHaut,margeGauche,margeHaut, null);
+
+				if (instance.getPosition(instance.getJoueurCourant()) == 4)
+				{
+				    if (instance.getJoueurCourant() instanceof JoueurHumain)
+				        drawable.drawImage(imageJoueur4Selected, largeur-margeGauche-2*margeGauche/3, hauteur-2*margeHaut/3 , 2*margeGauche/3, 2*margeHaut/3, null);
+				    else
+				        drawable.drawImage(imageJoueur4Load, largeur-margeGauche-2*margeGauche/3, hauteur-2*margeHaut/3 , 2*margeGauche/3, 2*margeHaut/3, null);
+				}
+				else
+				{
+				    drawable.drawImage(imageJoueur4, largeur-margeGauche-2*margeGauche/3, hauteur-2*margeHaut/3 , 2*margeGauche/3, 2*margeHaut/3, null);
+				}
+		    }
+       }
+        
+*/
     }       
 
 
