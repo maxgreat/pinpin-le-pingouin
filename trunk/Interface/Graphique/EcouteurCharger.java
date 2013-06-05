@@ -28,9 +28,7 @@ public class EcouteurCharger implements ActionListener{
 				joueurs[1] = new JoueurCPUPhase();
 				inter.setJoueurs(joueurs);
 				((InterfaceGraphique)inter).initialiserPartie(joueurs);
-				System.out.println("je charge");
 				ArbitreManager.chargerPartie(f.getAbsolutePath());
-				System.out.println("aller");
 			}
 		} else if (this.opt == 1) {
 			if (this.charger.getList().getSelectedValue() != null) {
