@@ -36,6 +36,7 @@ public class AireDeJeu extends JComponent
 	boolean menuOuvert = false;
 	boolean aide = false;
     boolean optionCoupPrec = false;
+
     //definition des images
     BufferedImage imageJoueur1 = null;
     BufferedImage imageJoueur2 = null;
@@ -64,7 +65,7 @@ public class AireDeJeu extends JComponent
     BufferedImage optionCoupPrecActif= null;
     BufferedImage optionCoupPrecNonActif = null;
 	BufferedImage suggest = null;
-	BufferedImage infoBulle = null;
+
 	BufferedImage poissonJ1 = null;
 	BufferedImage poissonJ2 = null;
 	BufferedImage poissonJ3 = null;
@@ -159,7 +160,7 @@ public class AireDeJeu extends JComponent
             optionCoupPrecActif = ImageIO.read(getImage("optionCoupPrecActif.png"));
             optionCoupPrecNonActif = ImageIO.read(getImage("optionCoupPrecNonActif.png"));
 			suggest= ImageIO.read(getImage("caseGlaceTestSuggestion.png"));
-			infoBulle = ImageIO.read(getImage("caseGlaceTestNonAide.png"));
+
 			poissonJ1 = ImageIO.read(getImage("poisson1.png"));
 			poissonJ2 = ImageIO.read(getImage("poisson2.png"));
 			poissonJ3 = ImageIO.read(getImage("poisson3.png"));
@@ -496,8 +497,8 @@ public class AireDeJeu extends JComponent
 		//Dessin des boutons
 		largeurMenu = largeur/8;
 		hauteurMenu = (int)margeHaut/2;
-		largeurAide = (int)tabCase.largeur()/2;
-		hauteurAide = (int)tabCase.hauteur()/2;
+		largeurAide = (int)((float)tabCase.largeur()/1.5);
+		hauteurAide = (int)((float)tabCase.hauteur()/1.5);
 		largeurAnnuler = largeur/8;
 		hauteurAnnuler = (int)margeHaut/4;
 		
@@ -508,11 +509,9 @@ public class AireDeJeu extends JComponent
 			drawable.drawImage(nonInfo,largeur/2-largeurMenu/2-largeurAide, 0, largeurAide, hauteurAide,null);
         //Bouton coup precedent
         if(optionCoupPrec)
-            drawable.drawImage(optionCoupPrecActif,largeur/2-largeurMenu/2-largeurAide-largeurAide, 0, largeurAide, hauteurAide,null);
-        else
-            drawable.drawImage(optionCoupPrecNonActif,largeur/2-largeurMenu/2-largeurAide-largeurAide, 0, largeurAide, hauteurAide,null);
-		//bouton info bulle
-		drawable.drawImage(infoBulle, largeur/2+largeurMenu/2, 0, largeurAide, hauteurAide, null);
+		drawable.drawImage(optionCoupPrecActif, largeur/2+largeurMenu/2, 0, largeurAide, hauteurAide, null);
+        else		
+            drawable.drawImage(optionCoupPrecNonActif, largeur/2+largeurMenu/2, 0, largeurAide, hauteurAide, null);
 		//bouton suggestion
 		drawable.drawImage(suggest,largeur-(int)tabCase.largeur, hauteur/2, (int)tabCase.largeur,(int)tabCase.hauteur,null);
 		//bouton menu
@@ -670,7 +669,7 @@ public class AireDeJeu extends JComponent
        
         //tracage du coup précédent
 		coupPrec = ArbitreManager.instance.getConfiguration().getCoupEffectue();
-		if(coupPrec != null && optionCoupPrec && ArbitreManager.instance.getJoueurCourant() instanceof JoueurHumain)
+		if(coupPrec != null && optionCoupPrec)
 		{
 			if(coupPrec.getYDepart() != -1 && coupPrec.getXDepart() != -1)
 				drawable.drawImage(entoureJaune, tabCase.sommetG_x(coupPrec.getXDepart(), coupPrec.getYDepart()), tabCase.sommetG_y(coupPrec.getXDepart(), coupPrec.getYDepart()), tabCase.largeur(), tabCase.hauteur(), null);
@@ -824,13 +823,9 @@ public class AireDeJeu extends JComponent
 				{ //clic sur aide
 					aide = !aide;
 				}
-                if(x > (largeur/2-largeurMenu/2-2*largeurAide-10) && x < largeur/2-largeurMenu/2-largeurAide)
-				{ //clic sur aide
-					optionCoupPrec = !optionCoupPrec;
-				}
 				if(x > (largeur/2+largeurMenu/2) && x < largeur/2+largeurMenu/2+largeurAide)
-				{ //clic sur infobulle
-					aide = !aide;
+				{ //clic sur derniercoupjoue
+					optionCoupPrec = !optionCoupPrec;
 				}
 			}
     	}
