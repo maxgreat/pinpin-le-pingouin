@@ -485,7 +485,7 @@ public class AireDeJeu extends JComponent
 			}
 	
 					Comportement comp;
-					comp = new Comportement("/home/julien/pinpin-le-pingouin/Sound/bruit/applaudissement.mp3",inter.d);
+					comp = new Comportement("Sound/bruit/applaudissement.mp3",inter.d);
 					Thread bruit = new Thread(comp);
 					bruit.start();
 	
@@ -763,7 +763,7 @@ public class AireDeJeu extends JComponent
 					int num = r.nextInt(18);
 					if(num<11){
 						Comportement comp;
-						comp = new Comportement("/home/julien/pinpin-le-pingouin/Sound/bruit/bruit"+num+".mp3",inter.d);
+						comp = new Comportement("Sound/bruit/bruit"+num+".mp3",inter.d);
 						Thread bruit = new Thread(comp);
 						bruit.start();
 					}

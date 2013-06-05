@@ -90,7 +90,7 @@ public class InterfaceGraphique extends Interface
 
 		  Comportement c;
 		  d = new Donnees();
-        c = new Comportement("/home/julien/pinpin-le-pingouin/Sound/piste2.mp3",d);
+        c = new Comportement("Sound/piste2.mp3",d);
         music = new Thread(c);
         music.start();	
     }
@@ -177,7 +177,7 @@ public class InterfaceGraphique extends Interface
 				d.setMusic(true);
 				if(d.getFond()){
 					Comportement c;
-					c = new Comportement("/home/julien/pinpin-le-pingouin/Sound/piste2.mp3",d);
+					c = new Comportement("Sound/piste2.mp3",d);
 					music = new Thread(c);
 					music.start();
 				}
@@ -206,7 +206,7 @@ public class InterfaceGraphique extends Interface
 			}else{
 				d.setFond(true);
 				Comportement c;
-				c = new Comportement("/home/julien/pinpin-le-pingouin/Sound/piste2.mp3",d);
+				c = new Comportement("Sound/piste2.mp3",d);
 				music = new Thread(c);
 				music.start();
 			}
@@ -340,7 +340,7 @@ public class InterfaceGraphique extends Interface
 
 		  d.setMusic(true);
         Comportement c;
-        c = new Comportement("/home/julien/pinpin-le-pingouin/Sound/piste2.mp3",d);
+        c = new Comportement("Sound/piste2.mp3",d);
         music = new Thread(c);
         music.start();
 
