@@ -246,6 +246,7 @@ public class InterfaceGraphique extends Interface
 			if (joueurs[i] != null)
 				tmp.add(joueurs[i]);
 
-		joueurstemp = (Joueur []) tmp.toArray();
+	
+		tmp.toArray(joueurstemp);
 	}
 }	
