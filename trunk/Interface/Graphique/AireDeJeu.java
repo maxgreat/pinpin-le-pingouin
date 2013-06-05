@@ -162,12 +162,12 @@ public class AireDeJeu extends JComponent
 			infoBulle = ImageIO.read(getImage("caseGlaceTestNonAide.png"));
 			poissonJ1 = ImageIO.read(getImage("poisson1.png"));
 			poissonJ2 = ImageIO.read(getImage("poisson2.png"));
-			//poissonJ3 = ImageIO.read(getImage("poisson3.png"));
-			//poissonJ4 = ImageIO.read(getImage("poisson4.png"));
+			poissonJ3 = ImageIO.read(getImage("poisson3.png"));
+			poissonJ4 = ImageIO.read(getImage("poisson4.png"));
 			caseJ1 = ImageIO.read(getImage("caseJoueur1.png"));
 			caseJ2 = ImageIO.read(getImage("caseJoueur2.png"));
-			//caseJ3 = ImageIO.read(getImage("caseJoueur3.png"));
-			//caseJ4 = ImageIO.read(getImage("caseJoueur4.png"));
+			caseJ3 = ImageIO.read(getImage("caseJoueur3.png"));
+			caseJ4 = ImageIO.read(getImage("caseJoueur4.png"));
 			
 		}catch(Exception e){
 			System.out.println("Erreur lecture image" + e);
@@ -246,14 +246,10 @@ public class AireDeJeu extends JComponent
 		drawable.drawImage(caseJ2, largeur-3*margeGauche/4 , 2*margeHaut/4+1, margeGauche/4 , margeHaut/4, null);
 		drawable.drawString(" : " + inter.joueurs[1].getNombreTuile(),largeur-2*margeGauche/4,11*margeHaut/16);
         
-        
-        
-        
-        
-        
+
         
         //joueur 3
-    /*    if(inter.joueurs.length >= 3){
+        if(inter.joueurs.length >= 3){
 		    drawable.drawImage(carreGlace,0,hauteur-margeHaut,margeGauche,margeHaut, null);
 
 		    if (instance.getPosition(instance.getJoueurCourant()) == 3)
@@ -267,11 +263,19 @@ public class AireDeJeu extends JComponent
 		    {
 		        drawable.drawImage(imageJoueur3, margeGauche, hauteur-2*margeHaut/3 , 2*margeGauche/3, 2*margeHaut/3, null);
 		    }
+    
+		    drawable.drawImage(poissonJ3, margeGauche/4 , hauteur-margeHaut/4, margeGauche/4 , margeHaut/4, null);
+			drawable.drawString(" : " + inter.joueurs[2].getScore(),margeGauche/2,hauteur-margeHaut+7*margeHaut/16);
+			drawable.drawImage(caseJ2, margeGauche/4 , hauteur-margeHaut+2*margeHaut/4+1, margeGauche/4 , margeHaut/4, null);
+			drawable.drawString(" : " + inter.joueurs[2].getNombreTuile(),margeGauche/2,hauteur-margeHaut+11*margeHaut/16);
+        
         }
         
-    */    
+
+    
+    
         //joueur 4
-  /*      if(inter.joueurs.length > 3){
+        if(inter.joueurs.length > 3){
 		    if(inter.joueurs.length >= 3){
 				drawable.drawImage(carreGlace,largeur-margeGauche,hauteur-margeHaut,margeGauche,margeHaut, null);
 
@@ -289,7 +293,7 @@ public class AireDeJeu extends JComponent
 		    }
        }
         
-*/
+
     }       
 
 
@@ -560,6 +564,14 @@ public class AireDeJeu extends JComponent
 						else if(joueur == inter.joueurs[1]){
 							drawable.drawImage(imageJoueur2,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
 						}
+						else if(inter.joueurs.length >= 3){
+							if(joueur == inter.joueurs[2])
+								drawable.drawImage(imageJoueur3,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
+						}
+						if(inter.joueurs.length > 3){
+							if(joueur == inter.joueurs[3])
+								drawable.drawImage(imageJoueur4,tabCase.sommetG_x(i,2*j),tabCase.sommetG_y(i,2*j),tabCase.largeur(),tabCase.hauteur(),null);
+						}
 					}
 				}
 			}
@@ -603,6 +615,14 @@ public class AireDeJeu extends JComponent
 						}
 						else if(joueur == inter.joueurs[1]){
 							drawable.drawImage(imageJoueur2,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
+						}
+						else if(inter.joueurs.length >= 3){
+							if(joueur == inter.joueurs[2])
+								drawable.drawImage(imageJoueur3,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
+						}
+						if(inter.joueurs.length > 3){
+							if(joueur == inter.joueurs[3])
+								drawable.drawImage(imageJoueur4,tabCase.sommetG_x(i,2*j+1),tabCase.sommetG_y(i,2*j+1),tabCase.largeur(),tabCase.hauteur(),null);
 						}
 					}
 				}
