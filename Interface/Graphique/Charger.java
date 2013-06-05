@@ -159,11 +159,9 @@ public class Charger {
 		Menu.add(pan, BorderLayout.CENTER);
 		
 		//Bouton de sauvegarde
-		addBouton(Menu, "Retour", -1);
-		addBouton(Menu, "Supprimer", 1);
-		addBouton(Menu, "Charger", 0);
-
-
+		addBouton(Menu, "supprimer.png", 1);
+		addBouton(Menu, "petitCharger.png", 0);
+		addBouton(Menu, "retour.png", -1);
 	}
 
 	public void addBouton(JPanel panel, String S, int opt) {
