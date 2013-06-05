@@ -200,7 +200,7 @@ public class Charger {
 		data = repertoire.list();
 		DefaultListModel model = new DefaultListModel();
 		for (int i = 0; i < data.length; i++) {
-			if (data[i] != ".svn")
+			if (!data[i].equals(".svn"))
 				model.add(0,data[i]);
 		}
 		list.setModel(model);
