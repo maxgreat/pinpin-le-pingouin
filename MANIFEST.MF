@@ -1,2 +1,2 @@
 Main-Class: Pingouin
-
+Class-Path: Sound/jl.jar
