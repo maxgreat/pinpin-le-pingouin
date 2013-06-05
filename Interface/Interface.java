@@ -22,4 +22,9 @@ public abstract class Interface
     {
         this.joueurs = joueurs;
     }
+
+    public Joueur [] getJoueurs()
+    {
+        return this.joueurs;
+    }
 }

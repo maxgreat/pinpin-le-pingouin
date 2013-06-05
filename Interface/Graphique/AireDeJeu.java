@@ -414,25 +414,26 @@ public class AireDeJeu extends JComponent
 		    //default title and icon
 			if (showDialog)
 			{
-				System.out.println(s);
-			
 				POPMenuVictoire popup = new POPMenuVictoire(hauteur,largeur);
 				popup.addInternalFrameListener(new EcouteurDeFenetre(this));
 				JLabel score = new JLabel (s);
            		JLabel score2 = new JLabel(s2);
 				popup.setVisible(true);
 				JPanel panFin = new JPanel();
+                JButton nouvellePartie = new JButton("Nouvelle partie");
 				JButton bQuitter = new JButton("Quitter");
 				JButton recommencer = new JButton("Recommencer");
 				JButton menuP = new JButton("Menu Principal");
 				JButton save = new JButton("Sauvegarder");
-				panFin.setLayout(new GridLayout( 6, 1));
+				panFin.setLayout(new GridLayout(7, 1));
+                nouvellePartie.addActionListener(new EcouteurDeBoutonMenuVictoire("Nouvelle partie", inter, popup));
 				recommencer.addActionListener(new EcouteurDeBoutonMenuVictoire("Recommencer", inter, popup));
 				bQuitter.addActionListener(new EcouteurDeBoutonMenuVictoire("Quitter", inter, popup));
 				menuP.addActionListener(new EcouteurDeBoutonMenuVictoire("Retour Menu Principal", inter, popup));
 				save.addActionListener(new EcouteurDeBoutonMenuVictoire("Sauvegarder", inter, popup));
            		panFin.add(score);
            		panFin.add(score2);
+                panFin.add(nouvellePartie);
 				panFin.add(save);
 				panFin.add(recommencer);
 				panFin.add(menuP);
