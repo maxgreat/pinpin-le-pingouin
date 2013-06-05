@@ -19,12 +19,14 @@ public class AireDeJeu extends JComponent
     private Point clicPrec;
     private Point clicPrec2;
 	private Coup coupPrec;
+    private Coup coupSuggere;
 	int largeurMenu;
 	int hauteurMenu;
 	int largeurAide;
 	int hauteurAide;
 	int largeurAnnuler;
 	int hauteurAnnuler;
+    private Joueur dernierJoueur = null;
 
 
 
@@ -74,6 +76,8 @@ public class AireDeJeu extends JComponent
 	BufferedImage caseJ2 = null;
 	BufferedImage caseJ3 = null;
 	BufferedImage caseJ4 = null;
+
+    BufferedImage suggestionCoup = null;
 	
     //images des poissons
     BufferedImage un_poisson = null;
@@ -125,6 +129,7 @@ public class AireDeJeu extends JComponent
 			placement = ImageIO.read(getImage("placement.png"));
 			entoure = ImageIO.read(getImage("entoure.png"));
 			entoureJaune = ImageIO.read(getImage("entoureJaune.png"));
+            suggestionCoup = ImageIO.read(getImage("suggestionCoup.png"));
             un_poisson_aide = ImageIO.read(getImage("caseGlaceTestPose.png"));
 			deux_poissons_aide = ImageIO.read(getImage("caseGlaceTest2Aide.png"));
 			trois_poissons_aide = ImageIO.read(getImage("caseGlaceTest3Aide.png"));
@@ -630,6 +635,25 @@ public class AireDeJeu extends JComponent
 			}
     	} //fin boucle for
       
+
+
+        if (ArbitreManager.instance.getJoueurCourant() != dernierJoueur)
+        {
+            if (dernierJoueur != null)
+                coupSuggere = null;
+
+            dernierJoueur = ArbitreManager.instance.getJoueurCourant();
+        }
+
+
+        if(coupSuggere != null && ArbitreManager.instance.getJoueurCourant() instanceof JoueurHumain)
+		{
+			if(coupSuggere.getYDepart() != -1 && coupSuggere.getXDepart() != -1)
+				drawable.drawImage(suggestionCoup, tabCase.sommetG_x(coupSuggere.getXDepart(), coupSuggere.getYDepart()), tabCase.sommetG_y(coupSuggere.getXDepart(), coupSuggere.getYDepart()), tabCase.largeur(), tabCase.hauteur(), null);
+			if(coupSuggere.getYArrivee() != -1 && coupSuggere.getXArrivee() != -1)
+				drawable.drawImage(suggestionCoup, tabCase.sommetG_x(coupSuggere.getXArrivee(), coupSuggere.getYArrivee()), tabCase.sommetG_y(coupSuggere.getXArrivee(), coupSuggere.getYArrivee()), tabCase.largeur(), tabCase.hauteur(), null);
+		}	
+
       
         if(aide)
         {
@@ -676,7 +700,7 @@ public class AireDeJeu extends JComponent
 			if(coupPrec.getYArrivee() != -1 && coupPrec.getXArrivee() != -1)
 				drawable.drawImage(entoureJaune, tabCase.sommetG_x(coupPrec.getXArrivee(), coupPrec.getYArrivee()), tabCase.sommetG_y(coupPrec.getXArrivee(), coupPrec.getYArrivee()), tabCase.largeur(), tabCase.hauteur(), null);
 		}	
-       
+
        
     }//fin methode paint
 
@@ -812,7 +836,11 @@ public class AireDeJeu extends JComponent
 				if (y > hauteur/2 && y <(int)tabCase.hauteur+hauteur/2) 
 				{
                     //clic sur le bouton suggestion
-					ArbitreManager.instance.getJoueurCourant().getSignalCoup().envoyerSignal(inter.joueurs[0].getCoup());
+                    if (ArbitreManager.instance.getJoueurCourant() instanceof JoueurHumain)
+                    {
+                        coupSuggere = ArbitreManager.instance.getJoueurCourant().getCoup();
+                    }
+
 					clicPrec.x = p.x;
 					clicPrec.y = p.y;
 				}
