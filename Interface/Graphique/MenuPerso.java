@@ -32,8 +32,6 @@ public class MenuPerso{
         noms.add("Portos");
         noms.add("Aramis");
         noms.add("Dartagnan");
-        noms.add("Ordinateur");
-        noms.add("Aucun");
 		
         diff.add("Facile");
         diff.add("Intermediaire");
@@ -263,25 +261,25 @@ public class MenuPerso{
         if(i == 1)
         {
 			J1.selectionJoueur();
-			J1.selectionDifficulte();
+            //			J1.selectionDifficulte();
 			menuJ1 = J1.getPan();
         }
         if(i == 2)
         {
 			J2.selectionJoueur();
-			J2.selectionDifficulte();
+            //		J2.selectionDifficulte();
 			menuJ2 = J2.getPan();
         }
         if(i == 3)
         {
 			J3.selectionJoueur();
-			J3.selectionDifficulte();
+            //			J3.selectionDifficulte();
 			menuJ3 = J3.getPan();
         }
         if(i == 4)
         {		
 			J4.selectionJoueur();
-			J4.selectionDifficulte();
+            //	J4.selectionDifficulte();
 			menuJ4 = J4.getPan();
         }
 	}

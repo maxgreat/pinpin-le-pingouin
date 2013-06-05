@@ -20,7 +20,7 @@ public class InterfaceGraphique extends Interface
     protected Fond fond;
 	protected Banniere ban;
     private LinkedList<String> oldPage;
-     Joueur [] joueurstemp = new Joueur[4];
+    Joueur [] joueurstemp = new Joueur[2];
 
     public String filename = null;
 
@@ -188,6 +188,10 @@ public class InterfaceGraphique extends Interface
 		}
 		if(S.compareTo( "Lancer") == 0 )
 		{	
+            System.out.println(joueurstemp.length);
+            for (int i = 0; i < joueurstemp.length; i++)
+                System.out.println(joueurstemp[i]);
+
 			this.setJoueurs(joueurstemp);
 			initialiserPartie(joueurstemp);
 		}
@@ -240,13 +244,13 @@ public class InterfaceGraphique extends Interface
 	}
 	public void setTab(Joueur[] joueurs)
 	{
-		ArrayList<Joueur> tmp = new ArrayList<Joueur>();
+        int size = 0;
+		for (int i = 0; i < joueurs.length; i++, size++)
+			if (joueurs[i] == null)
+                break;
 
-		for (int i = 0; i < joueurs.length; i++)
-			if (joueurs[i] != null)
-				tmp.add(joueurs[i]);
-
-	
-		tmp.toArray(joueurstemp);
+        joueurstemp = new Joueur[size];
+        for (int i = 0; i < size; i++)
+            joueurstemp[i] = joueurs[i];
 	}
 }	

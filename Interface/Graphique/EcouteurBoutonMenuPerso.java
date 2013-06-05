@@ -12,41 +12,25 @@ import Joueurs.*;
 public class EcouteurBoutonMenuPerso implements ActionListener{
     SelectionJoueurs J;
     int but;
+    SelectionJoueur type;
 
-    public EcouteurBoutonMenuPerso(SelectionJoueurs J ,int but)
+    public EcouteurBoutonMenuPerso(SelectionJoueurs J, SelectionJoueur type, int but)
     {
         this.J = J;
         this.but = but;
+        this.type = type;
     }
 
     public void actionPerformed(ActionEvent e)
     {
-        if(but == 1)
-        {
-            J.Ordinateur = false;
-            J.Humain = true;
-            J.Aucun = false;
-            J.selectionDifficulte();	
-        }
-        if(but == 2)
-        {
-            J.Ordinateur = true;
-            J.Humain = false;
-            J.Aucun = false;
-            J.selectionDifficulte();
-        }
-        if(but == 3)
-        {
-            J.Ordinateur = false;
-            J.Humain = false;
-            J.Aucun = true;
-            J.selectionDifficulte();
-        }
-	
+        if (but == 1)
+            type.setJoueur();
+        else if (but == 2)
+            type.setOrdinateur();
+        else if (but == 3)
+            type.setAucun();
+
+        J.selectionDifficulte(type);	
+        
     }
-
-
-
-
-
 }
