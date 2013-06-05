@@ -1,7 +1,7 @@
 
 CC=javac
 MAKE=make
-JFLAGS=-classpath ../:. -implicit:none -Xlint:-serial -Xlint:-unchecked
+JFLAGS=-classpath ../:../Sound/jl.jar:. -implicit:none -Xlint:-serial -Xlint:-unchecked
 OBJ=Interface.class InterfaceFabrique.class
 
 # Décommentez l'interface que vous voulez utiliser

@@ -11,6 +11,7 @@ import javax.imageio.*;
 import java.net.URL;
 import java.io.IOException;
 import java.awt.image.BufferedImage;
+import Sound.*;
 
 public class InterfaceGraphique extends Interface
 {
@@ -22,6 +23,9 @@ public class InterfaceGraphique extends Interface
 	protected Banniere ban;
     private LinkedList<String> oldPage;
     Joueur [] joueurstemp = new Joueur[2];
+
+	Thread music;
+	Donnees d;
 
     public String filename = null;
 
@@ -83,6 +87,12 @@ public class InterfaceGraphique extends Interface
 			    }
 		    });
 		frame.setVisible(true);
+
+		  Comportement c;
+		  d = new Donnees();
+        c = new Comportement("/home/julien/pinpin-le-pingouin/Sound/piste2.mp3",d);
+        music = new Thread(c);
+        music.start();	
     }
     
     /**
@@ -127,8 +137,7 @@ public class InterfaceGraphique extends Interface
     
 	
     public void afficherPanel(String S)
-	{
-		
+	{		
 		if (S.compareTo("partieRapide.png") == 0 ){
 			//definition des joueurs
 			this.setJoueurs(joueurs);
@@ -138,7 +147,10 @@ public class InterfaceGraphique extends Interface
 		{	
 			oldPage.push("Menu Principal");
 			MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
-			m.setBoutons("demarrage");
+			if(d.getMusic())
+				m.setBoutons("demarrage");
+			else
+				m.setBoutons("demarrageEteint");
 			frame.setContentPane(m.fond);
 			frame.pack();				
 		}
@@ -146,6 +158,60 @@ public class InterfaceGraphique extends Interface
 		{
 			MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
 			m.setBoutons("Options");
+			frame.setContentPane(m.fond);
+			frame.pack();				
+		}
+		if(S.compareTo("Son") == 0 )
+		{
+			MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
+			m.setBoutons("Son");
+			frame.setContentPane(m.fond);
+			frame.pack();				
+		}
+		if(S.compareTo("generalActive.png") == 0 || S.compareTo( "generalDesactive.png") == 0 )
+		{
+			if(S.compareTo("generalActive.png") == 0){
+				d.setMusic(false);
+				music.stop();
+			} else {
+				d.setMusic(true);
+				if(d.getFond()){
+					Comportement c;
+					c = new Comportement("/home/julien/pinpin-le-pingouin/Sound/piste2.mp3",d);
+					music = new Thread(c);
+					music.start();
+				}
+			}
+			MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
+			m.setBoutons("Son");
+			frame.setContentPane(m.fond);
+			frame.pack();				
+		}
+		if(S.compareTo("bruitagesActive.png") == 0 || S.compareTo( "bruitagesDesactive.png") == 0 )
+		{
+			if(S.compareTo("bruitagesActive.png") == 0)
+				d.setBruit(false);
+			else
+				d.setBruit(true);
+			MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
+			m.setBoutons("Son");
+			frame.setContentPane(m.fond);
+			frame.pack();				
+		}
+		if(S.compareTo("musiqueActive.png") == 0 || S.compareTo( "musiqueDesactive.png") == 0 )
+		{
+			if(S.compareTo("musiqueActive.png") == 0){
+				d.setFond(false);
+				music.stop();
+			}else{
+				d.setFond(true);
+				Comportement c;
+				c = new Comportement("/home/julien/pinpin-le-pingouin/Sound/piste2.mp3",d);
+				music = new Thread(c);
+				music.start();
+			}
+			MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
+			m.setBoutons("Son");
 			frame.setContentPane(m.fond);
 			frame.pack();				
 		}
@@ -257,6 +323,31 @@ public class InterfaceGraphique extends Interface
 								      JOptionPane.QUESTION_MESSAGE);
 			ArbitreManager.sauvegarderPartie("Save/"+file);
 		}
+
+		if(S.compareTo( "sonAllume.png") == 0 )
+		{
+			MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
+			m.setBoutons("demarrageEteint");
+		  d.setMusic(false);
+		  music.stop();
+			frame.setContentPane(m.fond);
+			frame.pack();	
+		}
+		if(S.compareTo( "sonEteint.png") == 0 )
+		{
+			MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
+			m.setBoutons("demarrage");
+
+		  d.setMusic(true);
+        Comportement c;
+        c = new Comportement("/home/julien/pinpin-le-pingouin/Sound/piste2.mp3",d);
+        music = new Thread(c);
+        music.start();
+
+			frame.setContentPane(m.fond);
+			frame.pack();	
+		}
+
 
 	}
 	public void setTab(Joueur[] joueurs)
