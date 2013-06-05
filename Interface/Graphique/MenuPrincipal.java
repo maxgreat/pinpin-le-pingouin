@@ -174,13 +174,23 @@ public class MenuPrincipal{
 		if(s.compareTo("demarrage") == 0){
 			ban = new Banniere("pinpin.png",frame);
 			ban.setPreferredSize(new Dimension(700, (500)/4));
-			Menu.setLayout(new GridLayout( 5, 1));
+			Menu.setLayout(new GridLayout( 6, 1));
 			addBouton(Menu, "partieRapide.png");
 			addBouton(Menu, "partiePerso.png");
 			addBouton(Menu, "charger.png");
 			addBouton(Menu, "options.png");
 			addBouton(Menu, "quitter.png");
-			
+			addBouton(Menu, "sonAllume.png");
+		}else if(s.compareTo("demarrageEteint") == 0){
+			ban = new Banniere("pinpin.png",frame);
+			ban.setPreferredSize(new Dimension(700, (500)/4));
+			Menu.setLayout(new GridLayout( 6, 1));
+			addBouton(Menu, "partieRapide.png");
+			addBouton(Menu, "partiePerso.png");
+			addBouton(Menu, "charger.png");
+			addBouton(Menu, "options.png");
+			addBouton(Menu, "quitter.png");
+			addBouton(Menu, "sonEteint.png");
 		}
 		else if(s.compareTo("Options") == 0){
 
@@ -190,6 +200,28 @@ public class MenuPrincipal{
 			addBouton(Menu, "Son");
 			addBouton(Menu, "Gestion de profil");
 			addBouton(Menu, "Regles du jeux");
+			addBouton(cellGauche,"Retour");
+		}
+		else if(s.compareTo("Son") == 0){
+
+			ban = new Banniere("options.png",frame);
+			ban.setPreferredSize(new Dimension(700, (500)/4));
+
+			if(!inter.d.getMusic()){
+				Menu.setLayout(new GridLayout( 1 , 1));
+				addBouton(Menu, "generalDesactive.png");
+			} else {
+				Menu.setLayout(new GridLayout( 3 , 1));
+				addBouton(Menu, "generalActive.png");
+				if(!inter.d.getFond())
+					addBouton(Menu, "musiqueDesactive.png");
+				else
+					addBouton(Menu, "musiqueActive.png");
+				if(!inter.d.getBruit())
+					addBouton(Menu, "bruitagesDesactive.png");
+				else
+					addBouton(Menu, "bruitagesActive.png");
+			}
 			addBouton(cellGauche,"Retour");
 		}
 		else if(s.compareTo("Gestion de profil") == 0){

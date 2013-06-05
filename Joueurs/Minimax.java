@@ -138,22 +138,22 @@ public class Minimax implements Runnable {
 
 		// Pingouins bloqués
 		int [] newNbPingouinsRestants = c.getNombrePingouinsDispoParJoueur(arbitre.getJoueurs());
-		score += (nbPingouinsRestants[numA] - newNbPingouinsRestants[numA]) * 100;
-		score -= (nbPingouinsRestants[numJ] - newNbPingouinsRestants[numJ]) * 100;
+		score += (nbPingouinsRestants[numA] - newNbPingouinsRestants[numA]) * 200;
+		score -= (nbPingouinsRestants[numJ] - newNbPingouinsRestants[numJ]) * 200;
 		
 		// nouveau Ilot
 		Couple [] newsipj = c.scoreIlotParJoueur(arbitre.getJoueurs());
 		if(newsipj[numA].getY()>sipj[numA].getY()){
 			if (newsipj[numA].getX()-sipj[numA].getX() >= (c.nombrePoissonsRestant()-sipj[numA].getX())/5)
-				score = score - 100 - (newsipj[numA].getX()-sipj[numA].getX());
+				score = score - 200 - (newsipj[numA].getX()-sipj[numA].getX());
 			if (newsipj[numA].getX()- sipj[numA].getX() < (c.nombrePoissonsRestant()-sipj[numA].getX())/5)
-				score = score + 100 + (newsipj[numA].getX()-sipj[numA].getX());
+				score = score + 200 + (newsipj[numA].getX()-sipj[numA].getX());
 		}
 		if(newsipj[numJ].getY()>sipj[numJ].getY()){
 			if (newsipj[numJ].getX()-sipj[numJ].getX() < (c.nombrePoissonsRestant()-sipj[numJ].getX())/5)
-				score = score - 100 - (newsipj[numJ].getX()-sipj[numJ].getX());
+				score = score - 200 - (newsipj[numJ].getX()-sipj[numJ].getX());
 			if (newsipj[numJ].getX()-sipj[numJ].getX() >= (c.nombrePoissonsRestant()-sipj[numJ].getX())/5)
-				score = score + 100 + (newsipj[numJ].getX()-sipj[numJ].getX());
+				score = score + 200 + (newsipj[numJ].getX()-sipj[numJ].getX());
 		}
 
 		// pingouin presque bloqué
@@ -163,22 +163,22 @@ public class Minimax implements Runnable {
 		Couple [] p =  c.coordPingouins(this.joueur);
 		for(int i=0;i<p.length;i++){
 			if(c.getVoisins(terrainCopieJ,p[i].getX(),p[i].getY(),true).size()==1)
-				score -= 25;
+				score -= 50;
 			if(c.getVoisins(terrainCopieJ,p[i].getX(),p[i].getY(),true).size()==2)
-				score -= 12;
+				score -= 25;
 			if(c.estIlot(p[i].getX(), p[i].getY(), new ArrayList<Couple>(), 0).getX() != -1)
 				if(poissonAtteignable(c, terrainCopieJ, p[i].getX(), p[i].getY())<8)
-					score -= 12;
+					score -= 50;
 		}
 		p =  c.coordPingouins(this.adversaire);
 		for(int i=0;i<p.length;i++){
 			if(c.getVoisins(terrainCopieA,p[i].getX(),p[i].getY(),true).size()==1)
-				score += 25;
+				score += 50;
 			if(c.getVoisins(terrainCopieA,p[i].getX(),p[i].getY(),true).size()==1)
-				score += 12;
+				score += 25;
 			if(c.estIlot(p[i].getX(), p[i].getY(), new ArrayList<Couple>(), 0).getX() != -1)
 				if(poissonAtteignable(c, terrainCopieA, p[i].getX(), p[i].getY())<8)
-					score += 12;
+					score += 50;
 		}		
 
 /*	idem pour le nombre de pingouin restant, regarder le nombre de pingouin isolé au début avec le nombre de poisson quil peuvent avoir

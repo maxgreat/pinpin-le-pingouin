@@ -7,8 +7,9 @@ import Joueurs.*;
 import javax.imageio.*;
 import java.io.IOException;
 import java.net.URL;
-
+import Sound.*;
 import Arbitre.Regles.*;
+import java.util.Random;
 
 public class AireDeJeu extends JComponent
 {
@@ -483,6 +484,10 @@ public class AireDeJeu extends JComponent
 				showDialog = false;
 			}
 	
+					Comportement comp;
+					comp = new Comportement("/home/julien/pinpin-le-pingouin/Sound/bruit/applaudissement.mp3",inter.d);
+					Thread bruit = new Thread(comp);
+					bruit.start();
 	
         }//fin traitement partie finie 
         
@@ -753,6 +758,16 @@ public class AireDeJeu extends JComponent
 			
 			else
 			{ //mode jeu
+				if(ArbitreManager.instance.getConfiguration().getJoueurSurConfiguration()==ArbitreManager.instance.getConfiguration().getTerrain()[p.x][p.y].getJoueurSurCase()){
+					Random r = new Random();
+					int num = r.nextInt(18);
+					if(num<11){
+						Comportement comp;
+						comp = new Comportement("/home/julien/pinpin-le-pingouin/Sound/bruit/bruit"+num+".mp3",inter.d);
+						Thread bruit = new Thread(comp);
+						bruit.start();
+					}
+				}
 				if(clicPrec.x == -1 || clicPrec.y == -1)
 				{ //le coup precedent est nul
 					Case [][] t = ArbitreManager.instance.getConfiguration().getTerrain();
