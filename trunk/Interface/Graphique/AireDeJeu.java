@@ -817,11 +817,14 @@ public class AireDeJeu extends JComponent
 					JButton recommencer = new JButton("Recommencer");
 					JButton menuP = new JButton("Menu Principal");
 					JButton save = new JButton("Sauvegarder");
-					pan.setLayout(new GridLayout( 4, 1));
+					JButton regles = new JButton("Regles");
+					pan.setLayout(new GridLayout( 5, 1));
+					regles.addActionListener(new EcouteurDeBoutonMenu("Regles", inter, popup));
 					recommencer.addActionListener(new EcouteurDeBoutonMenu("Recommencer", inter, popup));
 					bQuitter.addActionListener(new EcouteurDeBoutonMenu("Quitter", inter, popup));
 					menuP.addActionListener(new EcouteurDeBoutonMenu("Retour Menu Principal", inter, popup));
 					save.addActionListener(new EcouteurDeBoutonMenu("Sauvegarder", inter, popup));
+					pan.add(regles,BorderLayout.CENTER);
 					pan.add(save,BorderLayout.CENTER);
 					pan.add(recommencer,BorderLayout.CENTER);
 					pan.add(menuP,BorderLayout.CENTER);

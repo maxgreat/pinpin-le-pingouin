@@ -16,6 +16,7 @@ public class InterfaceGraphique extends Interface
 {
     protected AireDeJeu aire;
     protected JFrame frame;
+    protected JFrame regle;    
     protected JPanel panel;
     protected Fond fond;
 	protected Banniere ban;
@@ -153,38 +154,54 @@ public class InterfaceGraphique extends Interface
 			ArbitreManager.stopperPartie();
 			System.exit(0);
 		}
-		if(S.compareTo( "Regles du jeux") == 0 )
+		if(S.compareTo( "Regles") == 0 )
 		{	
-			
-			oldPage.push("Options");
-			MenuPrincipal m = new MenuPrincipal(frame, this,"reglePremierePage.png");
-			m.setBoutons("regle");
-			frame.setContentPane(m.fond);
-			frame.pack();				
+		regle = new JFrame("Regles");
+		regle.setMinimumSize(new Dimension(700,500));
+		MenuPrincipal m = new MenuPrincipal(frame, this,"reglePremierePage.png");
+		m.setBoutons("regle");
+		regle.setContentPane(m.fond);
+		regle.pack();
+		
+		regle.setResizable(true);
+		//frame.setMinimumSize(Dim);
+		//intercepte la demande de fermeture the close button
+		regle.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
+		//create custom close operation
+		regle.addWindowListener(new WindowAdapter()
+		{
+			public void windowClosing(WindowEvent e)
+			{
+			        // Ferme la partie correctement
+			        ArbitreManager.stopperPartie();
+			        System.exit(0);
+			}
+		});
+		regle.setVisible(true);	
 		}
 		if(S.compareTo("Page 2") == 0 )
 		{	
 			oldPage.push("Regles du jeux");
 			MenuPrincipal m = new MenuPrincipal(frame, this,"regleDeuxiemePage.png");
 			m.setBoutons("Page 2");
-			frame.setContentPane(m.fond);
-			frame.pack();				
+			regle.setContentPane(m.fond);
+			regle.pack();				
 		}
 		if(S.compareTo("Page 3") == 0 )
 		{	
 			oldPage.push("Page 2");
 			MenuPrincipal m = new MenuPrincipal(frame, this,"regleTroisiemePage.png");
 			m.setBoutons("Page 3");
-			frame.setContentPane(m.fond);
-			frame.pack();				
+			regle.setContentPane(m.fond);
+			regle.pack();				
 		}
 		if(S.compareTo("Page 4") == 0 )
 		{	
 			oldPage.push("Page 3");
 			MenuPrincipal m = new MenuPrincipal(frame, this,"regleQuatriemePage.png");
 			m.setBoutons("Page 4");
-			frame.setContentPane(m.fond);
-			frame.pack();				
+			regle.setContentPane(m.fond);
+			regle.pack();				
 		}
 		if(S.compareTo( "Lancer") == 0 )
 		{	
