@@ -76,6 +76,11 @@ public class AireDeJeu extends JComponent
 	BufferedImage caseJ2 = null;
 	BufferedImage caseJ3 = null;
 	BufferedImage caseJ4 = null;
+	
+	BufferedImage iconeJ1 = null;
+	BufferedImage iconeJ2 = null;
+	BufferedImage iconeJ3 = null;
+	BufferedImage iconeJ4 = null;
 
     BufferedImage suggestionCoup = null;
 	
@@ -152,6 +157,11 @@ public class AireDeJeu extends JComponent
 			imageJoueur2Load = ImageIO.read(getImage("pingouin2_load.gif"));
 			imageJoueur3Load = ImageIO.read(getImage("pingouin3_load.gif"));
 			imageJoueur4Load = ImageIO.read(getImage("pingouin4_load.gif"));
+			
+			iconeJ1 = ImageIO.read(getImage("pingouin1icon.png"));
+			iconeJ2 = ImageIO.read(getImage("pingouin2icon.png"));
+			iconeJ3 = ImageIO.read(getImage("pingouin3icon.png"));
+			iconeJ4 = ImageIO.read(getImage("pingouin4icon.png"));
 
 		}catch(Exception e){
 			System.out.println("Erreur lecture image" + e);
@@ -272,14 +282,14 @@ public class AireDeJeu extends JComponent
 		        drawable.drawImage(imageJoueur3, margeGauche, hauteur-2*margeHaut/3 , 2*margeGauche/3, 2*margeHaut/3, null);
 		    }
     
-		    drawable.drawImage(poissonJ3, margeGauche/4 , hauteur-margeHaut/4, margeGauche/4 , margeHaut/4, null);
+		    drawable.drawImage(poissonJ3, margeGauche/4 , hauteur-3*margeHaut/4, margeGauche/4 , margeHaut/4, null);
 			drawable.drawString(" : " + inter.joueurs[2].getScore(),margeGauche/2,hauteur-margeHaut+7*margeHaut/16);
-			drawable.drawImage(caseJ2, margeGauche/4 , hauteur-margeHaut+2*margeHaut/4+1, margeGauche/4 , margeHaut/4, null);
+			drawable.drawImage(caseJ3, margeGauche/4 , hauteur-margeHaut/2+1, margeGauche/4 , margeHaut/4, null);
 			drawable.drawString(" : " + inter.joueurs[2].getNombreTuile(),margeGauche/2,hauteur-margeHaut+11*margeHaut/16);
         
+        	drawable.setPaint(Color.black);
+			drawable.drawString(inter.joueurs[2].getNom(), margeGauche/4 , hauteur-5*margeHaut/6);
         }
-        
-
     
     
         //joueur 4
@@ -299,6 +309,15 @@ public class AireDeJeu extends JComponent
 				    drawable.drawImage(imageJoueur4, largeur-margeGauche-2*margeGauche/3, hauteur-2*margeHaut/3 , 2*margeGauche/3, 2*margeHaut/3, null);
 				}
 		    }
+		    
+		    drawable.drawImage(poissonJ4, largeur-3*margeGauche/4 , hauteur-3*margeHaut/4, margeGauche/4 , margeHaut/4, null);
+			drawable.drawString(" : " + inter.joueurs[3].getScore(),largeur-2*margeGauche/4,largeur-margeGauche + 7*margeHaut/16);
+			drawable.drawImage(caseJ4, largeur-3*margeGauche/4 , hauteur-margeHaut/2, margeGauche/4, margeHaut/4, null);
+			drawable.drawString(" : " + inter.joueurs[3].getNombreTuile(),largeur-2*margeGauche/4,hauteur-margeHaut+11*margeHaut/16);
+		    
+		    drawable.setPaint(Color.black);
+			drawable.drawString(inter.joueurs[2].getNom(), largeur-3*margeGauche/4 , hauteur-5*margeHaut/6);
+		    
        }
         
 
@@ -318,10 +337,10 @@ public class AireDeJeu extends JComponent
 	{
 		switch(j){
         case 0: //joueur 1
-            { 
+            {
                 for(int i = 1; i <= n; i++)
                 {
-                    drawable.drawImage(imageJoueur1, (i-1)*(int)margeGauche/4, (int)margeHaut, (int)margeGauche/2, (int)margeHaut/2, null);
+                    drawable.drawImage(imageJoueur1, (i-1)*(int)margeGauche/4, (int)margeHaut, (int)margeGauche/4, 4*((int)margeGauche/4)/3, null);
                 }
                 break;
             }	
@@ -329,20 +348,28 @@ public class AireDeJeu extends JComponent
             { 
                 for(int i = 1; i <= n; i++)
                 {
-                    drawable.drawImage(imageJoueur2, largeur-((int)margeGauche - (i-2)*(int)margeGauche/4), (int)margeHaut, (int)margeGauche/2, (int)margeHaut/2, null);
+                    drawable.drawImage(imageJoueur2, largeur-((int)margeGauche - (i-2)*(int)margeGauche/4), (int)margeHaut, (int)margeGauche/4, 4*((int)margeGauche/4)/3, null);
                 }
                 break;
             }	
-            /*	case 2: //joueur 3
+        case 2: //joueur 3
 				{ 
+					for(int i = 1; i <= n; i++)
+		            {
+		                drawable.drawImage(iconeJ3, ((int)margeGauche/4) *(i-1), hauteur-(int)margeHaut-4*((int)margeGauche/4)/3, (int)margeGauche/4, 4*((int)margeGauche/4)/3, null);
+		            }
 			
-                break;
+                	break;
 				}	
-                case 3: //joueur 4
+        case 3: //joueur 4
 				{ 
+					for(int i = 1; i <= n; i++)
+		            {
+		                drawable.drawImage(iconeJ4, largeur-((int)margeGauche/4*(i)), hauteur-(int)margeHaut-4*((int)margeGauche/4)/3, (int)margeGauche/4, 4*((int)margeGauche/4)/3, null);
+		            }
 			
-                break;
-				}*/	
+                	break;
+				}	
 		}
 	}
 
@@ -360,10 +387,10 @@ public class AireDeJeu extends JComponent
 				afficherNPingouins(drawable, i, 4 - nbPing[i]);
 			}
 			else if(nbPing.length == 3){
-				afficherNPingouins(drawable, i, 4 - nbPing[i]);
+				afficherNPingouins(drawable, i, 3 - nbPing[i]);
 			}
 			else if(nbPing.length == 4){
-				afficherNPingouins(drawable, i, 4 - nbPing[i]);
+				afficherNPingouins(drawable, i, 2 - nbPing[i]);
 			}
 		}
 	}
