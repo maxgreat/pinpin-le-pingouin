@@ -16,9 +16,9 @@ public class Charger {
 	public Charger (JFrame frame, InterfaceGraphique inter) {
 		this.frame = frame;
 		this.fond = new Fond("backgroundIce1.png",frame);
-		fond.setOpaque(true);
-		fond.setPreferredSize(new Dimension(700,500));
-
+		//fond.setOpaque(true);
+		//fond.setPreferredSize(new Dimension(700,500));
+		MenuPrincipal M = new MenuPrincipal(frame,inter ,"");
 		// Création de la liste avec les noms de fichiers
 		list = new JList();
 		listLoad();
@@ -37,10 +37,10 @@ public class Charger {
 		JButton btnRetour = new JButton("Retour");
 		btnRetour.addActionListener(new EcouteurDeBouton("Retour", inter));
 
-		fond.add(btnCharger);
-		fond.add(btnDelete);
-		fond.add(btnRetour);
-		fond.add(list);
+		M.Menu.add(btnCharger);
+		M.Menu.add(btnDelete);
+		M.Menu.add(btnRetour);
+		M.Menu.add(list);
 	}
 
 	public JList getList() {

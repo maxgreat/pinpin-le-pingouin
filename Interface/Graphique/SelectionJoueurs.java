@@ -7,7 +7,7 @@ import javax.imageio.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
-
+import Joueurs.*;
 
 
 
@@ -37,6 +37,8 @@ int menu;
 JPanel vide;
 JPanel buttons;
 InterfaceGraphique inter;
+Joueur	Sjoueurs []= new Joueur[4];
+
 public SelectionJoueurs(JPanel joueur,  LinkedList<String> joueurs , LinkedList<String> joueursPris, LinkedList<String> difficultees,MenuPerso mp,InterfaceGraphique inter ,int menu)
 	{
 		this.inter = inter;
@@ -95,8 +97,7 @@ public void selectionDifficulte()
 	{
 	names.setVisible(Humain);
 	diff.setVisible(Ordinateur);
-	vide.setVisible(Aucun);
-	
+	vide.setVisible(Aucun);	
 	}
 public JPanel getPan()
 	{
