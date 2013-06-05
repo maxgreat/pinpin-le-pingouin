@@ -197,10 +197,10 @@ public class MenuPrincipal{
 			ban = new Banniere("options.png",frame);
 			ban.setPreferredSize(new Dimension(700, (500)/4));
 			Menu.setLayout(new GridLayout( 3 , 1));
-			addBouton(Menu, "Son");
+			addBouton(Menu, "son.png");
 			addBouton(Menu, "Gestion de profil");
-			addBouton(Menu, "Regles du jeux");
-			addBouton(cellGauche,"Retour");
+			addBouton(Menu, "reglesDuJeu.png");
+			addBouton(cellGauche,"retour.png");
 		}
 		else if(s.compareTo("Son") == 0){
 
@@ -222,36 +222,36 @@ public class MenuPrincipal{
 				else
 					addBouton(Menu, "bruitagesActive.png");
 			}
-			addBouton(cellGauche,"Retour");
+			addBouton(cellGauche,"retour.png");
 		}
 		else if(s.compareTo("Gestion de profil") == 0){
 			ban = new Banniere("pinpin.png",frame);
 			ban.setPreferredSize(new Dimension(700, (500)/4));
 			addBouton(Menu, "Quitter");
-			addBouton(cellGauche,"Retour");
+			addBouton(cellGauche,"retour.png");
 		}
 		else if(s.compareTo("regle") == 0){
 			ban = new Banniere("pinpin.png",frame);
 			ban.setPreferredSize(new Dimension(700, (500)/4));
-			addBouton(cellGauche,"Retour");
+			addBouton(cellGauche,"retour.png");
 			addBouton(cellDroite,"Page 2");
 		}
 		else if(s.compareTo("Page 2") == 0){
 			ban = new Banniere("pinpin.png",frame);
 			ban.setPreferredSize(new Dimension(700, (500)/4));
-			addBouton(cellGauche,"Retour");
+			addBouton(cellGauche,"retour.png");
 			addBouton(cellDroite,"Page 3");
 		}
 		else if(s.compareTo("Page 3") == 0){
 			ban = new Banniere("pinpin.png",frame);
 			ban.setPreferredSize(new Dimension(700, (500)/4));
-			addBouton(cellGauche,"Retour");
+			addBouton(cellGauche,"retour.png");
 			addBouton(cellDroite,"Page 4");
 		}
 		else if(s.compareTo("Page 4") == 0){
 			ban = new Banniere("pinpin.png",frame);
 			ban.setPreferredSize(new Dimension(700, (500)/4));
-			addBouton(cellGauche,"Retour");
+			addBouton(cellGauche,"retour.png");
 			addBouton(cellDroite,"Menu Principal");
 		}
 		
