@@ -40,7 +40,8 @@ public class InterfaceGraphique extends Interface
      
     public void run(String [] arguments)
     {	
-
+	    JComponent.setDefaultLocale(Locale.FRENCH);
+	    
         if (arguments.length > 0)
             filename = arguments[0];
 
