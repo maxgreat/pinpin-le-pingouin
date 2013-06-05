@@ -109,8 +109,9 @@ public class SelectionJoueurs{
 	
 	}
    public void affecterJoueur(int i, String s,SelectionJoueur type){
-      Sjoueurs = inter.getTab();
-      
+      Joueur [] joueur = inter.getTab();
+      for(int j =0; j< joueur.length;j++)
+         Sjoueurs[j] = joueur[j];
         if (type.estJoueur())
 		{        
 			Sjoueurs[i-1] = new JoueurHumain();

@@ -248,7 +248,7 @@ public class InterfaceGraphique extends Interface
       
 		for (int i = 0; i < joueurs.length; i++, size++){
 			if (joueurs[i] == null)
-             System.out.println("joueur "+i+" vide");
+             break;
 
       }
         joueurstemp = new Joueur[size];
