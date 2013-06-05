@@ -48,10 +48,10 @@ public class InterfaceGraphique extends Interface
     	//historique de navigation dans les menus
         this.joueurs = new Joueur[2];
 		joueurs[0] = new JoueurHumain();
-		joueurs[1] = new JoueurCPUUniversel(2);
+		joueurs[1] = new JoueurCPUCoulyMinimax();
 
-		joueurs[0].setNom("defaut1");
-		joueurs[1].setNom("defaut2");
+		joueurs[0].setNom("Joueur");
+		joueurs[1].setNom("Ordianteur");
 
     	oldPage = new LinkedList<String>();
     	oldPage.push("Menu Principal");
@@ -245,12 +245,21 @@ public class InterfaceGraphique extends Interface
 	public void setTab(Joueur[] joueurs)
 	{
         int size = 0;
-		for (int i = 0; i < joueurs.length; i++, size++)
+      
+		for (int i = 0; i < joueurs.length; i++, size++){
 			if (joueurs[i] == null)
-                break;
+             System.out.println("joueur "+i+" vide");
 
+      }
         joueurstemp = new Joueur[size];
         for (int i = 0; i < size; i++)
             joueurstemp[i] = joueurs[i];
 	}
+
+	public Joueur[] getTab()
+	{
+      return joueurstemp;
+	}
+
+
 }	
