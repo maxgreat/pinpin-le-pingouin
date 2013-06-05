@@ -1,5 +1,6 @@
 package Joueurs;
 import Arbitre.Regles.*;
+import Arbitre.*;
 import Utilitaires.*;
 import java.io.*;
 
@@ -9,7 +10,7 @@ public abstract class Joueur implements Serializable
     protected int score = 0;
     protected int nombreTuile = 0;
     protected String nom;
-    
+    public final static long serialVersionUID = 1L;
     
     public Joueur()
     { 
@@ -28,9 +29,18 @@ public abstract class Joueur implements Serializable
 	/**
 	 * Renvoi un coup au joueur humain
 	 **/
-	public Coup getCoup() {
-		JoueurCPUPhase j = new JoueurCPUPhase(this);
-		return j.coupSuivant();
+	public Coup getCoup() 
+    {
+        if (ArbitreManager.instance.getConfiguration().getNbCasesRestantes() > 40)
+        {
+            JoueurCPUFacile j = new JoueurCPUFacile();
+            return j.coupSuivant();
+        }
+        else
+        {
+            JoueurCPUPhaseInter j = new JoueurCPUPhaseInter(this);
+            return j.coupSuivant();
+        }
 	}
 
     /**
@@ -58,12 +68,12 @@ public abstract class Joueur implements Serializable
 
     public void incrementNombreTuile()
     {
-	this.nombreTuile++;
+        this.nombreTuile++;
     }
 
     public void decrementNombreTuile()
     {
-	this.nombreTuile--;
+        this.nombreTuile--;
     }
 
     /**
@@ -84,9 +94,9 @@ public abstract class Joueur implements Serializable
      **/
     private void writeObject(ObjectOutputStream out) throws IOException
     {
-	out.writeInt(getScore());
-	out.writeInt(getNombreTuile());
-	out.writeObject(getNom());
+        out.writeInt(getScore());
+        out.writeInt(getNombreTuile());
+        out.writeObject(getNom());
     }
 
     /**
@@ -94,20 +104,11 @@ public abstract class Joueur implements Serializable
      **/
     private void readObject(ObjectInputStream in) throws IOException, ClassNotFoundException
     { 
-	setScore(in.readInt());
-	setNombreTuile(in.readInt());
-	setNom((String)in.readObject());
-	signalCoup = new Signal<Coup>();
+        setScore(in.readInt());
+        setNombreTuile(in.readInt());
+        setNom((String)in.readObject());
+        signalCoup = new Signal<Coup>();
     }
-
-    /**
-     * Essaye de parser un objet sans donnée
-     **/
-    private void readObjectNoData() throws ObjectStreamException
-    {
-        throw new NotSerializableException("La sérialization d'un joueur doit se faire sur une chaine non vide");
-    }
-
 
     /**
      * Fonction à implanter dans les classes enfants

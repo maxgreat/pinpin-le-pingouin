@@ -208,9 +208,15 @@ public class InterfaceGraphique extends Interface
 		{
 			afficherPanel(oldPage.pop());
 		}
+		if(S.compareTo( "Nouvelle partie") == 0 )
+		{
+            ArbitreManager.stopperPartie();
+            initialiserPartie(getJoueurs());
+		}
+
+
 		if(S.compareTo( "Recommencer") == 0 )
 		{
-			System.out.println("on a clicker sur recommencer");
 		    ArbitreManager.recommencerPartie();
 		}
 		
