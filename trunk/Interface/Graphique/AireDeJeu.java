@@ -444,7 +444,7 @@ public class AireDeJeu extends JComponent
 			if (showDialog)
 			{	
 				
-				POPMenuVictoire popup = new POPMenuVictoire(hauteur,largeur);
+				POPMenuVictoire popup = new POPMenuVictoire(hauteur,largeur, this);
 				popup.addInternalFrameListener(new EcouteurDeFenetre(this));
 				JPanel panFin = new JPanel();
 		        int lastScore = -1;
@@ -880,7 +880,7 @@ public class AireDeJeu extends JComponent
 					menuOuvert = true;
 					
 					//definition du menu
-					POPMenu popup = new POPMenu();
+					POPMenu popup = new POPMenu(this);
 					popup.addInternalFrameListener(new EcouteurDeFenetre(this));
 					
 					popup.setVisible(true);
