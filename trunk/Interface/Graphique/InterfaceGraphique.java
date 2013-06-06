@@ -27,6 +27,8 @@ public class InterfaceGraphique extends Interface
 	Thread music;
 	Donnees d;
 
+    MenuPerso menuPerso = null;
+
     public String filename = null;
 
     public void addBouton(JPanel panel, String S)
@@ -271,6 +273,35 @@ public class InterfaceGraphique extends Interface
 		}
 		if(S.compareTo( "Lancer") == 0 )
 		{	
+            int nombreJoueur = 0;
+
+            if (menuPerso.J1.partage.getJoueur() != null)
+                nombreJoueur++;
+
+            if (menuPerso.J2.partage.getJoueur() != null)
+                nombreJoueur++;
+
+            if (menuPerso.J3.partage.getJoueur() != null)
+                nombreJoueur++;
+
+            if (menuPerso.J4.partage.getJoueur() != null)
+                nombreJoueur++;
+
+            joueurstemp = new Joueur[nombreJoueur];
+
+            if (menuPerso.J1.partage.getJoueur() != null)
+                joueurstemp[0] = menuPerso.J1.partage.getJoueur();
+
+            if (menuPerso.J2.partage.getJoueur() != null)
+                joueurstemp[1] = menuPerso.J2.partage.getJoueur();
+
+            if (menuPerso.J3.partage.getJoueur() != null)
+                joueurstemp[2] = menuPerso.J3.partage.getJoueur();
+
+            if (menuPerso.J4.partage.getJoueur() != null)
+                joueurstemp[3] = menuPerso.J4.partage.getJoueur();
+            
+
             System.out.println(joueurstemp.length);
             for (int i = 0; i < joueurstemp.length; i++)
                 System.out.println(joueurstemp[i]);
@@ -287,9 +318,10 @@ public class InterfaceGraphique extends Interface
 
 		if(S.compareTo("partiePerso.png") == 0)
 		{
-			MenuPerso m = new MenuPerso(frame, this);
-			m.setBoutons("Nouvelle Partie");
-			frame.setContentPane(m.fond);
+			this.menuPerso = new MenuPerso(frame, this);
+            
+			this.menuPerso.setBoutons("Nouvelle Partie");
+			frame.setContentPane(this.menuPerso.fond);
 			frame.pack();	
 		}
 		if(S.compareTo("retour.png") == 0)
