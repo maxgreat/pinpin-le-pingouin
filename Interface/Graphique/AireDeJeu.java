@@ -230,13 +230,13 @@ public class AireDeJeu extends JComponent
         if (instance.getPosition(instance.getJoueurCourant()) == 1)
         {
             if (instance.getJoueurCourant() instanceof JoueurHumain)
-                drawable.drawImage(imageJoueur1Selected, margeGauche, 0 , 2*margeGauche/3, 2*margeHaut/3, null);
+                drawable.drawImage(imageJoueur1Selected, margeGauche, 0 , margeHaut, 2*margeHaut/3, null);
             else
-                drawable.drawImage(imageJoueur1Load, margeGauche, 0 , 2*margeGauche/3, 2*margeHaut/3, null);
+                drawable.drawImage(imageJoueur1Load, margeGauche, 0 ,margeHaut, 2*margeHaut/3, null);
         }
         else
         {
-            drawable.drawImage(imageJoueur1, margeGauche, 0 , 2*margeGauche/3, 2*margeHaut/3, null);
+            drawable.drawImage(imageJoueur1, margeGauche, 0 , margeHaut, 2*margeHaut/3, null);
         }
 		
 		drawable.setPaint(Color.black);
@@ -256,13 +256,13 @@ public class AireDeJeu extends JComponent
         if (instance.getPosition(instance.getJoueurCourant()) == 2)
         {
             if (instance.getJoueurCourant() instanceof JoueurHumain)
-                drawable.drawImage(imageJoueur2Selected, largeur-margeGauche-2*margeGauche/3, 0 , 2*margeGauche/3, 2*margeHaut/3, null);
+                drawable.drawImage(imageJoueur2Selected, largeur-margeGauche-2*margeGauche/3, 0 , margeHaut, 2*margeHaut/3, null);
             else
-                drawable.drawImage(imageJoueur2Load, largeur-margeGauche-2*margeGauche/3, 0 , 2*margeGauche/3, 2*margeHaut/3, null);
+                drawable.drawImage(imageJoueur2Load, largeur-margeGauche-2*margeGauche/3, 0 , margeHaut, 2*margeHaut/3, null);
         }
         else
         {
-            drawable.drawImage(imageJoueur2, largeur-margeGauche-2*margeGauche/3, 0 , 2*margeGauche/3, 2*margeHaut/3, null);
+            drawable.drawImage(imageJoueur2, largeur-margeGauche-2*margeGauche/3, 0 , margeHaut, 2*margeHaut/3, null);
         }
         
         drawable.drawString(inter.joueurs[1].getNom(),largeur - 3*margeGauche/4,margeHaut/6);	
@@ -282,13 +282,13 @@ public class AireDeJeu extends JComponent
 		    if (instance.getPosition(instance.getJoueurCourant()) == 3)
 		    {
 		        if (instance.getJoueurCourant() instanceof JoueurHumain)
-		            drawable.drawImage(imageJoueur3Selected, margeGauche, hauteur-2*margeHaut/3 , 2*margeGauche/3, 2*margeHaut/3, null);
+		            drawable.drawImage(imageJoueur3Selected, margeGauche, hauteur-2*margeHaut/3 , margeHaut, 2*margeHaut/3, null);
 		        else
-		            drawable.drawImage(imageJoueur3Load, margeGauche, hauteur-2*margeHaut/3 , 2*margeGauche/3, 2*margeHaut/3, null);
+		            drawable.drawImage(imageJoueur3Load, margeGauche, hauteur-2*margeHaut/3 , margeHaut, 2*margeHaut/3, null);
 		    }
 		    else
 		    {
-		        drawable.drawImage(imageJoueur3, margeGauche, hauteur-2*margeHaut/3 , 2*margeGauche/3, 2*margeHaut/3, null);
+		        drawable.drawImage(imageJoueur3, margeGauche, hauteur-2*margeHaut/3 , margeHaut, 2*margeHaut/3, null);
 		    }
     
 		    drawable.drawImage(poissonJ3, margeGauche/4 , hauteur-3*margeHaut/4, margeGauche/4 , margeHaut/4, null);
@@ -309,9 +309,9 @@ public class AireDeJeu extends JComponent
 				if (instance.getPosition(instance.getJoueurCourant()) == 4)
 				{
 				    if (instance.getJoueurCourant() instanceof JoueurHumain)
-				        drawable.drawImage(imageJoueur4Selected, largeur-margeGauche-2*margeGauche/3, hauteur-2*margeHaut/3 , 2*margeGauche/3, 2*margeHaut/3, null);
+				        drawable.drawImage(imageJoueur4Selected, largeur-margeGauche-2*margeGauche/3, hauteur-2*margeHaut/3 , margeHaut, 2*margeHaut/3, null);
 				    else
-				        drawable.drawImage(imageJoueur4Load, largeur-margeGauche-2*margeGauche/3, hauteur-2*margeHaut/3 , 2*margeGauche/3, 2*margeHaut/3, null);
+				        drawable.drawImage(imageJoueur4Load, largeur-margeGauche-2*margeGauche/3, hauteur-2*margeHaut/3 , margeHaut, 2*margeHaut/3, null);
 				}
 				else
 				{
@@ -590,7 +590,7 @@ public class AireDeJeu extends JComponent
 		
 		//Dessin des boutons
 		largeurMenu = largeur/8;
-		hauteurMenu = 2*(int)margeHaut/3;
+		hauteurMenu = largeurMenu/3;
 		largeurAide = (int)((float)tabCase.largeur()/1.5);
 		hauteurAide = (int)((float)tabCase.hauteur()/1.5);
 		largeurAnnuler = largeur/8;
@@ -891,7 +891,7 @@ public class AireDeJeu extends JComponent
 					JButton save = new JButton("Sauvegarder");
 					JButton regles = new JButton("Regles");
 					pan.setLayout(new GridLayout( 5, 1));
-					regles.addActionListener(new EcouteurDeBoutonMenu("Regles", inter, popup));
+					regles.addActionListener(new EcouteurDeBoutonMenu("reglesDuJeu.png", inter, popup));
 					recommencer.addActionListener(new EcouteurDeBoutonMenu("Recommencer", inter, popup));
 					bQuitter.addActionListener(new EcouteurDeBoutonMenu("Quitter", inter, popup));
 					menuP.addActionListener(new EcouteurDeBoutonMenu("Retour Menu Principal", inter, popup));
