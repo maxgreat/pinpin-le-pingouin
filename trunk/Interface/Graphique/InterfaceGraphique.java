@@ -54,8 +54,10 @@ public class InterfaceGraphique extends Interface
 	    playlist = new Utilitaires.File<String>();
 	    java.io.File rep = new java.io.File("Sound/Music");
 	    String [] data = rep.list();
-	    for (int i = 0; i < data.length; i++) 
-		    playlist.push("Sound/Music/" + data[i]);
+	    for (int i = 0; i < data.length; i++) {
+		    if (!data[i].equals(".svn"))
+			    playlist.push("Sound/Music/" + data[i]);
+	    }
 	    
 	    if (arguments.length > 0)
 		    filename = arguments[0];
