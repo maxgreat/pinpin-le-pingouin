@@ -565,8 +565,12 @@ public class AireDeJeu extends JComponent
                 
                 posePingouinPopup = true;
             }
+            drawable.setColor(Color.red);
+            Font fontAide = new Font("Serial", Font.BOLD, 14);
+            drawable.setFont(fontAide);
             afficherPingouins(drawable);
-            drawable.drawString("A " + ArbitreManager.instance.getJoueurCourant().getNom()+" de placer ses pingouins.", largeur/4 + (int)rayonL*3, hauteur-(int)rayonH-10);
+            drawable.drawString("A " + ArbitreManager.instance.getJoueurCourant().getNom()+" de placer ses pingouins.", largeur/4-60 + (int)rayonL*3, hauteur-(int)rayonH-10);
+            g.setColor(Color.black);
 		}
         else
         {
@@ -582,9 +586,12 @@ public class AireDeJeu extends JComponent
                 
                 jeuCompletPopup = true;
             }
-
-        	Arbitre instance = ArbitreManager.instance;
-            drawable.drawString(instance.getJoueurCourant().getNom()+": Selectionnez un pingouins à deplacer", largeur/4 + (int)rayonL*3, hauteur-(int)rayonH-10);
+            drawable.setColor(Color.red);
+            Font fontAide = new Font("Serial", Font.BOLD, 14);
+            drawable.setFont(fontAide);
+        	   Arbitre instance = ArbitreManager.instance;
+            drawable.drawString(instance.getJoueurCourant().getNom()+": Selectionnez un pingouins à deplacer", largeur/4-60 + (int)rayonL*3, hauteur-(int)rayonH-10);
+            drawable.setColor(Color.black	);
         }
 		
 		
