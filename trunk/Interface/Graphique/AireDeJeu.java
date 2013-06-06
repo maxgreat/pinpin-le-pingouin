@@ -557,7 +557,7 @@ public class AireDeJeu extends JComponent
 		largeurAide = (int)((float)tabCase.largeur()/1.5);
 		hauteurAide = (int)((float)tabCase.hauteur()/1.5);
 		largeurAnnuler = largeur/8;
-		hauteurAnnuler = (int)margeHaut/4;
+		hauteurAnnuler = (int)margeHaut/2;
 		
 		//bouton aide
 		if(aide)
