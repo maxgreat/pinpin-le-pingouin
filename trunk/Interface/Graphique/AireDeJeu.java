@@ -320,7 +320,7 @@ public class AireDeJeu extends JComponent
 		    }
 		    
 		    drawable.drawImage(poissonJ4, largeur-3*margeGauche/4 , hauteur-3*margeHaut/4, margeGauche/4 , margeHaut/4, null);
-			drawable.drawString(" : " + inter.joueurs[3].getScore(),largeur-2*margeGauche/4,largeur-margeGauche + 7*margeHaut/16);
+			drawable.drawString(" : " + inter.joueurs[3].getScore(),largeur-2*margeGauche/4,hauteur-margeHaut + 7*margeHaut/16);
 			drawable.drawImage(caseJ4, largeur-3*margeGauche/4 , hauteur-margeHaut/2, margeGauche/4, margeHaut/4, null);
 			drawable.drawString(" : " + inter.joueurs[3].getNombreTuile(),largeur-2*margeGauche/4,hauteur-margeHaut+11*margeHaut/16);
 		    
@@ -585,7 +585,7 @@ public class AireDeJeu extends JComponent
 
         	Arbitre instance = ArbitreManager.instance;
             drawable.drawString(instance.getJoueurCourant().getNom()+": Selectionnez un pingouins à deplacer", largeur/4 + (int)rayonL*3, hauteur-(int)rayonH-10);
-        }	
+        }
 		
 		
 		//Dessin des boutons
