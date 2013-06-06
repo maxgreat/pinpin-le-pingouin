@@ -1,5 +1,6 @@
 package Interface.Graphique;
 
+import Joueurs.*;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
@@ -12,15 +13,44 @@ import java.net.URL;
 public class SelectionJoueur
 {
     Integer type = 0;
+    JComboBox nomsJoueurs;
+    JComboBox difficultesCPU;
 
-    public SelectionJoueur(int numeroJoueur)
+    public SelectionJoueur(int numeroJoueur, JComboBox nomsJoueurs, JComboBox difficultesCPU)
     {
+        this.nomsJoueurs = nomsJoueurs;
+        this.difficultesCPU = difficultesCPU;
+            
         if (numeroJoueur == 1)
             type = 2;
         else if (numeroJoueur == 2)
             type = 1;
         else 
             type = 0;
+    }
+
+    public Joueur getJoueur()
+    {
+        Joueur j = null;
+        if (estJoueur())
+		{        
+			j = new JoueurHumain();
+			j.setNom(String.valueOf(nomsJoueurs.getSelectedItem()));
+        }
+        else if (estOrdinateur())
+        {         
+            String diff = difficultesCPU.getActionCommand();
+
+            if (diff.compareTo("Facile") == 0)
+                j = new JoueurCPUUniversel(3);
+            else if (diff.compareTo("Intermediaire") == 0)
+                j = new JoueurCPUUniversel(2);
+            else
+                j = new JoueurCPUUniversel(1);
+            j.setNom("Ordinateur ("+String.valueOf(difficultesCPU.getSelectedItem())+")");
+        }
+
+        return j;
     }
     
     public boolean estOrdinateur()

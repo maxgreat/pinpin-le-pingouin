@@ -27,7 +27,6 @@ public class EcouteurDeBox implements ActionListener
 	{
 		JComboBox cb = (JComboBox)e.getSource();
 		String test = (String)cb.getSelectedItem();
-      S.affecterJoueur(i,test,type);
    }
       
 }
