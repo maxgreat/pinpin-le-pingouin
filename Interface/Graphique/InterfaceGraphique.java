@@ -58,7 +58,7 @@ public class InterfaceGraphique extends Interface
 		joueurs[1] = new JoueurCPUCoulyMinimax();
 
 		joueurs[0].setNom("Joueur");
-		joueurs[1].setNom("Ordianteur");
+		joueurs[1].setNom("Ordinateur");
 
     	oldPage = new LinkedList<String>();
     	oldPage.push("Menu Principal");
