@@ -211,7 +211,7 @@ public class MenuPrincipal{
 				Menu.setLayout(new GridLayout( 1 , 1));
 				addBouton(Menu, "generalDesactive.png");
 			} else {
-				Menu.setLayout(new GridLayout( 3 , 1));
+				Menu.setLayout(new GridLayout( 4 , 1));
 				addBouton(Menu, "generalActive.png");
 				if(!inter.d.getFond())
 					addBouton(Menu, "musiqueDesactive.png");
@@ -221,6 +221,7 @@ public class MenuPrincipal{
 					addBouton(Menu, "bruitagesDesactive.png");
 				else
 					addBouton(Menu, "bruitagesActive.png");
+				addBouton(Menu, "nextSong.png");
 			}
 			addBouton(cellGauche,"retour.png");
 		}
