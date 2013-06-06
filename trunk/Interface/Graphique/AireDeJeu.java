@@ -990,7 +990,7 @@ public class AireDeJeu extends JComponent
 						menuOuvert = true;
 					}
 				}
-				else if(y > hauteur-margeGauche && x < margeHaut)
+				else if(y > hauteur-margeHaut && x < margeGauche)
 				{//clic sur la case joueur 3
 					if(inter.joueurs.length >= 3 && inter.joueurs[2] instanceof JoueurCPUUniversel)
 					{
@@ -1006,7 +1006,7 @@ public class AireDeJeu extends JComponent
 						menuOuvert = true;
 					}
 				} 
-				else if(y > hauteur-margeGauche && x > largeur - margeGauche)
+				else if(y > hauteur-margeHaut && x > largeur - margeGauche)
 				{//clic sur la case joueur 4
 					if(inter.joueurs.length >= 3 && inter.joueurs[3] instanceof JoueurCPUUniversel)
 					{
