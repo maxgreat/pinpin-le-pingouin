@@ -56,11 +56,9 @@ public class SelectionJoueurs{
 
     public void selectionJoueur()
 	{
-
-        Object [] test = joueurs.toArray();
         buttons = new JPanel();
         diff = new JComboBox(difficultees.toArray());
-        names = new JComboBox(test);
+        names = new JComboBox(joueurs.toArray());
         diff.setVisible(false);
         names.setVisible(false);
         buttons.setLayout(new GridLayout(0,3));

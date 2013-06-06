@@ -8,6 +8,8 @@ import javax.imageio.*;
 import java.io.IOException;
 import java.net.URL;
 import java.util.*;
+import java.io.File;
+
 public class MenuPerso{
 	protected JPanel fond = new JPanel();
 	protected JPanel Menu = new JPanel();
@@ -237,7 +239,20 @@ public class MenuPerso{
 		JPanel pan = new JPanel();
 
 		pan.setLayout(new BoxLayout(pan, BoxLayout.PAGE_AXIS));
-		JButton b1 = new JButton(S);
+        
+        File f = new File("Interface/Graphique/Img/"+S);
+		JButton b1 = null;
+		// Test l'existence du fichier d'image avant d'essayer de le charger
+		if(f.exists())
+        {
+            b1 = new JButton(new ImageIcon("Interface/Graphique/Img/" + S));
+            b1.setBorder(BorderFactory.createEmptyBorder());
+            b1.setContentAreaFilled(false);
+        }
+		else
+        {
+            b1 = new JButton(S);
+        }
 		b1.addActionListener(new EcouteurDeBouton(S, inter));
 		pan.add(b1);
 		pan.setOpaque(false);	
@@ -251,8 +266,8 @@ public class MenuPerso{
             setBoutonsJoueur(menuJ2,2);
             setBoutonsJoueur(menuJ3,3);
             setBoutonsJoueur(menuJ4,4);
-            addBouton(cellDroite , "Lancer");
-            addBouton(cellGauche , "Retour");
+            addBouton(cellDroite , "lancer.png");
+            addBouton(cellGauche , "retour.png");
 		}
 	}
 	public void setBoutonsJoueur(JPanel panel,int i)
@@ -285,15 +300,6 @@ public class MenuPerso{
 	}
 	public void refresh()
 	{
-		System.out.println("appel a refresh");
-		if(menuJ4.equals(J4.getPan()))
-			System.out.println("le panel 4 est identique");
-		if(menuJ3.equals(J3.getPan()))
-			System.out.println("le panel 3 est identique");
-		if(menuJ2.equals(J2.getPan()))
-			System.out.println("le panel 2 est identique");
-		if(menuJ1.equals(J1.getPan()))
-			System.out.println("le panel 1 est identique");
 		menuJ4 = J4.getPan();
 		menuJ3 = J3.getPan();
 		menuJ2 = J2.getPan();

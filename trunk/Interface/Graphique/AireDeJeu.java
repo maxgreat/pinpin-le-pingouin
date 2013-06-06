@@ -322,7 +322,7 @@ public class AireDeJeu extends JComponent
 			drawable.drawString(" : " + inter.joueurs[3].getNombreTuile(),largeur-2*margeGauche/4,hauteur-margeHaut+11*margeHaut/16);
 		    
 		    drawable.setPaint(Color.black);
-			drawable.drawString(inter.joueurs[2].getNom(), largeur-3*margeGauche/4 , hauteur-5*margeHaut/6);
+			drawable.drawString(inter.joueurs[3].getNom(), largeur-3*margeGauche/4 , hauteur-5*margeHaut/6);
 		    
        }
         
@@ -817,7 +817,7 @@ public class AireDeJeu extends JComponent
 						}
 						else
 						{//coup non dispo
-							System.out.println("Le coup " + c + " n'est pas pas autorisé"); 
+
 							Case [][] t = ArbitreManager.instance.getConfiguration().getTerrain();
 							if(t[p.x][p.y].getJoueurSurCase() == ArbitreManager.instance.getJoueurCourant()) 
 							{//clic sur un pingouin du joueur
