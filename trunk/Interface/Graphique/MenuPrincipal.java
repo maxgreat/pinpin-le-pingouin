@@ -196,9 +196,8 @@ public class MenuPrincipal{
 
 			ban = new Banniere("options.png",frame);
 			ban.setPreferredSize(new Dimension(700, (500)/4));
-			Menu.setLayout(new GridLayout( 3 , 1));
+			Menu.setLayout(new GridLayout( 2 , 1));
 			addBouton(Menu, "son.png");
-			addBouton(Menu, "Gestion de profil");
 			addBouton(Menu, "reglesDuJeu.png");
 			addBouton(cellGauche,"retour.png");
 		}

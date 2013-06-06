@@ -63,19 +63,52 @@ public class SelectionJoueurs{
         names.setEditable(true);
         names.setVisible(false);
         buttons.setLayout(new GridLayout(0,3));
-        JButton b1 = new JButton("HUMAIN");
-        JButton b2 = new JButton("CPU");
-        JButton b3 = new JButton("AUCUN");
+	double width =  buttons.getSize().getWidth(), height = buttons.getSize().getHeight();
+	JButton b1 = null;
+	if (this.menu == 1)
+		b1 = new JButton(new ImageIcon("Interface/Graphique/Img/joueurHumain1.png"));
+	else if (this.menu == 2)
+		b1 = new JButton(new ImageIcon("Interface/Graphique/Img/joueurHumain2.png"));
+	else if (this.menu == 3)
+		b1 = new JButton(new ImageIcon("Interface/Graphique/Img/joueurHumain3.png"));
+	else if (this.menu == 4)
+		b1 = new JButton(new ImageIcon("Interface/Graphique/Img/joueurHumain4.png"));		
+	b1.setBorder(BorderFactory.createEmptyBorder());
+	b1.setContentAreaFilled(false);
+	b1.setOpaque(false);	
+        b1.setBorderPainted(false); 
+	JButton b2 = new JButton(new ImageIcon("Interface/Graphique/Img/joueurOrdinateur.png"));
+	b2.setBorder(BorderFactory.createEmptyBorder());
+	b2.setContentAreaFilled(false);
+	b2.setOpaque(false);	
+	JButton b3 = new JButton(new ImageIcon("Interface/Graphique/Img/aucun.png"));
+	b3.setBorder(BorderFactory.createEmptyBorder());
+	b3.setContentAreaFilled(false);
+	b3.setOpaque(false);	
 
         this.partage = new SelectionJoueur(menu, names, diff);
 
         b1.addActionListener(new EcouteurBoutonMenuPerso(this, partage, 1));
         b2.addActionListener(new EcouteurBoutonMenuPerso(this, partage, 2));
         b3.addActionListener(new EcouteurBoutonMenuPerso(this, partage, 3));
-	
-        buttons.add(b1);
-        buttons.add(b2);
-        buttons.add(b3);
+
+	JPanel pan1 = new JPanel();
+	pan1.add(b1,BorderLayout.CENTER);
+	pan1.setOpaque(false);	
+
+
+	JPanel pan2 = new JPanel();
+	pan2.add(b2,BorderLayout.CENTER);
+	pan2.setOpaque(false);	
+	JPanel pan3 = new JPanel();
+	pan3.add(b3,BorderLayout.CENTER);
+	pan3.setOpaque(false);	
+
+
+        buttons.add(pan1);
+        buttons.add(pan2);
+        buttons.add(pan3);
+	buttons.setOpaque(false);	
 
         names.addActionListener(new EcouteurDeBox(this, partage, mp.inter, menu));
         diff.addActionListener(new EcouteurDeBox(this, partage, mp.inter, menu));
