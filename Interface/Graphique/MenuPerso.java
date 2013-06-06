@@ -29,7 +29,7 @@ public class MenuPerso{
 	
 	public MenuPerso(JFrame frame, InterfaceGraphique inter)
 	{
-		noms.add("Atos");
+		noms.add("Entrez votre nom...");
         noms.add("Portos");
         noms.add("Aramis");
         noms.add("Dartagnan");

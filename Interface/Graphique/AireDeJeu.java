@@ -559,7 +559,7 @@ public class AireDeJeu extends JComponent
                             else
                                 nbPingRestant = 4;
 
-                            JOptionPane.showMessageDialog(null, "Vous avez "+nbPingRestant+" pingouins à placer sur la banquise.\nCliquez sur une case avec un poisson (case en vert)\npour placer un de vos pingouin dessus", "Tutoriel", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Votre but est de récupérer le maximum de poissons.\nVous avez "+nbPingRestant+" pingouins à placer sur la banquise.\nCLIQUEZ sur une case avec UN poisson (case en VERT)\npour placer un de vos pingouin dessus", "Tutoriel", JOptionPane.INFORMATION_MESSAGE);
                         }
                     });
                 
@@ -576,7 +576,7 @@ public class AireDeJeu extends JComponent
                     {
                         public void run() 
                         {
-                            JOptionPane.showMessageDialog(null, "Votre but est de récupérer le maximum de poissons.\nSélectionnez un de vos pingouins pour le déplacer,\n et cliquez sur la case où vous voulez le mettre (une case en vert).", "Tutoriel", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Sélectionnez un de vos pingouins pour le déplacer,\n et cliquez sur la case où vous voulez le mettre (une case en vert).", "Tutoriel", JOptionPane.INFORMATION_MESSAGE);
                         }
                     });
                 
