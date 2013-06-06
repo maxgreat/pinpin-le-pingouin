@@ -252,7 +252,22 @@ public class InterfaceGraphique extends Interface
 		}
 		if(S.compareTo( "reglesDuJeu.png") == 0 )
 		{	
-		regle = new JFrame("Regles");
+			System.out.println("Ouverture d'une fenetre de regle");
+			regle = new JFrame();
+			Img image1 = new Img("regles_page_1.png");
+			//Img image2 = new Img("regles_page_2.png");
+			image1.setPreferredSize(new Dimension(500, 700));
+			//image2.setPreferredSize(new Dimension(200, 500));
+			JScrollPane panRegle = new JScrollPane(image1);
+			panRegle.setPreferredSize(new Dimension(300,300));
+			//panRegle.add(image2);
+			regle.setContentPane(panRegle);
+			regle.setTitle("Regles du Jeu");
+			regle.setVisible(true);
+			regle.pack();
+			
+		
+		/*regle = new JFrame("Regles");
 		regle.setMinimumSize(new Dimension(700,500));
 		MenuPrincipal m = new MenuPrincipal(frame, this,"reglePremierePage.png");
 		m.setBoutons("regle");
@@ -273,7 +288,7 @@ public class InterfaceGraphique extends Interface
 			        System.exit(0);
 			}
 		});
-		regle.setVisible(true);	
+		regle.setVisible(true);	*/
 		}
 		if(S.compareTo("Page 2") == 0 )
 		{	
