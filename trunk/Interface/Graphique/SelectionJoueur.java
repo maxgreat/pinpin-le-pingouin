@@ -35,7 +35,10 @@ public class SelectionJoueur
         if (estJoueur())
 		{        
 			j = new JoueurHumain();
-			j.setNom(String.valueOf(nomsJoueurs.getSelectedItem()));
+            if (nomsJoueurs.getSelectedItem().equals("Entrez votre nom..."))
+                j.setNom("Joueur");
+            else
+                j.setNom(String.valueOf(nomsJoueurs.getSelectedItem()));
         }
         else if (estOrdinateur())
         {         
