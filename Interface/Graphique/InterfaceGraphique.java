@@ -321,17 +321,18 @@ public class InterfaceGraphique extends Interface
 
             joueurstemp = new Joueur[nombreJoueur];
 
+            int i = 0;
             if (j1 != null)
-                joueurstemp[0] = j1;
+                joueurstemp[i++] = j1;
 
             if (j2 != null)
-                joueurstemp[1] = j2;
+                joueurstemp[i++] = j2;
 
             if (j3 != null)
-                joueurstemp[2] = j3;
+                joueurstemp[i++] = j3;
 
             if (j4 != null)
-                joueurstemp[3] = j4;
+                joueurstemp[i++] = j4;
             
 			this.setJoueurs(joueurstemp);
 			initialiserPartie(joueurstemp);
