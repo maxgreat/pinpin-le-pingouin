@@ -4,10 +4,10 @@ import java.awt.*;
 import Joueurs.*;
 
 public class MenuSelectionIA extends JInternalFrame{
-	Joueur j;
+	JoueurCPUUniversel j;
 	AireDeJeu aire;
 
-	public MenuSelectionIA(Joueur j, AireDeJeu a) {
+	public MenuSelectionIA(JoueurCPUUniversel j, AireDeJeu a) {
 		super("Menu",
 		      true, //resizable
 		      true, //closable
@@ -19,19 +19,17 @@ public class MenuSelectionIA extends JInternalFrame{
 		aire = a;
 		this.setVisible(true);
 		
+		
 		//ajout des boutons
 
-		JPanel pan = new JPanel();
-		JButton bHumain = new JButton("Humain");
+		JPanel pan = new JPanel();;
 		JButton bFacile = new JButton("Ordinateur facile");
 		JButton bInter = new JButton("Ordinateur moyen");
 		JButton bDur = new JButton("Ordinateur difficile");
-		pan.setLayout(new GridLayout( 4, 1));
-		bHumain.addActionListener(new EcouteurDeBoutonMenuIA("bHumain", this));
+		pan.setLayout(new GridLayout( 3, 1));
 		bFacile.addActionListener(new EcouteurDeBoutonMenuIA("bFacile", this));
 		bInter.addActionListener(new EcouteurDeBoutonMenuIA("bInter", this));
 		bDur.addActionListener(new EcouteurDeBoutonMenuIA("bDur", this));
-		pan.add(bHumain,BorderLayout.CENTER);
 		pan.add(bFacile,BorderLayout.CENTER);
 		pan.add(bInter,BorderLayout.CENTER);
 		pan.add(bDur,BorderLayout.CENTER);
@@ -49,4 +47,13 @@ public class MenuSelectionIA extends JInternalFrame{
 		}
 	}
 	
+	public void nouveauJoueur(String m)
+	{
+		if(m.compareTo("bFacile") == 0)
+			j.setLevel(3);
+		else if(m.compareTo("bInter") == 0)
+			j.setLevel(2);
+		else if(m.compareTo("bDur") == 0)
+			j.setLevel(1);
+	}	
 }

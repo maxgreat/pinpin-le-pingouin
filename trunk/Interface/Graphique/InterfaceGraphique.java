@@ -63,7 +63,7 @@ public class InterfaceGraphique extends Interface
     	//historique de navigation dans les menus
         this.joueurs = new Joueur[2];
 		joueurs[0] = new JoueurHumain();
-		joueurs[1] = new JoueurCPUCoulyMinimax();
+		joueurs[1] = new JoueurCPUUniversel(2);
 
 		joueurs[0].setNom("Joueur");
 		joueurs[1].setNom("Ordinateur");

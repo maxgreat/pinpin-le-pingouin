@@ -15,6 +15,7 @@ public class EcouteurDeBoutonMenuIA implements ActionListener{
 
 	public void actionPerformed(ActionEvent e)
     {
+    	menu.nouveauJoueur(message);
     	menu.close();	
 	}
 }
