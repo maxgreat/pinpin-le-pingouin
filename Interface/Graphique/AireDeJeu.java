@@ -584,7 +584,7 @@ public class AireDeJeu extends JComponent
             }
 
         	Arbitre instance = ArbitreManager.instance;
-            drawable.drawString("Au tour de "+instance.getJoueurCourant().getNom()+" de deplacer ses pingouins", largeur/4 + (int)rayonL*3, hauteur-(int)rayonH-10);
+            drawable.drawString(instance.getJoueurCourant().getNom()+": Selectionnez un pingouins à deplacer", largeur/4 + (int)rayonL*3, hauteur-(int)rayonH-10);
         }	
 		
 		
@@ -960,35 +960,41 @@ public class AireDeJeu extends JComponent
 			if(!menuOuvert){
 				if(y < margeGauche && x < margeHaut)
 				{//clic sur la case joueur 1
-					MenuSelectionIA menuIA = new MenuSelectionIA(inter.joueurs[0], this);
-					this.add(menuIA);
-					menuIA.pack();
+					if(inter.joueurs[0] instanceof JoueurCPUUniversel)
+					{
+						MenuSelectionIA menuIA = new MenuSelectionIA((JoueurCPUUniversel)inter.joueurs[0], this);
+						this.add(menuIA);
+						menuIA.pack();
 
-					menuIA.toFront();
-					try {
-						menuIA.setSelected(true);
-					} catch (java.beans.PropertyVetoException e) {}
-					menuIA.addInternalFrameListener(new EcouteurDeFenetre(this));
-					menuOuvert = true;
+						menuIA.toFront();
+						try {
+							menuIA.setSelected(true);
+						} catch (java.beans.PropertyVetoException e) {}
+						menuIA.addInternalFrameListener(new EcouteurDeFenetre(this));
+						menuOuvert = true;
+					}
 				}
 				else if(y < margeGauche && x > largeur - margeHaut)
 				{//clic sur la case joueur 2
-					MenuSelectionIA menuIA = new MenuSelectionIA(inter.joueurs[1], this);
-					this.add(menuIA);
-					menuIA.pack();
+					if(inter.joueurs[1] instanceof JoueurCPUUniversel)
+					{
+						MenuSelectionIA menuIA = new MenuSelectionIA((JoueurCPUUniversel)inter.joueurs[1], this);
+						this.add(menuIA);
+						menuIA.pack();
 
-					menuIA.toFront();
-					try {
-						menuIA.setSelected(true);
-					} catch (java.beans.PropertyVetoException e) {}
-					menuIA.addInternalFrameListener(new EcouteurDeFenetre(this));
-					menuOuvert = true;
+						menuIA.toFront();
+						try {
+							menuIA.setSelected(true);
+						} catch (java.beans.PropertyVetoException e) {}
+						menuIA.addInternalFrameListener(new EcouteurDeFenetre(this));
+						menuOuvert = true;
+					}
 				}
 				else if(y > hauteur-margeGauche && x < margeHaut)
 				{//clic sur la case joueur 3
-					if(inter.joueurs.length >= 3)
+					if(inter.joueurs.length >= 3 && inter.joueurs[2] instanceof JoueurCPUUniversel)
 					{
-						MenuSelectionIA menuIA = new MenuSelectionIA(inter.joueurs[2], this);
+						MenuSelectionIA menuIA = new MenuSelectionIA((JoueurCPUUniversel)inter.joueurs[2], this);
 						this.add(menuIA);
 						menuIA.pack();
 
@@ -1002,9 +1008,9 @@ public class AireDeJeu extends JComponent
 				} 
 				else if(y > hauteur-margeGauche && x > largeur - margeGauche)
 				{//clic sur la case joueur 4
-					if(inter.joueurs.length >= 3)
+					if(inter.joueurs.length >= 3 && inter.joueurs[3] instanceof JoueurCPUUniversel)
 					{
-						MenuSelectionIA menuIA = new MenuSelectionIA(inter.joueurs[3], this);
+						MenuSelectionIA menuIA = new MenuSelectionIA((JoueurCPUUniversel)inter.joueurs[3], this);
 						this.add(menuIA);
 						menuIA.pack();
 
