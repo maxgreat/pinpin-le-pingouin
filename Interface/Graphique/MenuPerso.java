@@ -5,10 +5,9 @@ import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.awt.event.*;
 import javax.imageio.*;
-import java.io.IOException;
+import java.io.*;
 import java.net.URL;
 import java.util.*;
-import java.io.File;
 
 public class MenuPerso{
 	protected JPanel fond = new JPanel();
@@ -237,22 +236,17 @@ public class MenuPerso{
 	public void addBouton(JPanel panel, String S)
 	{
 		JPanel pan = new JPanel();
-
+		JButton b1;
+		File f = new File("Interface/Graphique/Img/"+S);
+		if(f.exists()) {
+			b1 = new JButton(new ImageIcon("Interface/Graphique/Img/" + S));
+			b1.setBorder(BorderFactory.createEmptyBorder());
+			b1.setContentAreaFilled(false);
+		} else {
+			b1 = new JButton(S);
+		}
+		
 		pan.setLayout(new BoxLayout(pan, BoxLayout.PAGE_AXIS));
-        
-        File f = new File("Interface/Graphique/Img/"+S);
-		JButton b1 = null;
-		// Test l'existence du fichier d'image avant d'essayer de le charger
-		if(f.exists())
-        {
-            b1 = new JButton(new ImageIcon("Interface/Graphique/Img/" + S));
-            b1.setBorder(BorderFactory.createEmptyBorder());
-            b1.setContentAreaFilled(false);
-        }
-		else
-        {
-            b1 = new JButton(S);
-        }
 		b1.addActionListener(new EcouteurDeBouton(S, inter));
 		pan.add(b1);
 		pan.setOpaque(false);	

@@ -1,4 +1,5 @@
 package Interface.Graphique;
+import Utilitaires.File;
 import javax.swing.*;
 import Arbitre.*;
 import Arbitre.Regles.*;
@@ -9,21 +10,22 @@ import Joueurs.*;
 import java.util.*;
 import javax.imageio.*;
 import java.net.URL;
-import java.io.IOException;
+import java.io.*;
 import java.awt.image.BufferedImage;
 import Sound.*;
 
 public class InterfaceGraphique extends Interface
 {
-    protected AireDeJeu aire;
-    protected JFrame frame;
-    protected JFrame regle;    
-    protected JPanel panel;
-    protected Fond fond;
+	protected AireDeJeu aire;
+	protected JFrame frame;
+	protected JFrame regle;    
+	protected JPanel panel;
+	protected Fond fond;
 	protected Banniere ban;
-    private LinkedList<String> oldPage;
-    Joueur [] joueurstemp = new Joueur[2];
-
+	private LinkedList<String> oldPage;
+	Joueur [] joueurstemp = new Joueur[2];
+	Utilitaires.File<String> playlist;
+	String currentSong;
 	Thread music;
 	Donnees d;
 
@@ -48,9 +50,15 @@ public class InterfaceGraphique extends Interface
     public void run(String [] arguments)
     {	
 	    JComponent.setDefaultLocale(Locale.FRENCH);
+	    //Initialisation de la playlist
+	    playlist = new Utilitaires.File<String>();
+	    java.io.File rep = new java.io.File("Sound/Music");
+	    String [] data = rep.list();
+	    for (int i = 0; i < data.length; i++) 
+		    playlist.push("Sound/Music/" + data[i]);
 	    
-        if (arguments.length > 0)
-            filename = arguments[0];
+	    if (arguments.length > 0)
+		    filename = arguments[0];
 
     	//historique de navigation dans les menus
         this.joueurs = new Joueur[2];
@@ -90,11 +98,17 @@ public class InterfaceGraphique extends Interface
 		    });
 		frame.setVisible(true);
 
-		  Comportement c;
-		  d = new Donnees();
-        c = new Comportement("Sound/piste2.mp3",d);
-        music = new Thread(c);
-        music.start();	
+		Comportement c;
+		d = new Donnees();
+
+		if(d.getFond()){
+			String musique = playlist.pull();
+			currentSong = musique;
+			c = new Comportement(musique,d);
+			playlist.push(musique);
+			music = new Thread(c);
+			music.start();
+		}
     }
     
     /**
@@ -170,6 +184,18 @@ public class InterfaceGraphique extends Interface
 			frame.setContentPane(m.fond);
 			frame.pack();				
 		}
+		if(S.compareTo("nextSong.png") == 0 ) {
+			music.stop();
+			if(d.getFond()){
+				Comportement c;
+				String musique = playlist.pull();
+				currentSong = musique;
+				c = new Comportement(musique,d);
+				playlist.push(musique);
+				music = new Thread(c);
+				music.start();
+			}
+		}
 		if(S.compareTo("generalActive.png") == 0 || S.compareTo( "generalDesactive.png") == 0 )
 		{
 			if(S.compareTo("generalActive.png") == 0){
@@ -179,7 +205,7 @@ public class InterfaceGraphique extends Interface
 				d.setMusic(true);
 				if(d.getFond()){
 					Comportement c;
-					c = new Comportement("Sound/piste2.mp3",d);
+					c = new Comportement(currentSong,d);
 					music = new Thread(c);
 					music.start();
 				}
@@ -208,7 +234,7 @@ public class InterfaceGraphique extends Interface
 			}else{
 				d.setFond(true);
 				Comportement c;
-				c = new Comportement("Sound/piste2.mp3",d);
+				c = new Comportement(currentSong,d);
 				music = new Thread(c);
 				music.start();
 			}
@@ -371,7 +397,7 @@ public class InterfaceGraphique extends Interface
 
 		  d.setMusic(true);
         Comportement c;
-        c = new Comportement("Sound/piste2.mp3",d);
+        c = new Comportement(currentSong,d);
         music = new Thread(c);
         music.start();
 

@@ -155,13 +155,13 @@ public class Charger {
 		
 		JScrollPane pan = new JScrollPane(list);
 		//		pan.setVerticalScrollBarPolicy();
-		pan.setPreferredSize(new Dimension(250,150));
+		pan.setPreferredSize(new Dimension(200,200));
 		Menu.add(pan, BorderLayout.CENTER);
-		
+		Menu.setLayout(new GridLayout(2, 1));
 		//Bouton de sauvegarde
 		addBouton(Menu, "supprimer.png", 1);
-		addBouton(Menu, "petitCharger.png", 0);
-		addBouton(Menu, "retour.png", -1);
+		addBouton(cellDroite, "petitCharger.png", 0);
+		addBouton(cellGauche, "retour.png", -1);
 	}
 
 	public void addBouton(JPanel panel, String S, int opt) {

@@ -19,7 +19,6 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 		this.j = this;
 		this.finish = false;
 		this.tmpMax = 1000;
-		System.out.println("Changement a faire -> apeller JoueurCPUUniversel");
 	}
 
 	public JoueurCPUMinimaxIncremental(long tmpMax) {
