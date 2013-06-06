@@ -107,6 +107,9 @@ public class AireDeJeu extends JComponent
 	protected String s4;
     protected double margeHaut, margeGauche, margeDroite, margeBas;
     protected double rayonH, rayonL;
+
+    protected boolean posePingouinPopup = false;
+    protected boolean jeuCompletPopup = false;
 	
 	
 	//-------------------------------------------------
@@ -541,11 +544,45 @@ public class AireDeJeu extends JComponent
 		//Si on est en mode pose pingouins
 		if(ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN)
 		{
+            if (!posePingouinPopup)
+            {
+                javax.swing.SwingUtilities.invokeLater(new Runnable() 
+                    {
+                        public void run() 
+                        {
+                            int nbPingRestant = 0;
+                            
+                            if (inter.getJoueurs().length == 4)
+                                nbPingRestant = 2;
+                            else if (inter.getJoueurs().length == 3)
+                                nbPingRestant = 3;
+                            else
+                                nbPingRestant = 4;
+
+                            JOptionPane.showMessageDialog(null, "Vous avez "+nbPingRestant+" pingouins à placer sur la banquise.\nCliquez sur une case avec un poisson (case en vert)\n pour placer un de vos pingouin dessus", "Tutoriel", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    });
+                
+                posePingouinPopup = true;
+            }
             afficherPingouins(drawable);
             drawable.drawString("A " + ArbitreManager.instance.getJoueurCourant().getNom()+" de placer ses pingouins.", largeur/4 + (int)rayonL*3, hauteur-(int)rayonH-10);
 		}
         else
         {
+            if (!jeuCompletPopup)
+            {
+                javax.swing.SwingUtilities.invokeLater(new Runnable() 
+                    {
+                        public void run() 
+                        {
+                            JOptionPane.showMessageDialog(null, "Votre but est de récupérer le maximum de poissons.\nSélectionnez un de vos pingouins pour le déplacer,\n et cliquez sur la case où vous voulez le mettre (une case en vert).", "Tutoriel", JOptionPane.INFORMATION_MESSAGE);
+                        }
+                    });
+                
+                jeuCompletPopup = true;
+            }
+
         	Arbitre instance = ArbitreManager.instance;
             drawable.drawString("Au tour de "+instance.getJoueurCourant().getNom()+" de deplacer ses pingouins", largeur/4 + (int)rayonL*3, hauteur-(int)rayonH-10);
         }	
