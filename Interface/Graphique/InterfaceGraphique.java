@@ -271,41 +271,40 @@ public class InterfaceGraphique extends Interface
 			regle.setContentPane(m.fond);
 			regle.pack();				
 		}
-		if(S.compareTo( "Lancer") == 0 )
+		if(S.compareTo( "lancer.png") == 0 )
 		{	
             int nombreJoueur = 0;
+            Joueur j1 = menuPerso.J1.partage.getJoueur();
+            Joueur j2 = menuPerso.J2.partage.getJoueur();
+            Joueur j3 = menuPerso.J3.partage.getJoueur();
+            Joueur j4 = menuPerso.J4.partage.getJoueur();
 
-            if (menuPerso.J1.partage.getJoueur() != null)
+            if (j1 != null)
                 nombreJoueur++;
 
-            if (menuPerso.J2.partage.getJoueur() != null)
+            if (j2 != null)
                 nombreJoueur++;
 
-            if (menuPerso.J3.partage.getJoueur() != null)
+            if (j3 != null)
                 nombreJoueur++;
 
-            if (menuPerso.J4.partage.getJoueur() != null)
+            if (j4 != null)
                 nombreJoueur++;
 
             joueurstemp = new Joueur[nombreJoueur];
 
-            if (menuPerso.J1.partage.getJoueur() != null)
-                joueurstemp[0] = menuPerso.J1.partage.getJoueur();
+            if (j1 != null)
+                joueurstemp[0] = j1;
 
-            if (menuPerso.J2.partage.getJoueur() != null)
-                joueurstemp[1] = menuPerso.J2.partage.getJoueur();
+            if (j2 != null)
+                joueurstemp[1] = j2;
 
-            if (menuPerso.J3.partage.getJoueur() != null)
-                joueurstemp[2] = menuPerso.J3.partage.getJoueur();
+            if (j3 != null)
+                joueurstemp[2] = j3;
 
-            if (menuPerso.J4.partage.getJoueur() != null)
-                joueurstemp[3] = menuPerso.J4.partage.getJoueur();
+            if (j4 != null)
+                joueurstemp[3] = j4;
             
-
-            System.out.println(joueurstemp.length);
-            for (int i = 0; i < joueurstemp.length; i++)
-                System.out.println(joueurstemp[i]);
-
 			this.setJoueurs(joueurstemp);
 			initialiserPartie(joueurstemp);
 		}
