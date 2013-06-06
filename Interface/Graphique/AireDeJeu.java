@@ -10,6 +10,9 @@ import java.net.URL;
 import Sound.*;
 import Arbitre.Regles.*;
 import java.util.Random;
+import Utilitaires.*;
+
+import java.util.*;
 
 public class AireDeJeu extends JComponent
 {
@@ -100,6 +103,8 @@ public class AireDeJeu extends JComponent
     public int hauteur;
 	protected String s2;
 	protected String s;
+	protected String s3;
+	protected String s4;
     protected double margeHaut, margeGauche, margeDroite, margeBas;
     protected double rayonH, rayonL;
 	
@@ -216,7 +221,7 @@ public class AireDeJeu extends JComponent
             
     	showDialog = true;
     	//joueur1
-		drawable.drawImage(carreGlace, 0,0, margeGauche, margeHaut, null);
+		drawable.drawImage(carreGlace, 0, 0, margeGauche, margeHaut, null);
         Arbitre instance = ArbitreManager.instance;
 
         if (instance.getPosition(instance.getJoueurCourant()) == 1)
@@ -341,7 +346,7 @@ public class AireDeJeu extends JComponent
             {
                 for(int i = 1; i <= n; i++)
                 {
-                    drawable.drawImage(imageJoueur1, (i-1)*(int)margeGauche/4, (int)margeHaut, (int)margeGauche/4, 4*((int)margeGauche/4)/3, null);
+                    drawable.drawImage(iconeJ1, (i-1)*(int)margeGauche/4, (int)margeHaut, (int)margeGauche/4, 4*((int)margeGauche/4)/3, null);
                 }
                 break;
             }	
@@ -349,7 +354,7 @@ public class AireDeJeu extends JComponent
             { 
                 for(int i = 1; i <= n; i++)
                 {
-                    drawable.drawImage(imageJoueur2, largeur-((int)margeGauche - (i-2)*(int)margeGauche/4), (int)margeHaut, (int)margeGauche/4, 4*((int)margeGauche/4)/3, null);
+                    drawable.drawImage(iconeJ2, largeur-i*(int)margeGauche/4, (int)margeHaut, (int)margeGauche/4, 4*((int)margeGauche/4)/3, null);
                 }
                 break;
             }	
@@ -414,47 +419,63 @@ public class AireDeJeu extends JComponent
         if (arbitre.partieFinie())
         { //La partie est terminée
             arbitre.setPartieFinie(false);
-            if(inter.joueurs[0].getScore() > inter.joueurs[1].getScore())
-			{
-                s ="Victoire du joueur 1 - Poissons : " + inter.joueurs[0].getScore()+", Tuiles : "+ inter.joueurs[0].getNombreTuile()+" !!!";
-                s2 = "Defaite du joueur 2 - Poissons : " + inter.joueurs[1].getScore()+", Tuiles : "+ inter.joueurs[1].getNombreTuile()+".";
-			}
-            else if(inter.joueurs[0].getScore() < inter.joueurs[1].getScore())
-			{
-                s2 = "Defaite du joueur 1 - Poissons : " + inter.joueurs[0].getScore()+", Tuiles : "+inter.joueurs[0].getNombreTuile()+".";
-                s ="Victoire du joueur 2 - Poissons : "+inter.joueurs[1].getScore()+", Tuiles : "+inter.joueurs[1].getNombreTuile()+" !!!";
-			}
-            else
-			{//scores égaux
-	    		if(inter.joueurs[0].getNombreTuile() > inter.joueurs[1].getNombreTuile())
-	    		{
-                    s ="   Victoire du joueur 1 - Poissons : " + inter.joueurs[0].getScore()+", Tuiles : "+ inter.joueurs[0].getNombreTuile()+" !!!   ";
-                    s2 = "   Defaite du joueur 2 - Poissons : " + inter.joueurs[1].getScore()+", Tuiles : "+ inter.joueurs[1].getNombreTuile()+".   ";
-	    		}
-	    		else if(inter.joueurs[0].getScore() < inter.joueurs[1].getScore())
-	    		{
-                    s2 = "   Defaite du joueur 1 - Poissons : " + inter.joueurs[0].getScore()+", Tuiles : "+inter.joueurs[0].getNombreTuile()+".   ";
-                    s ="   Victoire du joueur 2 - Poissons : "+inter.joueurs[1].getScore()+", Tuiles : "+inter.joueurs[1].getNombreTuile()+" !!!   ";
-	    		}
-                else
-	    		{
-                	s ="   Egalité   ";
-                    s2 = "   Poissons : " + inter.joueurs[0].getScore()+", Tuiles : "+inter.joueurs[0].getNombreTuile()+".   ";
-                }
-			}
-           
-            // on retourne au menu principal
+            
+			
+			ArrayList<Joueur> classement = new ArrayList<Joueur>(Arrays.asList(inter.joueurs));
 
-          
-		    //default title and icon
+            Collections.sort(classement, new Comparator<Joueur>() 
+                         {
+                             public int compare(Joueur j1, Joueur j2) 
+                             {
+                                 Integer score1 = new Integer(j1.getScore());
+                                 Integer score2 = new Integer(j2.getScore());
+			     Integer tuile1 = new Integer(j1.getNombreTuile());
+			     Integer tuile2 = new Integer(j2.getNombreTuile());
+			     
+			     if (score1.compareTo(score2) != 0) 
+				 return score2.compareTo(score1);
+			     else
+				 return tuile2.compareTo(tuile1);
+                             }
+                         });
 			if (showDialog)
-			{
+			{	
+				
 				POPMenuVictoire popup = new POPMenuVictoire(hauteur,largeur);
 				popup.addInternalFrameListener(new EcouteurDeFenetre(this));
-				JLabel score = new JLabel (s);
-           		JLabel score2 = new JLabel(s2);
-				popup.setVisible(true);
 				JPanel panFin = new JPanel();
+		        int lastScore = -1;
+				int lastTuile = -1;
+		        int rang = 1;
+		        int decalage = 0;
+
+		        for (ListIterator<Joueur> it = classement.listIterator(); it.hasNext();)
+		        {
+		            Joueur joueur = it.next();
+
+		            if (lastScore != -1)
+		            {
+		                if (lastScore == joueur.getScore() && lastTuile == joueur.getNombreTuile())
+		                {
+		                    decalage++;
+		                }
+		                else
+		                {
+		                    rang += decalage + 1;
+		                    decalage = 0;
+		                }
+		            }
+
+		            lastScore = joueur.getScore();
+					lastTuile = joueur.getNombreTuile();
+
+		            s = String.valueOf(rang)+" : "+joueur.getNom()+" -  Poissons : "+joueur.getScore()+" - Tuiles : "+joueur.getNombreTuile();  
+		            
+		            JLabel score = new JLabel (s);
+		            panFin.add(score);                  
+		        }
+		       
+				popup.setVisible(true);
                 JButton nouvellePartie = new JButton("Nouvelle partie");
 				JButton bQuitter = new JButton("Quitter");
 				JButton recommencer = new JButton("Recommencer");
@@ -466,8 +487,7 @@ public class AireDeJeu extends JComponent
 				bQuitter.addActionListener(new EcouteurDeBoutonMenuVictoire("Quitter", inter, popup));
 				menuP.addActionListener(new EcouteurDeBoutonMenuVictoire("Retour Menu Principal", inter, popup));
 				save.addActionListener(new EcouteurDeBoutonMenuVictoire("Sauvegarder", inter, popup));
-           		panFin.add(score);
-           		panFin.add(score2);
+           		
                 panFin.add(nouvellePartie);
 				panFin.add(save);
 				panFin.add(recommencer);
