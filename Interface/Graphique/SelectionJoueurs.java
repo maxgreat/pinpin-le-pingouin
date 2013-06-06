@@ -60,6 +60,7 @@ public class SelectionJoueurs{
         diff = new JComboBox(difficultees.toArray());
         names = new JComboBox(joueurs.toArray());
         diff.setVisible(false);
+        names.setEditable(true);
         names.setVisible(false);
         buttons.setLayout(new GridLayout(0,3));
         JButton b1 = new JButton("HUMAIN");
