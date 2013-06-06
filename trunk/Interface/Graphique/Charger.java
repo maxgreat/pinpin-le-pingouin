@@ -38,7 +38,7 @@ public class Charger {
 		GridBagConstraints gbc = new GridBagConstraints();
 		//On crée nos différents conteneurs
 		//Ligne 1
-		ban = new Banniere("pinpin.png",frame);
+		ban = new Banniere("nuageCharger.png",frame);
 		ban.setPreferredSize(new Dimension(700, (500)/4));
 		//------------------------------------------------------
 		//

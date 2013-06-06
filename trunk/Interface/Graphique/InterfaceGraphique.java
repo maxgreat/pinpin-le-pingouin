@@ -77,7 +77,7 @@ public class InterfaceGraphique extends Interface
 		Dimension Dim = new Dimension(700,500);
 		
 		//creation de la fenetre principale
-		frame = new JFrame("pinpin le pingouin");
+		frame = new JFrame("Pingouins");
 		frame.setMinimumSize(new Dimension(700,500));
 		MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
 		m.setBoutons("demarrage");
