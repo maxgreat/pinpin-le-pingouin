@@ -194,16 +194,17 @@ public class MenuPrincipal{
 		}
 		else if(s.compareTo("Options") == 0){
 
-			ban = new Banniere("options.png",frame);
+			ban = new Banniere("nuageOptions.png",frame);
 			ban.setPreferredSize(new Dimension(700, (500)/4));
 			Menu.setLayout(new GridLayout( 2 , 1));
 			addBouton(Menu, "son.png");
 			addBouton(Menu, "reglesDuJeu.png");
 			addBouton(cellGauche,"retour.png");
+			frame.repaint();
 		}
 		else if(s.compareTo("Son") == 0){
 
-			ban = new Banniere("options.png",frame);
+			ban = new Banniere("nuageSon.png",frame);
 			ban.setPreferredSize(new Dimension(700, (500)/4));
 
 			if(!inter.d.getMusic()){
