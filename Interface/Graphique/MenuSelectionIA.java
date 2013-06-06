@@ -17,6 +17,12 @@ public class MenuSelectionIA extends JInternalFrame{
 		reshape(100,100,100,200);
 		this.j = j;
 		aire = a;
+
+        Dimension desktopSize = a.getSize();
+        Dimension jInternalFrameSize = getSize();
+        int width = (desktopSize.width - jInternalFrameSize.width) / 2;
+        int height = (desktopSize.height - jInternalFrameSize.height) / 2;
+        this.setLocation(width, height);
 		this.setVisible(true);
 		
 		
