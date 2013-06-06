@@ -559,7 +559,7 @@ public class AireDeJeu extends JComponent
                             else
                                 nbPingRestant = 4;
 
-                            JOptionPane.showMessageDialog(null, "Vous avez "+nbPingRestant+" pingouins à placer sur la banquise.\nCliquez sur une case avec un poisson (case en vert)\n pour placer un de vos pingouin dessus", "Tutoriel", JOptionPane.INFORMATION_MESSAGE);
+                            JOptionPane.showMessageDialog(null, "Vous avez "+nbPingRestant+" pingouins à placer sur la banquise.\nCliquez sur une case avec un poisson (case en vert)\npour placer un de vos pingouin dessus", "Tutoriel", JOptionPane.INFORMATION_MESSAGE);
                         }
                     });
                 
