@@ -50,9 +50,9 @@ public class JoueurCPURandomizable extends Joueur
 			if (nbCoups > max) {
 				max = nbCoups;
 				this.path = (ArrayList<Coup>) chemin.clone();
-				/*	if (nbCoups >= caseRestantes) {
+				if (nbCoups >= caseRestantes) {
 					break;
-					}*/
+				}
 			}
 		}
 	}
