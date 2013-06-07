@@ -328,8 +328,6 @@ public class Configuration implements Cloneable, Serializable
 				else if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()==getJoueurSurConfiguration()){
 					if(advProxi > 0 && phase1)
 						advProxi--;
-					nbP += terrainCopie[p.getX()][p.getY()].scorePoisson();
-					nbC++;
 					pile.push(new Couple(p.getX(),p.getY()));
 					terrainCopie[p.getX()][p.getY()].setEtat(Etat.VIDE);
 				}
