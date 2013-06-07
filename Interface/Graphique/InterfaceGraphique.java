@@ -17,7 +17,7 @@ import Sound.*;
 public class InterfaceGraphique extends Interface
 {
 	protected AireDeJeu aire;
-	protected JFrame frame;
+	public JFrame frame;
 	protected JFrame regle;    
 	protected JPanel panel;
 	protected Fond fond;
@@ -392,7 +392,7 @@ public class InterfaceGraphique extends Interface
 		
 		if(S.compareTo( "Sauvegarder") == 0 )
 		{
-			String file = JOptionPane.showInputDialog(null,
+			String file = JOptionPane.showInputDialog(frame,
 								      "Nom de la sauvegarde ?",
 									      "Sauvegarder",
 								      JOptionPane.QUESTION_MESSAGE);

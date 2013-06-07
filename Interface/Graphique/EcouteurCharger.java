@@ -32,7 +32,7 @@ public class EcouteurCharger implements ActionListener{
 			}
 		} else if (this.opt == 1) {
 			if (this.charger.getList().getSelectedValue() != null) {
-				if (JOptionPane.showConfirmDialog(null,
+				if (JOptionPane.showConfirmDialog(((InterfaceGraphique)inter).frame,
 							      "Supprimer la sauvegarde \"" +
 							      this.charger.getList().getSelectedValue() + "\" ?",
 							      "Confirmation" , 

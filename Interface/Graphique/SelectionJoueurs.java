@@ -75,7 +75,7 @@ public class SelectionJoueurs{
         b1.setBorderPainted(false); 
 	JButton b2;
 	if (this.menu == 2)
-		b2 = new JButton(new ImageIcon("Interface/Graphique/Img/selected"+"Ordinateur2.png"));
+		b2 = new JButton(new ImageIcon("Interface/Graphique/Img/selectedOrdinateur2.png"));
 	else
 		b2 = new JButton(new ImageIcon("Interface/Graphique/Img/joueurOrdinateur.png"));		
 	b2.setBorder(BorderFactory.createEmptyBorder());
