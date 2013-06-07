@@ -39,7 +39,7 @@ public class JoueurCPURandomizable extends Joueur
 			chemin.clear();
 			Configuration cl = c.clone();
 			Coup [] coupPossible = cl.toutCoupsPossibles();
-			int nbCoups = 4;
+			int nbCoups = 0;
 			while (coupPossible.length > 0) {
 				int a = r.nextInt(coupPossible.length);
 				cl.effectuerCoup(coupPossible[a]);
