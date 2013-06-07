@@ -318,7 +318,7 @@ public class Configuration implements Cloneable, Serializable
 			for(int taille=0;taille<voisins.size();taille++){
 				p = voisins.get(taille);
 				if (liste.contains(p))
-					return new Couple(-2,-2);
+					return new Couple(-1,-1);
 				if(terrainCopie[p.getX()][p.getY()].getJoueurSurCase()==null){
 					nbP += terrainCopie[p.getX()][p.getY()].scorePoisson();
 					nbC++;
