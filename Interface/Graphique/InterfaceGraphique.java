@@ -394,7 +394,7 @@ public class InterfaceGraphique extends Interface
 		{
 			String file = JOptionPane.showInputDialog(null,
 								      "Nom de la sauvegarde ?",
-									      null,
+									      "Sauvegarder",
 								      JOptionPane.QUESTION_MESSAGE);
 			ArbitreManager.sauvegarderPartie("Save/"+file);
 		}

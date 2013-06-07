@@ -35,7 +35,7 @@ public class EcouteurCharger implements ActionListener{
 				if (JOptionPane.showConfirmDialog(null,
 							      "Supprimer la sauvegarde \"" +
 							      this.charger.getList().getSelectedValue() + "\" ?",
-							      null , 
+							      "Confirmation" , 
 								  JOptionPane.YES_NO_OPTION) == 0) {
 					File f = new File("Save/" + this.charger.getList().getSelectedValue());
 					f.delete();
