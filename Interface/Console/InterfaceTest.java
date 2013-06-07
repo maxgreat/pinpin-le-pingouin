@@ -35,7 +35,7 @@ public class InterfaceTest extends Interface {
 			System.out.println(j1.getScore()+":"+j1.getNombreTuile()+":"+j2.getScore()+":"+j2.getNombreTuile());
 
 			//			ArbitreManager.stopperPartie();
-			ArbitreManager.instance.getSignalStop().envoyerSignal();
+			//ArbitreManager.instance.getSignalStop().envoyerSignal();
 			time = new Timer(500, new ActionListener() 
 				{
 				      
