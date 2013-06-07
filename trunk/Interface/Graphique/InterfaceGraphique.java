@@ -333,6 +333,12 @@ public class InterfaceGraphique extends Interface
 
             if (j4 != null)
                 nombreJoueur++;
+            
+            if (nombreJoueur < 2)
+            {
+                JOptionPane.showMessageDialog(frame, "Vous devez sélectionner au moins deux joueurs.", "Erreur", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
             joueurstemp = new Joueur[nombreJoueur];
 
