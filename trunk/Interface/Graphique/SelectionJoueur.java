@@ -42,8 +42,8 @@ public class SelectionJoueur
         }
         else if (estOrdinateur())
         {         
-            String diff = difficultesCPU.getActionCommand();
-
+		String diff = (String) difficultesCPU.getSelectedItem();
+	    System.out.println(diff);
             if (diff.compareTo("Facile") == 0)
                 j = new JoueurCPUUniversel(3);
             else if (diff.compareTo("Intermediaire") == 0)
