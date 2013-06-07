@@ -112,7 +112,6 @@ public class Case implements Cloneable, Serializable
         Etat e = (Etat)in.readObject();
 
         this.position = position;
-        System.out.println(position);
         setEtat(e);
     }
 
