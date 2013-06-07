@@ -256,10 +256,10 @@ public class InterfaceGraphique extends Interface
 			regle = new JFrame();
 			Img image1 = new Img("regles_page_1.png");
 			//Img image2 = new Img("regles_page_2.png");
-			image1.setPreferredSize(new Dimension(500, 700));
+			image1.setPreferredSize(new Dimension(500, 1450));
 			//image2.setPreferredSize(new Dimension(200, 500));
 			JScrollPane panRegle = new JScrollPane(image1);
-			panRegle.setPreferredSize(new Dimension(500,500));
+			panRegle.setPreferredSize(new Dimension(550,500));
 			//panRegle.add(image2);
 			regle.setContentPane(panRegle);
 			regle.setTitle("Regles du Jeu");
