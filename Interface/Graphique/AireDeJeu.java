@@ -108,8 +108,8 @@ public class AireDeJeu extends JComponent
     protected double margeHaut, margeGauche, margeDroite, margeBas;
     protected double rayonH, rayonL;
 
-    protected boolean posePingouinPopup = false;
-    protected boolean jeuCompletPopup = false;
+    public static boolean posePingouinPopup = false;
+    public static boolean jeuCompletPopup = false;
 	
 	
 	//-------------------------------------------------
