@@ -15,9 +15,11 @@ public class SelectionJoueur
     Integer type = 0;
     JComboBox nomsJoueurs;
     JComboBox difficultesCPU;
+    int numeroJoueur;
 
     public SelectionJoueur(int numeroJoueur, JComboBox nomsJoueurs, JComboBox difficultesCPU)
     {
+        this.numeroJoueur = numeroJoueur;
         this.nomsJoueurs = nomsJoueurs;
         this.difficultesCPU = difficultesCPU;
             
@@ -36,7 +38,7 @@ public class SelectionJoueur
 		{        
 			j = new JoueurHumain();
             if (nomsJoueurs.getSelectedItem().equals("Entrez votre nom..."))
-                j.setNom("Joueur");
+                j.setNom("Joueur "+numeroJoueur);
             else
                 j.setNom(String.valueOf(nomsJoueurs.getSelectedItem()));
         }
