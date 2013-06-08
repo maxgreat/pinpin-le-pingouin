@@ -172,21 +172,46 @@ public class InterfaceGraphique extends Interface
 			frame.setContentPane(m.fond);
 			frame.pack();				
 		}
-		if(S.compareTo( "options.png") == 0 )
+		else if(S.compareTo( "options.png") == 0 )
 		{
 			MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
 			m.setBoutons("Options");
 			frame.setContentPane(m.fond);
 			frame.pack();				
 		}
-		if(S.compareTo("son.png") == 0 )
+        else if (S.equals("tutoriel.png"))
+        {
+            MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
+            m.setBoutons("Tutoriel");
+			frame.setContentPane(m.fond);
+			frame.pack();				
+        }
+        else if (S.equals("tutoriel_activer.png"))
+        {
+			MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
+            setTutorial(true);
+            m.setBoutons("Tutoriel");
+			frame.setContentPane(m.fond);
+			frame.pack();				
+
+        }
+        else if (S.equals("tutoriel_desactiver.png"))
+        {
+            MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
+            setTutorial(false);
+            m.setBoutons("Tutoriel");
+			frame.setContentPane(m.fond);
+			frame.pack();				
+        }
+
+		else if(S.compareTo("son.png") == 0 )
 		{
 			MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
 			m.setBoutons("Son");
 			frame.setContentPane(m.fond);
 			frame.pack();				
 		}
-		if(S.compareTo("nextSong.png") == 0 ) {
+		else if(S.compareTo("nextSong.png") == 0 ) {
 			music.stop();
 			if(d.getFond()){
 				Comportement c;
@@ -198,7 +223,7 @@ public class InterfaceGraphique extends Interface
 				music.start();
 			}
 		}
-		if(S.compareTo("generalActive.png") == 0 || S.compareTo( "generalDesactive.png") == 0 )
+		else if(S.compareTo("generalActive.png") == 0 || S.compareTo( "generalDesactive.png") == 0 )
 		{
 			if(S.compareTo("generalActive.png") == 0){
 				d.setMusic(false);
@@ -217,7 +242,7 @@ public class InterfaceGraphique extends Interface
 			frame.setContentPane(m.fond);
 			frame.pack();				
 		}
-		if(S.compareTo("bruitagesActive.png") == 0 || S.compareTo( "bruitagesDesactive.png") == 0 )
+		else if(S.compareTo("bruitagesActive.png") == 0 || S.compareTo( "bruitagesDesactive.png") == 0 )
 		{
 			if(S.compareTo("bruitagesActive.png") == 0)
 				d.setBruit(false);
@@ -228,7 +253,7 @@ public class InterfaceGraphique extends Interface
 			frame.setContentPane(m.fond);
 			frame.pack();				
 		}
-		if(S.compareTo("musiqueActive.png") == 0 || S.compareTo( "musiqueDesactive.png") == 0 )
+		else if(S.compareTo("musiqueActive.png") == 0 || S.compareTo( "musiqueDesactive.png") == 0 )
 		{
 			if(S.compareTo("musiqueActive.png") == 0){
 				d.setFond(false);
@@ -245,12 +270,12 @@ public class InterfaceGraphique extends Interface
 			frame.setContentPane(m.fond);
 			frame.pack();				
 		}
-		if(S.compareTo( "quitter.png") == 0 || S.compareTo("Quitter") == 0)
+		else if(S.compareTo( "quitter.png") == 0 || S.compareTo("Quitter") == 0)
 		{	
 			ArbitreManager.stopperPartie();
 			System.exit(0);
 		}
-		if(S.compareTo( "reglesDuJeu.png") == 0 )
+		else if(S.compareTo( "reglesDuJeu.png") == 0 )
 		{	
 			System.out.println("Ouverture d'une fenetre de regle");
 			regle = new JFrame();
@@ -264,33 +289,9 @@ public class InterfaceGraphique extends Interface
 			regle.setContentPane(panRegle);
 			regle.setTitle("Regles du Jeu");
 			regle.setVisible(true);
-			regle.pack();
-			
-		
-		/*regle = new JFrame("Regles");
-		regle.setMinimumSize(new Dimension(700,500));
-		MenuPrincipal m = new MenuPrincipal(frame, this,"reglePremierePage.png");
-		m.setBoutons("regle");
-		regle.setContentPane(m.fond);
-		regle.pack();
-		
-		regle.setResizable(true);
-		//frame.setMinimumSize(Dim);
-		//intercepte la demande de fermeture the close button
-		regle.setDefaultCloseOperation(JFrame.DO_NOTHING_ON_CLOSE);
-		//create custom close operation
-		regle.addWindowListener(new WindowAdapter()
-		{
-			public void windowClosing(WindowEvent e)
-			{
-			        // Ferme la partie correctement
-			        ArbitreManager.stopperPartie();
-			        System.exit(0);
-			}
-		});
-		regle.setVisible(true);	*/
+			regle.pack();			
 		}
-		if(S.compareTo("Page 2") == 0 )
+		else if(S.compareTo("Page 2") == 0 )
 		{	
 			oldPage.push("Regles du jeux");
 			MenuPrincipal m = new MenuPrincipal(frame, this,"regleDeuxiemePage.png");
@@ -298,7 +299,7 @@ public class InterfaceGraphique extends Interface
 			regle.setContentPane(m.fond);
 			regle.pack();				
 		}
-		if(S.compareTo("Page 3") == 0 )
+		else if(S.compareTo("Page 3") == 0 )
 		{	
 			oldPage.push("Page 2");
 			MenuPrincipal m = new MenuPrincipal(frame, this,"regleTroisiemePage.png");
@@ -306,7 +307,7 @@ public class InterfaceGraphique extends Interface
 			regle.setContentPane(m.fond);
 			regle.pack();				
 		}
-		if(S.compareTo("Page 4") == 0 )
+		else if(S.compareTo("Page 4") == 0 )
 		{	
 			oldPage.push("Page 3");
 			MenuPrincipal m = new MenuPrincipal(frame, this,"regleQuatriemePage.png");
@@ -314,7 +315,7 @@ public class InterfaceGraphique extends Interface
 			regle.setContentPane(m.fond);
 			regle.pack();				
 		}
-		if(S.compareTo( "lancer.png") == 0 )
+		else if(S.compareTo( "lancer.png") == 0 )
 		{	
             int nombreJoueur = 0;
             Joueur j1 = menuPerso.J1.partage.getJoueur();
@@ -358,14 +359,14 @@ public class InterfaceGraphique extends Interface
 			this.setJoueurs(joueurstemp);
 			initialiserPartie(joueurstemp);
 		}
-		if(S.compareTo( "Retour Menu Principal") == 0 )
+		else if(S.compareTo( "Retour Menu Principal") == 0 )
 		{	
 			ArbitreManager.stopperPartie();
 			afficherPanel("Menu Principal");
 
 		}
 
-		if(S.compareTo("partiePerso.png") == 0)
+		else if(S.compareTo("partiePerso.png") == 0)
 		{
 			this.menuPerso = new MenuPerso(frame, this);
             
@@ -373,57 +374,57 @@ public class InterfaceGraphique extends Interface
 			frame.setContentPane(this.menuPerso.fond);
 			frame.pack();	
 		}
-		if(S.compareTo("retour.png") == 0)
+		else if(S.compareTo("retour.png") == 0)
 		{
 			afficherPanel(oldPage.pop());
 		}
-		if(S.compareTo( "Nouvelle partie") == 0 )
+		else if(S.compareTo( "Nouvelle partie") == 0 )
 		{
             ArbitreManager.stopperPartie();
             initialiserPartie(getJoueurs());
 		}
 
 
-		if(S.compareTo( "Recommencer") == 0 )
+		else if(S.compareTo( "Recommencer") == 0 )
 		{
 		    ArbitreManager.recommencerPartie();
 		}
 		
-		if(S.compareTo( "charger.png") == 0 )
+		else if(S.compareTo( "charger.png") == 0 )
 		{
 			Charger c = new Charger(frame, this);
 			frame.setContentPane(c.fond);
 			frame.pack();	
 		}
 		
-		if(S.compareTo( "Sauvegarder") == 0 )
+		else if(S.compareTo( "Sauvegarder") == 0 )
 		{
 			String file = JOptionPane.showInputDialog(frame,
-								      "Nom de la sauvegarde ?",
-									      "Sauvegarder",
-								      JOptionPane.QUESTION_MESSAGE);
+                                                      "Nom de la sauvegarde ?",
+                                                      "Sauvegarder",
+                                                      JOptionPane.QUESTION_MESSAGE);
 			ArbitreManager.sauvegarderPartie("Save/"+file);
 		}
 
-		if(S.compareTo( "sonAllume.png") == 0 )
+		else if(S.compareTo( "sonAllume.png") == 0 )
 		{
 			MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
 			m.setBoutons("demarrageEteint");
-		  d.setMusic(false);
-		  music.stop();
+            d.setMusic(false);
+            music.stop();
 			frame.setContentPane(m.fond);
 			frame.pack();	
 		}
-		if(S.compareTo( "sonEteint.png") == 0 )
+		else if(S.compareTo( "sonEteint.png") == 0 )
 		{
 			MenuPrincipal m = new MenuPrincipal(frame, this,"backgroundIce2.png");
 			m.setBoutons("demarrage");
 
-		  d.setMusic(true);
-        Comportement c;
-        c = new Comportement(currentSong,d);
-        music = new Thread(c);
-        music.start();
+            d.setMusic(true);
+            Comportement c;
+            c = new Comportement(currentSong,d);
+            music = new Thread(c);
+            music.start();
 
 			frame.setContentPane(m.fond);
 			frame.pack();	
@@ -437,9 +438,9 @@ public class InterfaceGraphique extends Interface
       
 		for (int i = 0; i < joueurs.length; i++, size++){
 			if (joueurs[i] == null)
-             break;
+                break;
 
-      }
+        }
         joueurstemp = new Joueur[size];
         for (int i = 0; i < size; i++)
             joueurstemp[i] = joueurs[i];
@@ -447,8 +448,37 @@ public class InterfaceGraphique extends Interface
 
 	public Joueur[] getTab()
 	{
-      return joueurstemp;
+        return joueurstemp;
 	}
 
+    public boolean showTutorial()
+    {
+        java.io.File f = new java.io.File(".tutorial");
+        return !f.exists();
+    }
+
+    public void setTutorial(boolean status)
+    {
+        if (status == true)
+        {
+            java.io.File f = new java.io.File(".tutorial");
+
+            if (!f.exists())
+                return;
+
+            if (!f.canWrite())
+                return;
+
+            f.delete();
+        }
+        else
+        {
+            java.io.File f = new java.io.File(".tutorial");
+            try
+            {
+                f.createNewFile();
+            } catch (Exception e) {}
+        }
+    }
 
 }	

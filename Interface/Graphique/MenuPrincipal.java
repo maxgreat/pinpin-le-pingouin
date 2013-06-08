@@ -196,8 +196,9 @@ public class MenuPrincipal{
 
 			ban = new Banniere("nuageOptions.png",frame);
 			ban.setPreferredSize(new Dimension(700, (500)/4));
-			Menu.setLayout(new GridLayout( 2 , 1));
+			Menu.setLayout(new GridLayout( 3 , 1));
 			addBouton(Menu, "son.png");
+            addBouton(Menu, "tutoriel.png");
 			addBouton(Menu, "reglesDuJeu.png");
 			addBouton(cellGauche,"retour.png");
 			frame.repaint();
@@ -255,6 +256,19 @@ public class MenuPrincipal{
 			addBouton(cellGauche,"retour.png");
 			addBouton(cellDroite,"Menu Principal");
 		}
+        else if (s.equals("Tutoriel"))
+        {
+			ban = new Banniere("pinpin.png",frame);
+			ban.setPreferredSize(new Dimension(700, (500)/4));
+            Menu.setLayout(new GridLayout(1, 1));
+			if(inter.showTutorial())
+				addBouton(Menu, "tutoriel_desactiver.png");
+            else
+                addBouton(Menu, "tutoriel_activer.png");
+
+			addBouton(cellGauche,"retour.png");
+        }
+
 		
 	
 	}
