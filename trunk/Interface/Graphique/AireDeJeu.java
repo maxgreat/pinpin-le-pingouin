@@ -108,8 +108,8 @@ public class AireDeJeu extends JComponent
     protected double margeHaut, margeGauche, margeDroite, margeBas;
     protected double rayonH, rayonL;
 
-    public static boolean posePingouinPopup = false;
-    public static boolean jeuCompletPopup = false;
+    public boolean posePingouinPopup = false;
+    public boolean jeuCompletPopup = false;
 	
 	
 	//-------------------------------------------------
@@ -551,7 +551,7 @@ public class AireDeJeu extends JComponent
 		//Si on est en mode pose pingouins
 		if(ArbitreManager.instance.getMode() == ModeDeJeu.POSE_PINGOUIN)
 		{
-            if (!posePingouinPopup)
+            if (inter.showTutorial() && !posePingouinPopup)
             {
                 javax.swing.SwingUtilities.invokeLater(new Runnable() 
                     {
@@ -566,7 +566,13 @@ public class AireDeJeu extends JComponent
                             else
                                 nbPingRestant = 4;
 
-                            JOptionPane.showMessageDialog(frame, "Votre but est de récupérer le maximum de poissons.\nVous avez "+nbPingRestant+" pingouins à placer sur la banquise.\nCLIQUEZ sur une case avec UN poisson (case en VERT)\npour placer un de vos pingouin dessus", "Tutoriel", JOptionPane.INFORMATION_MESSAGE);
+                            JCheckBox checkbox = new JCheckBox("Ne plus afficher cet aide");
+                            String message = "Votre but est de récupérer le maximum de poissons.\nVous avez "+nbPingRestant+" pingouins à placer sur la banquise.\nCLIQUEZ sur une case avec UN poisson (case en VERT)\npour placer un de vos pingouin dessus";
+                            Object [] params = {message, checkbox};
+
+                            JOptionPane.showMessageDialog(frame, params, "Tutoriel", JOptionPane.INFORMATION_MESSAGE);
+                            if (checkbox.isSelected())
+                                inter.setTutorial(false);
                         }
                     });
                 
@@ -582,16 +588,22 @@ public class AireDeJeu extends JComponent
 		}
         else
         {
-            if (!jeuCompletPopup)
+            if (inter.showTutorial() && !jeuCompletPopup)
             {
                 javax.swing.SwingUtilities.invokeLater(new Runnable() 
                     {
                         public void run() 
                         {
-                            JOptionPane.showMessageDialog(frame, "Sélectionnez un de vos pingouins pour le déplacer,\n et cliquez sur la case où vous voulez le mettre (une case en vert).", "Tutoriel", JOptionPane.INFORMATION_MESSAGE);
+                            JCheckBox checkbox = new JCheckBox("Ne plus afficher cet aide");
+                            String message = "Sélectionnez un de vos pingouins pour le déplacer,\n et cliquez sur la case où vous voulez le mettre (une case en vert).";
+                            Object [] params = {message, checkbox};
+
+                            JOptionPane.showMessageDialog(frame, params, "Tutoriel", JOptionPane.INFORMATION_MESSAGE);
+                            if (checkbox.isSelected())
+                                inter.setTutorial(false);
                         }
                     });
-                
+
                 jeuCompletPopup = true;
             }
             drawable.setColor(Color.white);
