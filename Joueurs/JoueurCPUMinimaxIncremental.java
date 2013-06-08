@@ -51,7 +51,12 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 		// Récupérer temps départ
 		long startMilli = System.currentTimeMillis();
 		// coup = Lancement minimax profondeur 1 (thread)
-		Minimax mini  = new Minimax(j, 1, ArbitreManager.instance, this.finish);
+		Minimax mini;
+		if(this.tmpMax == 1000)
+			mini  = new Minimax(j, 1, ArbitreManager.instance, true);
+		else
+			mini  = new Minimax(j, 1, ArbitreManager.instance, false);
+
 		Thread t = new Thread(mini);
 		t.start();
 
@@ -65,12 +70,12 @@ public class JoueurCPUMinimaxIncremental extends Joueur
 		}
 		
 		// tant que tempsCourant - tempsDepart < TEMPS_ATTENTE_MAXIMAL
-		while (pas < 100 && System.currentTimeMillis() - startMilli < this.tmpMax) {
+		while (pas < 100 && System.currentTimeMillis() - startMilli < this.tmpMax && this.tmpMax != 1000) {
 			if (ArbitreManager.instance.getForceStop()) {
 		       		return null;
 			}
 			
-			MinimaxIncremental miniI = new MinimaxIncremental(j, pas, ArbitreManager.instance, this.finish);
+			MinimaxIncremental miniI = new MinimaxIncremental(j, pas, ArbitreManager.instance, false);
 			t = new Thread(miniI);
 			try {
 				t.start();
