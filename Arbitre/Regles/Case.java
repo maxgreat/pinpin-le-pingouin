@@ -8,6 +8,7 @@ public class Case implements Cloneable, Serializable
 {
     protected Etat e;
     protected int position;
+    public static final long serialVersionUID = -1656867859518053793L;
 
     /**
      * Une case est caractérisé par son état et
